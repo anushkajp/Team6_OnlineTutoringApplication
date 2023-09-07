@@ -12,6 +12,9 @@ For Senior Design CS 4485, Team 6. Online Tutoring Application for Dr. Pushpa Ku
 completed by a tutor.
 
 ## Stretch Goals
+- Send email notifications when appointments are scheduled.
+- Allow appointment cancellations up to 24 hours before the tutoring session.
+- Utilize Zoom or Google Meet/Calendar to generate online meeting links for appointments.
 
 ## Technical Stack
 - Front-End:
