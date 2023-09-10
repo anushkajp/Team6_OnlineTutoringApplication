@@ -26,5 +26,7 @@ completed by a tutor.
     - MongoDB
     
 ## Resources
+- [UI/UX Mockup](https://www.figma.com/file/LftHBA4pGk8TqTux1TDD9n/Online-Tutoring-Application---Dr.-Pushpa-Kumar?type=design&node-id=0%3A1&mode=design&t=Umk380dUknkaGuJG-1)
+- [Schema Diagram](https://lucid.app/lucidchart/9e6fd837-1471-4644-8fed-4b04b79b4ddf/edit?view_items=bHOs79Dugzk4&invitationId=inv_4ee7ee8c-fd97-4831-99c9-30e2a70ef606)
 
 
