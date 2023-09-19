@@ -2,7 +2,9 @@ import React from 'react'
 
 const AddTutorSession = () => {
   return (
-    <div>AddTutorSession</div>
+    <div>AddTutorSession
+        <p>AddTutorSession</p>
+    </div>
   )
 }
 

@@ -2,7 +2,9 @@ import React from 'react'
 
 const StudentDash = () => {
   return (
-    <div>StudentDash</div>
+    <div>StudentDash
+        <p>StudentDash</p>
+    </div>
   )
 }
 
