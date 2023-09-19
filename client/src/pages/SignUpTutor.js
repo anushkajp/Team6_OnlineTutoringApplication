@@ -2,7 +2,9 @@ import React from 'react'
 
 const SignUpTutor = () => {
   return (
-    <div>SignUpTutor</div>
+    <div>SignUpTutor
+        <p>SignUpTutor</p>
+    </div>
   )
 }
 

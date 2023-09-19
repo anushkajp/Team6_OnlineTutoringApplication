@@ -2,7 +2,9 @@ import React from 'react'
 
 const Forgot = () => {
   return (
-    <div>Forgot</div>
+    <div>Forgot
+        <p>Forgot</p>
+    </div>
   )
 }
 

@@ -2,7 +2,9 @@ import React from 'react'
 
 const TwoFactor = () => {
   return (
-    <div>TwoFactor</div>
+    <div>TwoFactor
+        <p>TwoFactor</p>
+    </div>
   )
 }
 
