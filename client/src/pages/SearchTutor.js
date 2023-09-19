@@ -2,7 +2,9 @@ import React from 'react'
 
 const SearchTutor = () => {
   return (
-    <div>SearchTutor</div>
+    <div>SearchTutor
+        <p>SearchTutor</p>
+    </div>
   )
 }
 
