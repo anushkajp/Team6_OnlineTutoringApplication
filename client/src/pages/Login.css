@@ -1,8 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Modak&family=Poppins:wght@300;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
+  align-items: center;
+  justify-content: center;
 }
 
 .body-background {
@@ -34,5 +39,65 @@ body {
   border-radius: 10px;
   margin: 20px;
   text-align: center;
+}
+
+.overlay-div > .second-overlay-div {
+  width: 60%;
+}
+
+.logo-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 650px;
+  height: 703;
   z-index: 1;
+}
+
+.login-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-box {
+  width: 750px;
+  height: 725px;
+  border-radius: 20px;
+  border: 4px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(
+    182deg,
+    rgba(255, 255, 255, 0.48) 1.24%,
+    rgba(255, 255, 255, 0.51) 104.24%
+  );
+  z-index: 1;
+}
+
+.header {
+  color: #3f485a;
+  text-align: center;
+  font-family: Modak;
+  font-size: 75px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 1.5px;
+}
+
+.header2 {
+  color: var(--928F8F, #928f8f);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -12%;
 }
