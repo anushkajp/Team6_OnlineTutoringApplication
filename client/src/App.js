@@ -27,6 +27,7 @@ import Forgot from "./pages/Forgot";
 import Home from "./pages/Home";
 import ListUpcoming from "./pages/ListUpcoming";
 import Login from "./pages/Login";
+import Login from "./pages/Login";
 import ProfileSettings from "./pages/ProfileSettings";
 import SavedCoursesStudent from "./pages/SavedCoursesStudent";
 import SearchTutor from "./pages/SearchTutor";
@@ -71,9 +72,9 @@ function App() {
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Forgot" element={<Forgot />} />
         <Route path="/Home" element={<Home />} />
-        <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
+        <Route path="/ListUpcoming" element={<ListUpcoming />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/ProfileSettings" element={<ProfileSettings renderType="tutor"/>} />
+        <Route path="/ProfileSettings" element={<ProfileSettings />} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />
         <Route path="/SignUpStudent" element={<SignUpStudent />} />
