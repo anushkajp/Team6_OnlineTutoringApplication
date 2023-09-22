@@ -1,6 +1,7 @@
 import React from "react";
 import "./Login.css";
 import glass from "../assets/glassmorhpism.png";
+import logo from "../assets/logo.png";
 
 // no functionality yet, just UI
 
@@ -11,15 +12,23 @@ const Login = () => {
         <img src={glass} />
       </div>
 
-
+      {/* image container */}
       <div className="overlay-div">
-        <h1>First Div</h1>
-        <p>This is the first div on top of the background.</p>
+        <div className="logo-container">
+          <img className="logo" src={logo} />
+        </div>
       </div>
-      {/* Second Div */}
-      <div className="overlay-div">
-        <h1>Second Div</h1>
-        <p>This is the second div on top of the background.</p>
+
+      {/* login container */}
+      <div className="second-overlay-div">
+        <div className="login-container">
+          <div className="login-box">
+            <p className="header">Hello Again!</p>
+            <p className="header2">Sign in to start learning</p>
+
+
+          </div>
+        </div>
       </div>
     </div>
   );
