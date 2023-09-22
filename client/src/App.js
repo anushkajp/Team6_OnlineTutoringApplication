@@ -70,9 +70,9 @@ function App() {
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Forgot" element={<Forgot />} />
         <Route path="/Home" element={<Home />} />
-        <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
+        <Route path="/ListUpcoming" element={<ListUpcoming />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/ProfileSettings" element={<ProfileSettings userName="diananle" renderType="student"/>} />
+        <Route path="/ProfileSettings" element={<ProfileSettings />} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />
         <Route path="/SignUpStudent" element={<SignUpStudent />} />
