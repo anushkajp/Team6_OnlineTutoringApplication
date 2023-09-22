@@ -1,0 +1,21 @@
+/* Global Styles */
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fonts/Montserrat-VariableFont_wght.ttf') format('truetype'), 
+         url('../assets/fonts/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
+}
+
+:root {
+    --accent-color1: #B9CCF3;
+    --accent-color2: #F9C8C8;
+    --accent-color3: #91F3BB;
+    --primary-color: #A92AB7;
+    --background-color: #F1EFEF;
+    --text-color: #1C2321;
+    background-color: var(--background-color);
+}
+
+* {
+    font-family: 'Montserrat', sans-serif;
+}

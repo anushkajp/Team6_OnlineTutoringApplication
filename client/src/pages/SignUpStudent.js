@@ -7,7 +7,8 @@ const SignUpStudent = () => {
         lastName: '',
         email: '',
         phone: '',
-        interests: [],
+        university: '',
+        profile_photo: '',
         password: '',
       });
 
@@ -28,15 +29,29 @@ const SignUpStudent = () => {
           lastName: '',
           email: '',
           phone: '', 
-          interests: [],
+          university: '',
+          profile_photo: '',
           password: '',
         });
       };
     
       return (
-        <div className="signup-container">
-          <h2>Sign Up</h2>
-          <form onSubmit={handleSubmit}>
+        <div className="page-container">
+          <div className="signup-container">
+          <h2>Start Your Journey Today!</h2>
+          <div class="form-fields">
+            <form onSubmit={handleSubmit}>
+          <div className="form-group">
+              <label htmlFor="profile_photo">Upload Profile Photo</label>
+              <input
+                type="file"
+                id="profile_photo"
+                name="profile_photo"
+                value={formData.profile_photo}
+                onChange={handleChange}
+                required
+              />
+            </div>
             <div className="form-group">
               <label htmlFor="firstName">First Name</label>
               <input
@@ -55,6 +70,17 @@ const SignUpStudent = () => {
                 id="lastName"
                 name="lastName"
                 value={formData.lastName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="university">University/School</label>
+              <input
+                type="text"
+                id="university"
+                name="university"
+                value={formData.university}
                 onChange={handleChange}
                 required
               />
@@ -92,9 +118,14 @@ const SignUpStudent = () => {
                 required
               />
             </div>
-            <button type="submit">Sign Up</button>
-          </form>
+            <button className="create_acc_student_button" type="submit">Create Student Account</button>
+            </form>
+          </div>
         </div> 
+        <div className="logo-container">
+          <img src="http://localhost:3000/client/src/assets/logo.png" alt="logo"/>
+        </div>
+        </div>
       );
 }
 
