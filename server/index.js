@@ -25,6 +25,8 @@ app.listen(PORT, ()=>{
 const tutorRouter = require('./src/routes/tutors')
 const studentRouter = require('./src/routes/students')
 const sessionRouter = require('./src/routes/sessions')
+const reviewRouter = require('/src/routes/review')
 app.use('/tutor', tutorRouter)
 app.use('/student', studentRouter)
 app.use('/session', sessionRouter)
+app.use('/session/review', reviewRouter)
