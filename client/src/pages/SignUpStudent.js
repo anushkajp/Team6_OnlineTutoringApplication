@@ -39,7 +39,7 @@ const SignUpStudent = () => {
         <div className="page-container">
           <div className="signup-container">
           <h2>Start Your Journey Today!</h2>
-          <div class="form-fields">
+          <div className="form-fields">
             <form onSubmit={handleSubmit}>
           <div className="form-group">
               <label htmlFor="profile_photo">Upload Profile Photo</label>
@@ -123,7 +123,7 @@ const SignUpStudent = () => {
           </div>
         </div> 
         <div className="logo-container">
-          <img src="http://localhost:3000/client/src/assets/logo.png" alt="logo"/>
+          <img src="tutortopialogo.png" alt="logo"/>
         </div>
         </div>
       );
