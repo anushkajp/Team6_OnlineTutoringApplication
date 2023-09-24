@@ -2,8 +2,8 @@
 
 @font-face {
     font-family: 'Montserrat';
-    src: url('../assets/fonts/Montserrat-VariableFont_wght.ttf') format('truetype'), 
-         url('../assets/fonts/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
+    src: url('../../public/assets/fonts/Montserrat-VariableFont_wght.ttf') format('truetype'), 
+         url('../../public/assets/fonts/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
 }
 
 :root {
