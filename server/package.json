@@ -9,6 +9,8 @@
   "author": "Team6",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "csurf": "^1.11.0",
     "express": "^4.18.2",
     "firebase": "^10.4.0"
   }
