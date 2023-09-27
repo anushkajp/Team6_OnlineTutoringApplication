@@ -28,7 +28,7 @@ app.get("/testServer", (req, res)=>{
             password:"plaintextpasswordtobehashed",
             rating:5
         }
-        addItem("test/User",postData);
+        addItem("User",postData,true);
 });
 
 app.get('/', (req, res)=>{
