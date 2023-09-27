@@ -41,22 +41,21 @@ const db = getDatabase(fbApp);
 }
 
 // Write a new item into an existing table
-// Example postdata format
-// const postData = {
-//     author: username,
-//     uid: uid,
-//     body: body,
-//     title: title,
-//     starCount: 0,
-//     authorPic: picture
-//   };
-// batch writes are possible and could be setup in the future
- function addItem(entity, postData) {
+// TODO: Batch writes
+/**
+ * @param {string} entity Name of the entity, such as User, Availability, etc
+ * @param {Object} postData The post data with valued fields, for example const postData = {author: username,uid: uid,body: body,title: title,starCount: 0,authorPic: picture};
+ * @param {boolean} test Indicate whether this is a test write
+ */
+ function addItem(entity, postData, test) {
     const newPostKey = push(child(ref(db),entity)).key;
 
     const updates={}
-    updates["/"+entity+"/"+newPostKey] = postData;
-
+    if (test){
+        updates["/test/"+entity+"/"+newPostKey] = postData;
+    }else{
+        updates["/"+entity+"/"+newPostKey] = postData;
+    }
     return update(ref(db),updates);
     
 }
