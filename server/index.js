@@ -1,10 +1,11 @@
 // Run the server with npm index.js
 //localhost:8000 (basic lol)
-const {db, addItem,readPath} = require('./db');
+const {db,addItem,readPath} = require("./db");
+// const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
 const app = express();
 const PORT = 8000;
-
+//app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 app.get("/testServer", (req, res)=>{
     res.send({
         // for testing
