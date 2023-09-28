@@ -1,16 +1,19 @@
 class User {
-    constructor() {
-        this.firstName = null;
-        this.lastName = null;
-        this.middleName = null;
-        this.password = null;
-        this.userId = null;
-        this.courses = null;
-        this.phone = null;
-        this.email = null;
-        this.major = null;
-        this.longBio = null;
-        this.shortBio = null;
+    constructor(firstName, lastName, middleName,
+        password, userId, courses, phone, email, major,
+        longBio, shortBio, pfp) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.password = password;
+        this.userId = userId;
+        this.courses = courses;
+        this.phone = phone;
+        this.email = email;
+        this.major = major;
+        this.longBio = longBio;
+        this.shortBio = shortBio;
+        this.pfp = pfp;
     }
 }
 module.exports = User
