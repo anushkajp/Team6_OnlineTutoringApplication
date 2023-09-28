@@ -117,8 +117,9 @@ function addItem(entity, postData, specificKey = null,test = true) {
  * @param {string} email Email
  * @param {string} longBio Descriptive bio
  * @param {number} rating Float rating of the user
+ * @param {ImageData} profilePic Profile picture
  */
-function addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00) {
+function addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00,profilePic=null ) {
     const postData = {
         username: username,
         major: major,
@@ -130,7 +131,8 @@ function addUser(firstName, middleName, lastName, password, username, major, cou
         lastName: lastName,
         middleName: middleName,
         password: password,
-        rating: rating
+        rating: rating,
+        profilePic:profilePic
     }
     return addItem("User", postData)
 
@@ -149,7 +151,7 @@ function addUser(firstName, middleName, lastName, password, username, major, cou
  * @param {string} longBio Descriptive bio
  * @param {number} rating Float rating of the user
  */
-async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00){
+async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00, profilePic=null){
     const postDataUser = {
         username: username,
         major: major,
@@ -161,7 +163,8 @@ async function addStudent(firstName, middleName, lastName, password, username, m
         lastName: lastName,
         middleName: middleName,
         password: password,
-        rating: rating
+        rating: rating,
+        profilePic:profilePic
     }
     userKey = await addItem("User",postDataUser)
     userKey = userKey["id"]
@@ -188,7 +191,7 @@ async function addStudent(firstName, middleName, lastName, password, username, m
  * @param {number} totalHours Total hours completed by tutor
  * @param {number} rating The rating other users have given the tutor
  */
- async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00,shortBio,backgroundCheck=false,totalHours=0){
+ async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic=null,rating = 0.00,backgroundCheck=false,totalHours=0){
     const postDataUser = {
         username: username,
         major: major,
@@ -200,7 +203,8 @@ async function addStudent(firstName, middleName, lastName, password, username, m
         lastName: lastName,
         middleName: middleName,
         password: password,
-        rating: rating
+        rating: rating,
+        profilePic:profilePic
     }
     userKey = await addItem("User",postDataUser)
     userKey = userKey["id"]
