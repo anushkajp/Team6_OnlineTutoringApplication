@@ -81,8 +81,12 @@ async function getStudentIds(){
  * @param {Object} postData The post data with valued fields, for example const postData = {author: username,uid: uid,body: body,title: title,starCount: 0,authorPic: picture};
  * @param {boolean} test Defaults to true, indicate whether this is a test write
  */
-function addItem(entity, postData, test = true) {
-    const newPostKey = push(child(ref(db), entity)).key;
+function addItem(entity, postData, specificKey = null,test = true) {
+
+    newPostKey = specificKey;
+    if (newPostKey == null){
+        newPostKey = push(child(ref(db), entity)).key
+    }
 
     const updates = {}
     if (test) {
@@ -99,6 +103,7 @@ function addItem(entity, postData, test = true) {
     });
 
 }
+
 /**
  * Adds a new User to the database 
  * @param {string} firstName First name
@@ -131,6 +136,84 @@ function addUser(firstName, middleName, lastName, password, username, major, cou
 
 }
 /**
+ * Adds a new Student to the database 
+ * @param {string} firstName First name
+ * @param {string} middleName Middle name
+ * @param {string} lastName Last name
+ * @param {string} password Hashed password
+ * @param {string} username Unique username
+ * @param {string} major Major
+ * @param {Array<Course>} courses Courses provided or sought
+ * @param {string} phone Phone number
+ * @param {string} email Email
+ * @param {string} longBio Descriptive bio
+ * @param {number} rating Float rating of the user
+ */
+async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00){
+    const postDataUser = {
+        username: username,
+        major: major,
+        courses: courses,
+        phone: phone,
+        email: email,
+        longBio: longBio,
+        firstName: firstName,
+        lastName: lastName,
+        middleName: middleName,
+        password: password,
+        rating: rating
+    }
+    userKey = await addItem("User",postDataUser)
+    userKey = userKey["id"]
+    const postDataStudent = {
+        userId:userKey
+    }
+    return  addItem("Student",postDataStudent,userKey)
+}
+/**
+ * Adds a new Tutor to the database 
+ * @param {string} firstName First name
+ * @param {string} middleName Middle name
+ * @param {string} lastName Last name
+ * @param {string} password Hashed password
+ * @param {string} username Unique username
+ * @param {string} major Major
+ * @param {Array<Course>} courses Courses provided or sought
+ * @param {string} phone Phone number
+ * @param {string} email Email
+ * @param {string} longBio Descriptive bio
+ * @param {number} rating Float rating of the user
+ * @param {string} shortBio A short bio for the tutor visible to students
+ * @param {boolean} backgroundCheck Defaults to false, whether a background check has passed or not
+ * @param {number} totalHours Total hours completed by tutor
+ * @param {number} rating The rating other users have given the tutor
+ */
+ async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00,shortBio,backgroundCheck=false,totalHours=0){
+    const postDataUser = {
+        username: username,
+        major: major,
+        courses: courses,
+        phone: phone,
+        email: email,
+        longBio: longBio,
+        firstName: firstName,
+        lastName: lastName,
+        middleName: middleName,
+        password: password,
+        rating: rating
+    }
+    userKey = await addItem("User",postDataUser)
+    userKey = userKey["id"]
+    const postDataTutor={
+        userId:userKey,
+        shortBio:shortBio,
+        backgroundCheck:backgroundCheck,
+        totalHours:totalHours,
+        rating:rating
+    }
+    return  addItem("Tutor",postDataTutor,userKey)
+}
+/**
  * Adds a new User to the database 
  * @param {string} majorName Name of the major
  */
@@ -155,34 +238,6 @@ function addUser(firstName, middleName, lastName, password, username, major, cou
         creditHours:creditHours
     }
     return  addItem("Course",postData)
-}
-/**
- * Adds a new Student to the database 
- * @param {string} userId The database ID of the User object which contains student information
- */
- function addStudent(userId){
-    const postData = {
-        userId:userId
-    }
-    return  addItem("Student",postData)
-}
-/**
- * Adds a new Student to the database 
- * @param {string} userId The database ID of the User object which contains tutor information
- * @param {string} shortBio A short bio for the tutor visible to students
- * @param {boolean} backgroundCheck Defaults to false, whether a background check has passed or not
- * @param {number} totalHours Total hours completed by tutor
- * @param {number} rating The rating other users have given the tutor
- */
- function addTutor(userId,shortBio,backgroundCheck=false,totalHours=0,rating=0){
-    const postData={
-        userId:userId,
-        shortBio:shortBio,
-        backgroundCheck:backgroundCheck,
-        totalHours:totalHours,
-        rating:rating
-    }
-    return  addItem("Tutor",postData)
 }
 /**
  * Adds a new Availability to the database, should be tied to a user
@@ -243,7 +298,9 @@ function addUser(firstName, middleName, lastName, password, username, major, cou
 module.exports = {
     db,
     readPath,
-    addUser
+    addUser,
+    addTutor,
+    addStudent
     // swaggerDocument,
     // swaggerUi,fbApp
 }
