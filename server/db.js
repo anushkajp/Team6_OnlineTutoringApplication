@@ -33,7 +33,8 @@ const db = getDatabase(fbApp);
        return get(child(ref(db), "test/"+path)).then((snapshot) => {
             if (snapshot.exists()) {
                 // console.log("does exist")
-                data = JSON.stringify(snapshot.toJSON())
+                // data = JSON.stringify(snapshot.toJSON())
+                data = snapshot.val()
                 // console.log(data)
                 return data;
             } else {
@@ -59,9 +60,18 @@ const db = getDatabase(fbApp);
     }
 }
 
-function getUserIds(){
-    readPath()
+async function getUserIds(){
+    return Object.keys(await readPath("User"))
 }
+
+async function getTutorIds(){
+    return Object.keys(await readPath("Tutor"))
+}
+
+async function getStudentIds(){
+    return Object.keys(await readPath("Student"))
+}
+
 
 // Write a new item into an existing table
 // TODO: Batch writes
@@ -80,7 +90,13 @@ function addItem(entity, postData, test = true) {
     } else {
         updates["/" + entity + "/" + newPostKey] = postData;
     }
-    return update(ref(db), updates);
+    return update(ref(db), updates).then(()=>{
+        postData["id"]=newPostKey
+        return postData;
+    }).catch((error)=>{
+        console.error(error);
+        return NaN;
+    });
 
 }
 /**
@@ -118,11 +134,11 @@ function addUser(firstName, middleName, lastName, password, username, major, cou
  * Adds a new User to the database 
  * @param {string} majorName Name of the major
  */
-function addMajor(majorName){
+ function addMajor(majorName){
     const postData={
         majorName:majorName
     }
-    return addItem("Major",postData)
+    return  addItem("Major",postData)
 }
 /**
  * Adds a new User to the database 
@@ -131,24 +147,24 @@ function addMajor(majorName){
  * @param {string} courseNumber Course number
  * @param {number} creditHours Number of credit hours this course offers
  */
-function addCourse(majorId,  courseName, courseNumber, creditHours){
+ function addCourse(majorId,  courseName, courseNumber, creditHours){
     const postData={
         majorId:majorId,
         courseName: courseName,
         courseNumber:courseNumber,
         creditHours:creditHours
     }
-    return addItem("Course",postData)
+    return  addItem("Course",postData)
 }
 /**
  * Adds a new Student to the database 
  * @param {string} userId The database ID of the User object which contains student information
  */
-function addStudent(userId){
+ function addStudent(userId){
     const postData = {
         userId:userId
     }
-    return addItem("Student",postData)
+    return  addItem("Student",postData)
 }
 /**
  * Adds a new Student to the database 
@@ -158,7 +174,7 @@ function addStudent(userId){
  * @param {number} totalHours Total hours completed by tutor
  * @param {number} rating The rating other users have given the tutor
  */
-function addTutor(userId,shortBio,backgroundCheck=false,totalHours=0,rating=0){
+ function addTutor(userId,shortBio,backgroundCheck=false,totalHours=0,rating=0){
     const postData={
         userId:userId,
         shortBio:shortBio,
@@ -166,7 +182,7 @@ function addTutor(userId,shortBio,backgroundCheck=false,totalHours=0,rating=0){
         totalHours:totalHours,
         rating:rating
     }
-    return addItem("Tutor",postData)
+    return  addItem("Tutor",postData)
 }
 /**
  * Adds a new Availability to the database, should be tied to a user
@@ -174,13 +190,13 @@ function addTutor(userId,shortBio,backgroundCheck=false,totalHours=0,rating=0){
  * @param {string} weekly Weekly availability, should be an array<string,7> storing time ranges in a standard format, index 0 is monday
  * @param {Array<Date>} exceptions A list of exceptions to the weekly schedule, stored as dates of unavailability
  */
-function addAvailability(tutorId, weekly, exceptions = []) {
+ function addAvailability(tutorId, weekly, exceptions = []) {
     const postData = {
         tutorId: tutorId,
         weekly: weekly,
         exceptions: exceptions
     }
-    return addItem("Availability", postData)
+    return  addItem("Availability", postData)
 
 }
 // /**
@@ -209,7 +225,7 @@ function addAvailability(tutorId, weekly, exceptions = []) {
  * @param {string} notes Notes about the meeting
  * @param {number} rating Appointment rating
  */
-function addAppointment(tutorId, userId, dateTime, length, online, location, notes, rating, reivew) {
+ function addAppointment(tutorId, userId, dateTime, length, online, location, notes, rating, reivew) {
     const postData = {
         tutorId: tutorId,
         userId: userId,
@@ -221,7 +237,7 @@ function addAppointment(tutorId, userId, dateTime, length, online, location, not
         rating: rating,
         review:reivew
     }
-    return addItem("Appointment", postData)
+    return  addItem("Appointment", postData)
 }
 
 module.exports = {
