@@ -60,6 +60,7 @@ const db = getDatabase(fbApp);
     }
 }
 
+// Only read user Ids from these tables so references to information can be received
 async function getUserIds(){
     return Object.keys(await readPath("User"))
 }
@@ -70,6 +71,31 @@ async function getTutorIds(){
 
 async function getStudentIds(){
     return Object.keys(await readPath("Student"))
+}
+
+// Only read by Id to ensure data is being read with intent
+function getUser(userId){
+    return readPath("User/"+userId)
+}
+function getUserProfile(userId){
+    return readPath("User")
+}
+function getTutor(userId){
+    return readPath("Tutor/"+userId)
+}
+function getAvailability(tutorId){
+    return readPath("Availability/"+tutorId)
+}
+function getStudent(userId){
+    return readPath("Student/"+userId)
+}
+
+// For more static non-sensitive tables, read the whole table
+function getMajors(){
+    return readPath("Major")
+}
+function getCourses(){
+    return readPath("Course")
 }
 
 
@@ -185,13 +211,16 @@ async function addStudent(firstName, middleName, lastName, password, username, m
  * @param {string} phone Phone number
  * @param {string} email Email
  * @param {string} longBio Descriptive bio
- * @param {number} rating Float rating of the user
  * @param {string} shortBio A short bio for the tutor visible to students
+ * @param {string} weeklyAvailability Weekly availability, should be an array<string,7> storing time ranges in a standard format, index 0 is monday
+ * @param {Array<Date>} exceptionsAvailability A list of exceptions to the weekly schedule, stored as dates of unavailability
+ * @param {ImageData} profilePic 
+ * @param {number} rating Float rating of the user
  * @param {boolean} backgroundCheck Defaults to false, whether a background check has passed or not
  * @param {number} totalHours Total hours completed by tutor
  * @param {number} rating The rating other users have given the tutor
  */
- async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic=null,rating = 0.00,backgroundCheck=false,totalHours=0){
+ async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio,weeklyAvailability=[],exceptionsAvailability=[], profilePic=null,rating = 0.00,backgroundCheck=false,totalHours=0){
     const postDataUser = {
         username: username,
         major: major,
@@ -213,12 +242,14 @@ async function addStudent(firstName, middleName, lastName, password, username, m
         shortBio:shortBio,
         backgroundCheck:backgroundCheck,
         totalHours:totalHours,
-        rating:rating
+        rating:rating,
+        weeklyAvailability:weeklyAvailability,
+        exceptionsAvailability:exceptionsAvailability
     }
     return  addItem("Tutor",postDataTutor,userKey)
 }
 /**
- * Adds a new User to the database 
+ * Adds a new Major to the database 
  * @param {string} majorName Name of the major
  */
  function addMajor(majorName){
@@ -228,7 +259,7 @@ async function addStudent(firstName, middleName, lastName, password, username, m
     return  addItem("Major",postData)
 }
 /**
- * Adds a new User to the database 
+ * Adds a new Course to the database 
  * @param {string} majorId Database major ID
  * @param {string} courseName Name of the course
  * @param {string} courseNumber Course number
@@ -243,36 +274,6 @@ async function addStudent(firstName, middleName, lastName, password, username, m
     }
     return  addItem("Course",postData)
 }
-/**
- * Adds a new Availability to the database, should be tied to a user
- * @param {string} tutorId Database ID of the tutor
- * @param {string} weekly Weekly availability, should be an array<string,7> storing time ranges in a standard format, index 0 is monday
- * @param {Array<Date>} exceptions A list of exceptions to the weekly schedule, stored as dates of unavailability
- */
- function addAvailability(tutorId, weekly, exceptions = []) {
-    const postData = {
-        tutorId: tutorId,
-        weekly: weekly,
-        exceptions: exceptions
-    }
-    return  addItem("Availability", postData)
-
-}
-// /**
-//  * Adds a new Review to the database, should be tied to an appointment
-//  * @param {string} appointmentId Database ID of the appointment
-//  * @param {number} rate Review rating
-//  * @param {string} description A short description/ comment of the appointment
-//  */
-// function addReview(appointmentId, rate, description) {
-//     const postData = {
-//         appointmentId: appointmentId,
-//         rate: rate,
-//         description: description
-//     }
-//     return addItem("Availability", postData)
-
-// }
 /**
  * Adds a new Appointment to the database, should be tied to a tutor and a user
  * @param {string} tutorId Database ID of the tutor
@@ -298,13 +299,54 @@ async function addStudent(firstName, middleName, lastName, password, username, m
     }
     return  addItem("Appointment", postData)
 }
+/**
+ * Adds a new Appointment to the database, should be tied to a tutor and a user
+ * @param {string} majorName Name of the major
+ */
+function addMajor(majorName) {
+    const postData = {
+        majorName:majorName
+    }
+    return  addItem("Major", postData)
+}
+// /**
+//  * Adds a new Availability to the database, should be tied to a user
+//  * @param {string} tutorId Database ID of the tutor
+//  * @param {string} weekly Weekly availability, should be an array<string,7> storing time ranges in a standard format, index 0 is monday
+//  * @param {Array<Date>} exceptions A list of exceptions to the weekly schedule, stored as dates of unavailability
+//  */
+//  function addAvailability(tutorId, weekly, exceptions = []) {
+//     const postData = {
+//         tutorId: tutorId,
+//         weekly: weekly,
+//         exceptions: exceptions
+//     }
+//     return  addItem("Availability", postData)
 
+// }
+// /**
+//  * Adds a new Review to the database, should be tied to an appointment
+//  * @param {string} appointmentId Database ID of the appointment
+//  * @param {number} rate Review rating
+//  * @param {string} description A short description/ comment of the appointment
+//  */
+// function addReview(appointmentId, rate, description) {
+//     const postData = {
+//         appointmentId: appointmentId,
+//         rate: rate,
+//         description: description
+//     }
+//     return addItem("Availability", postData)
+
+// }
 module.exports = {
     db,
     readPath,
     addUser,
     addTutor,
-    addStudent
+    addStudent,
+    addCourse,
+    addMajor
     // swaggerDocument,
     // swaggerUi,fbApp
 }
