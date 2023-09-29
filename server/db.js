@@ -176,6 +176,7 @@ function addUser(firstName, middleName, lastName, password, username, major, cou
  * @param {string} email Email
  * @param {string} longBio Descriptive bio
  * @param {number} rating Float rating of the user
+ * @param {ImageData} profilePic Profile picture
  */
 async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00, profilePic=null){
     const postDataUser = {
@@ -299,16 +300,7 @@ async function addStudent(firstName, middleName, lastName, password, username, m
     }
     return  addItem("Appointment", postData)
 }
-/**
- * Adds a new Appointment to the database, should be tied to a tutor and a user
- * @param {string} majorName Name of the major
- */
-function addMajor(majorName) {
-    const postData = {
-        majorName:majorName
-    }
-    return  addItem("Major", postData)
-}
+
 // /**
 //  * Adds a new Availability to the database, should be tied to a user
 //  * @param {string} tutorId Database ID of the tutor
@@ -336,7 +328,7 @@ function addMajor(majorName) {
 //         rate: rate,
 //         description: description
 //     }
-//     return addItem("Availability", postData)
+//     return addItem("Review", postData)
 
 // }
 module.exports = {
