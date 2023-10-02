@@ -90,12 +90,16 @@ function getStudent(userId){
     return readPath("Student/"+userId)
 }
 
+
 // For more static non-sensitive tables, read the whole table
 function getMajors(){
     return readPath("Major")
 }
 function getCourses(){
     return readPath("Course")
+}
+function getAppointments(){
+    return readPath("Appointment")
 }
 
 
@@ -338,7 +342,8 @@ module.exports = {
     addTutor,
     addStudent,
     addCourse,
-    addMajor
+    addMajor,
+    addAppointment
     // swaggerDocument,
     // swaggerUi,fbApp
 }

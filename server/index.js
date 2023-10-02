@@ -1,6 +1,6 @@
 // Run the server with npm index.js
 //localhost:8000 (basic lol)
-const { db, readPath, addUser, addTutor, addStudent,addCourse, addMajor } = require("./db");
+const { db, readPath, addUser, addTutor, addStudent,addCourse, addMajor,addAppointment } = require("./db");
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
 const app = express();
