@@ -1,41 +1,73 @@
 // Run the server with npm index.js
 //localhost:8000 (basic lol)
-const {db,addItem,readPath} = require("./db");
+const { db, readPath, addUser, addTutor, addStudent,addCourse, addMajor } = require("./db");
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
 const app = express();
 const PORT = 8000;
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
-app.get("/testServer", (req, res)=>{
-    res.send({
-        // for testing
-        data:{
-            studentName: "Tasnim Mahi",
-            major: "Computer Science",
-            grade: "junior"
-        }
-    });
-    
-        const postData={
-            username:"janmorgen",
-            major: "Computer Science",
-            courses: [],
-            phone: "1233211234",
-            email:"jcm191123@utdallas.edu",
-            longBio:"why would i need tutoring if all my grades are Ws",
-            firstName:"Jan",
-            lastName:"Morgenstern",
-            middleName:"Christian",
-            password:"plaintextpasswordtobehashed",
-            rating:5
-        }
-        addItem("User",postData,true);
-});
 
-app.get('/', (req, res)=>{
+app.get("/testInfo", (req, res) => {
+
+    (async () => {
+        const user = await readPath("User")
+        const tutor = await readPath("Tutor")
+        const student = await readPath("Student")
+        const major = await readPath("Major")
+        const course = await readPath("Course")
+        // addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio",5,"Short Bio")
+        // addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")
+        // const major = await addMajor("Computer Science")
+        // majorId = major["id"]
+        // const course = await addCourse(majorId,"Computer Networks","CS4370",3)
+        res.send({
+            // for testing
+            data: {
+                user:user,
+                tutor:tutor,
+                student:student,
+                major:major,
+                course:course
+
+            }
+
+                // console.log(await readPath("User"))
+
+            
+        });
+
+    })()
+});
+app.get("/testPost", (req, res) => {
+
+    (async () => {
+        // addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio",5,"Short Bio")
+        // addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")
+        // const major = await addMajor("Computer Science")
+        // majorId = major["id"]
+        // const course = await addCourse(majorId,"Computer Networks","CS4370",3)
+        res.send({
+            // for testing
+            data: {
+                user:user,
+                tutor:tutor,
+                student:student,
+                major:major,
+                course:course
+
+            }
+
+                // console.log(await readPath("User"))
+
+            
+        });
+
+    })()
+});
+app.get('/', (req, res) => {
     res.send("Server working");
 });
-app.listen(PORT, ()=>{
+app.listen(PORT, () => {
     console.log("Server is running on port " + PORT)
 });
 
