@@ -40,7 +40,6 @@ app.get('/', (req, res)=>{
 });
 
 //routing
-
 const tutorRouter = require('./src/routes/tutors')
 const studentRouter = require('./src/routes/students')
 const sessionRouter = require('./src/routes/sessions')
