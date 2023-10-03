@@ -48,11 +48,46 @@ app.get('/', (req, res)=>{
 });
 
 //routing
+const loginRouter = require('./src/routes/login')
 const tutorRouter = require('./src/routes/tutors')
 const studentRouter = require('./src/routes/students')
 const sessionRouter = require('./src/routes/sessions')
 const reviewRouter = require('./src/routes/reviews')
 const availabilityRouter = require('./src/routes/availability')
+const logout = require('./src/routes/logout')
+
+app.get(loginRouter, (req, res)=>{
+    app.use('/login', tutorRouter)
+});
+
+// Assuming there is a login page
+// POST handler 
+app.post("/login", (req, res) => {
+    const idToken = req.body.idToken.toString();
+    // cookie will stay for 5 days before it gets destroyed
+    const expiresIn = 60 * 60 * 24 * 5 * 1000;
+  
+    admin
+      .auth()
+      .createSessionCookie(idToken, { expiresIn })
+      .then(
+        (sessionCookie) => {
+          const options = { maxAge: expiresIn, httpOnly: true };// onlu backend can acces the cookie 
+          res.cookie("session", sessionCookie, options);
+          res.end(JSON.stringify({ status: "success" }));
+        },
+        (error) => {
+          res.status(401).send("UNAUTHORIZED REQUEST!");
+        }
+      );
+  });
+
+  
+
+  app.get("/logout", (req, res) => {
+    res.clearCookie("session");
+    res.redirect("/login");
+  });
 
 app.get(tutorRouter, (req, res)=>{
     app.use('/tutor', tutorRouter)
