@@ -25,28 +25,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(csrfMiddleWare);
 
-// Creating express.js middlewares
-// takes any request and sets a cookie 
-app.all("*", (req, res, next) => {
-    res.cookie("XSRF-TOKEN", req.csrfToken());
-    next();
-  });
-
-app.get("/testServer", (req, res)=>{
-    res.send({
-        // for testing
-        data:{
-            studentName: "Tasnim Mahi",
-            major: "Computer Science",
-            grade: "junior"
-        }
-    });
-});
-
-app.get('/', (req, res)=>{
-    res.send("Server working");
-});
-
 //routing
 const loginRouter = require('./src/routes/login')
 const tutorRouter = require('./src/routes/tutors')
@@ -55,6 +33,42 @@ const sessionRouter = require('./src/routes/sessions')
 const reviewRouter = require('./src/routes/reviews')
 const availabilityRouter = require('./src/routes/availability')
 const logout = require('./src/routes/logout')
+// Creating express.js middlewares
+// takes any request and sets a cookie 
+app.all("*", (req, res, next) => {
+    res.cookie("XSRF-TOKEN", req.csrfToken());
+    next();
+  });
+
+// app.get("/testServer", (req, res)=>{
+//     res.send({
+//         // for testing
+//         data:{
+//             studentName: "Tasnim Mahi",
+//             major: "Computer Science",
+//             grade: "junior"
+//         }
+//     });
+// });
+  // the page after they are logged in - might not be home fix
+  // fix routing 
+  app.get("/home", function (req, res) {
+    const sessionCookie = req.cookies.session || "";
+  
+    admin
+      .auth()
+      .verifySessionCookie(sessionCookie, true /** checkRevoked */)
+      .then((userData) => {
+        console.log("Logged in:", userData.email)
+      })
+      .catch((error) => {
+        res.redirect("/login"); // go back to the login page when wrong
+      });
+  });
+
+app.get('/', (req, res)=>{
+    res.send("Server working");
+});
 
 app.get(loginRouter, (req, res)=>{
     app.use('/login', tutorRouter)
@@ -62,6 +76,7 @@ app.get(loginRouter, (req, res)=>{
 
 // Assuming there is a login page
 // POST handler 
+// fix routing 
 app.post("/login", (req, res) => {
     const idToken = req.body.idToken.toString();
     // cookie will stay for 5 days before it gets destroyed
@@ -82,8 +97,7 @@ app.post("/login", (req, res) => {
       );
   });
 
-  
-
+  // fix routing 
   app.get("/logout", (req, res) => {
     res.clearCookie("session");
     res.redirect("/login");
