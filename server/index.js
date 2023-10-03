@@ -1,6 +1,14 @@
 const express = require('express');
 const app = express();
 
+const admin = require("firebase-admin");
+const serviceAcc = require("./serviceAccountKey.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://tutortopia-7d536-default-rtdb.firebaseio.com"
+  });
+
 const PORT = process.env.PORT || 8000;
 
 const bodyParser = require("body-parser"); // parse as json objects
