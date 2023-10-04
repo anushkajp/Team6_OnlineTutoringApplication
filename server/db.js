@@ -109,6 +109,7 @@ function getAppointments(){
  * Adds a new item into the database, indexed by generated itemID
  * @param {string} entity Name of the entity, such as User, Availability, etc
  * @param {Object} postData The post data with valued fields, for example const postData = {author: username,uid: uid,body: body,title: title,starCount: 0,authorPic: picture};
+ * @param {string} specificKey This can be used to modify existing data by pointing to the id of the object you wish to modify
  * @param {boolean} test Defaults to true, indicate whether this is a test write
  */
 function addItem(entity, postData, specificKey = null,test = true) {
@@ -134,6 +135,27 @@ function addItem(entity, postData, specificKey = null,test = true) {
 
 }
 
+function modifyItem(entity, entityId,fields = {}, test=true){
+    newPostKey = specificKey;
+    if (newPostKey == null){
+        newPostKey = push(child(ref(db), entity)).key
+    }
+
+    updates = {}
+    if (test) {
+        updates["/test/" + entity + "/" + newPostKey] = postData;
+    } else {
+        updates["/" + entity + "/" + newPostKey] = postData;
+    }
+    return update(ref(db), updates).then(()=>{
+        postData["id"]=newPostKey
+        return postData;
+    }).catch((error)=>{
+        console.error(error);
+        return NaN;
+    });
+    
+}
 /**
  * Adds a new User to the database 
  * @param {string} firstName First name
@@ -167,6 +189,35 @@ function addUser(firstName, middleName, lastName, password, username, major, cou
     return addItem("User", postData)
 
 }
+
+async function updateUsername(userId, newUsername){
+    postData={
+        username:newUsername
+    }
+    return addItem("User",postData,userId)
+}
+async function updateUserMajor(userId,newMajorId){
+
+}
+async function updateUserPhone(userId,newPhone){
+
+}
+async function updateUserEmail(userId, newEmail){
+
+}
+async function updateUserBio(userId, newLongBio){
+
+}
+async function updateUserPassword(userId, newPasswordHash){
+
+}
+async function updateUserRating(userId, newRating){
+
+}
+async function updateUserProfilePic(userId,newProfilePic){
+
+}
+
 /**
  * Adds a new Student to the database 
  * @param {string} firstName First name
@@ -212,7 +263,7 @@ async function addStudent(firstName, middleName, lastName, password, username, m
  * @param {string} password Hashed password
  * @param {string} username Unique username
  * @param {string} major Major
- * @param {Array<Course>} courses Courses provided or sought
+ * @param {Array<string>} courses List of course ids 
  * @param {string} phone Phone number
  * @param {string} email Email
  * @param {string} longBio Descriptive bio
@@ -253,6 +304,22 @@ async function addStudent(firstName, middleName, lastName, password, username, m
     }
     return  addItem("Tutor",postDataTutor,userKey)
 }
+async function updateTutorBio(tutorId, newTutorBio){
+
+}
+async function updateTutorBkgrCheck(tutorId, newBkgrCheck){
+
+}
+async function updateTutorHours(tutorId, newTotalHours){
+
+}
+async function updateTutorWeeklyAvail(tutorId, newWeeklyAvail){
+
+}
+async function updateTutorExceptAvail(tutorId,newExceptionsAvailability){
+
+}
+
 /**
  * Adds a new Major to the database 
  * @param {string} majorName Name of the major
@@ -279,6 +346,15 @@ async function addStudent(firstName, middleName, lastName, password, username, m
     }
     return  addItem("Course",postData)
 }
+async function updateCourseName(){
+
+}
+async function updateCourseNumber(){
+
+}
+async function updateCourseCrdHours(){
+
+}
 /**
  * Adds a new Appointment to the database, should be tied to a tutor and a user
  * @param {string} tutorId Database ID of the tutor
@@ -304,6 +380,9 @@ async function addStudent(firstName, middleName, lastName, password, username, m
     }
     return  addItem("Appointment", postData)
 }
+async function updateAppUserId(appointmentId, newUserId){
+
+}
 
 // /**
 //  * Adds a new Availability to the database, should be tied to a user
@@ -320,21 +399,28 @@ async function addStudent(firstName, middleName, lastName, password, username, m
 //     return  addItem("Availability", postData)
 
 // }
-// /**
-//  * Adds a new Review to the database, should be tied to an appointment
-//  * @param {string} appointmentId Database ID of the appointment
-//  * @param {number} rate Review rating
-//  * @param {string} description A short description/ comment of the appointment
-//  */
-// function addReview(appointmentId, rate, description) {
-//     const postData = {
-//         appointmentId: appointmentId,
-//         rate: rate,
-//         description: description
-//     }
-//     return addItem("Review", postData)
+/**
+ * Make this so that Reviews are tied to userIds and tutorIds
+ * Adds a new Review to the database, should be tied to an appointment
+ * Make it so that the id for review is the username of the tutor
+ * @param {string} appointmentId Database ID of the appointment
+ * @param {number} rate Review rating
+ * @param {string} description A short description/ comment of the appointment
+ */
+function addReview(tutorId,studentId, rate, description) {
+    const postData = {
+        appointmentId: appointmentId,
+        rate: rate,
+        description: description
+    }
+    return addItem("Review", postData)
 
-// }
+}
+
+
+
+
+
 module.exports = {
     db,
     readPath,
@@ -343,7 +429,8 @@ module.exports = {
     addStudent,
     addCourse,
     addMajor,
-    addAppointment
+    addAppointment,
+    updateUsername
     // swaggerDocument,
     // swaggerUi,fbApp
 }
