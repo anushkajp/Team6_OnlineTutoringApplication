@@ -72,3 +72,13 @@ app.listen(PORT, () => {
     console.log("Server is running on port " + PORT)
 });
 
+const tutorRouter = require('./src/routes/tutors')
+const studentRouter = require('./src/routes/students')
+const sessionRouter = require('./src/routes/sessions')
+const reviewRouter = require('./src/routes/reviews')
+const availabilityRouter = require('./src/routes/availability')
+app.use('/tutor', tutorRouter)
+app.use('/student', studentRouter)
+app.use('/session', sessionRouter)
+app.use('/session/review', reviewRouter)
+app.use('/tutor/availability', availabilityRouter)
