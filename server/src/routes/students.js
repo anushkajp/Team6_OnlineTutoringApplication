@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Student = require('../models/student')
-
+const Service = require('../service/service')
 // GET ALL
 router.get('/', (req, res) => {
     try {
@@ -28,7 +28,7 @@ router.post('/', async(req, res) => {
     student.firstName = req.body.firstName;
     student.lastName = req.body.lastName;
     student.middleName = req.body.middleName;
-    student.password = req.body.passwordl;
+    student.password = req.body.password;
     student.userId = req.body.userId;
     student.courses = req.body.courses;
     student.phone = req.body.phone;

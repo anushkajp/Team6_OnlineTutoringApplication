@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Session = require('../models/session')
-
+const Service = require('../service/service')
 // GET ALL
 router.get('/', (req, res) => {
     try {
