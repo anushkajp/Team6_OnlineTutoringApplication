@@ -1,4 +1,4 @@
-const Course = require('./path/to/Course');  // Adjust the path accordingly
+const Course = require('../../src/models/course');
 
 describe('Course', () => {
   test('should create an instance with correct properties', () => {
