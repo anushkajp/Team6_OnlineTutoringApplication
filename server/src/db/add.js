@@ -148,8 +148,8 @@ function addMajor(majorName){
 }
 /**
  * Adds a new Appointment to the database, should be tied to a tutor and a user
- * @param {string} tutorId Database ID of the tutor
- * @param {string} userId Database ID of the user/student
+ * @param {string} tutorId Tutor username
+ * @param {string} studentId Student username
  * @param {Date} dateTime Date and time the appointment starts
  * @param {number} length The duration of the appointment, in minutes
  * @param {boolean} online Whether the appointment is online or in person
@@ -157,7 +157,7 @@ function addMajor(majorName){
  * @param {string} notes Notes about the meeting
  * @param {number} rating Appointment rating
  */
-function addAppointment(tutorId, userId, dateTime, length, online, location, notes, rating, reivew) {
+function addAppointment(tutorId, studentId, dateTime, length, online, location, notes, rating, reivew) {
     const postData = {
         tutorId: tutorId,
         userId: userId,
@@ -175,8 +175,8 @@ function addAppointment(tutorId, userId, dateTime, length, online, location, not
  * Make this so that Reviews are tied to userIds and tutorIds
  * Adds a new Review to the database, should be tied to an appointment
  * Make it so that the id for review is the username of the tutor
- * @param {string} tutorId Database ID of the tutor
- * @param {string} studentId Database ID of the student
+ * @param {string} tutorId Tutor username
+ * @param {string} studentId Student username
  * @param {number} rate Review rating
  * @param {string} description A short description/ comment of the appointment
  */
