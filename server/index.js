@@ -1,7 +1,10 @@
 // Run the server with npm index.js
 //localhost:8000 (basic lol)
 const { readPath } = require("./src/db/db");
-const { exportAll } = require("./src/db/update")
+
+const reads = require("./src/db/read")
+const updates = require("./src/db/update")
+const adds = require("./src/db/add")
 
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
@@ -43,12 +46,13 @@ app.get("/testInfo", (req, res) => {
 app.get("/testPost", (req, res) => {
 
     (async () => {
-        exportAll.updateUsername("-NfS5TKXiLFSPaj5cJPq","bibilivesagain")
-        // addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio",5,"Short Bio")
-        // addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")
-        // const major = await addMajor("Computer Science")
+        
+        updates.updateUsername("-NfS5TKXiLFSPaj5cJPq","bibilivesagain")
+        // adds.addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio",5,"Short Bio")
+        // adds.addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")
+        // const major = await adds.addMajor("Computer Science")
         // majorId = major["id"]
-        // const course = await addCourse(majorId,"Computer Networks","CS4370",3)
+        // const course = await adds.addCourse(majorId,"Computer Networks","CS4370",3)
         res.send({
             // for testing
             data: {
