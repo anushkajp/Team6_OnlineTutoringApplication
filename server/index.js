@@ -41,7 +41,6 @@ app.get("/testInfo", (req, res) => {
 app.get("/testPost", (req, res) => {
 
     (async () => {
-
         updates.updateUsername("-NfS5TKXiLFSPaj5cJPq", "bibilivesagain")
         adds.addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio",5,"Short Bio")
         adds.addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")

@@ -1,6 +1,6 @@
 const { addItem } = require("./db")
 
-var exportAll = {
+module.exports = {
 
     /**
      * Adds a new User to the database 
@@ -207,5 +207,3 @@ var exportAll = {
 
     // }
 }
-
-module.exports={exportAll}
