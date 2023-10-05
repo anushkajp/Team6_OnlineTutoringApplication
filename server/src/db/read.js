@@ -1,5 +1,5 @@
 const { readPath } = require("./db")
-var exportAll = {// Only read user Ids from these tables so references to information can be received
+module.exports={// Only read user Ids from these tables so references to information can be received
     getUserIds: async function getUserIds() {
         return Object.keys(await readPath("User"))
     },
@@ -41,4 +41,3 @@ var exportAll = {// Only read user Ids from these tables so references to inform
         return readPath("Review")
     }
 }
-module.exports={exportAll}
