@@ -1,11 +1,11 @@
-// Import the Foo class
+// Import the object classes
 const Tutor = require('../../src/models/tutor');
 const User = require('../../src/models/user')
 const Availability = require ('../../src/models/availability')
 
 describe('Tutor', () => {
   test('should create an instance of Tutor with correct properties', () => {
-    // Create an instance of Foo
+    // Create an instance of Tutor
     const tutorInstance = new Tutor("first","last","middle","blank","3201",null,9728061133,"@gmail.com"
     ,"CS","long","short",null, 4.12, null, null);
 
