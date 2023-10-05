@@ -1,6 +1,6 @@
 const { addItem } = require("./db")
 
-var exportAll = {
+module.exports = {
     updateUsername: async function updateUsername(userId, newUsername) {
         postData = {
             username: newUsername
@@ -61,4 +61,3 @@ var exportAll = {
 
     }
 }
-module.exports={exportAll}
