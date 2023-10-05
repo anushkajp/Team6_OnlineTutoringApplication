@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { db, readPath, addUser, addTutor, addStudent,addCourse, addMajor } = require("../../db");
+const { db, readPath, addUser, addTutor, addStudent,addCourse, addMajor } = require("../db/db");
 const Tutor = require("../models/tutor")
 const Student = require ("../models/student")
 const Availability = require("../models/availability")
