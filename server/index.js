@@ -1,6 +1,8 @@
 // Run the server with npm index.js
 //localhost:8000 (basic lol)
-const { db, readPath, addUser, addTutor, addStudent,addCourse, addMajor,addAppointment,updateUsername } = require("./db");
+const { readPath } = require("./src/db/db");
+const { exportAll } = require("./src/db/update")
+
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
 const app = express();
@@ -41,7 +43,7 @@ app.get("/testInfo", (req, res) => {
 app.get("/testPost", (req, res) => {
 
     (async () => {
-        updateUsername("-NfS5TKXiLFSPaj5cJPq","bibilivesagain")
+        exportAll.updateUsername("-NfS5TKXiLFSPaj5cJPq","bibilivesagain")
         // addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio",5,"Short Bio")
         // addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")
         // const major = await addMajor("Computer Science")
