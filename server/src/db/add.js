@@ -1,5 +1,7 @@
 const {addItem} = require("./db")
 
+var exportAll={
+
 /**
  * Adds a new User to the database 
  * @param {string} firstName First name
@@ -15,7 +17,7 @@ const {addItem} = require("./db")
  * @param {number} rating Float rating of the user
  * @param {ImageData} profilePic Profile picture
  */
-function addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00,profilePic=null ) {
+addUser:function addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00,profilePic=null ) {
     const postData = {
         username: username,
         major: major,
@@ -32,7 +34,7 @@ function addUser(firstName, middleName, lastName, password, username, major, cou
     }
     return addItem("User", postData,username)
 
-}
+},
 
 /**
  * Adds a new Student to the database 
@@ -49,7 +51,7 @@ function addUser(firstName, middleName, lastName, password, username, major, cou
  * @param {number} rating Float rating of the user
  * @param {ImageData} profilePic Profile picture
  */
-async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00, profilePic=null){
+addStudent : async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00, profilePic=null){
     const postDataUser = {
         username: username,
         major: major,
@@ -70,7 +72,7 @@ async function addStudent(firstName, middleName, lastName, password, username, m
         userId:userKey
     }
     return  addItem("Student",postDataStudent,userKey)
-}
+},
 /**
  * Adds a new Tutor to the database 
  * @param {string} firstName First name
@@ -92,7 +94,7 @@ async function addStudent(firstName, middleName, lastName, password, username, m
  * @param {number} totalHours Total hours completed by tutor
  * @param {number} rating The rating other users have given the tutor
  */
- async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio,weeklyAvailability=[],exceptionsAvailability=[], profilePic=null,rating = 0.00,backgroundCheck=false,totalHours=0){
+addTutor : async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio,weeklyAvailability=[],exceptionsAvailability=[], profilePic=null,rating = 0.00,backgroundCheck=false,totalHours=0){
     const postDataUser = {
         username: username,
         major: major,
@@ -119,17 +121,17 @@ async function addStudent(firstName, middleName, lastName, password, username, m
         exceptionsAvailability:exceptionsAvailability
     }
     return  addItem("Tutor",postDataTutor,userKey)
-}
+},
 /**
  * Adds a new Major to the database 
  * @param {string} majorName Name of the major
  */
-function addMajor(majorName){
+addMajor : function addMajor(majorName){
     const postData={
         majorName:majorName
     }
     return  addItem("Major",postData)
-}
+},
 /**
  * Adds a new Course to the database 
  * @param {string} majorId Database major ID
@@ -137,7 +139,7 @@ function addMajor(majorName){
  * @param {string} courseNumber Course number
  * @param {number} creditHours Number of credit hours this course offers
  */
- function addCourse(majorId,  courseName, courseNumber, creditHours){
+addCourse: function addCourse(majorId,  courseName, courseNumber, creditHours){
     const postData={
         majorId:majorId,
         courseName: courseName,
@@ -145,7 +147,7 @@ function addMajor(majorName){
         creditHours:creditHours
     }
     return  addItem("Course",postData)
-}
+},
 /**
  * Adds a new Appointment to the database, should be tied to a tutor and a user
  * @param {string} tutorId Tutor username
@@ -157,7 +159,7 @@ function addMajor(majorName){
  * @param {string} notes Notes about the meeting
  * @param {number} rating Appointment rating
  */
-function addAppointment(tutorId, studentId, dateTime, length, online, location, notes, rating, reivew) {
+addAppointment : function addAppointment(tutorId, studentId, dateTime, length, online, location, notes, rating, reivew) {
     const postData = {
         tutorId: tutorId,
         userId: userId,
@@ -170,7 +172,7 @@ function addAppointment(tutorId, studentId, dateTime, length, online, location, 
         review:reivew
     }
     return  addItem("Appointment", postData)
-}
+},
 /**
  * Adds a new Review to the database, should be tied to an appointment
  * @param {string} tutorId Tutor username
@@ -178,7 +180,7 @@ function addAppointment(tutorId, studentId, dateTime, length, online, location, 
  * @param {number} rate Review rating
  * @param {string} description A short description/ comment of the appointment
  */
-function addReview(tutorId,studentId, rate, description) {
+addReview : function addReview(tutorId,studentId, rate, description) {
     const postData = {
         tutorId: tutorId,
         studentId:studentId,
@@ -204,3 +206,6 @@ function addReview(tutorId,studentId, rate, description) {
 //     return  addItem("Availability", postData)
 
 // }
+}
+
+module.exports(exportAll)
