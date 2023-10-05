@@ -95,19 +95,14 @@ function addItem(entity, postData, specificKey = null,test = true) {
 }
 
 function modifyItem(entity, entityId,fields = {}, test=true){
-    newPostKey = specificKey;
-    if (newPostKey == null){
-        newPostKey = push(child(ref(db), entity)).key
-    }
 
     updates = {}
     if (test) {
-        updates["/test/" + entity + "/" + newPostKey] = postData;
+        updates["/test/" + entity + "/" + entityId] = postData;
     } else {
-        updates["/" + entity + "/" + newPostKey] = postData;
+        updates["/" + entity + "/" + entityId] = postData;
     }
     return update(ref(db), updates).then(()=>{
-        postData["id"]=newPostKey
         return postData;
     }).catch((error)=>{
         console.error(error);

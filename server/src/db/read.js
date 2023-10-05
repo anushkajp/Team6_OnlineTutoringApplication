@@ -41,4 +41,4 @@ var exportAll = {// Only read user Ids from these tables so references to inform
         return readPath("Review")
     }
 }
-module.exports(exportAll)
+module.exports={exportAll}

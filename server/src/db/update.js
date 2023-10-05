@@ -61,4 +61,4 @@ var exportAll = {
 
     }
 }
-module.exports(exportAll)
+module.exports={exportAll}
