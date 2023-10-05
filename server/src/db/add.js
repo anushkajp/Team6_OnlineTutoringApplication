@@ -172,9 +172,7 @@ function addAppointment(tutorId, studentId, dateTime, length, online, location, 
     return  addItem("Appointment", postData)
 }
 /**
- * Make this so that Reviews are tied to userIds and tutorIds
  * Adds a new Review to the database, should be tied to an appointment
- * Make it so that the id for review is the username of the tutor
  * @param {string} tutorId Tutor username
  * @param {string} studentId Student username
  * @param {number} rate Review rating
