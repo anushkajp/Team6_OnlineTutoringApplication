@@ -28,17 +28,17 @@ app.get("/testInfo", (req, res) => {
         res.send({
             // for testing
             data: {
-                user:user,
-                tutor:tutor,
-                student:student,
-                major:major,
-                course:course
+                user: user,
+                tutor: tutor,
+                student: student,
+                major: major,
+                course: course
 
             }
 
-                // console.log(await readPath("User"))
+            // console.log(await readPath("User"))
 
-            
+
         });
 
     })()
@@ -46,8 +46,8 @@ app.get("/testInfo", (req, res) => {
 app.get("/testPost", (req, res) => {
 
     (async () => {
-        
-        updates.updateUsername("-NfS5TKXiLFSPaj5cJPq","bibilivesagain")
+
+        updates.updateUsername("-NfS5TKXiLFSPaj5cJPq", "bibilivesagain")
         // adds.addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio",5,"Short Bio")
         // adds.addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")
         // const major = await adds.addMajor("Computer Science")
@@ -56,17 +56,17 @@ app.get("/testPost", (req, res) => {
         res.send({
             // for testing
             data: {
-                user:user,
-                tutor:tutor,
-                student:student,
-                major:major,
-                course:course
+                user: user,
+                tutor: tutor,
+                student: student,
+                major: major,
+                course: course
 
             }
 
-                // console.log(await readPath("User"))
+            // console.log(await readPath("User"))
 
-            
+
         });
 
     })()
