@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import styles
 import "./styles/global.css";
 import "./styles/signup.css";
+import "./styles/sidebar.css";
+import "./styles/dashboard_tile.css";
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
