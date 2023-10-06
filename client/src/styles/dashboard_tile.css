@@ -1,0 +1,30 @@
+.left_div{
+    float: left;   
+    display: flex;
+    position: left;
+}
+
+.right_div{
+    float: right;
+    position: right;
+    display: flex;
+    width: 100%;
+}
+
+.top{
+    position: relative;
+}
+
+.right{
+    float: right;
+    border-radius: 3px;
+}
+
+.top_div{
+    position: top;
+    border-radius: 3px;
+}
+
+.container{
+    display: flex;
+}
