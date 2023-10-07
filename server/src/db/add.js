@@ -32,7 +32,7 @@ module.exports = {
             rating: rating,
             profilePic: profilePic
         }
-        return addItem("User", postData, username)
+        return addItem("User", postData)
 
     },
 
@@ -66,7 +66,7 @@ module.exports = {
             rating: rating,
             profilePic: profilePic
         }
-        userKey = await addItem("User", postDataUser, username)
+        userKey = await addItem("User", postDataUser)
         userKey = userKey["id"]
         const postDataStudent = {
             userId: userKey
@@ -109,7 +109,7 @@ module.exports = {
             rating: rating,
             profilePic: profilePic
         }
-        userKey = await addItem("User", postDataUser, username)
+        userKey = await addItem("User", postDataUser)
         userKey = userKey["id"]
         const postDataTutor = {
             userId: userKey,
