@@ -7,11 +7,12 @@
   padding: 10px;
   margin: 5px;
   text-align: center;
-  border: 1px solid #ccc;
 }
 
 .main-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 30% 40% 30%;
+  background-color: #f1efef;
 }
 
 .find-text {
@@ -22,26 +23,233 @@
   font-weight: 600;
   line-height: normal;
   letter-spacing: 0.48px;
-  margin-top: 20%;
+  margin-top: 30%;
   margin-left: 15px;
   text-align: left;
 }
 
 .container-filters {
-  flex: 1;
-  height: 60px;
-  padding: 5px;
-  margin: 5px;
-  text-align: center;
-  border: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 40px;
 }
 
 .text-under-find {
   color: #000;
+  font-family: Montserrat;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  margin-left: 2px;
+  margin-bottom: 7px;
+}
+
+.box-filters {
+  position: relative;
+  width: 147px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  margin-top: -3%;
+}
+
+#filterSelect {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: none;
+  width: 100%;
+  height: 45px;
+  padding: 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 10px;
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.5);
   font-family: Montserrat;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
   letter-spacing: 0.24px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.tutor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 500px;
+  overflow-y: auto;
+  margin-top: 11%;
+}
+
+/* https://webdesign.tutsplus.com/flexbox-vs-css-grid-which-should-you-use--cms-30184a*/
+.tutor-wrapper {
+  width: 505px;
+  height: 270px;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  grid-gap: 1rem;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 10px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 3px solid transparent;
+}
+
+.tutor-wrapper:hover {
+  border: 3px solid black;
+}
+
+.tutor-wrapper:active {
+  border: 3px solid black;
+}
+
+.left-column {
+  padding: 1rem;
+}
+
+.right-column {
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  grid-gap: 1rem;
+}
+
+.vertical-component {
+  padding: 1rem;
+  align-self: start;
+}
+
+.profile-pic {
+  width: 122px;
+  height: 122px;
+  border-radius: 10.502px;
+  padding: 10px;
+}
+
+.name-tutor {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.46px;
+  text-align: left;
+  margin-top: 8px;
+  margin-left: -4px;
+}
+
+.subjects {
+  color: rgba(69, 65, 65, 0.8);
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.26px;
+  text-align: left;
+  margin-top: -66px;
+}
+
+.bio {
+  color: rgba(0, 0, 0, 0.8);
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  margin-top: -148px;
+  text-align: left;
+  width: 290px;
+}
+
+.heart {
+  font-size: 30px;
+  margin-top: -148px;
+  text-align: right;
+  padding: 10px;
+  margin-right: 10px;
+  margin-top: -328px;
+}
+
+.heart.clicked {
+  color: red !important;
+  outline: none;
+}
+
+.cost {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.46px;
+  margin-top: -230px;
+  margin-left: -200px;
+}
+
+.per-hour {
+  color: rgba(69, 65, 65, 0.8);
+  font-family: Montserrat;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.22px;
+  margin-top: -328px;
+  margin-left: -100px;
+}
+
+.book-button {
+  width: 147px;
+  height: 45px;
+  border-radius: 10px;
+  background: #91f3bb;
+  color: #000;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -380px;
+  margin-left: 170px;
+  box-sizing: border-box;
+}
+
+.book-button:active,
+.book-button:focus {
+  background: white;
+  border: 3px solid #91f3bb;
+  color: #91f3bb;
+}
+
+.stars {
+  color: rgba(69, 65, 65, 0.8);
+  font-family: Montserrat;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.22px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: 16px;
+  margin-top: -2px;
 }
