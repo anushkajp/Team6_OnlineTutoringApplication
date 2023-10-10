@@ -94,15 +94,15 @@ function addItem(entity, postData, specificKey = null,test = true) {
 
 }
 
-function modifyItem(entity, entityId,fields = {}, test=true){
+function modifyItem(entity, entityId,key,newValue, test=true){
 
-    updates = {}
+    path=""
     if (test) {
-        updates["/test/" + entity + "/" + entityId] = postData;
+        path="/test/"+entity+"/"+entityId+"/"+key
     } else {
-        updates["/" + entity + "/" + entityId] = postData;
+        path=entity+"/"+entityId+"/"+key
     }
-    return update(ref(db), updates).then(()=>{
+    return update(ref(db), {[path]:newValue}).then(()=>{
         return postData;
     }).catch((error)=>{
         console.error(error);
