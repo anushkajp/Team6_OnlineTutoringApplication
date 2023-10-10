@@ -125,7 +125,7 @@ module.exports = {
     },
     /**
      * Update the course number
-     * @param {string} courseId Database id for the user
+     * @param {string} courseId Database id for the cours
      * @param {string} newCourseNumber New course number
      */
     updateCourseNumber: async function updateCourseNumber(courseId, newCourseNumber) {
@@ -134,7 +134,7 @@ module.exports = {
     },
     /**
      * Update the course credit hours
-     * @param {string} courseId Database id for the user
+     * @param {string} courseId Database id for the cours
      * @param {number} newCreditHours New course credit hours
      */
     updateCourseCrdHours: async function updateCourseCrdHours(courseId, newCreditHours) {
@@ -142,7 +142,7 @@ module.exports = {
     },
     /**
      * Update the appointment start date and time
-     * @param {string} appointmentId Database id for the user
+     * @param {string} appointmentId Database id for the appointment
      * @param {Date} newDateTime New start date and time for the appointment
      */
     updateAppDateTime: async function updateAppDateTime(appointmentId, newDateTime){
@@ -150,7 +150,7 @@ module.exports = {
     },
         /**
      * Update the appointment length in minutes
-     * @param {string} appointmentId Database id for the user
+     * @param {string} appointmentId Database id for the appointment
      * @param {number} newLength New appointment length in minutes
      */
     updateAppLength: async function updateAppLength(appointmentId, newLength){
@@ -158,7 +158,7 @@ module.exports = {
     },
     /**
      * Update the appointment medium, online or not
-     * @param {string} appointmentId Database id for the user
+     * @param {string} appointmentId Database id for the appointment
      * @param {boolean} newOnline New appointment medium
      */
     updateAppMedium: async function updateAppMedium(appointmentId, newOnline){
@@ -166,7 +166,7 @@ module.exports = {
     },
     /**
      * Update the appointment location
-     * @param {string} appointmentId Database id for the user
+     * @param {string} appointmentId Database id for the appointment
      * @param {string} newLocation New appointment location
      */
     updateAppLocation: async function updateAppLocation(appointmentId, newLocation){
@@ -174,7 +174,7 @@ module.exports = {
     },
     /**
      * Update the appointment notes
-     * @param {string} appointmentId Database id for the user
+     * @param {string} appointmentId Database id for the appointment
      * @param {string} newNotes New appointment notes
      */
     updateAppNotes: async function updateAppNotes(appointmentId, newNotes){
@@ -182,7 +182,7 @@ module.exports = {
     },
     /**
      * Update the appointment notes
-     * @param {string} appointmentId Database id for the user
+     * @param {string} appointmentId Database id for the appointment
      * @param {number} newRating New appointment rating
      */
     updateAppRating: async function updateRating(appointmentId, newRating){
@@ -190,7 +190,7 @@ module.exports = {
     },
     /**
      * Update the appointment notes
-     * @param {string} appointmentId Database id for the user
+     * @param {string} appointmentId Database id for the appointment
      * @param {string} newReview New appointment review
      */
     updateAppReview: async function updateAppReview(appointmentId, newReview){
@@ -198,7 +198,7 @@ module.exports = {
     },
     /**
      * Update the appointment notes
-     * @param {string} appointmentId Database id for the user
+     * @param {string} appointmentId Database id for the appointment
      * @param {string} newUserId Updates the user id for the appointment
      */
     updateAppUserId: async function updateAppUserId(appointmentId, newUserId) {
