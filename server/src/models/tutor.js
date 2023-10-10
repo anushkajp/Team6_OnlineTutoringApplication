@@ -1,6 +1,6 @@
 const User = require('./user');
 const Availability = require('./availability');
-const { db, readPath, addUser, addTutor, addStudent,addCourse, addMajor } = require("../../db");
+const { db, readPath, addUser, addTutor, addStudent,addCourse, addMajor } = require("../db/db");
 
 class Tutor extends User {
     constructor(firstName, lastName, middleName,
