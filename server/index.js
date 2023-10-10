@@ -42,26 +42,15 @@ app.get("/testPost", (req, res) => {
 
     (async () => {
         
-        const tutor = await adds.addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio",5,"Short Bio")
-        const student = await adds.addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")
-        // updates.updateUsername("bibi4eva", "bibilivesagain")
-        const major = await adds.addMajor("Computer Science")
-        majorId = major["id"]
-        const course = await adds.addCourse(majorId,"Computer Networks","CS4370",3)
-        res.send({
-            // for testing
-            data: {
-                tutor: tutor,
-                student: student,
-                major: major,
-                course: course
-
-            }
-
-            // console.log(await readPath("User"))
-
-
-        });
+        // const tutor = await adds.addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio","short bio",[],[],null,5,true,5)
+        // const student = await adds.addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")
+        // updates.updateUsername("-NgMD4cYk-rEvevSjZ0P", "bibilivesagain")
+        // const major = await adds.addMajor("Computer Science")
+        // majorId = major["id"]
+        // const course = await adds.addCourse(majorId,"Computer Networks","CS4370",3)
+        res.send(
+            "post made"
+        );
 
     })()
 });
