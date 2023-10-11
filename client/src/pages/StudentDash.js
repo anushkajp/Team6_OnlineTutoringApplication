@@ -1,5 +1,7 @@
 import React from 'react'
 import Sidebar from '../components/sidebar'
+import DashboardTile from '../components/DashboardTile'
+import SessionTile from '../components/SessionTile'
 
 const StudentDash = () => {
   return (

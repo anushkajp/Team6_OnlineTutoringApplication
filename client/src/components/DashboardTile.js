@@ -10,7 +10,7 @@ const DashboardTile = (props) => {
 
   return (
     <div className={props.cln} style={style}>
-        <h4>{props.title}</h4>
+        <h4 className="tile_title">{props.title}</h4>
         {props.children}
     </div>
   )
