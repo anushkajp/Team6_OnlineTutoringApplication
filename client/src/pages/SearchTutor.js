@@ -3,19 +3,20 @@ import React, { useState } from "react";
 import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
 import "font-awesome/css/font-awesome.min.css";
+import { TutorTileCard } from "./TutorTile";
 
 // source used for like button
 // https://chayanit-chaisri.medium.com/how-to-add-a-like-button-react-usestate-3f79aac27d90
 
-const SearchTutor = () => {
+function SearchTutor(props) {
   const [date, setDate] = useState("Select Date");
   const [subject, setSubject] = useState("Select Subject");
   const [tutor, setTutor] = useState("Select Tutor");
-  const [like, setLike] = useState(false);
+  /* const [like, setLike] = useState(false);
 
   const handleLike = () => {
     setLike((prevLike) => !prevLike);
-  };
+  }; */
 
   const handleDateChange = (event) => {
     setDate(event.target.value);
@@ -83,74 +84,27 @@ const SearchTutor = () => {
           </div>
 
           <div className="tutor-container">
-            <div className="tutor-wrapper">
-              <div class="left-column">
-                <img src={pfp1} className="profile-pic"></img>
-                <p className="stars">⭐ ⭐ ⭐ ⭐ ⭐  (489)</p>
-              </div>
-              <div class="right-column">
-                <div class="vertical-component">
-                  <p className="name-tutor">Tasnim Mahi</p>
-                </div>
-                <div class="vertical-component">
-                  <p className="subjects">📚 CS 1136, CS 2336</p>
-                </div>
-                <div class="vertical-component">
-                  <p className="bio">
-                    Experienced tutor passionate about empowering students to
-                    excel in math and computer science through personalized
-                    guidance and innovative teaching.
-                  </p>
-                </div>
-                <div class="vertical-component">
-                  <p className="heart" onClick={handleLike}>
-                    {like ? "♥️" : "♡"}
-                  </p>
-                </div>
-                <div class="vertical-component">
-                  <p className="cost">$50</p>
-                </div>
-                <div class="vertical-component">
-                  <p className="per-hour">per hour</p>
-                </div>
-                <div class="book-button">Book</div>
-              </div>
-            </div>
+            <TutorTileCard
+              pfp={pfp1}
+              stars={"⭐ ⭐ ⭐ ⭐ ⭐ (489)"}
+              name={"Tasnim Mahi"}
+              subjects={"📚 CS 1136, CS 2336"}
+              bio={
+                "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
+              }
+              cost={"50"}
+            ></TutorTileCard>
             <br></br>
-            <div className="tutor-wrapper">
-              <div class="left-column">
-                <img src={pfp2} className="profile-pic"></img>
-                <p className="stars">⭐ ⭐ ⭐ ⭐ ⭐  (20)</p>
-              </div>
-              <div class="right-column">
-                <div class="vertical-component">
-                  <p className="name-tutor">Diana Le</p>
-                </div>
-                <div class="vertical-component">
-                  <p className="subjects">📚 CS 3345</p>
-                </div>
-
-                <div class="vertical-component">
-                  <p className="bio">
-                    Experienced tutor passionate about empowering students to
-                    excel in math and computer science through personalized
-                    guidance and innovative teaching.
-                  </p>
-                </div>
-                <div class="vertical-component">
-                  <p className="heart" onClick={handleLike}>
-                    {like ? "♥️" : "♡"}
-                  </p>
-                </div>
-                <div class="vertical-component">
-                  <p className="cost">$30</p>
-                </div>
-                <div class="vertical-component">
-                  <p className="per-hour">per hour</p>
-                </div>
-                <div class="book-button">Book</div>
-              </div>
-            </div>
+            <TutorTileCard
+              pfp={pfp2}
+              stars={"⭐ ⭐ ⭐ ⭐ ⭐ (20)"}
+              name={"Diana Le"}
+              subjects={"📚 CS 3345"}
+              bio={
+                "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
+              }
+              cost={"30"}
+            ></TutorTileCard>
           </div>
         </div>
         <div className="main-columns">
@@ -160,6 +114,6 @@ const SearchTutor = () => {
       </div>
     </div>
   );
-};
+}
 
 export default SearchTutor;
