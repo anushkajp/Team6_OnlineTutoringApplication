@@ -232,6 +232,10 @@
   box-sizing: border-box;
 }
 
+.book-button:hover {
+  cursor: pointer;
+}
+
 .book-button:active,
 .book-button:focus {
   background: white;
