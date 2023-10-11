@@ -4,6 +4,8 @@ import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
 import "font-awesome/css/font-awesome.min.css";
 import { TutorTileCard } from "./TutorTile";
+import TutorModal from "./TutorModal";
+
 
 // source used for like button
 // https://chayanit-chaisri.medium.com/how-to-add-a-like-button-react-usestate-3f79aac27d90
@@ -12,11 +14,11 @@ function SearchTutor(props) {
   const [date, setDate] = useState("Select Date");
   const [subject, setSubject] = useState("Select Subject");
   const [tutor, setTutor] = useState("Select Tutor");
-  /* const [like, setLike] = useState(false);
+  const [modal, setModal] = useState(false);
 
-  const handleLike = () => {
-    setLike((prevLike) => !prevLike);
-  }; */
+  function open () {
+    setModal(!modal)
+  }
 
   const handleDateChange = (event) => {
     setDate(event.target.value);
@@ -92,7 +94,7 @@ function SearchTutor(props) {
               bio={
                 "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
               }
-              cost={"50"}
+              cost={50}
             ></TutorTileCard>
             <br></br>
             <TutorTileCard
@@ -103,13 +105,14 @@ function SearchTutor(props) {
               bio={
                 "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
               }
-              cost={"30"}
+              cost={30}
             ></TutorTileCard>
           </div>
         </div>
         <div className="main-columns">
           {/* <h2> Third column </h2>
           <p> This is Third column of our grid system</p> */}
+          <TutorModal toggle={modal} action={open} />
         </div>
       </div>
     </div>

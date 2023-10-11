@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import "./SearchTutor.css";
+import "./TutorModal.css";
+import TutorModal from "./TutorModal";
+import SearchTutor from "./SearchTutor";
 
-export const TutorTileCard = ({pfp, stars, name, subjects, bio, cost }) => {
+export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
   const [like, setLike] = useState(false);
+
+  const [modal, setModal] = useState(false);
+
+  function open() {
+    setModal(!modal);
+  }
 
   const handleLike = () => {
     setLike((prevLike) => !prevLike);
@@ -35,7 +44,10 @@ export const TutorTileCard = ({pfp, stars, name, subjects, bio, cost }) => {
         <div class="vertical-component">
           <p className="per-hour">per hour</p>
         </div>
-        <div class="book-button">Book</div>
+        <div class="book-button" onClick={open}>
+          Book
+        </div>
+        <TutorModal toggle={modal} action={open} />
       </div>
     </div>
   );
