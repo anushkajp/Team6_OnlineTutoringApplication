@@ -94,6 +94,14 @@ function addItem(entity, postData, specificKey = null,test = true) {
 
 }
 
+/**
+ * Reads a table item from the database using specified path
+ * @param {string} entity Name of the entity, i.e User, Appointment, Tutor, Student, etc
+ * @param {string} entityId Database ID of the desired entity to edit
+ * @param {string} key The attribute name to edit of the referenced entity
+ * @param {any} newValue The value to apply to the attribute
+ * @param {boolean} test Defaults to true, whether it is reading from the test path 
+ */
 function modifyItem(entity, entityId,key,newValue, test=true){
 
     path=""
@@ -103,7 +111,7 @@ function modifyItem(entity, entityId,key,newValue, test=true){
         path=entity+"/"+entityId+"/"+key
     }
     return update(ref(db), {[path]:newValue}).then(()=>{
-        return postData;
+        return true;
     }).catch((error)=>{
         console.error(error);
         return NaN;
