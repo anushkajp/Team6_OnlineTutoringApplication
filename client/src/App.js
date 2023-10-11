@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // import styles
@@ -7,6 +7,9 @@ import "./styles/global.css";
 import "./styles/signup.css";
 import "./styles/sidebar.css";
 import "./styles/dashboard_tile.css";
+import "./styles/session_tile.css";
+import "./styles/dashboard.css";
+
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
