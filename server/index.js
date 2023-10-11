@@ -15,11 +15,11 @@ const PORT = 8000;
 app.get("/testInfo", (req, res) => {
 
     (async () => {
-        const user = await readPath("User")
-        const tutor = await readPath("Tutor")
-        const student = await readPath("Student")
-        const major = await readPath("Major")
-        const course = await readPath("Course")
+        const user = await reads.getUsers()
+        const tutor = await reads.getTutors()
+        const student = await reads.getStudents()
+        const major = await reads.getMajors()
+        const course = await reads.getCourses()
         res.send({
             // for testing
             data: {
