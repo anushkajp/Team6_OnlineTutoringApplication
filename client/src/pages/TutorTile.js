@@ -13,7 +13,8 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
     setModal(!modal);
   }
 
-  const handleLike = () => {
+  const handleLike = (e) => {
+    e.stopPropagation();
     setLike((prevLike) => !prevLike);
   };
 
