@@ -9,7 +9,7 @@ const adds = require("./src/db/add")
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
 const app = express();
-const PORT = 8000;
+const PORT = 80;
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 
 app.get("/testInfo", (req, res) => {
