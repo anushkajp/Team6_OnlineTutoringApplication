@@ -6,7 +6,6 @@ import "font-awesome/css/font-awesome.min.css";
 import { TutorTileCard } from "./TutorTile";
 import TutorModal from "./TutorModal";
 
-
 // source used for like button
 // https://chayanit-chaisri.medium.com/how-to-add-a-like-button-react-usestate-3f79aac27d90
 
@@ -16,8 +15,8 @@ function SearchTutor(props) {
   const [tutor, setTutor] = useState("Select Tutor");
   const [modal, setModal] = useState(false);
 
-  function open () {
-    setModal(!modal)
+  function open() {
+    setModal(!modal);
   }
 
   const handleDateChange = (event) => {
@@ -67,7 +66,7 @@ function SearchTutor(props) {
               >
                 <option value="Select Subject">Select Subject</option>
                 <option value="CS 1336">CS 1336</option>
-                <option value=" CS 2336">CS 2336</option>
+                <option value="CS 2336">CS 2336</option>
                 <option value="CS 3345">CS 3345</option>
               </select>
             </div>
@@ -86,27 +85,31 @@ function SearchTutor(props) {
           </div>
 
           <div className="tutor-container">
-            <TutorTileCard
-              pfp={pfp1}
-              stars={"⭐ ⭐ ⭐ ⭐ ⭐ (489)"}
-              name={"Tasnim Mahi"}
-              subjects={"📚 CS 1136, CS 2336"}
-              bio={
-                "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
-              }
-              cost={50}
-            ></TutorTileCard>
+            {(tutor === "Tasnim Mahi" || (subject === "CS 1336" || subject === "CS 2336")) && (
+              <TutorTileCard
+                pfp={pfp1}
+                stars={"⭐ ⭐ ⭐ ⭐ ⭐ (489)"}
+                name={"Tasnim Mahi"}
+                subjects={"📚 CS 1336, CS 2336"}
+                bio={
+                  "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
+                }
+                cost={50}
+              ></TutorTileCard>
+            )}
             <br></br>
-            <TutorTileCard
-              pfp={pfp2}
-              stars={"⭐ ⭐ ⭐ ⭐ ⭐ (20)"}
-              name={"Diana Le"}
-              subjects={"📚 CS 3345"}
-              bio={
-                "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
-              }
-              cost={30}
-            ></TutorTileCard>
+            {(tutor === "Diana Le" || subject === "CS 3345") && (
+              <TutorTileCard
+                pfp={pfp2}
+                stars={"⭐ ⭐ ⭐ ⭐ ⭐ (20)"}
+                name={"Diana Le"}
+                subjects={"📚 CS 3345"}
+                bio={
+                  "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
+                }
+                cost={30}
+              ></TutorTileCard>
+            )}
           </div>
         </div>
         <div className="main-columns">
