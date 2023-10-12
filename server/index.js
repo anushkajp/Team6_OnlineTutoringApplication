@@ -20,8 +20,7 @@ const TimeBlock = require("./src/models/timeBlock")
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
 const app = express();
-const PORT = 8000;
-const cors = require('cors'); 
+const PORT = 80;
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 const corsOptions = {
     origin: 'http://localhost:3000',
