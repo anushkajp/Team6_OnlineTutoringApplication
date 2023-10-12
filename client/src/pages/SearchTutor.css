@@ -236,11 +236,10 @@
   cursor: pointer;
 }
 
-.book-button:active,
-.book-button:focus {
-  background: white;
-  border: 3px solid #91f3bb;
-  color: #91f3bb;
+.book-button:active{
+  background: white !important;
+  border: 3px solid #91f3bb !important;
+  color: #91f3bb !important;
 }
 
 .stars {
