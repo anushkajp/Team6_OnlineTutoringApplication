@@ -17,6 +17,7 @@ app.get("/testInfo", (req, res) => {
     (async () => {
         const user = await reads.getUsers()
         const tutor = await reads.getTutors()
+        const appointment = await reads.getAppointments()
         const student = await reads.getStudents()
         const major = await reads.getMajors()
         const course = await reads.getCourses()
