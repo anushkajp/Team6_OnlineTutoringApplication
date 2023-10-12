@@ -6,9 +6,9 @@
   height: 100vh;
   top: 0;
   left: 0px;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid green;
+  justify-content: right;
+  align-items: right;
+  padding: 10px;
   visibility: hidden;
   opacity: 0;
   transform: scale(0.8);
@@ -19,12 +19,20 @@
   visibility: visible;
   opacity: 1;
   transform: scale(1);
+  stroke-width: 3px;
+  stroke: #000;
 }
 
 .container-modal .modal {
-  width: 90%;
-  height: 90%;
-  background-color: black;
+  width: 327px;
+  height: 638px;
+  background: linear-gradient(
+    180deg,
+    #a92ab7 0%,
+    rgba(185, 204, 243, 0.61) 99.99%,
+    rgba(249, 200, 200, 0) 100%
+  );
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   position: relative;
 }
 

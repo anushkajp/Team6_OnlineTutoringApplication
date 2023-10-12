@@ -6,8 +6,8 @@ import SearchTutor from "./SearchTutor";
 
 export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
   const [like, setLike] = useState(false);
-
   const [modal, setModal] = useState(false);
+  const [book, setBook] = useState(false);
 
   function open() {
     setModal(!modal);
@@ -15,6 +15,10 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
 
   const handleLike = () => {
     setLike((prevLike) => !prevLike);
+  };
+
+  const handleBook = () => {
+    setBook((prevBook) => !prevBook);
   };
 
   return (
@@ -44,7 +48,7 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
         <div class="vertical-component">
           <p className="per-hour">per hour</p>
         </div>
-        <div class="book-button" onClick={open}>
+        <div class="book-button" onClick={open} action={handleBook}>
           Book
         </div>
         <TutorModal toggle={modal} action={open} />
