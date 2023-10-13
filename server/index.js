@@ -103,6 +103,8 @@ app.post("/login", (req, res) => {
     res.redirect("/login");
   });
 
+  // we need a routing to login page
+
 app.get(tutorRouter, (req, res)=>{
     app.use('/tutor', tutorRouter)
 });
