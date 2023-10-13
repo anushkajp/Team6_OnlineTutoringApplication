@@ -97,7 +97,6 @@ function SearchTutor(props) {
                 cost={50}
               ></TutorTileCard>
             )}
-            <br></br>
             {(tutor === "Diana Le" || subject === "CS 3345") && (
               <TutorTileCard
                 pfp={pfp2}
