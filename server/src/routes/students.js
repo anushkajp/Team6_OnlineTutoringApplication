@@ -3,9 +3,10 @@ const router = express.Router();
 const Student = require('../models/student')
 const StudentService = require('../services/studentService')
 // GET ALL
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const student = StudentService.findAll()
+        const student = await StudentService.getAll()
+        console.log("Student router getAll = " + JSON.stringify(student, null))
         res.status(200).json(student)
     }catch (err){
         res.status(500).json({ message: err.message});
@@ -37,7 +38,7 @@ router.post('/', async(req, res) => {
     student.longBio = req.body.longBio;
     student.shortBio = req.body.shortBio;
     try {
-        const newStudent = await student.create(req.params.appointmentId);
+        const newStudent = await StudentService.create(req.params.appointmentId);
         res.status(201).json(newStudent)
     }catch (err) {
         res.status(400).json({ message: err.message});
@@ -58,7 +59,7 @@ router.patch('/:id', async (req, res) => {
     student.longBio = req.body.longBio;
     student.shortBio = req.body.shortBio;
     try {
-        const newStudent = await student.create(req.params.id);
+        const newStudent = await StudentService.update(req.params.id);
         res.status(201).json(newStudent)
     }catch (err) {
         res.status(400).json({ message: err.message});
@@ -67,7 +68,7 @@ router.patch('/:id', async (req, res) => {
 // DELETE ONE
 router.delete('/:id', (req, res) => {
     try {
-        const student = Student.delete(req.params.id)
+        const student = StudentService.delete(req.params.id)
         res.status(200).json(student)
     }catch (err){
         res.status(500).json({ message: err.message});
