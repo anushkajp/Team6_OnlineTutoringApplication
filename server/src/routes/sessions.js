@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const Session = require('../models/session')
-const Service = require('../service/service')
+const SessionService = require('../services/sessionService')
 // GET ALL
 router.get('/', (req, res) => {
     try {
-        const session = Session.findAll()
+        const session = SessionService.getAll()
         res.status(200).json(session)
     }catch (err){
         res.status(500).json({ message: err.message});
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 // GET ONE
 router.get('/:id', async(req, res) => {
     try {
-        const session = await Session.find(req.params.id)
+        const session = await SessionService.getOne(req.params.id)
         res.status(200).json(session)
     }catch (err){
         res.status(500).json({ message: err.message});
@@ -23,9 +23,6 @@ router.get('/:id', async(req, res) => {
 // CREATE ONE
 router.post('/', async(req, res) => {
     const session = new Session();
-    const review = new Review();
-    review.rating = req.body.rating;
-    review.review = req.body.review;
     session.tutorId = req.body.tutorId;
     session.studentId = req.body.studentId;
     session.date = req.body.date;
@@ -34,9 +31,8 @@ router.post('/', async(req, res) => {
     session.online = req.body.online;
     session.location = req.body.location;
     session.notes = req.body.notes;
-    session.review = review;
     try {
-        const newsession = await session.create(req.params.appointmentId);
+        const newsession = await SessionService.create(req.params.appointmentId);
         res.status(201).json(newsession)
     }catch (err) {
         res.status(400).json({ message: err.message});
@@ -58,7 +54,7 @@ router.patch('/:id', async (req, res) => {
     session.notes = req.body.notes;
     session.review = review;
     try {
-        const newsession = await session.create(req.params.id);
+        const newsession = await SessionService.create(req.params.id);
         res.status(201).json(newsession)
     }catch (err) {
         res.status(400).json({ message: err.message});
@@ -67,7 +63,7 @@ router.patch('/:id', async (req, res) => {
 // DELETE ONE
 router.delete('/:id', (req, res) => {
     try {
-        const session = Session.delete(req.params.id)
+        const session = SessionService.delete(req.params.id)
         res.status(200).json(session)
     }catch (err){
         res.status(500).json({ message: err.message});

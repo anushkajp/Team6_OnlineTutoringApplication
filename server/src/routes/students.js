@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const Student = require('../models/student')
-const Service = require('../service/service')
+const StudentService = require('../services/studentService')
 // GET ALL
 router.get('/', (req, res) => {
     try {
-        const student = Student.findAll()
+        const student = StudentService.findAll()
         res.status(200).json(student)
     }catch (err){
         res.status(500).json({ message: err.message});

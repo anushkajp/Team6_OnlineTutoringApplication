@@ -1,4 +1,4 @@
-const Course = require('../../src/models/course');
+const Course = require('../../../src/models/course');
 
 describe('Course', () => {
   test('should create an instance with correct properties', () => {
