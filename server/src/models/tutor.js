@@ -1,17 +1,18 @@
 const User = require('./user');
 const Availability = require('./availability');
-const { db, readPath, addUser, addTutor, addStudent,addCourse, addMajor } = require("../db/db");
-
+const Review = require('../models/review')
 class Tutor extends User {
     constructor(firstName, lastName, middleName,
-        password, userId, courses, phone, email, major,
-        longBio, shortBio, pfp, rating, week, exceptions) {
+        password, userId, courses, phone, email, major, hours,
+        longBio, shortBio, pfp, rating, week, exceptions, bgCheck) {
         super(firstName, lastName, middleName,
-            password, userId, courses, phone, email, major,
+            password, userId, courses, phone, email, major, hours,
             longBio, shortBio, pfp);
         this.rating = rating;
-        const availability = Availability(week, exceptions);
+        const availability = new Availability(week, exceptions);
         this.availability = availability;
+        this.bgCheck = bgCheck;
+        this.review = new Review()
     }
 }
 module.exports = Tutor

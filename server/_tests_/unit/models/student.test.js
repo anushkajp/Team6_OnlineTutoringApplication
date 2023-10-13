@@ -1,5 +1,5 @@
-const Student = require('../../src/models/student'); 
-const User = require('../../src/models/user');
+const Student = require('../../../src/models/student'); 
+const User = require('../../../src/models/user');
 
 describe('Student', () => {
   test('should create an instance with correct properties', () => {

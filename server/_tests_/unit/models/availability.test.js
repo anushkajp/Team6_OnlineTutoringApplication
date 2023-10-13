@@ -1,4 +1,4 @@
-const Availability = require('../../src/models/availability'); 
+const Availability = require('../../../src/models/availability'); 
 
 describe('Availability', () => {
   test('should create an instance with correct properties', () => {

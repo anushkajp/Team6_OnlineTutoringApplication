@@ -1,7 +1,7 @@
 // Import the object classes
-const Tutor = require('../../src/models/tutor');
-const User = require('../../src/models/user')
-const Availability = require ('../../src/models/availability')
+const Tutor = require('../../../src/models/tutor');
+const User = require('../../../src/models/user')
+const Availability = require ('../../../src/models/availability')
 
 describe('Tutor', () => {
   test('should create an instance of Tutor with correct properties', () => {
