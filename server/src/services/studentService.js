@@ -7,29 +7,32 @@ const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, update
 const {addTutor} = require ('../db/add')
 // GET ALL
 class StudentService {
-    static getAll() {
+    static async getAll() {
         // IF DB CAN FIND ID RETURN student OBJECT
         try {
-            const student = getStudents()
-            return student
+            const student = await getStudents()
+            console.log("StudentService.getStudents() = " + JSON.stringify(student, null))
+
+            return JSON.stringify(student, null)    
         }catch (e) {
             return e
         }
     }
     // GET ONE
-    static getOne(id) {
+    static async getOne(id) {
         const student = new Student()
         try {
-            student = getStudent(id)
+            student = await getStudent(id)
+            console.log(student)
             return student
         }catch (e) {
             return e
         }
     }
     // POST
-    static create(student) {
+    static async create(student) {
         try {
-            const newStudent = addTutor(student.firstName, student.middleName,
+            const newStudent = await addTutor(student.firstName, student.middleName,
                 student.lastName, student.password, student.username, student.major,
                 student.courses, student.phone, student.email, student.longBio, 
                 student.rating, student.pfp)
@@ -39,23 +42,23 @@ class StudentService {
         }
     }
     // PATCH
-    static update(student){ 
+    static async update(student){ 
         try {
             if (student.userId != null)
-                updateUsername(student.id, student.userId)
+                await updateUsername(student.id, student.userId)
             if (student.major != null)
-                updateUserMajor(student.id, student.major)
+                await updateUserMajor(student.id, student.major)
             if (student.password != null)
-                updateUserPassword(student.id, student.password)
+                await updateUserPassword(student.id, student.password)
             if (student.email != null)
-                updateUserEmail(student.id, student.email)
+                await updateUserEmail(student.id, student.email)
             if (student.longBio != null)
-                updateUserBio(student.id, student.longBio)
+                await updateUserBio(student.id, student.longBio)
             if (student.phone != null)
-                updateUserPhone(student.id, student.phone)
+                await updateUserPhone(student.id, student.phone)
             if (student.pfp != null)
-                updateUserProfilePic(student.id, student.pfp)
-            return getTutor(student.userId)
+                await updateUserProfilePic(student.id, student.pfp)
+            return await getTutor(student.userId)
         }catch (e) {
             return e
         }
