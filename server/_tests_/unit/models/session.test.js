@@ -1,4 +1,4 @@
-const Session = require('../../src/models/session');
+const Session = require('../../../src/models/session');
 
 describe('Session', () => {
   test('should create an instance with correct properties', () => {

@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const Availability = require('../models/availability')
-const Service = require('../service/service')
+const AvailabilityService = require('../services/availabilityService')
 // GET ALL
 router.get('/', (req, res) => {
     try {
-        const availability = Availability.findAll()
-        res.status(200).json(availability)
+        const availability = AvailabilityService.getAll(req.body.id)
+        if (availability == nulll)
+            res.status(400).json({message: 'not a valid id'})
+        else
+            res.status(200).json(availability)
     }catch (err){
         res.status(500).json({ message: err.message});
     }
@@ -14,9 +17,12 @@ router.get('/', (req, res) => {
 // GET ONE
 router.get('/:id', async(req, res) => {
     try {
-        const availability = new Availability(["none",""], [])
-        // const availability = await availability.find(req.params.id)
-        res.status(200).json(availability)
+        //const availability = new Availability(["none",""], [])
+        const availability = await AvailabilityService.getOne(req.params.id)
+        if (availability == null)
+            res.status(401).json({message: 'Unable to create availability for tutor'})
+        else 
+            res.status(200).json(availability)
     }catch (err){
         res.status(500).json({ message: err.message});
     }
@@ -28,8 +34,11 @@ router.post('/', async(req, res) => {
         exceptions: req.params.exceptions
     })
     try {
-        const newavailability = await availability.create(req.params.id);
-        res.status(201).json(availability)
+        const newavailability = await AvailabilityService.create(req.params.id);
+        if (tutor == null)
+            res.status(401).json({message: 'Unable to create tutor object'})
+        else 
+            res.status(201).json(newavailability)
     }catch (err) {
         res.status(400).json({ message: err.message});
     }
@@ -41,7 +50,7 @@ router.patch('/:id', async (req, res) => {
         exceptions: req.params.exceptions
     })
     try {
-        const newavailability = await availability.create(req.params.id);
+        const newavailability = await AvailabilityService.update(req.params.id);
         res.status(201).json(newavailability)
     }catch (err) {
         res.status(400).json({ message: err.message});
@@ -50,7 +59,7 @@ router.patch('/:id', async (req, res) => {
 // DELETE ONE
 router.delete('/:id', (req, res) => {
     try {
-        const availability = availability.delete(req.params.id)
+        const availability = AvailabilityService.delete(req.params.id)
         res.status(200).json(availability)
     }catch (err){
         res.status(500).json({ message: err.message});

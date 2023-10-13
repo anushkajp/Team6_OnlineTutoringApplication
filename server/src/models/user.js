@@ -1,7 +1,7 @@
 class User {
     constructor(firstName, lastName, middleName,
         password, userId, courses, phone, email, major,
-        longBio, shortBio, pfp) {
+        hours, longBio, shortBio, pfp) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -11,6 +11,7 @@ class User {
         this.phone = phone;
         this.email = email;
         this.major = major;
+        this.hours = hours;
         this.longBio = longBio;
         this.shortBio = shortBio;
         this.pfp = pfp;
