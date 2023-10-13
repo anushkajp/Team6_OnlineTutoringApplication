@@ -41,7 +41,7 @@ const Login = () => {
           <div className="login-box">
             <p className="dont-acc">
               Don't have an account?&#160;
-              <a className="sign-up" onClick={navigateToTwoFactor}>
+              <a className="sign-up" onClick={navigateToSignUp}>
                 Sign up today!
               </a>
             </p>
