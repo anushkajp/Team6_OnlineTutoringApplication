@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import "./styles/global.css";
 import "./styles/signup.css";
 import "./styles/sidebar.css";
+import "./styles/upcoming.css";
 import "./styles/dashboard_tile.css";
 import "./styles/session_tile.css";
 import "./styles/dashboard.css";
@@ -64,7 +65,7 @@ function App() {
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Forgot" element={<Forgot />} />
         <Route path="/Home" element={<Home />} />
-        <Route path="/ListUpcoming" element={<ListUpcoming />} />
+        <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
         <Route path="/LoginStudent" element={<LoginStudent />} />
         <Route path="/LoginTutor" element={<LoginTutor />} />
         <Route path="/ProfileSettings" element={<ProfileSettings />} />
