@@ -1,4 +1,4 @@
-const Review = require('../../src/models/review');
+const Review = require('../../../src/models/review');
 
 describe('Review', () => {
   test('should create an instance with correct properties', () => {
