@@ -103,7 +103,7 @@ function SearchTutor(props) {
                 pfp={pfp2}
                 stars={"⭐ ⭐ ⭐ ⭐ ⭐ (20)"}
                 name={"Diana Le"}
-                subjects={"📚 CS 3345"}
+                subjects={"📚 CS 3345, CS 4348"}
                 bio={
                   "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
                 }
