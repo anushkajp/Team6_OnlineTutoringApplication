@@ -6,7 +6,7 @@ const StudentService = require('../services/studentService')
 router.get('/', async (req, res) => {
     try {
         const student = await StudentService.getAll()
-        console.log("Student router getAll = " + JSON.stringify(student, null))
+        console.log("Student router getAll = " + student)
         res.status(200).json(student)
     }catch (err){
         res.status(500).json({ message: err.message});
@@ -15,37 +15,25 @@ router.get('/', async (req, res) => {
 // GET ONE
 router.get('/:id', async(req, res) => {
     try {
-        const student = new Student('Diana', 'Le', null, '12345', 'deedee',
-        [],'1234566789','gmai.com','cs','hello there', null,null)
-        // const student = await Student.find(req.params.id)
+        const student = await StudentService.getOne(req.params.id)
         res.status(200).json(student)
     }catch (err){
         res.status(500).json({ message: err.message});
     }
 });
 // CREATE ONE
-router.post('/', async(req, res) => {
-    const student = new Student();
-    student.firstName = req.body.firstName;
-    student.lastName = req.body.lastName;
-    student.middleName = req.body.middleName;
-    student.password = req.body.password;
-    student.userId = req.body.userId;
-    student.courses = req.body.courses;
-    student.phone = req.body.phone;
-    student.email = req.body.email;
-    student.major = req.body.major;
-    student.longBio = req.body.longBio;
-    student.shortBio = req.body.shortBio;
+bodyParser = require('body-parser').json();
+router.post('/', bodyParser, async(req, res) => {
     try {
-        const newStudent = await StudentService.create(req.params.appointmentId);
+        console.log("Student controller post req.body: " + JSON.stringify(req.body))
+        const newStudent = await StudentService.create(JSON.stringify(req.body));
         res.status(201).json(newStudent)
     }catch (err) {
         res.status(400).json({ message: err.message});
     }
 });
 // UPDATE ONE
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', bodyParser, async (req, res) => {
     const student = new Student();
     student.firstName = req.body.firstName;
     student.lastName = req.body.lastName;
