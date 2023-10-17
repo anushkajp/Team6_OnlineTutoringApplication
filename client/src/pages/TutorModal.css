@@ -53,7 +53,7 @@
   flex-shrink: 0;
   border-radius: 10.502px;
   margin-left: -230px;
-  margin-top: -520px;
+  margin-top: -535px;
 }
 
 .container-modal .txt {
@@ -81,7 +81,7 @@
   font-weight: 500;
   line-height: normal;
   letter-spacing: 0.22px;
-  margin-left: 100px;
+  margin-left: 90px;
   margin-top: -500px;
 }
 
@@ -94,7 +94,8 @@
   line-height: normal;
   letter-spacing: 0.29px;
   position: fixed;
-  margin-top: -160px;
+  margin-top: -190px;
+  padding: auto;
 }
 
 .container-modal .c-sub {
@@ -106,6 +107,7 @@
   line-height: normal;
   letter-spacing: 0.32px;
   margin-left: -135px;
+  padding-top: 10px;
 }
 
 .container-modal .sub-container {
@@ -253,7 +255,7 @@
 .container-modal .book {
   width: 147px;
   height: 45px;
-  margin-bottom: -120px;
+  margin-bottom: -110px;
   margin-right: -150px;
   border-radius: 10px;
   background: #91f3bb;
