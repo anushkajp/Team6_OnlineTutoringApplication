@@ -1,28 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const Tutor = require("../models/tutor")
-const { getTutor, getTutors} = require ('../db/read')
+const { getTutor, getTutors, getTutorIds} = require ('../db/read')
 const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, updateUserBio,
         updateUserPassword, updateUserProfilePic} = require ('../db/update')
 const {addTutor} = require ('../db/add')
 
        // GET ALL
 class TutorService {
-    static getAll() {
+    static async getAll() {
         // IF DB CAN FIND ID RETURN TUTOR OBJECT
-        const tutors = []
         try {
-            tutors = getTutors()
-            return tutors
+            const tutors = await getTutors()
+            console.log("TutorService.getTutors() = " + tutors)
+            return JSON.parse(tutors)
         }catch (err) {
             return err
         }
     }
     // GET ONE
-    static getOne(id) {
+    static async getOne(id) {
         const tutor = new Tutor()
+        const tutors = []
         try {
-            tutor = getTutor(id)
+            tutor = await getTutor(id)
+            tutors = await getTutorIds()
+            console.log("Tutors: " + tutors)
             return tutor
         }catch (err) {
             return err
