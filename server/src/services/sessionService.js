@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Session = require("../models/session")
-const {getAppointment, getAppointments} = require('../db/read')
+const {getAppointment, getAppointments, getUserIds} = require('../db/read')
 
 class SessionService {
     static getAll() {
@@ -16,6 +16,9 @@ class SessionService {
     static getOne(id) {
         try {
             const session = new Session()
+            const sessions = getUserIds()
+            console.log(sessions)
+            sessions = JSON.stringify(sessions)
             session = getAppointment(id)
             return session
         }catch (err){

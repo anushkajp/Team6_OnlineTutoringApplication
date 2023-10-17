@@ -1,19 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const Student = require("../models/student")
-const { getStudent, getStudents} = require ('../db/read')
+const { getStudent, getStudents, getUserIds, getUsers, getStudentIds} = require ('../db/read')
 const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, updateUserBio,
         updateUserPassword, updateUserProfilePic} = require ('../db/update')
-const {addTutor} = require ('../db/add')
+const {addStudent} = require ('../db/add')
 // GET ALL
 class StudentService {
     static async getAll() {
         // IF DB CAN FIND ID RETURN student OBJECT
         try {
-            const student = await getStudents()
-            console.log("StudentService.getStudents() = " + JSON.stringify(student, null))
-
-            return JSON.stringify(student, null)    
+            const students = await getStudents()
+            console.log("StudentService.getStudents() = " + students)
+            return JSON.parse(students)
         }catch (e) {
             return e
         }
@@ -22,25 +21,62 @@ class StudentService {
     static async getOne(id) {
         const student = new Student()
         try {
+            const studentInfo = await getStudents()
+            console.log("StudentService getOne studentIds: " + studentInfo)
+            let i = 0
+            while (id.localCompare(studentInfo.indexOf(i).userId) != 0) {
+                i++
+            }
+            const student = await getStudent()
+            // for (i in studentIds.length) {
+            //     if studentIds.
+            // }
+            // GET USERIDS
+            // FIND USERID BASED ON USERNMAE
+            // USE GET STUDENT WITH ID
             student = await getStudent(id)
-            console.log(student)
+            const students = await getUserIds()
+            // students = JSON.stringify(students)
+            constole.log("Students: " + students)
+            // console.log(student)
             return student
         }catch (e) {
             return e
         }
     }
     // POST
-    static async create(student) {
+    static async create(studentData) {
         try {
-            const newStudent = await addTutor(student.firstName, student.middleName,
-                student.lastName, student.password, student.username, student.major,
-                student.courses, student.phone, student.email, student.longBio, 
-                student.rating, student.pfp)
-            return newStudent
-        }catch (e) {
-            return e
+            console.log("StudentService.create studentData: " + studentData)
+            const data = JSON.parse(studentData)
+            const student = new Student();
+            console.log("StudentData.firstname: ", studentData.firstname)
+            student.firstName = data.firstName;
+            student.lastName = data.lastName;
+            student.middleName = data.middleName;
+            student.password = data.password;
+            student.userId = data.userId;
+            student.userName = data.userId;
+            student.courses = data.courses;
+            student.phone = data.phone;
+            student.email = data.email;
+            student.major = data.major;
+            student.longBio = data.longBio;
+            student.shortBio = data.shortBio;
+            console.log("StudentService.create student: ", JSON.stringify(student))
+            const newStudent = await addStudent(
+                student.firstName, student.middleName,
+                student.lastName, student.password, student.userId, 
+                student.major, student.courses, student.phone, 
+                student.email, student.longBio, student.rating, 
+                student.pfp
+            );
+    
+            return newStudent;
+        } catch (e) {
+            return e;
         }
-    }
+    }    
     // PATCH
     static async update(student){ 
         try {
