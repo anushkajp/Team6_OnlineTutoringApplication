@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
+.with-gradient {
+    background: linear-gradient(180deg, #B9CCF3 0%, #F2B9F3 100%);
+}  
+
 .two-page {
   justify-content: center;
   align-items: center;
@@ -26,7 +30,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  padding-top: 60px;
+  padding-top: 20px;
 }
 
 .two-txt {
@@ -37,13 +41,14 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  padding: 60px;
-  width: 500px;
+  padding: 20px;
+  width: 585px;
 }
 
 .two-input-container {
   display: flex;
   justify-content: center;
+  padding: 5px;
 }
 
 .two-input {
@@ -67,4 +72,22 @@
   width: 192px;
   height: 192px;
   flex-shrink: 0;
+  padding: 20px;
+  padding-top: 30px;
 }
+
+.two-button {
+    width: 267.429px;
+    height: 54.857px;
+    flex-shrink: 0;
+    border-radius: 17.143px;
+    background: var(--Bold-Purple, #a92ab7);
+    color: #fff;
+    font-family: Montserrat;
+    font-size: 22.286px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 54.857px; 
+    text-align: center;
+}
+  
