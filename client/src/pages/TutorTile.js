@@ -8,18 +8,39 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
   const [like, setLike] = useState(false);
   const [modal, setModal] = useState(false);
   const [book, setBook] = useState(false);
+  const [likedTutors, setLikedTutors] = useState([]); // store liked tutors in an array
 
-  function open() {
-    setModal(!modal);
-  }
+  const open = () => {
+    setModal(true); // Open the modal
+  };
+
+  const close = () => {
+    setModal(false); // Close the modal
+  };
 
   const handleLike = (e) => {
     e.stopPropagation();
+    // Toggle the like state
     setLike((prevLike) => !prevLike);
+
+    // Add or remove the tutor from the likedTutors array
+    if (!like) {
+      // Add the tutor
+      setLikedTutors((prevTutors) => [...prevTutors, name]);
+    } else {
+      // Remove the tutor
+      setLikedTutors((prevTutors) =>
+        prevTutors.filter((tutor) => tutor !== name)
+      );
+    }
+
+    // Log the list of liked tutors
+    console.log("Liked Tutors:", likedTutors);
   };
 
   const handleBook = () => {
-    setBook((prevBook) => !prevBook);
+    open();
+    setBook(!book);
   };
 
   return (
@@ -52,7 +73,12 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
         <div class="book-button" onClick={open} action={handleBook}>
           Book
         </div>
-        <TutorModal toggle={modal} action={open} />
+        <TutorModal
+          toggle={modal}
+          action={close}
+          name={name}
+          subjects={subjects}
+        />
       </div>
     </div>
   );

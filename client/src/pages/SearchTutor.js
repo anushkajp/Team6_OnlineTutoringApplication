@@ -68,6 +68,7 @@ function SearchTutor(props) {
                 <option value="CS 1336">CS 1336</option>
                 <option value="CS 2336">CS 2336</option>
                 <option value="CS 3345">CS 3345</option>
+                <option value="CS 3345">CS 4348</option>
               </select>
             </div>
             <div class="box-filters">
@@ -97,7 +98,7 @@ function SearchTutor(props) {
                 cost={50}
               ></TutorTileCard>
             )}
-            {(tutor === "Diana Le" || subject === "CS 3345") && (
+            {(tutor === "Diana Le" || (subject === "CS 3345" || subject === "CS 4348")) && (
               <TutorTileCard
                 pfp={pfp2}
                 stars={"⭐ ⭐ ⭐ ⭐ ⭐ (20)"}
@@ -114,7 +115,7 @@ function SearchTutor(props) {
         <div className="main-columns">
           {/* <h2> Third column </h2>
           <p> This is Third column of our grid system</p> */}
-          <TutorModal toggle={modal} action={open} />
+          <TutorModal toggle={modal} action={open} selectedTutor={tutor}/>
         </div>
       </div>
     </div>
