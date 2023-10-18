@@ -27,6 +27,7 @@ app.get("/testInfo", (req, res) => {
                 user: user,
                 tutor: tutor,
                 student: student,
+                appointment:appointment,
                 major: major,
                 course: course
 
