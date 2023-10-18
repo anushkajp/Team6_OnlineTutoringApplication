@@ -15,11 +15,12 @@ const PORT = 8000;
 app.get("/testInfo", (req, res) => {
 
     (async () => {
-        const user = await readPath("User")
-        const tutor = await readPath("Tutor")
-        const student = await readPath("Student")
-        const major = await readPath("Major")
-        const course = await readPath("Course")
+        const user = await reads.getUsers()
+        const tutor = await reads.getTutors()
+        const appointment = await reads.getAppointments()
+        const student = await reads.getStudents()
+        const major = await reads.getMajors()
+        const course = await reads.getCourses()
         res.send({
             // for testing
             data: {
@@ -41,16 +42,30 @@ app.get("/testInfo", (req, res) => {
 app.get("/testPost", (req, res) => {
 
     (async () => {
-        
-        // const tutor = await adds.addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio","short bio",[],[],null,5,true,5)
+        // dateAvailable = new Date("2:30 PM")
+        // const tutor = await adds.addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio","short bio",[dateAvailable],[],null,5,true,5)
         // const student = await adds.addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")
-        // updates.updateUsername("-NgMD4cYk-rEvevSjZ0P", "bibilivesagain")
+        updates.updateUsername("-NgePx3To2rYbOgfYW_g", null)
         // const major = await adds.addMajor("Computer Science")
         // majorId = major["id"]
         // const course = await adds.addCourse(majorId,"Computer Networks","CS4370",3)
         res.send(
             "post made"
         );
+        // res.send({
+        //     // for testing
+        //     data: {
+        //         tutor: tutor,
+        //         student: student,
+        //         major: major,
+        //         course: course
+
+        //     }
+
+            // console.log(await readPath("User"))
+
+
+        // });
 
     })()
 });
