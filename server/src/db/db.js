@@ -30,11 +30,11 @@ const db = getDatabase(fbApp);
  */
  async function readPath(path, test = true) {
     if (test) {
-        path = "test/" +path;
+        path = "/test/" +path;
     }else{
         path = path;
     }
-       return get(child(ref(db), "test/"+path)).then((snapshot) => {
+       return get(child(ref(db), path)).then((snapshot) => {
             if (snapshot.exists()) {
                 // console.log("does exist")
                 // data = JSON.stringify(snapshot.toJSON())
@@ -112,6 +112,9 @@ function modifyItem(entity, entityId,key,newValue, test=true){
     
 }
 
+function searchItem(){
+
+}
 
 
 
