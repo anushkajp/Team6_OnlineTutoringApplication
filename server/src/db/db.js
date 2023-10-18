@@ -30,13 +30,17 @@ const db = getDatabase(fbApp);
  */
  async function readPath(path, test = true) {
     if (test) {
+        path = "test/" +path;
+    }else{
+        path = path;
+    }
        return get(child(ref(db), "test/"+path)).then((snapshot) => {
             if (snapshot.exists()) {
                 // console.log("does exist")
                 // data = JSON.stringify(snapshot.toJSON())
-                data = snapshot.val()
+                data = snapshot.toJSON()
                 // console.log(data)
-                return data;
+                return JSON.stringify(data);
             } else {
                 console.log("No data available");
 
@@ -46,18 +50,7 @@ const db = getDatabase(fbApp);
             console.error(error);
         });
 
-    } else {
-        get(child(db, path)).then((snapshot) => {
-            if (snapshot.exists()) {
-                return (snapshot.val());
-            } else {
-                return NaN;
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
 
-    }
 }
 
 
@@ -86,7 +79,7 @@ function addItem(entity, postData, specificKey = null,test = true) {
     }
     return update(ref(db), updates).then(()=>{
         postData["id"]=newPostKey
-        return postData;
+        return JSON.stringify(postData);
     }).catch((error)=>{
         console.error(error);
         return NaN;
@@ -114,7 +107,7 @@ function modifyItem(entity, entityId,key,newValue, test=true){
         return true;
     }).catch((error)=>{
         console.error(error);
-        return NaN;
+        return false;
     });
     
 }
