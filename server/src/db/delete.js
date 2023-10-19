@@ -9,6 +9,10 @@ module.exports = {
         for (i in await searchItem("Appointment","studentId",userId)){
             modifyItem("Appointment",i,"studentId",null)
         }
+        for (i in await searchItem("Review","studentId",userId)){
+            modifyItem("Review",i,"studentId",null)
+        }
+        
         addItem("Tutor",null,userId)
         for (i in await searchItem("Appointment","tutorId",userId)){
             modifyItem("Appointment",i,"tutorId",null)
@@ -16,9 +20,7 @@ module.exports = {
         for (i in await searchItem("Review","tutorId",userId)){
             this.deleteReview(i)
         }
-        for (i in await searchItem("Review","studentId",userId)){
-            modifyItem("Review",i,"studentId",null)
-        }
+
         return addItem("User", null,userId)
 
     },
