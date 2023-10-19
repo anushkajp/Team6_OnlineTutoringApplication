@@ -162,7 +162,7 @@ module.exports = {
     addAppointment: function addAppointment(tutorId, studentId, dateTime, length, online, location, notes, rating, reivew) {
         const postData = {
             tutorId: tutorId,
-            userId: userId,
+            studentId: studentId,
             dateTime: dateTime,
             length: length,
             online: online,
