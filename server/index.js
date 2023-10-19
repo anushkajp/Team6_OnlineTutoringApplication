@@ -16,6 +16,8 @@ const PORT = 80;
 app.get("/testInfo", (req, res) => {
 
     (async () => {
+        // majorId = "Major"
+        // await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
         const user = await reads.getUsers()
         const tutor = await reads.getTutors()
         const appointment = await reads.getAppointments()
@@ -35,7 +37,7 @@ app.get("/testInfo", (req, res) => {
                 major: major,
                 course: course,
                 review:review,
-                searchs: search
+                // searchs: search
 
             }
             
@@ -59,7 +61,7 @@ app.get("/testPost", (req, res) => {
         // updates.updateUsername("-NgePx3To2rYbOgfYW_g", null)
         const major = await adds.addMajor("Computer Science")
         majorId =await major["id"]
-        const course = await adds.addCourse(majorId,"Computer Networks","CS4370",3)
+        const course = await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
         const review = await adds.addReview(tutorId,studentId,0,"")
         reviewId =await review["id"]
         const appointment = await adds.addAppointment(tutorId,studentId,dateAvailable,10,true,"www.google.com","",0,reviewId)
