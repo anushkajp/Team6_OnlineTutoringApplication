@@ -68,23 +68,23 @@ app.get("/testPost", (req, res) => {
         // for(i in await searchItem("User","username","deedee")){
         //     deletes.deleteUser(i)
         // }
-        res.send(
-            "post made"
-        );
-        // res.send({
-        //     // for testing
-        //     data: {
-        //         tutor: tutor,
-        //         student: student,
-        //         major: major,
-        //         course: course
 
-        //     }
+        res.send({
+            // for testing
+            data: {
+                tutor: tutor,
+                student: student,
+                major: major,
+                course: course,
+                review: review,
+                appointment:appointment
+
+            }
 
             // console.log(await readPath("User"))
 
 
-        // });
+        });
 
     })()
 });
@@ -108,7 +108,7 @@ app.get("/testDelete", (req, res) => {
         //     deletes.deleteUser(i)
         // }
         res.send(
-            "post made"
+            "Deleted database"
         );
         // res.send({
         //     // for testing
