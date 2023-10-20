@@ -1,81 +1,86 @@
 /* Sign Up */
 
-.page-container{
-    padding-top: 10%;
+.page-container {
+  padding-top: 10%;
 }
 
-.form-fields{
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 10px;
-    align-self: center;
+.form-fields {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  align-self: center;
 }
 
-.signup-container{
-    float: left;
-    flex: 1;
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-bottom: 20px;
+.signup-container {
+  float: left;
+  flex: 1;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 20px;
 }
 
 .signup-container > h2 {
-    text-align: left;
+  text-align: left;
 }
 
-.logo-container{
-    float: right;
-    flex: 1;
+.logo-container {
+  float: right;
+  flex: 1;
 }
 
-.logo-container > img{
-    padding-top: 30%;
+.logo-container > img {
+  padding-top: 30%;
 }
 
-.page-container{
-    display: flex;
+.page-container {
+  display: flex;
 }
 
-.form-group{
-    padding-bottom: 1rem;
+.form-group {
+  padding-bottom: 1rem;
 }
 
-.form-group > label{
-    color: var(--text-color);
-    padding-bottom: 10px;
-    display: block;
-    text-align: left;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    letter-spacing: 0.3px;
+.form-group > label {
+  color: var(--text-color);
+  padding-bottom: 10px;
+  display: block;
+  text-align: left;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.3px;
 }
 
-.form-group > input{
-    border-radius: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.40);
-    background: #EDEDED;
-    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-    height: 2rem;
-    padding: 3px;
-    display: block;
-    width: 100%;
+.form-group > input {
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  background: #ededed;
+  box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  height: 2rem;
+  padding: 3px;
+  display: block;
+  width: 100%;
 }
 
 .create_acc_button {
-    margin-top: 10px;
-    background-color: var(--primary-color);
-    color: white;
-    border-radius: 10px;
-    width: 75%;
-    padding: 10px;
-    border-color: transparent;
-    font-style: bold;
-    line-height: normal;
-    letter-spacing: 0.36px;
+  margin-top: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 10px;
+  width: 75%;
+  padding: 10px;
+  border-color: transparent;
+  font-style: bold;
+  line-height: normal;
+  letter-spacing: 0.36px;
 }
 
-.logo-container{
-    border-radius: 10px;
-    background: linear-gradient(180deg, rgba(151, 71, 255, 0.70) 0%, rgba(185, 204, 243, 0.43) 99.99%, rgba(185, 204, 243, 0.43) 100%);
+.logo-container-signup {
+  border-radius: 10px;
+  background: linear-gradient(
+    180deg,
+    rgba(151, 71, 255, 0.7) 0%,
+    rgba(185, 204, 243, 0.43) 99.99%,
+    rgba(185, 204, 243, 0.43) 100%
+  );
 }

@@ -63,7 +63,7 @@ function App() {
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Forgot" element={<Forgot />} />
         <Route path="/Home" element={<Home />} />
-        <Route path="/ListUpcoming" element={<ListUpcoming />} />
+        <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/ProfileSettings" element={<ProfileSettings />} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
