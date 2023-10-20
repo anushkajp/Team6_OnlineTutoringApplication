@@ -1,8 +1,6 @@
 import React from 'react'
-import Sidebar from '../components/sidebar'
-import SessionTile from '../components/SessionTile'
 
-const ListUpcoming = (props) => {
+const ListUpcoming = () => {
   return (
     <div className="upcomingPage">
       <div className="sidebar">
