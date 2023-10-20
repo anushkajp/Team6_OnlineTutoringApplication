@@ -20,3 +20,11 @@
 * {
     font-family: 'Montserrat', sans-serif;
 }
+
+.logout{
+    color: #7A7777;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    border-style: none;
+}
