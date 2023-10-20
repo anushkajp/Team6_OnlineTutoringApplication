@@ -1,0 +1,29 @@
+.left_div{
+    float: left;
+}
+
+.right_div{
+    float: right;
+}
+
+.bio{
+    display: flex;
+}
+
+.bio_photo{
+    width: 50%;
+    float: left;
+}
+
+.bio_photo img{
+    width: 50%;
+}
+
+.bio_info{
+    width: 50%;
+    float: right;
+}
+
+.page{
+    display: flex;
+}
