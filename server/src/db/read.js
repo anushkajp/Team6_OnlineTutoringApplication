@@ -11,18 +11,18 @@ module.exports={// Only read user Ids from these tables so references to informa
         return Object.keys(await readPath("Tutor"))
     },
     getTutors: async function getTutors(){
-        return JSON.stringify(await readPath("Tutor"))
+        return await readPath("Tutor")
     },
 
     getStudentIds: async function getStudentIds() {
-        return JSON.stringify(Object.keys(await readPath("Student")))
+        return Object.keys(await readPath("Student"))
     },
     getStudents: async function getStudents(){
-        return JSON.stringify(await readPath("Student"))
+        return await readPath("Student")
     },
     // Only read by Id to ensure data is being read with intent
     getUser: async function getUser(userId) {
-        return await readPath("User/" + userId)
+        return await JSON.stringify(readPath("User/" + userId))
     },
     getTutor: async function getTutor(userId) {
         return await readPath("Tutor/" + userId)
