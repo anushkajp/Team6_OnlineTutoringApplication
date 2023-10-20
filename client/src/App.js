@@ -1,16 +1,10 @@
 import "./App.css";
-import React from "react";
+import React, { Component } from "react";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // import styles
 import "./styles/global.css";
 import "./styles/signup.css";
-import "./styles/sidebar.css";
-import "./styles/upcoming.css";
-import "./styles/dashboard_tile.css";
-import "./styles/session_tile.css";
-import "./styles/dashboard.css";
-
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
@@ -19,8 +13,7 @@ import Contact from "./pages/Contact";
 import Forgot from "./pages/Forgot";
 import Home from "./pages/Home";
 import ListUpcoming from "./pages/ListUpcoming";
-import LoginStudent from "./pages/LoginStudent";
-import LoginTutor from "./pages/LoginTutor";
+import Login from "./pages/Login";
 import ProfileSettings from "./pages/ProfileSettings";
 import SavedCoursesStudent from "./pages/SavedCoursesStudent";
 import SearchTutor from "./pages/SearchTutor";
@@ -43,8 +36,7 @@ function App() {
           <li><a href="/Forgot">Forgot</a></li>
           <li><a href="/Home">Home</a></li>
           <li><a href="/ListUpcoming">ListUpcoming</a></li>
-          <li><a href="/LoginStudent">LoginStudent</a></li>
-          <li><a href="/LoginTutor">LoginTutor</a></li>
+          <li><a href="/Login">Login</a></li>
           <li><a href="/ProfileSettings">ProfileSettings</a></li>
           <li><a href="/SavedCoursesStudent">SavedCoursesStudent</a></li>
           <li><a href="/SearchTutor">SearchTutor</a></li>
@@ -65,9 +57,8 @@ function App() {
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Forgot" element={<Forgot />} />
         <Route path="/Home" element={<Home />} />
-        <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
-        <Route path="/LoginStudent" element={<LoginStudent />} />
-        <Route path="/LoginTutor" element={<LoginTutor />} />
+        <Route path="/ListUpcoming" element={<ListUpcoming />} />
+        <Route path="/Login" element={<Login />} />
         <Route path="/ProfileSettings" element={<ProfileSettings />} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />

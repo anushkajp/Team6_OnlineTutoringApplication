@@ -62,7 +62,7 @@
     width: 100%;
 }
 
-.create_acc_button {
+button {
     margin-top: 10px;
     background-color: var(--primary-color);
     color: white;
@@ -73,6 +73,7 @@
     font-style: bold;
     line-height: normal;
     letter-spacing: 0.36px;
+    
 }
 
 .logo-container{
