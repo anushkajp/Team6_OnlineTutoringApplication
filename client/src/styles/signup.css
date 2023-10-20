@@ -62,17 +62,18 @@
   width: 100%;
 }
 
-.create_acc_button {
-  margin-top: 10px;
-  background-color: var(--primary-color);
-  color: white;
-  border-radius: 10px;
-  width: 75%;
-  padding: 10px;
-  border-color: transparent;
-  font-style: bold;
-  line-height: normal;
-  letter-spacing: 0.36px;
+button {
+    margin-top: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 10px;
+    width: 75%;
+    padding: 10px;
+    border-color: transparent;
+    font-style: bold;
+    line-height: normal;
+    letter-spacing: 0.36px;
+    
 }
 
 .logo-container-signup {
