@@ -1,8 +1,9 @@
 // NOTE: Currently the security rules of the firebaseDB do not allow any reads or writes!!!
 
 const { initializeApp } = require("firebase/app");
-const { getFirestore, collection, getDocs } = require('firebase/firestore/lite');
-const { getDatabase, ref, child, get, update, set, increment, push } = require("firebase/database");
+const { getDatabase, ref, child, get, update, set, increment, push,query,orderByChild,equalTo, onValue, onChildAdded } = require("firebase/database");
+
+
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerDocument = require('./swagger.json');
 
@@ -30,19 +31,19 @@ const db = getDatabase(fbApp);
  */
  async function readPath(path, test = true) {
     if (test) {
-        path = "test/" +path;
+        path = "/test/" +path;
     }else{
         path = path;
     }
-       return get(child(ref(db), "test/"+path)).then((snapshot) => {
+       return get(child(ref(db), path)).then((snapshot) => {
             if (snapshot.exists()) {
                 // console.log("does exist")
                 // data = JSON.stringify(snapshot.toJSON())
-                data = snapshot.toJSON()
+                data = snapshot.val()
                 // console.log(data)
-                return JSON.stringify(data);
+                return data;
             } else {
-                console.log("No data available");
+                console.log("No data available for: "+path);
 
                 return NaN;
             }
@@ -79,7 +80,7 @@ function addItem(entity, postData, specificKey = null,test = true) {
     }
     return update(ref(db), updates).then(()=>{
         postData["id"]=newPostKey
-        return JSON.stringify(postData);
+        return postData;
     }).catch((error)=>{
         console.error(error);
         return NaN;
@@ -112,6 +113,39 @@ function modifyItem(entity, entityId,key,newValue, test=true){
     
 }
 
+async function searchItem(entity,child,matchValue,test=true){
+    path=""
+    if (test) {
+        path="/test/"+entity+"/"
+    } else {
+        path=entity+"/"
+    }
+    // onValue(query(ref(db,path), orderByChild(child),equalTo(matchValue)), (snapshot)=>{
+    //     if(snapshot.exists()){
+    //         data = Object.keys(snapshot.val())
+    //         console.log(data)
+    //         returnVal = data
+    //         return data
+    //     }else{
+    //         return false
+    //     }
+    // },{onlyOnce:true})
+    try{
+    const snapshot = await get(query(ref(db,path), orderByChild(child),equalTo(matchValue)))
+
+    if (snapshot.exists()) {
+        const data = snapshot.val();
+        // console.log(data);
+        return data
+      } else {
+        console.log('No matching data found for path: '+path+child+', '+ matchValue);
+      }
+    } catch(error){
+        console.error(error)
+    }
+    // query1=query(ref(db,path), orderByChild(child),equalTo(matchValue))
+    // listener = onChildAdded(query1,)
+}
 
 
 
@@ -119,6 +153,7 @@ function modifyItem(entity, entityId,key,newValue, test=true){
 module.exports = {
     readPath,
     addItem,
-    modifyItem
+    modifyItem,
+    searchItem
 }
 
