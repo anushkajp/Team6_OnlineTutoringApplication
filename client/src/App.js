@@ -64,8 +64,7 @@ function App() {
         <Route path="/Forgot" element={<Forgot />} />
         <Route path="/Home" element={<Home />} />
         <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
-        <Route path="/LoginStudent" element={<LoginStudent />} />
-        <Route path="/LoginTutor" element={<LoginTutor />} />
+        <Route path="/Login" element={<Login />} />
         <Route path="/ProfileSettings" element={<ProfileSettings />} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />
