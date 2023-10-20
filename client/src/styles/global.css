@@ -2,8 +2,9 @@
 
 @font-face {
     font-family: 'Montserrat';
-    src: url('../../public/assets/fonts/Montserrat-VariableFont_wght.ttf') format('truetype'), 
-         url('../../public/assets/fonts/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
+    src:
+        url('../../public/assets/fonts/Montserrat-VariableFont_wght.ttf') format('truetype'), 
+        url('../../public/assets/fonts/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
 }
 
 :root {
@@ -18,4 +19,12 @@
 
 * {
     font-family: 'Montserrat', sans-serif;
+}
+
+.logout{
+    color: #7A7777;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    border-style: none;
 }
