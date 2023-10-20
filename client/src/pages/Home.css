@@ -1,0 +1,58 @@
+.flex-container {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+}
+
+.logo-top {
+  width: 271px;
+  height: 243px;
+  flex-shrink: 0;
+  margin-top: -30px;
+  cursor: pointer;
+}
+
+.link-row {
+  display: flex;
+}
+
+.link-row a {
+  margin-top: -100px;
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  margin-right: 35px;
+}
+
+.link-row p {
+  color: #000;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.flex-row {
+  display: flex;
+  height: 100vh; 
+}
+
+.flex-container-bottom {
+  flex: 1; 
+  border: 1px solid #000; 
+  text-align: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.flex-container {
+  padding: 20px;
+  font-size: 24px;
+  background-color: #f1f1f1;
+}
