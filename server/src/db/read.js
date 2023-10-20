@@ -22,7 +22,7 @@ module.exports={// Only read user Ids from these tables so references to informa
     },
     // Only read by Id to ensure data is being read with intent
     getUser: async function getUser(userId) {
-        return await JSON.stringify(readPath("User/" + userId))
+        return await readPath("User/" + userId)
     },
     getTutor: async function getTutor(userId) {
         return await readPath("Tutor/" + userId)
