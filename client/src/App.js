@@ -19,8 +19,7 @@ import Contact from "./pages/Contact";
 import Forgot from "./pages/Forgot";
 import Home from "./pages/Home";
 import ListUpcoming from "./pages/ListUpcoming";
-import LoginStudent from "./pages/LoginStudent";
-import LoginTutor from "./pages/LoginTutor";
+import Login from "./pages/Login";
 import ProfileSettings from "./pages/ProfileSettings";
 import SavedCoursesStudent from "./pages/SavedCoursesStudent";
 import SearchTutor from "./pages/SearchTutor";
@@ -35,7 +34,7 @@ function App() {
   return (
     <div className="App">
       
-      <nav>
+      {/* <nav>
         <ul>
           <li><a href="/AddTutorSession">AddTutorSession</a></li>
           <li><a href="/Calendar">Calendar</a></li>
@@ -43,8 +42,7 @@ function App() {
           <li><a href="/Forgot">Forgot</a></li>
           <li><a href="/Home">Home</a></li>
           <li><a href="/ListUpcoming">ListUpcoming</a></li>
-          <li><a href="/LoginStudent">LoginStudent</a></li>
-          <li><a href="/LoginTutor">LoginTutor</a></li>
+          <li><a href="/Login">Login</a></li>
           <li><a href="/ProfileSettings">ProfileSettings</a></li>
           <li><a href="/SavedCoursesStudent">SavedCoursesStudent</a></li>
           <li><a href="/SearchTutor">SearchTutor</a></li>
@@ -55,7 +53,7 @@ function App() {
           <li><a href="/TutorReports">TutorReports</a></li>
           <li><a href="/TwoFactor">TwoFactor</a></li>
         </ul>
-      </nav>
+      </nav> */}
 
 
       <BrowserRouter>
