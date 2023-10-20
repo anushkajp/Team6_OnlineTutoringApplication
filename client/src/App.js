@@ -1,22 +1,10 @@
 import "./App.css";
-import React from "react";
+import React, { Component } from "react";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // import styles
 import "./styles/global.css";
 import "./styles/signup.css";
-import "./styles/sidebar.css";
-import "./styles/upcoming.css";
-import "./styles/dashboard_tile.css";
-import "./styles/session_tile.css";
-import "./styles/dashboard.css";
-import "./styles/SearchTutor.css";
-import "./styles/TutorModal.css";
-import "./styles/TwoFactor.css";
-import "./styles/Login.css";
-import "./styles/reviewtile.css";
-import "./styles/tutor_reports.css";
-
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
