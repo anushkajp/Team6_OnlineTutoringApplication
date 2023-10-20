@@ -1,0 +1,35 @@
+/* Global Styles */
+
+.navbar{
+    background-color: #1C2321;
+    width: 25%;
+    height: 600px;
+    padding: 10px;
+    border-radius: 35px;
+    margin: 20px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navbar li a {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar li {
+    text-align: left;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 35px;
+}
+
+.selected-nav-item {
+    border-radius: 30px;
+    background: var(--Green-3, #6FCF97);
+    color: white;
+    padding-left: 20px;
+    font-weight: bold;
+  }
