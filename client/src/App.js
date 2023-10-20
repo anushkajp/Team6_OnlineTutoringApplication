@@ -28,7 +28,7 @@ function App() {
   return (
     <div className="App">
       
-      <nav>
+      {/* <nav>
         <ul>
           <li><a href="/AddTutorSession">AddTutorSession</a></li>
           <li><a href="/Calendar">Calendar</a></li>
@@ -47,7 +47,7 @@ function App() {
           <li><a href="/TutorReports">TutorReports</a></li>
           <li><a href="/TwoFactor">TwoFactor</a></li>
         </ul>
-      </nav>
+      </nav> */}
 
 
       <BrowserRouter>
