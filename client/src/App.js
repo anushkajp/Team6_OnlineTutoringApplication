@@ -2,6 +2,10 @@ import "./App.css";
 import React, { Component } from "react";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+// import styles
+import "./styles/global.css";
+import "./styles/signup.css";
+
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
 import Calendar from "./pages/Calendar";
