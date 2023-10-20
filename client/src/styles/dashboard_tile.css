@@ -1,0 +1,68 @@
+.left{
+    padding-right: 16px;
+}
+
+.bottom_div{
+    margin: 0;
+    display: flex;
+}
+
+.left_div{
+    float: left;   
+    display: flex;
+    position: left;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+.right_div{
+    float: right;
+    position: right;
+    display: flex;
+    width: 100%;
+    background-color: white;
+    padding-right: 100px;
+}
+
+.top{
+    position: relative;
+}
+
+.right{
+    float: right;
+    border-radius: 3px;
+}
+
+.top_div{
+    border-radius: 3px;
+    width: inherit;
+}
+
+.container{
+    display: flex;
+}
+
+h1{
+    font-size: 75px;
+    font-style: normal;
+    font-weight: 400;
+    justify-content: center;
+    color: white;
+    padding-top: 14px;
+    padding-bottom: 0px;
+    margin: 0px;
+}
+
+h6{
+    padding-top: 0px;
+    color: #5B5B5B;   
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0px;
+}
+
+.tile_title > h4{
+    font-size: 20px;
+    align-self: flex-start;
+}
