@@ -1,10 +1,16 @@
 import "./App.css";
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // import styles
 import "./styles/global.css";
 import "./styles/signup.css";
+import "./styles/sidebar.css";
+import "./styles/upcoming.css";
+import "./styles/dashboard_tile.css";
+import "./styles/session_tile.css";
+import "./styles/dashboard.css";
+
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
@@ -58,7 +64,7 @@ function App() {
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Forgot" element={<Forgot />} />
         <Route path="/Home" element={<Home />} />
-        <Route path="/ListUpcoming" element={<ListUpcoming />} />
+        <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/ProfileSettings" element={<ProfileSettings />} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
