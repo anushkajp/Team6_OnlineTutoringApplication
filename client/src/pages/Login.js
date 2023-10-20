@@ -22,6 +22,10 @@ const Login = () => {
     navigate("/TwoFactor");
   };
 
+  const navigateToForgot = () => {
+    navigate("/Forgot");
+  };
+
   return (
     <div className="body-background">
       <div className="image-container">
@@ -49,7 +53,6 @@ const Login = () => {
             <p className="header2">Sign in to start learning</p>
 
             <br></br>
-            <br></br>
 
             <form className="fields-container">
               <input
@@ -61,7 +64,6 @@ const Login = () => {
                 required
               />
 
-              <br></br>
               <br></br>
 
               <input
@@ -84,6 +86,11 @@ const Login = () => {
                 <p className="login-button-text">Log in</p>
               </button>
             </form>
+            <br></br>
+
+            <a className="sign-up" onClick={navigateToForgot}>
+              forgot password?
+            </a>
           </div>
         </div>
       </div>
