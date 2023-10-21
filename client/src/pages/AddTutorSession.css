@@ -1,11 +1,33 @@
 
 .main-columns {
+  display:flex;
     flex: 1;
     height: 100vh;
+    /* width:100%; */
     padding: 10px;
     margin: 5px;
+    /* justify-content: left; */
+    /* vertical-align: left; */
+    /* flex: 0;  */
+
+  }
+  .left-column{
+    /* width:auto; */
+    float: left;   
+    display: flex;
+    position: left;
+    flex-direction: column;
+    margin-right: 20px;
+    /* background-color: #000; */
+  }
+  .right-column{
+    float: right;
+    position: right;
+    display: flex;
     width: 100%;
-    justify-content: left;
+    background-color: white;
+    padding-right: 100px;
+    /* background-color: #000; */
   }
   
   .main-container {
@@ -13,8 +35,25 @@
     grid-template-columns: 30% 70%;
     background-color: #f1efef;
   }
-  .text-padding{
-    padding-top: 12px;
+.container{
+  display: grid;
+  grid-template-rows: 2;
+  
+  grid-gap: 1rem;
+}
+  .justify-left{
+    justify-content: left;
+    /* align-items: center; */
+    text-align: left;
+    float:left;
+    /* margin-left:20px; */
+    /* width:70%; */
+
+    /* text-orientation: sideways; */
+  }
+  .justify-center{
+    justify-content:center;
+    text-align: center;
   }
 .title-text{
 color: #000;
@@ -22,7 +61,7 @@ font-family: Montserrat;
 font-size: 35px;
 font-style: normal;
 font-weight: 600;
-line-height: normal; 
+line-height: normal;
 }
 .subtitle-text{
     color: #000;
@@ -32,20 +71,27 @@ font-style: normal;
 font-weight: 500;
 line-height: normal;
 letter-spacing: 0.4px; 
-justify-content:left
 
 
 /* margin: right 95px;
 margin: top 171px; */
+}
+.selection{
+  border-radius: 10px;
+border: 1.5px solid #B9CCF3;
+background: #FFF; 
+width: 20%;
+height: 28px;
+flex-shrink: 0; 
 }
 .timeblock{
     border-radius: 10px;
 border: 1.5px solid #B9CCF3;
 background: #FFF;
 box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25) inset;
-width: 60%;
+width: 88%;
 height: 30px;
-flex-shrink: 0;
+/* flex-shrink: 0; */
 }
 .date-input{
   border-radius: 10px;
@@ -87,11 +133,12 @@ margin-right: 12px;
   border-radius: 10px;
 }
 .modality-buttons-container{
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
   margin: 10px;
+
 }
 .text-area{
-  width: 672px;
+  width: 75%;
 height: 103px;
 flex-shrink: 0; 
   box-sizing:content-box;
