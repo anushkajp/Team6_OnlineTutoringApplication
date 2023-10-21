@@ -4,6 +4,8 @@
     height: 100vh;
     padding: 10px;
     margin: 5px;
+    width: 100%;
+    justify-content: left;
   }
   
   .main-container {
@@ -30,6 +32,7 @@ font-style: normal;
 font-weight: 500;
 line-height: normal;
 letter-spacing: 0.4px; 
+justify-content:left
 
 
 /* margin: right 95px;
@@ -39,7 +42,7 @@ margin: top 171px; */
     border-radius: 10px;
 border: 1.5px solid #B9CCF3;
 background: #FFF;
-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25) inset;
 width: 60%;
 height: 30px;
 flex-shrink: 0;
@@ -48,9 +51,8 @@ flex-shrink: 0;
   border-radius: 10px;
   border: 1.5px solid #B9CCF3;
   background: #FFF;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
   width: 20%;
-  height: 41px;
+  height: 28px;
   flex-shrink: 0;
 }
 .round-button{
@@ -64,17 +66,38 @@ margin-right: 12px;
 
 }
 .modality-button{
-  width: 60px;
-  height: 57px;
-  flex-shrink: 0;
-  border-radius:50%;
+  width: 200.571px;
+  height: 41.143px;
+  flex-shrink: 0; 
+  background-color:#6FCF97;
+  color:white;
   margin-right: 12px;
+  border-radius: 10px;
 }
 .modality-button-inactive{
-  width: 60px;
-  height: 57px;
-  flex-shrink: 0;
-  border-radius:50%;
-  background-color: aqua;
+  width: 198.571px;
+  height: 39.143px;
+  flex-shrink: 0; 
+  outline-color:#6FCF97;
+  color:#6FCF97;
+  outline-width: 2px;
+  outline-style:solid;
+  background-color: rgba(0, 255, 255, 0);
   margin-right: 12px;
+  border-radius: 10px;
+}
+.modality-buttons-container{
+  flex-shrink: 0;
+  margin: 10px;
+}
+.text-area{
+  width: 672px;
+height: 103px;
+flex-shrink: 0; 
+  box-sizing:content-box;
+  overflow:hidden;
+  resize:none;
+  border-radius: 10px;
+border: 1.2px solid #B9CCF3;
+background: #FFF; 
 }
