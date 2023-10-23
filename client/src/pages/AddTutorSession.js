@@ -102,7 +102,7 @@ function AddTutorSession() {
             </div>
 
           </div>
-          <div>
+          {/* <div> */}
             <label className="subtitle-text justify-left">Which days would you like to tutor?
             </label>
             {/* <div> */}
@@ -116,7 +116,7 @@ function AddTutorSession() {
               <button onClick={handleClick} className="round-button" style={{ backgroundColor: active ? "#D9D9D9" : "#A92AB7" }} /> */}
 
             {/* </div> */}
-          </div>
+          {/* </div> */}
           <div className="justify-left">
             <input className="date-input" defaultValue="10:00 AM (CST)" />
             <label className="subtitle-text">to</label>
