@@ -122,7 +122,6 @@ function AddTutorSession() {
         </div>
 
         <label className="subtitle-text justify-left">What modality do you prefer for your tutoring session?</label>
-
         {ModalityButtons()}
         <div >
           <label className="subtitle-text justify-left">Add more details about your tutoring timeblock (optional)</label>
