@@ -6,7 +6,7 @@
   font-weight: 600;
   line-height: normal;
   /* float:left; */
-  margin-right:30%;
+  margin-right:40%;
   /* margin-left:27px; */
 
   }
@@ -19,6 +19,9 @@
   line-height: normal;
   letter-spacing: 0.4px; 
   margin-bottom: 12px;
+  }
+  #logout-button{
+    margin-right: 20px;
   }
   .selection{
     border-radius: 10px;
@@ -118,9 +121,9 @@
   .right-column{
     float: left;
     /* position: right; */
-    background-color: white;
+    /* background-color: white; */
     height:100%;
-    
+    padding-top: 45px;
     /* width:60%; */
     
     /* padding-right: 100px; */
