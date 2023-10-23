@@ -89,12 +89,12 @@ function AddTutorSession() {
   return (
     <div >
       <label className= "title-text">Add a New Tutor Session</label>
-      <LogoutButton></LogoutButton>
+      <LogoutButton id="logout-button"></LogoutButton>
 
     <div className="main-columns">
       
       {/* <div className="left-column"> */}
-        <Sidebar className="dbPageSidebar" renderType="tutor" />
+        <Sidebar  renderType="tutor" />
       {/* </div> */}
       <div className="right-column">
         
