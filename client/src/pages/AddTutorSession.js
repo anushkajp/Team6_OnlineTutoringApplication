@@ -87,61 +87,53 @@ function AddTutorSession() {
     )
   }
   return (
-    // <div className="main-container">
-      <div className="main-columns">
-        <div className="left-column">
-            <Sidebar className="dbPageSidebar" renderType="tutor" />
-        </div>
-        <div className="right-column">
-          
-          <div >
-            <label className="subtitle-text justify-left">Enter a timeblock name </label>
-            
-            <div>
-              <input className="timeblock" defaultValue="enter a course name or number (e.g - CS 4485, Computer Architecture)" />
-            </div>
+    <div >
+      <label className= "title-text">Add a New Tutor Session</label>
+      <LogoutButton></LogoutButton>
 
-          </div>
-          {/* <div> */}
-            <label className="subtitle-text justify-left">Which days would you like to tutor?
-            </label>
-            {/* <div> */}
-            {DayButtons()}
-            {/* <button name='sunday' onClick={handleClick} className="round-button" style={{ backgroundColor: active ? "#D9D9D9" : "#A92AB7" }} />
-              <button onClick={handleClick} className="round-button" style={{ backgroundColor: active ? "#D9D9D9" : "#A92AB7" }} />
-              <button onClick={handleClick} className="round-button" style={{ backgroundColor: active ? "#D9D9D9" : "#A92AB7" }} />
-              <button onClick={handleClick} className="round-button" style={{ backgroundColor: active ? "#D9D9D9" : "#A92AB7" }} />
-              <button onClick={handleClick} className="round-button" style={{ backgroundColor: active ? "#D9D9D9" : "#A92AB7" }} />
-              <button onClick={handleClick} className="round-button" style={{ backgroundColor: active ? "#D9D9D9" : "#A92AB7" }} />
-              <button onClick={handleClick} className="round-button" style={{ backgroundColor: active ? "#D9D9D9" : "#A92AB7" }} /> */}
-
-            {/* </div> */}
-          {/* </div> */}
-          <div className="justify-left">
-            <input className="date-input" defaultValue="10:00 AM (CST)" />
-            <label className="subtitle-text">to</label>
-            <input className="date-input" defaultValue="12:00 AM (CST)" />
-            <label className="subtitle-text">for</label>
-            {TimeBlockOptions()}
-            {/* <input className="date-input" value="1 Hour blocks" /> */}
-
-          </div>
-          {/* <div className="container"> */}
-          <label className="subtitle-text justify-left">What modality do you prefer for your tutoring session?</label>
-
-          {/* </div> */}
-          {ModalityButtons()}
-          <div >
-            <label className="subtitle-text justify-left">Add more details about your tutoring timeblock (optional)</label>
-            <div>
-              <textarea id="outlined-multiline-flexible" className='text-area justify-left'></textarea>
-            </div>
-
-          </div>
-        </div>
-       </div>
+    <div className="main-columns">
       
-    // </div>
+      <div className="left-column">
+        <Sidebar className="dbPageSidebar" renderType="tutor" />
+      </div>
+      <div className="right-column">
+        
+        <div >
+          <label className="subtitle-text justify-left">Enter a timeblock name </label>
+
+          <div>
+            <input className="timeblock" defaultValue="enter a course name or number (e.g - CS 4485, Computer Architecture)" />
+          </div>
+
+        </div>
+
+        <label className="subtitle-text justify-left">Which days would you like to tutor?
+        </label>
+
+        {DayButtons()}
+
+        <div className="justify-left">
+          <input className="date-input" defaultValue="10:00 AM (CST)" />
+          <label className="subtitle-text">to</label>
+          <input className="date-input" defaultValue="12:00 AM (CST)" />
+          <label className="subtitle-text">for</label>
+          {TimeBlockOptions()}
+
+        </div>
+
+        <label className="subtitle-text justify-left">What modality do you prefer for your tutoring session?</label>
+
+        {ModalityButtons()}
+        <div >
+          <label className="subtitle-text justify-left">Add more details about your tutoring timeblock (optional)</label>
+          <div>
+            <textarea id="outlined-multiline-flexible" className='text-area justify-left'></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     </div>
   )
 }
 
