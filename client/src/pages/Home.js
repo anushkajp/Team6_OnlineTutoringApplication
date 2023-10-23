@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../assets/TT_Logo_Design.png";
+import laptop from "../assets/laptop.png";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
 
@@ -42,7 +43,11 @@ const Home = () => {
         </div>
       </div>
       <div class="flex-row">
-        <div class="flex-container-bottom">Container 1</div>
+        <div class="flex-container-bottom">
+
+          <img className = "img-laptop" src= {laptop}></img>
+        
+        </div>
         <div class="flex-container-bottom">Container 2</div>
       </div>
     </div>

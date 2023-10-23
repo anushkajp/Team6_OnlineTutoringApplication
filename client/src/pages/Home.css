@@ -44,6 +44,8 @@
   flex: 1; 
   border: 1px solid #000; 
   text-align: center;
+  margin-top: -120px;
+  height: 100vh; 
 }
 
 body {
@@ -55,4 +57,9 @@ body {
   padding: 20px;
   font-size: 24px;
   background-color: #f1f1f1;
+}
+
+.img-laptop {
+  height: 815px;
+  width: 720px;
 }
