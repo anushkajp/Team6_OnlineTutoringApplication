@@ -93,9 +93,9 @@ function AddTutorSession() {
 
     <div className="main-columns">
       
-      <div className="left-column">
+      {/* <div className="left-column"> */}
         <Sidebar className="dbPageSidebar" renderType="tutor" />
-      </div>
+      {/* </div> */}
       <div className="right-column">
         
         <div >
