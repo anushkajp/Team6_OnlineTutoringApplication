@@ -6,12 +6,13 @@ const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, update
         updateUserPassword, updateUserProfilePic} = require ('../db/update')
 const {addStudent, addUser} = require ('../db/add')
 const {searchItem} = require ('../db/db')
-const {deleteUser} = require ('../db/delete')
-// GET ALL
+const deletes=require("../db/delete")
+
 class StudentService {
+    // GET ALL
     static async getAll() {
-        // IF DB CAN FIND ID RETURN student OBJECT
         try {
+            // GET ALL USERS BACK IN DB AS LIST
             const students = await getUsers()
             console.log("StudentService.getAll() = " + JSON.stringify(students) + "\n")
             return students
@@ -20,44 +21,67 @@ class StudentService {
         }
     }
     // GET ONE
-    // static getOne(id) {
-        static async getOne(id) {
-            
-            try {
-                // FIND USERID FROM USERNAME
-                    console.log("\nInside getone \n")
-                    console.log(typeof id)
-                    const search = await searchItem("User","username",'deedee')
-                    console.log(await search)
-                
-                
-                // console.log("inside getOne student service \n")
-                // const PATH = 'User'
-                // const ATTRIBUTE = 'username'
-                // const find = JSON.stringify(await searchItem("User", "username", "deedee"))
-                // for (i in find){
-                //     console.log(find[i] + "\n")
-                // }
-                // console.log("StudentService.getOne(id) find: " + find)
-                // console.log(typeof(find))
-    
-                // RETURN USER OBJECT FROM DB
-                // const user = await getUser(userid)
+    static async getOne(id) {
+        try {
+            console.log("\nStudentService.getone\n")
+            const PATH = 'User'
+            const ATTRIBUTE = 'username'
+            // SEARCH FOR USER W USERNAME
+            const search = await searchItem(PATH, ATTRIBUTE, id)
+            console.log(await search)
+            if (Object.keys(search).length > 0)         // USER FOUND
                 return search
-            }catch (e) {
-                return e
-            }
+            else
+                return false                            // USER CANNOT BE FOUND
+        }catch (e) {
+            return e
         }
-    // }
-    // POST
+    }
+    // post: create student
+    static async create(studentData){ 
+        try {
+            console.log("\nStudentService.create\n")
+            const PATH = 'User'
+            const ATTRIBUTE = 'username'
+            // console.log("StudentService.create studentData: " + studentData + "\n")
+            const data = JSON.parse(studentData)
+            const result = await searchItem(PATH, ATTRIBUTE, data.userName)     // FIND IF ANOTHER USER HAS SAME USERNAME
+            console.log("\nStudentService.create result: " + result)
+            console.log("\nStudentService.create result.length: " + Object.keys(result).length)
+            if ( Object.keys(result).length > 0)
+                return false
+            
+            // ADD NEW STUDENT TO DB
+            console.log("StudentService student:" + JSON.stringify(data) + "\n")
+            const studentInfo = await addStudent(
+                data.firstName, data.middleName,
+                data.lastName, data.password, data.userName, 
+                data.major, data.courses, data.phone, 
+                data.email, data.longBio, data.rating, 
+                data.pfp
+            )
+            console.log(studentInfo)
+            const newStudent = await searchItem("User", "username", "deedee")
+            console.log("newStudent: " + newStudent + "\n")
+            console.log("StudentService studentInfo: " + JSON.stringify(studentInfo) + "\n")
+            // FIND THE NEW STUDENT FROM DB WITH USERID
+            return studentInfo
+        }catch (e) {
+            return e
+        }
+    }
+    // patch: UPDATE STUDENT
     static async update(username, studentData) {
         try {
-            console.log("StudentService.update studentData: " + studentData + "\n")
+            console.log("\nStudentService.update\n")
+            const PATH = 'User'
+            const ATTRIBUTE = 'username'
             const data = JSON.parse(studentData)
-
-            // FIND USERIDS
-            const search = await searchItem("User","username",username)
-            
+            const result = await searchItem(PATH, ATTRIBUTE, data.userName)     
+            if ( Object.keys(result).length === 0)                          // STUDENT DOESNT EXIST
+                return false
+            console.log("StudentService.update studentData: " + studentData + "\n")
+            const id = Object.keys(result)[0]
 
             // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM USERID
             if (data.password != null)
@@ -80,54 +104,27 @@ class StudentService {
                 await updateshortBio(id, data.shortBio)
             console.log("StudentService.update student: ", JSON.stringify(student) + "\n")
             
-            return await getUser(studentInfo.userId)
+            return await getUser(id)
         } catch (e) {
             return e;
         }
-    }    
-    // PATCH
-    static async create(studentData){ 
-        try {
-            console.log("StudentService.create studentData: " + studentData + "\n")
-            const data = JSON.parse(studentData)
-            const student = new Student();
-            student.firstName = data.firstName;
-            student.lastName = data.lastName;
-            student.middleName = data.middleName;
-            student.password = data.password;
-            student.userId = data.userId;
-            student.userName = data.userName;
-            student.courses = data.courses;
-            student.phone = data.phone;
-            student.email = data.email;
-            student.major = data.major;
-            student.longBio = data.longBio;
-            student.shortBio = data.shortBio;
-            // ADD NEW STUDENT TO DB
-            console.log("StudentService student:" + JSON.stringify(student) + "\n")
-            const studentInfo = await addStudent(
-                student.firstName, student.middleName,
-                student.lastName, student.password, student.userName, 
-                student.major, student.courses, student.phone, 
-                student.email, student.longBio, student.rating, 
-                student.pfp
-            )
-            console.log(studentInfo)
-            const newStudent = await searchItem("User", "username", "deedee")
-            console.log("newStudent: " + newStudent + "\n")
-            console.log("StudentService studentInfo: " + JSON.stringify(studentInfo) + "\n")
-            // FIND THE NEW STUDENT FROM DB WITH USERID
-            return studentInfo
-        }catch (e) {
-            return e
-        }
-    }
+    } 
     // DELETE
     static async delete(id) {
         try {
-            const deletedUser = JSON.stringify(await deleteUser(id))
-            console.log("StudentService.delete(" + id + ") = " + deletedUser)
-            return deletedUser
+            // FIND USERID FROM USERNAME
+            const PATH = 'User'
+            const ATTRIBUTE = 'username'
+            console.log("\nStudentService.delete")
+            // const search = JSON.parse(await searchItem(PATH, ATTRIBUTE, id))
+            const search = await searchItem(PATH, ATTRIBUTE, id)
+            console.log("Username: " + Object.keys(search)[0])
+            if (Object.keys(search).length > 0) {
+                deletes.deleteUser(Object.keys(search)[0])
+                return search
+            }
+            else
+                return false
         }catch (e) {
             return e
         }
