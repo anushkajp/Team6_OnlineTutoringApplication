@@ -1,4 +1,3 @@
-import "./SearchTutor.css";
 import React, { useState } from "react";
 import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";

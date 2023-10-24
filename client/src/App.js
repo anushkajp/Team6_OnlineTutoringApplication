@@ -7,9 +7,13 @@ import "./styles/global.css";
 import "./styles/signup.css";
 import "./styles/sidebar.css";
 import "./styles/upcoming.css";
+import "./styles/profile.css";
 import "./styles/dashboard_tile.css";
 import "./styles/session_tile.css";
 import "./styles/dashboard.css";
+import "./styles/SearchTutor.css";
+import "./styles/TutorModal.css";
+import "./styles/TwoFactor.css";
 
 
 // import pages
@@ -66,7 +70,7 @@ function App() {
         <Route path="/Home" element={<Home />} />
         <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/ProfileSettings" element={<ProfileSettings />} />
+        <Route path="/ProfileSettings" element={<ProfileSettings renderType="tutor"/>} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />
         <Route path="/SignUpStudent" element={<SignUpStudent />} />

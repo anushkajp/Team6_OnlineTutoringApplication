@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./TwoFactor.css";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 

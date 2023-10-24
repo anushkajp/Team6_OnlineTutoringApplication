@@ -1,5 +1,4 @@
 import React from "react";
-import "./TutorModal.css";
 import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
 
