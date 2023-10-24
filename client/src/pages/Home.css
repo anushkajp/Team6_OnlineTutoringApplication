@@ -1,7 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");
+
 .flex-container {
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logo-top {
@@ -37,15 +40,7 @@
 
 .flex-row {
   display: flex;
-  height: 100vh; 
-}
-
-.flex-container-bottom {
-  flex: 1; 
-  border: 1px solid #000; 
-  text-align: center;
-  margin-top: -120px;
-  height: 100vh; 
+  height: 100vh;
 }
 
 body {
@@ -53,13 +48,101 @@ body {
   padding: 0;
 }
 
-.flex-container {
-  padding: 20px;
-  font-size: 24px;
-  background-color: #f1f1f1;
+.flex-container-bottom {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  border: #333;
+  flex-direction: column;
 }
 
-.img-laptop {
-  height: 815px;
-  width: 720px;
+.flex-container-bottom:first-child {
+  text-align: left;
+}
+
+.flex-container-bottom:nth-child(2) {
+  text-align: center;
+}
+
+.flex-container-bottom > .img-laptop {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.flex-container-bottom > .header-text-home {
+  width: 667px;
+  height: 171px;
+  color: #a92ab7;
+  font-family: Montserrat;
+  font-size: 44px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  flex-shrink: 0;
+  text-align: left;
+}
+
+.flex-container-bottom > .header-text-des {
+  width: 667px;
+  color: #000;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-align: left;
+  margin: -50px;
+}
+
+.flex-container-bottom > .button-nav1 {
+  width: 301px;
+  height: 71px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: #a92ab7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.button-nav1 > .text1 {
+  width: 262px;
+  height: 35px;
+  flex-shrink: 0;
+  color: #fff;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.flex-container-bottom > .button-nav2 {
+  width: 301px;
+  height: 71px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: #91f3bb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.button-nav2 > .text2 {
+  width: 262px;
+  height: 35px;
+  flex-shrink: 0;
+  color: #000;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }
