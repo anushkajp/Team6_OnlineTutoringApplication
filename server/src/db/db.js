@@ -139,6 +139,7 @@ async function searchItem(entity,child,matchValue,test=true){
         return data
       } else {
         console.log('No matching data found for path: '+path+child+', '+ matchValue);
+        return ""
       }
     } catch(error){
         console.error(error)
