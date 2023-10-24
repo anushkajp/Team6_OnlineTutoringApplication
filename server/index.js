@@ -11,8 +11,14 @@ const deletes=require("./src/db/delete")
 const express = require('express');
 const app = express();
 const PORT = 8000;
+const cors = require('cors'); 
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
-
+const corsOptions = {
+    origin: 'http://localhost:3000', // Replace with the actual URL of your frontend
+    methods: 'GET,PATCH,POST,DELETE',
+    optionsSuccessStatus: 204, // Some legacy browsers (e.g., IE11) may not understand a 204 status
+};
+app.use(cors(corsOptions));
 app.get("/testInfo", (req, res) => {
 
     (async () => {
@@ -40,7 +46,7 @@ app.get("/testInfo", (req, res) => {
                 major: major,
                 course: course,
                 review:review,
-                // searchs: search
+                searchs: search
 
             }
             
