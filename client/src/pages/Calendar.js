@@ -8,4 +8,4 @@ const Calendar = () => {
   )
 }
 
-export default Calendar
+export default Calendar;

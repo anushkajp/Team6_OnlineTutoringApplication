@@ -17,10 +17,8 @@
 
 .right_div{
     float: right;
-    position: right;
     display: flex;
     width: 100%;
-    background-color: white;
     padding-right: 100px;
 }
 

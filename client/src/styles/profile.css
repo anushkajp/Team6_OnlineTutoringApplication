@@ -1,29 +1,45 @@
-.left_div{
-    float: left;
+.profile_page{
+    display:flex;
+    overflow: auto;
 }
 
-.right_div{
+.profile_settings{
+    background-color: white;
     float: right;
+    width: -webkit-fill-available;
+    margin-right: 30px;
+    display: block;
 }
 
-.bio{
+.profile_info{
     display: flex;
 }
 
-.bio_photo{
-    width: 50%;
-    float: left;
-}
-
-.bio_photo img{
-    width: 50%;
-}
-
-.bio_info{
-    width: 50%;
-    float: right;
-}
-
-.page{
+.profile_photo{
+    border-radius: 50%; 
+    height: 300px;
+    width: 300px;
+    overflow: hidden;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: yellow;
+}
+
+.header_text{
+    color: #2A6BB7;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+h5{
+    color: #000;
+    font-family: Montserrat;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.profile_details{
+    text-align: left;
 }
