@@ -88,51 +88,54 @@ function AddTutorSession() {
   }
   return (
     <div >
-      <label className= "title-text">Add a New Tutor Session</label>
-      <LogoutButton id="logout-button"></LogoutButton>
+      <div className='title-logout-wrapper'>
+        <div className="title-logout">
+          <label className="title-text">Add a New Tutor Session</label>
+          <LogoutButton id="logout-button"></LogoutButton>
 
-    <div className="main-columns">
-      
-      {/* <div className="left-column"> */}
-        <Sidebar  renderType="tutor" />
-      {/* </div> */}
-      <div className="right-column">
-        
-        <div >
+        </div>
+      </div>
+      <div className="main-columns">
+
+        {/* <div className="left-column"> */}
+        <Sidebar renderType="tutor" />
+        {/* </div> */}
+        <div className="right-column">
+
+          {/* <div > */}
           <label className="subtitle-text justify-left">Enter a timeblock name </label>
+          {/* <div> */}
+          <input className="timeblock" defaultValue="enter a course name or number (e.g - CS 4485, Computer Architecture)" />
+          {/* </div> */}
 
-          <div>
-            <input className="timeblock" defaultValue="enter a course name or number (e.g - CS 4485, Computer Architecture)" />
+          {/* </div> */}
+
+          <label className="subtitle-text justify-left">Which days would you like to tutor?
+          </label>
+
+          {DayButtons()}
+
+          <div className="justify-left">
+            <input className="date-input" defaultValue="10:00 AM (CST)" />
+            <label className="subtitle-text">to</label>
+            <input className="date-input" defaultValue="12:00 AM (CST)" />
+            <label className="subtitle-text">for</label>
+            {TimeBlockOptions()}
+
           </div>
 
-        </div>
-
-        <label className="subtitle-text justify-left">Which days would you like to tutor?
-        </label>
-
-        {DayButtons()}
-
-        <div className="justify-left">
-          <input className="date-input" defaultValue="10:00 AM (CST)" />
-          <label className="subtitle-text">to</label>
-          <input className="date-input" defaultValue="12:00 AM (CST)" />
-          <label className="subtitle-text">for</label>
-          {TimeBlockOptions()}
-
-        </div>
-
-        <label className="subtitle-text justify-left">What modality do you prefer for your tutoring session?</label>
-        {ModalityButtons()}
-        <div >
-          <label className="subtitle-text justify-left">Add more details about your tutoring timeblock (optional)</label>
-          <div>
-            <textarea id="outlined-multiline-flexible" className='text-area justify-left'></textarea>
+          <label className="subtitle-text justify-left">What modality do you prefer for your tutoring session?</label>
+          {ModalityButtons()}
+          <div >
+            <label className="subtitle-text justify-left">Add more details about your tutoring timeblock (optional)</label>
+            <div>
+              <textarea id="outlined-multiline-flexible" className='text-area justify-left'></textarea>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-     </div>
+    </div>
   )
 }
 
