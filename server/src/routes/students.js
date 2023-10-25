@@ -3,6 +3,18 @@ const router = express.Router();
 const StudentService = require('../services/studentService')
 bodyParser = require('body-parser').json();
 
+// LOGIN
+router.get('/login', bodyParser, async (req, res) => {
+    try {
+        const student = await StudentService.login(JSON.stringify(req.body))
+        if (student === false)
+            res.status(400).json({message: "User does not exist"})
+        else 
+            res.status(200).json(student)
+    }catch (err){
+        res.status(500).json({ message: err.message});
+    }
+});
 // GET ALL
 router.get('/', async (req, res) => {
     try {
