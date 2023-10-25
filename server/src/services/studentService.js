@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Student = require("../models/student")
 const { getUsers, getUser } = require ('../db/read')
 const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, updateUserBio,
         updateUserPassword, updateUserProfilePic} = require ('../db/update')
@@ -9,6 +8,10 @@ const {searchItem} = require ('../db/db')
 const deletes=require("../db/delete")
 
 class StudentService {
+    // LOGIN
+    static async login (studentInfo) {
+        // USE MAHIS INFO
+    }
     // GET ALL
     static async getAll() {
         try {
@@ -17,7 +20,7 @@ class StudentService {
             console.log("StudentService.getAll() = " + JSON.stringify(students) + "\n")
             return students
         }catch (e) {
-            return e
+            throw e
         }
     }
     // GET ONE
@@ -34,7 +37,7 @@ class StudentService {
             else
                 return false                            // USER CANNOT BE FOUND
         }catch (e) {
-            return e
+            throw e
         }
     }
     // post: create student
@@ -67,7 +70,7 @@ class StudentService {
             // FIND THE NEW STUDENT FROM DB WITH USERID
             return studentInfo
         }catch (e) {
-            return e
+            throw e
         }
     }
     // patch: UPDATE STUDENT
@@ -77,7 +80,7 @@ class StudentService {
             const PATH = 'User'
             const ATTRIBUTE = 'username'
             const data = JSON.parse(studentData)
-            const result = await searchItem(PATH, ATTRIBUTE, data.userName)     
+            const result = await searchItem(PATH, ATTRIBUTE, username)     
             if ( Object.keys(result).length === 0)                          // STUDENT DOESNT EXIST
                 return false
             console.log("StudentService.update studentData: " + studentData + "\n")
@@ -85,7 +88,7 @@ class StudentService {
 
             // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM USERID
             if (data.password != null)
-                await updatePassword(id, data.password)
+                await updateUserPassword(id, data.password)
             if (data.userId != null)
                 await updateuserId(id, data.userId)
             if (data.userName != null)
@@ -93,20 +96,22 @@ class StudentService {
             if (data.courses != null)
                 await updatecourses(id, data.courses)
             if (data.phone != null)
-                await updatephone(id, data.phone)
+                await updateUserPhone(id, data.phone)
             if (data.email != null)
-                await updateemail(id, data.email)
+                await updateUserEmail(id, data.email)
             if (data.major != null)
-                await updatemajor(id, data.major)
+                await updateUserMajor(id, data.major)
             if (data.longBio != null)
-                await updatelongBio(id, data.longBio)
+                await updateUserBio(id, data.longBio)
             if (data.shortBio != null)
                 await updateshortBio(id, data.shortBio)
+            if (data.pfp != null)
+                await updateUserProfilePic(id, data.pfp)
             console.log("StudentService.update student: ", JSON.stringify(student) + "\n")
             
             return await getUser(id)
         } catch (e) {
-            return e;
+            throw e;
         }
     } 
     // DELETE
@@ -126,7 +131,7 @@ class StudentService {
             else
                 return false
         }catch (e) {
-            return e
+            throw e
         }
     }
 }

@@ -5,43 +5,73 @@ const { getTutor, getTutors, getTutorIds} = require ('../db/read')
 const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, updateUserBio,
         updateUserPassword, updateUserProfilePic} = require ('../db/update')
 const {addTutor} = require ('../db/add')
-
+const {searchItem} = require ('../db/db')
+const deletes=require("../db/delete")
        // GET ALL
 class TutorService {
+    static async login() {
+        try {
+                // MAHI'S CODE
+        }catch (err) {
+            throw err
+        }
+    }
     static async getAll() {
         // IF DB CAN FIND ID RETURN TUTOR OBJECT
         try {
             const tutors = await getTutors()
             console.log("TutorService.getTutors() = " + tutors)
-            return JSON.parse(tutors)
+            return tutors
         }catch (err) {
-            return err
+            throw err
         }
     }
     // GET ONE
     static async getOne(id) {
-        const tutor = new Tutor()
-        const tutors = []
         try {
-            tutor = await getTutor(id)
-            tutors = await getTutorIds()
-            console.log("Tutors: " + tutors)
-            return tutor
-        }catch (err) {
-            return err
+            console.log("\nTutorService.getone\n")
+            const PATH = 'Tutor'
+            const ATTRIBUTE = 'username'
+            // SEARCH FOR USER W USERNAME
+            const search = await searchItem(PATH, ATTRIBUTE, id)
+            console.log(await search)
+            if (Object.keys(search).length > 0)         // USER FOUND
+                return search
+            else
+                return false                            // USER CANNOT BE FOUND
+        }catch (e) {
+            throw e
         }
+        
     }
     // POST
-    static create(tutor) {
+    static async create(tutordata) {
         try {
-            const newTutor = addTutor(tutor.firstName, tutor.middleName,
-                tutor.lastName, tutor.password, tutor.username, tutor.major,
-                tutor.courses, tutor.phone, tutor.email, tutor.longBio, 
-                tutor.shortBio, tutor.availability.week, tutor.availability.exceptions,
-                tutor.pfp, tutor.rating, tutor.bkgdCheck, tutor.hours)
-            return newTutor
+            console.log("\nTutorService.create\n")
+            const PATH = 'Tutor'
+            const ATTRIBUTE = 'username'
+            // SEARCH FOR USER W USERNAME
+            const search = await searchItem(PATH, ATTRIBUTE, id)
+            console.log(await search)
+            if (Object.keys(search).length === 0)         // USER FOUND
+                return false
+            // ADD NEW STUDENT TO DB
+            const data = JSON.parse(tutordata)
+            console.log("nTutorService student:" + JSON.stringify(data) + "\n")
+            const tutorInfo = await addTutor(
+                data.firstName, data.middleName,
+                data.lastName, data.password, data.userName, 
+                data.major, data.courses, data.phone, 
+                data.email, data.longBio, data.shortBio, data.availability.week,
+                data.availability.exceptions, data.pfp, data.rating, 
+                data.bkgdCheck, data.hours
+            )
+            console.log(tutorInfo)
+            console.log("TutorService tutorInfo: " + JSON.stringify(tutorInfo) + "\n")
+            // FIND THE NEW STUDENT FROM DB WITH USERID
+            return tutorInfo
         }catch (e) {
-            return e
+            throw e
         }
     }
     // PATCH
@@ -64,23 +94,27 @@ class TutorService {
                 updateUserProfilePic(updateTutor.id, updateTutor.pfp)
             return getTutor(updateTutor.userId)
         }catch (e) {
-            return e
+            throw e
         }
     }
     // DELETE
-    static delete(id) {
-        const tutor = new Tutor()
+    static async delete(id) {
         try {
-            tutor = getTutor(id)
-            updateUsername(id, null)
-            updateUserBio(id, null)
-            updateUserEmail(id, null)
-            updateUserPassword(id, null)
-            updateUserMajor(id, null)
-            updateUserProfilePic(id, null)
-            return tutor
+            // FIND USERID FROM USERNAME
+            const PATH = 'Tutor'
+            const ATTRIBUTE = 'username'
+            console.log("\nTutorService.delete")
+            // const search = JSON.parse(await searchItem(PATH, ATTRIBUTE, id))
+            const search = await searchItem(PATH, ATTRIBUTE, id)
+            console.log("Username: " + Object.keys(search)[0])
+            if (Object.keys(search).length > 0) {
+                deletes.deleteUser(Object.keys(search)[0])
+                return search
+            }
+            else
+                return false
         }catch (e) {
-            return e
+            throw e
         }
     }
 }
