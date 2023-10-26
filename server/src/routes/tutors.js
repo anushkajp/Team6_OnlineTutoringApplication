@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Tutor = require('../models/tutor')
 const TutorService = require('../services/tutorService')
-
+bodyParser = require('body-parser').json();
 // GET ALL
 router.get('/', async (req, res) => {
     try {
@@ -28,21 +27,7 @@ router.get('/:id', async(req, res) => {
     }
 });
 // CREATE ONE
-router.post('/', async(req, res) => {
-
-    const tutor = new Tutor()
-    tutor.firstName = req.body.firstName;
-    tutor.lastName = req.body.lastName;
-    tutor.middleName = req.body.middleName;
-    tutor.password = req.body.password;
-    tutor.userId = req.body.userId;
-    tutor.courses = req.body.courses;
-    tutor.phone = req.body.phone;
-    tutor.email = req.body.email;
-    tutor.major = req.body.major;
-    tutor.longBio = req.body.longBio;
-    tutor.shortBio = req.body.shortBio;
-    tutor.pfp = req.body.pfp;
+router.post('/', bodyParser, async(req, res) => {
 
     try {
         const newTutor = await TutorService.create(tutor);
@@ -55,19 +40,7 @@ router.post('/', async(req, res) => {
     }
 });
 // UPDATE ONE
-router.patch('/:id', async (req, res) => {
-    const tutor = new Tutor();
-    tutor.firstName = req.body.firstName;
-    tutor.lastName = req.body.lastName;
-    tutor.middleName = req.body.middleName;
-    tutor.password = req.body.password;
-    tutor.userId = req.body.userId;
-    tutor.courses = req.body.courses;
-    tutor.phone = req.body.phone;
-    tutor.email = req.body.email;
-    tutor.major = req.body.major;
-    tutor.longBio = req.body.longBio;
-    tutor.shortBio = req.body.shortBio;
+router.patch('/:id', bodyParser, async (req, res) => {
     try {
         const newTutor = await TutorService.update(tutor);
         if (newTutor == null)
