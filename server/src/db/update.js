@@ -49,14 +49,7 @@ module.exports = {
     updateUserPassword: async function updateUserPassword(userId, newPasswordHash) {
         return modifyItem("User",userId,"password", newPasswordHash)
     },
-    /**
-     * Update the user rating
-     * @param {string} userId Database id for the user
-     * @param {number} newRating New rating for the user
-     */
-    updateUserRating: async function updateUserRating(userId, newRating) {
-        return modifyItem("User",userId,"rating", newRating)
-    },
+
         /**
      * Update the user rating
      * @param {string} userId Database id for the user
@@ -91,6 +84,14 @@ module.exports = {
     updateTutorHours: async function updateTutorHours(tutorId, newTotalHours) {
         return modifyItem("Tutor",tutorId,"totalHours", newTotalHours)
     },
+        /**
+     * Update the user rating
+     * @param {string} userId Database id for the user
+     * @param {number} newRating New rating for the user
+     */
+        updateTutorRating: async function updateTutorRating(userId, newRating) {
+            return modifyItem("Tutor",userId,"rating", newRating)
+        },
     /**
      * Update the tutors weekly availability
      * @param {string} tutorId Database id for the user
