@@ -2,11 +2,15 @@
 
 .navbar{
     background-color: #1C2321;
-    width: 25%;
-    height: 600px;
-    padding: 10px;
+    width: 35vh;
+    height: 80vh;
+    padding: 30px;
     border-radius: 35px;
     margin: 20px;
+}
+
+.sidebar{
+    float:left;
 }
 
 .navbar ul {

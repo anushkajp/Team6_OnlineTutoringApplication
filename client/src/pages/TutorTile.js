@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import "./SearchTutor.css";
-import "./TutorModal.css";
 import TutorModal from "./TutorModal";
-import SearchTutor from "./SearchTutor";
 
 export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
   const [like, setLike] = useState(false);
