@@ -12,6 +12,7 @@ const ProfileSettings = (props) => {
   const [editedMethod, setEditedMethod] = useState('');
 
   const renderData = {
+    userName:'Sad Cat',
     schoolName: 'Erik Jonsson School of CS',
     subject_expertise: ['Math', 'English'],
     member_since: 'August 2023',
@@ -58,17 +59,18 @@ const ProfileSettings = (props) => {
           <div className="profile_settings">
               <div className="profile_info">
                   <div className="profile_photo">
-                    <img src="https://picsum.photos/300/300" alt="Profile" />
+                    <img src="https://picsum.photos/400/400" alt="Profile" />
                   </div>
                   <div className="profile_details"> 
+                    <h3>{renderData.userName}</h3>
                     <h5><span class="header_text">School Name:</span> {renderData.schoolName}</h5>
-                    <h5><span class="header_text">Subject Expertise:</span> {renderData.subject_expertise}</h5>
+                    <h5><span class="header_text">Subject Expertise:</span> {renderData.subject_expertise.join(', ')}</h5>
                     <h5><span class="header_text">Member Since:</span> {renderData.member_since}</h5>
                     <h5><span class="header_text">Skills:</span> {renderData.skills.join(', ')}</h5>
                   </div>
               </div>
               <div className="editFields">
-              <form>
+              <form className="settingsForm">
               <label htmlFor="email">Email:</label>
               {isEditing ? (
                 <input
@@ -78,7 +80,7 @@ const ProfileSettings = (props) => {
                   onChange={(e) => handleInputChange('editedEmail', e)}
                 />
               ) : (
-                <span id="emailDisplay">{email}</span>
+                <span className="readOnly" id="emailDisplay">{email}</span>
               )}
 
               <label htmlFor="phone">Phone:</label>
@@ -90,13 +92,13 @@ const ProfileSettings = (props) => {
                   onChange={(e) => handleInputChange('editedPhone', e)}
                 />
               ) : (
-                <span id="phoneDisplay">{phone}</span>
+                <span className="readOnly" id="phoneDisplay">{phone}</span>
               )}
 
               {isEditing ? (
-                <button onClick={handleSaveClick}>Save</button>
+                <button className="settingsButton" onClick={handleSaveClick}>Save</button>
               ) : (
-                <button onClick={handleEditClick}>Edit</button>
+                <button className="settingsButton" onClick={handleEditClick}>Edit</button>
               )}
             </form>
               </div>
