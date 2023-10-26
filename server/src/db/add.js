@@ -29,10 +29,9 @@ module.exports = {
      * @param {string} phone Phone number
      * @param {string} email Email
      * @param {string} longBio Descriptive bio
-     * @param {number} rating Float rating of the user
      * @param {ImageData} profilePic Profile picture
      */
-    addUser: function addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00, profilePic = null) {
+    addUser: function addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, profilePic = null) {
         const postData = {
             username: username,
             major: major,
@@ -40,11 +39,11 @@ module.exports = {
             phone: phone,
             email: email,
             longBio: longBio,
+            shortBio:shortBio,
             firstName: firstName,
             lastName: lastName,
             middleName: middleName,
             password: password,
-            rating: rating,
             profilePic: profilePic
         }
         return addItem("User", postData)
@@ -63,7 +62,6 @@ module.exports = {
      * @param {string} phone Phone number
      * @param {string} email Email
      * @param {string} longBio Descriptive bio
-     * @param {number} rating Float rating of the user
      * @param {ImageData} profilePic Profile picture
      */
     addStudent: async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00, profilePic = null) {
@@ -74,12 +72,12 @@ module.exports = {
             phone: phone,
             email: email,
             longBio: longBio,
+            shortBio:shortBio,
             firstName: firstName,
             lastName: lastName,
             middleName: middleName,
             password: password,
-            rating: rating,
-            profilePic: profilePic
+            profilePic: profilePic,
         }
         userKey = await addItem("User", postDataUser)
         userKey = userKey["id"]
@@ -101,7 +99,7 @@ module.exports = {
      * @param {string} email Email
      * @param {string} longBio Descriptive bio
      * @param {string} shortBio A short bio for the tutor visible to students
-     * @param {string} weeklyAvailability Weekly availability, should be an array<string,7> storing time ranges in a standard format, index 0 is monday
+     * @param {Array<Date>} weeklyAvailability Weekly availability, should be an array<Date,7> storing time ranges in a standard format, index 0 is monday
      * @param {Array<Date>} exceptionsAvailability A list of exceptions to the weekly schedule, stored as dates of unavailability
      * @param {ImageData} profilePic 
      * @param {number} rating Float rating of the user
@@ -117,18 +115,18 @@ module.exports = {
             phone: phone,
             email: email,
             longBio: longBio,
+            shortBio:shortBio,
             firstName: firstName,
             lastName: lastName,
             middleName: middleName,
             password: password,
-            rating: rating,
+            // rating: rating,
             profilePic: profilePic
         }
         userKey = await addItem("User", postDataUser)
         userKey = userKey["id"]
         const postDataTutor = {
             userId: userKey,
-            shortBio: shortBio,
             backgroundCheck: backgroundCheck,
             totalHours: totalHours,
             rating: rating,
@@ -174,7 +172,7 @@ module.exports = {
      * @param {string} notes Notes about the meeting
      * @param {number} rating Appointment rating
      */
-    addAppointment: function addAppointment(tutorId, studentId, dateTime, length, online, location, notes, rating, reivew) {
+    addAppointment: function addAppointment(tutorId, studentId, dateTime, length, online, location,courses, notes, rating, reivew) {
         const postData = {
             tutorId: tutorId,
             studentId: studentId,
@@ -182,9 +180,10 @@ module.exports = {
             length: length,
             online: online,
             location: location,
+            courses:courses,
             notes: notes,
             rating: rating,
-            review: reivew
+            feedback:feedback
         }
         return addItem("Appointment", postData)
     },
