@@ -1,11 +1,9 @@
-const express = require("express");
-const router = express.Router();
 const { getUsers, getUser } = require ('../db/read')
 const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, updateUserBio,
         updateUserPassword, updateUserProfilePic} = require ('../db/update')
-const {addStudent, addUser} = require ('../db/add')
+const {addStudent} = require ('../db/add')
 const {searchItem} = require ('../db/db')
-const deletes=require("../db/delete")
+const deletes = require("../db/delete")
 
 class StudentService {
     // LOGIN
@@ -81,20 +79,22 @@ class StudentService {
             const ATTRIBUTE = 'username'
             const data = JSON.parse(studentData)
             const result = await searchItem(PATH, ATTRIBUTE, username)     
-            if ( Object.keys(result).length === 0)                          // STUDENT DOESNT EXIST
+            
+            // STUDENT DOESNT EXIST
+            if ( Object.keys(result).length === 0)
                 return false
             console.log("StudentService.update studentData: " + studentData + "\n")
             const id = Object.keys(result)[0]
-
+            console.log("Student id: " + id + "\n")
+            console.log(typeof data.userName)
+            console.log("\nNew Username: "+ data.userName + "\n") 
             // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM USERID
             if (data.password != null)
                 await updateUserPassword(id, data.password)
-            if (data.userId != null)
-                await updateuserId(id, data.userId)
             if (data.userName != null)
-                await updateUsername( data.userId)
-            if (data.courses != null)
-                await updatecourses(id, data.courses)
+                await updateUsername(id, data.userName)
+            // if (data.courses != null)
+            //     await updatecourses(id, data.courses)
             if (data.phone != null)
                 await updateUserPhone(id, data.phone)
             if (data.email != null)
@@ -107,7 +107,6 @@ class StudentService {
                 await updateshortBio(id, data.shortBio)
             if (data.pfp != null)
                 await updateUserProfilePic(id, data.pfp)
-            console.log("StudentService.update student: ", JSON.stringify(student) + "\n")
             
             return await getUser(id)
         } catch (e) {
