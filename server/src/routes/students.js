@@ -58,11 +58,11 @@ router.patch('/:id', bodyParser, async (req, res) => {
         console.log("Student controller patch req.body: " + JSON.stringify(req.body))
         const newStudent = await StudentService.update(req.params.id,JSON.stringify(req.body));
         if (newStudent == false)
-            res.status(304).json({message: "Unable to update student"})
+            res.status(404).json({message: "User not found"})
         else
             res.status(201).json(newStudent)
     }catch (err) {
-        res.status(400).json({ message: err.message});
+        res.status(500).json({ message: err.message});
     }
 });
 // DELETE ONE
