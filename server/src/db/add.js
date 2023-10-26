@@ -29,9 +29,10 @@ module.exports = {
      * @param {string} phone Phone number
      * @param {string} email Email
      * @param {string} longBio Descriptive bio
+     * @param {string} shortBio Short descriptive bio
      * @param {ImageData} profilePic Profile picture
      */
-    addUser: function addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, profilePic = null) {
+    addUser: function addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic = null) {
         const postData = {
             username: username,
             major: major,
@@ -62,9 +63,10 @@ module.exports = {
      * @param {string} phone Phone number
      * @param {string} email Email
      * @param {string} longBio Descriptive bio
+     * @param {string} shortBio Short descriptive bio
      * @param {ImageData} profilePic Profile picture
      */
-    addStudent: async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, rating = 0.00, profilePic = null) {
+    addStudent: async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio,shortBio, profilePic = null) {
         const postDataUser = {
             username: username,
             major: major,
