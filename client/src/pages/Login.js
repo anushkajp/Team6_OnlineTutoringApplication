@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 // need to add functionality with firebase auth
 // not completely responsive yet
 
-const Forgot = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,12 +17,12 @@ const Forgot = () => {
     navigate("/SignUpTutor");
   };
 
-  const navigateToLogin = () => {
-    navigate("/Login");
+  const navigateToTwoFactor = () => {
+    navigate("/TwoFactor");
   };
 
-  const handleButtonClick = () => {
-    alert("Email Sent!");
+  const navigateToForgot = () => {
+    navigate("/Forgot");
   };
 
   return (
@@ -48,12 +48,9 @@ const Forgot = () => {
                 Sign up today!
               </a>
             </p>
-            <p className="header-forgot">Forgot Password?</p>
-            <p className="header2-forgot">
-              Enter your email below to receive password reset instructions.
-            </p>
+            <p className="header">Hello Again!</p>
+            <p className="header2">Sign in to start learning</p>
 
-            <br></br>
             <br></br>
 
             <form className="fields-container">
@@ -67,22 +64,32 @@ const Forgot = () => {
               />
 
               <br></br>
+
+              <input
+                className="field"
+                placeholder="Enter Password"
+                type="password"
+                id="password"
+                name="password"
+                required
+              />
+
+              <br></br>
               <br></br>
 
               <button
                 className="login-button"
                 type="submit"
-                onClick={handleButtonClick}
+                onClick={navigateToTwoFactor}
               >
-                <p className="login-button-text">Submit</p>
+                <p className="login-button-text">Log in</p>
               </button>
             </form>
+            <br></br>
 
-            <br></br>
-            <br></br>
-              <a className="sign-up" onClick={navigateToLogin}>
-                  return to login?
-                </a>
+            <a className="sign-up" onClick={navigateToForgot}>
+              forgot password?
+            </a>
           </div>
         </div>
       </div>
@@ -90,4 +97,4 @@ const Forgot = () => {
   );
 };
 
-export default Forgot;
+export default Login;

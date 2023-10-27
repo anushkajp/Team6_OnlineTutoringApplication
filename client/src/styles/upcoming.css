@@ -1,0 +1,32 @@
+.upcomingPage{
+    display: flex;
+    justify-content: space-between;
+}
+
+.upcomingSession{
+    float:right;
+    width: 70%;
+    padding-right: 3%;
+}
+
+.switchView{
+    display: flex;
+    justify-content:flex-end;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+
+}
+
+a:active{
+    color: var(--primary-color); /* Change the link color when clicked */
+    text-decoration: none;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+  }
