@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Session = require("../models/session")
 const read = require('../db/read')
-const db = require ('../db/db')
 const add = require('../db/add')
-
+const {searchItem} = require ('../db/db')
+const deletes=require("../db/delete")
 class SessionService {
     // RETURNS ALL SESSIONS FROM ALL USERS
     static async getAll() {
@@ -34,7 +34,41 @@ class SessionService {
             throw err
         }
     }
-        
+    static async getByUser(id, path) {
+        try {
+            console.log("\n[ SessionService.getAppointments ]")
+            const user = await searchItem('User', 'username', id)
+            console.log("\nuser: " + JSON.stringify(user))
+            const userid = Object.keys(user)[0]
+            if (Object.keys(user).length === 0) {
+                return false
+            }
+            console.log("\nuserid: " + userid)
+            const appointments = await searchItem('Appointment', path, userid)
+            console.log("\nappointments: " + JSON.stringify(appointments))
+            return appointments
+            
+        }catch (e) {
+            throw e
+        }
+    }
+    // CREATE NEW APPOINTMENT
+    static async createAppointment(appInfo) {
+        try {
+            const data = JSON.parse(appInfo)
+            const appointment = add.addAppointment(data.tutorId, data.studentId, data.dateTime,
+                data.length, data.online, data.location, data.courses,
+                data.notes, data.rating, data.feedback)
+            console.log("\nappointment: " + JSON.stringify(appointment))
+            if (Object.keys(appointment).length > 0)
+                return appointment
+            else 
+                return false
+        }catch (e) {
+            throw e
+        }
+    }
+    // UPDATE EXISTING APPOINTMENT
     static async update(id) {
         try {
             const userid = Object.keys(await db.searchItem('Tutor', 'username', usernamem))[0]
