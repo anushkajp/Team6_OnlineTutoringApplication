@@ -143,6 +143,7 @@ async function searchItem(entity,child,matchValue,test=true){
       }
     } catch(error){
         console.error(error)
+        return false;
     }
     // query1=query(ref(db,path), orderByChild(child),equalTo(matchValue))
     // listener = onChildAdded(query1,)
