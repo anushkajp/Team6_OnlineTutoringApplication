@@ -3,11 +3,13 @@ import "./Login.css";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // no functionality yet, just UI
 // need to add functionality with firebase auth
 // not completely responsive yet
 
+//needs to be changed to fit Auth0
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +22,33 @@ const Login = () => {
 
   const navigateToTwoFactor = () => {
     navigate("/TwoFactor");
+  };
+
+  const handleLogin = async () => {
+    try {
+      // Make a POST request to send username and password
+      const response = await axios.post("http://localhost:8000/student/login", {
+        username: email,
+        password: password,
+      });
+
+      // Check the response status
+      if (response.status === 200) {
+        // Redirect to the TwoFactor page on success
+        navigateToTwoFactor();
+      } else {
+        // Handle other response codes as needed
+        setError("Invalid username or password.");
+      }
+    } catch (error) {
+      // Handle network errors or other exceptions
+      setError("An error occurred while logging in.");
+    }
+  };
+
+  const handleLoginButtonClick = (e) => {
+    e.preventDefault(); // Prevent the form from being submitted
+    handleLogin(); // Call the handleLogin function
   };
 
   return (
