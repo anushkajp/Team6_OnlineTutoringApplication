@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Sidebar from '../components/sidebar'
 import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
 //import "font-awesome/css/font-awesome.min.css";
@@ -33,10 +34,8 @@ function SearchTutor(props) {
   return (
     <div>
       <div className="main-container">
-        <div className="main-columns">
-          {/* <h2> First column </h2>
-          <p> This is First column of our grid system</p> */}
-        </div>
+      <Sidebar className="dbPageSidebar" renderType="student"></Sidebar>
+
         <div className="main-columns">
           {/* <h2> Second column </h2>
           <p> This is Second column of our grid system</p>
