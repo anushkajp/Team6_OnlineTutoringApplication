@@ -11,6 +11,7 @@
 
 .sidebar{
     float:left;
+    height: max-content;
 }
 
 .navbar ul {
