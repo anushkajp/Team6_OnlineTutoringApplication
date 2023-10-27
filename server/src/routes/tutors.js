@@ -26,29 +26,18 @@ router.get('/:id', async(req, res) => {
         res.status(500).json({ message: err.message});
     }
 });
-router.get('/:id/appointments', async(req,res) => {
-    try {
-        console.log("\n[ Tutor routes get all appointments ]")
-        const appointments = await TutorService.getAppointments(req.params.id)
-        if (appointments === null)
-            res.status(400).json({message: req.params.id + ' is not a valid id'})
-        else 
-            res.status(200).json(appointments)
-    }catch (err) {
-        res.status(500).json({ message: err.message});
-    }
-});
-router.get('/:id/availability', async(req,res) => {
-    try {
-        const availability = TutorService.getAvailability(req.params.id)
-        if (availability == null)
-            res.status(400).json({message: req.params.id + ' is not a valid id'})
-        else 
-            res.status(200).json(availability)
-    }catch (err) {
-        res.status(500).json({ message: err.message});
-    }
-});
+
+// router.get('/:id/availability', async(req,res) => {
+//     try {
+//         const availability = TutorService.getAvailability(req.params.id)
+//         if (availability == null)
+//             res.status(400).json({message: req.params.id + ' is not a valid id'})
+//         else 
+//             res.status(200).json(availability)
+//     }catch (err) {
+//         res.status(500).json({ message: err.message});
+//     }
+// });
 // CREATE ONE
 router.post('/', bodyParser, async(req, res) => {
 
