@@ -3,26 +3,15 @@ const router = express.Router();
 const read = require("../db/read")
 const update = require ('../db/update')
 const add = require ('../db/add')
-const db = require ('../db/db')
+const {searchItem} = require ('../db/db')
 const deletes=require("../db/delete")
        
 class TutorService {
-    // GENERIC FIND TUTOR FUNCTION
-    static async findUser(id) {
-        const PATH = 'Tutor'
-        const ATTRIBUTE = 'username'
-        const user = await db.searchItem(PATH, ATTRIBUTE, id)
-        if (Objects.keys(user).length === 0) {
-            console.log("[ ERROR ] User not found")
-            return false
-        }
-        return user
-    }
     // GET ALL
     static async getAll() {
         // IF DB CAN FIND ID RETURN TUTOR OBJECT
         try {
-            const tutors = await getTutors()
+            const tutors = await read.getTutors()
             console.log("TutorService.getTutors() = " + tutors)
             return tutors
         }catch (err) {
@@ -34,11 +23,11 @@ class TutorService {
         try {
 
             console.log("\n[ TutorService.getone ]\n")
-            const PATH = 'Tutor'
+            const PATH = 'User'
             const ATTRIBUTE = 'username'
 
             // SEARCH FOR USER W USERNAME
-            const search = await db.searchItem(PATH, ATTRIBUTE, id)
+            const search = await searchItem(PATH, ATTRIBUTE, id)
             console.log(await search)
             
             // USER FOUND
@@ -54,23 +43,8 @@ class TutorService {
         }
         
     }
-    // GET ALL APPOINTMENTS BASED ON TUTOR
-    static async getAppointments(id) {
-        try {
-            console.log("\n[ TutorService.getAppointments ]")
-            const user = await db.searchItem('Tutor', 'username', id)
-            const userid = Object.keys(user)[0]
-            if (Object.keys(user).length === 0) {
-                return false
-            }
-            const appointments = db.searchItem('Appointment', 'tutorId', userid)
-            return appointments
-            
-        }catch (e) {
-            throw e
-        }
-    }
-    // GET ALL AVAILABILITY BASED ON TUTOR
+    
+
     // POST
     static async create(tutordata) {
         try {
@@ -80,7 +54,7 @@ class TutorService {
             const ATTRIBUTE = 'username'
 
             // SEARCH FOR USER W USERNAME
-            const search = await db.searchItem(PATH, ATTRIBUTE, id)
+            const search = await searchItem(PATH, ATTRIBUTE, id)
             console.log(await search)
 
             // USER FOUND
@@ -106,10 +80,22 @@ class TutorService {
             throw e
         }
     }
-    static async createAppointment (username, appointment) {
+    // GET ALL APPOINTMENTS BASED ON TUTOR
+    static async createAppointment(id, appInfo) {
         try {
-            const user = await db.searchItem('Tutor', 'username', username)
-            if (user)
+            console.log("\n[ TutorService.createAppointments ]")
+            const user = await searchItem('User', 'username', id)
+            const userid = Object.keys(user)[0]
+            console.log("Userid: " + userid)
+            if (Object.keys(user).length === 0) {
+                return false
+            }
+            const data = JSON.parse(appInfo)
+            const appointment = add.addAppointment(userid, data.studentId, data.dateTime,
+                data.length, data.online, data.location, data.courses,
+                data.notes, data.rating, data.feedback)
+            console.log("\nappointment: " + JSON.stringify(appointment))
+            return appointment
         }catch (e) {
             throw e
         }
@@ -162,8 +148,8 @@ class TutorService {
             const ATTRIBUTE = 'username'
             console.log("\nTutorService.delete")
             
-            // const search = JSON.parse(await db.searchItem(PATH, ATTRIBUTE, id))
-            const search = await db.searchItem(PATH, ATTRIBUTE, id)
+            // const search = JSON.parse(await searchItem(PATH, ATTRIBUTE, id))
+            const search = await searchItem(PATH, ATTRIBUTE, id)
             console.log("Username: " + Object.keys(search)[0])
             if (Object.keys(search).length > 0) {
                 deletes.deleteUser(Object.keys(search)[0])

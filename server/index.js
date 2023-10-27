@@ -14,11 +14,12 @@ const PORT = 8000;
 const cors = require('cors'); 
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 const corsOptions = {
-    origin: 'http://localhost:3000', // Replace with the actual URL of your frontend
-    methods: 'GET,PATCH,POST,DELETE',
-    optionsSuccessStatus: 204, // Some legacy browsers (e.g., IE11) may not understand a 204 status
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Include OPTIONS method
+    optionsSuccessStatus: 204,
 };
 app.use(cors(corsOptions));
+
 app.get("/testInfo", (req, res) => {
 
     (async () => {
@@ -31,8 +32,11 @@ app.get("/testInfo", (req, res) => {
         const major = await reads.getMajors()
         const course = await reads.getCourses()
         const review = await reads.getReviews()
-        const search = await searchItem("User","username","desreee")
-        console.log(await search)
+        const search = await searchItem("User","username","bibilivesagain")
+        // console.log(await search())
+        // for (i in searchItem("Tutor","courses", courseId)){
+        //     console.log(i)
+        // }
         res.send({
             // for testing
             data: {
@@ -59,18 +63,67 @@ app.get("/testInfo", (req, res) => {
 app.get("/testPost", (req, res) => {
 
     (async () => {
-        dateAvailable = new Date().toTimeString()
-        const tutor = await adds.addTutor("Bibi","Bamble","Duke","saltedhash","bibi4eva","Computer Science",[],"1233211234","bibi4eva@gmail.com","Long Bio","short bio",[dateAvailable],[],null,5,true,5)
-        tutorId = await tutor["id"]
-        const student = await adds.addStudent("Jason","Hemroid","Stevens","Jackintheboxmmm","jroid92","Mechanical Enginneering",[],"1233211234","jroid92@gmail.com","London bridge wouldnt have fallen on my watch. Always hustling")
-        studentId =await student["id"]
+
         // updates.updateUsername("-NgePx3To2rYbOgfYW_g", null)
         const major = await adds.addMajor("Computer Science")
-        majorId =await major["id"]
+        const majorId =await major["id"]
         const course = await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
-        const review = await adds.addReview(tutorId,studentId,0,"")
-        reviewId =await review["id"]
-        const appointment = await adds.addAppointment(tutorId,studentId,dateAvailable,10,true,"www.google.com","",0,reviewId)
+
+
+        
+
+
+        const dateAvailable = new Date().toTimeString()
+        const tutor = await adds.addTutor("Bibi",
+                                            "Bamble",
+                                            "Duke",
+                                            "saltedhash",
+                                            "bibi4eva",
+                                            majorId,
+                                            [],
+                                            "1233211234",
+                                            "bibi4eva@gmail.com",
+                                            "Long Bio",
+                                            "short bio",
+                                            [dateAvailable,dateAvailable],
+                                            [],
+                                            null,
+                                            5,
+                                            true,
+                                            5
+                                            )
+        const tutorId = await tutor["id"]
+        const student = await adds.addStudent("Jason",
+                                                "Hemroid",
+                                                "Stevens",
+                                                "Jackintheboxmmm",
+                                                "jroid92",
+                                                majorId,
+                                                [],
+                                                "1233211234",
+                                                "jroid92@gmail.com",
+                                                "London bridge wouldnt have fallen on my watch. Always hustling",
+                                                "short bio",
+                                                null
+                                                )
+        const studentId =await student["id"]
+        const review = await adds.addReview(tutorId,
+                                            studentId,
+                                            0,
+                                            "description"
+                                            )
+        const reviewId =await review["id"]
+        const appointment = await adds.addAppointment(tutorId,
+                                                        studentId,
+                                                        dateAvailable,
+                                                        10,
+                                                        true,
+                                                        "www.google.com",
+                                                        [],
+                                                        "",
+                                                        0,
+                                                        "feedback"
+                                                        )
         // for(i in await searchItem("User","username","deedee")){
         //     deletes.deleteUser(i)
         // }
@@ -147,6 +200,6 @@ const reviewRouter = require('./src/routes/reviews')
 const availabilityRouter = require('./src/routes/availability')
 app.use('/tutor', tutorRouter)
 app.use('/student', studentRouter)
-app.use('/session', sessionRouter)
+app.use('/appointments', sessionRouter)
 app.use('/session/review', reviewRouter)
 app.use('/tutor/availability', availabilityRouter)
