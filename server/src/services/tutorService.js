@@ -7,17 +7,6 @@ const db = require ('../db/db')
 const deletes=require("../db/delete")
        
 class TutorService {
-    // GENERIC FIND TUTOR FUNCTION
-    static async findUser(id) {
-        const PATH = 'Tutor'
-        const ATTRIBUTE = 'username'
-        const user = await db.searchItem(PATH, ATTRIBUTE, id)
-        if (Objects.keys(user).length === 0) {
-            console.log("[ ERROR ] User not found")
-            return false
-        }
-        return user
-    }
     // GET ALL
     static async getAll() {
         // IF DB CAN FIND ID RETURN TUTOR OBJECT
