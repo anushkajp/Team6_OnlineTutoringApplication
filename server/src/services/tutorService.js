@@ -3,7 +3,7 @@ const router = express.Router();
 const read = require("../db/read")
 const update = require ('../db/update')
 const add = require ('../db/add')
-const db = require ('../db/db')
+const {searchItem} = require ('../db/db')
 const deletes=require("../db/delete")
        
 class TutorService {
@@ -23,11 +23,11 @@ class TutorService {
         try {
 
             console.log("\n[ TutorService.getone ]\n")
-            const PATH = 'Tutor'
+            const PATH = 'User'
             const ATTRIBUTE = 'username'
 
             // SEARCH FOR USER W USERNAME
-            const search = await db.searchItem(PATH, ATTRIBUTE, id)
+            const search = await searchItem(PATH, ATTRIBUTE, id)
             console.log(await search)
             
             // USER FOUND
@@ -47,12 +47,15 @@ class TutorService {
     static async getAppointments(id) {
         try {
             console.log("\n[ TutorService.getAppointments ]")
-            const user = await db.searchItem('Tutor', 'username', id)
+            const user = await searchItem('User', 'username', id)
+            console.log("\nuser: " + JSON.stringify(user))
             const userid = Object.keys(user)[0]
             if (Object.keys(user).length === 0) {
                 return false
             }
-            const appointments = db.searchItem('Appointment', 'tutorId', userid)
+            console.log("\nuserid: " + userid)
+            const appointments = await searchItem('Appointment', 'tutorId', userid)
+            console.log("\nappointments: " + JSON.stringify(appointments))
             return appointments
             
         }catch (e) {
@@ -70,7 +73,7 @@ class TutorService {
             const ATTRIBUTE = 'username'
 
             // SEARCH FOR USER W USERNAME
-            const search = await db.searchItem(PATH, ATTRIBUTE, id)
+            const search = await searchItem(PATH, ATTRIBUTE, id)
             console.log(await search)
 
             // USER FOUND
@@ -99,17 +102,18 @@ class TutorService {
     // GET ALL APPOINTMENTS BASED ON TUTOR
     static async createAppointment(id, appInfo) {
         try {
-            console.log("\n[ TutorService.getAppointments ]")
-            const user = await db.searchItem('Tutor', 'username', id)
+            console.log("\n[ TutorService.createAppointments ]")
+            const user = await searchItem('User', 'username', id)
             const userid = Object.keys(user)[0]
             console.log("Userid: " + userid)
             if (Object.keys(user).length === 0) {
                 return false
             }
-            const appointment = add.addAppointment(userid, appInfo.studentId, appInfo.dateTime,
-                appInfo.length, appInfo.online, appInfo.location, appInfo.courses,
-                appInfo.notes, appInfo.rating, appInfo.feedback)
-                console.log("\nappointment: " + appointment)
+            const data = JSON.parse(appInfo)
+            const appointment = add.addAppointment(userid, data.studentId, data.dateTime,
+                data.length, data.online, data.location, data.courses,
+                data.notes, data.rating, data.feedback)
+            console.log("\nappointment: " + JSON.stringify(appointment))
             return appointment
         }catch (e) {
             throw e
@@ -163,8 +167,8 @@ class TutorService {
             const ATTRIBUTE = 'username'
             console.log("\nTutorService.delete")
             
-            // const search = JSON.parse(await db.searchItem(PATH, ATTRIBUTE, id))
-            const search = await db.searchItem(PATH, ATTRIBUTE, id)
+            // const search = JSON.parse(await searchItem(PATH, ATTRIBUTE, id))
+            const search = await searchItem(PATH, ATTRIBUTE, id)
             console.log("Username: " + Object.keys(search)[0])
             if (Object.keys(search).length > 0) {
                 deletes.deleteUser(Object.keys(search)[0])
