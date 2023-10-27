@@ -9,6 +9,11 @@
     margin: 20px;
 }
 
+.sidebar{
+    float:left;
+    height: max-content;
+}
+
 .navbar ul {
     list-style-type: none;
     padding: 0;
