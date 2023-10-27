@@ -32,7 +32,7 @@ app.get("/testInfo", (req, res) => {
         const major = await reads.getMajors()
         const course = await reads.getCourses()
         const review = await reads.getReviews()
-        // const search = await searchItem("User","username","bibilivesagain")
+        const search = await searchItem("User","username","bibilivesagain")
         // console.log(await search())
         // for (i in searchItem("Tutor","courses", courseId)){
         //     console.log(i)

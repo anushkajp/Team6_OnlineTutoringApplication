@@ -28,8 +28,9 @@ router.get('/:id', async(req, res) => {
 });
 router.get('/:id/appointments', async(req,res) => {
     try {
-        const appointments = TutorService.getAppointments(req.params.id)
-        if (appointments == null)
+        console.log("\n[ Tutor routes get all appointments ]")
+        const appointments = await TutorService.getAppointments(req.params.id)
+        if (appointments === null)
             res.status(400).json({message: req.params.id + ' is not a valid id'})
         else 
             res.status(200).json(appointments)
@@ -57,6 +58,20 @@ router.post('/', bodyParser, async(req, res) => {
             res.status(400).json({message: 'Unable to create tutor object'})
         else 
             res.status(201).json(newTutor)
+    }catch (err) {
+        res.status(500).json({ message: err.message});
+    }
+});
+// TUTOR CREATE NEW APPOINTMENT
+router.post('/:id/appointments', bodyParser, async(req, res) => {
+
+    try {
+        console.log("\n[ Tutor routes get all appointments ]")
+        const appointment = await TutorService.createAppointment(req.params.id, JSON.stringify(req.body))
+        if (appointment === null)
+            res.status(400).json({message: req.params.id + ' is not a valid id'})
+        else 
+            res.status(200).json(appointment)
     }catch (err) {
         res.status(500).json({ message: err.message});
     }
