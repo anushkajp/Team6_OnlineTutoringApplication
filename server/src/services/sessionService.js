@@ -34,7 +34,6 @@ class SessionService {
             throw err
         }
     }
-    static create(username, appointmetnInfo) {
         try {
             const userid = Object.keys(await db.searchItem('Tutor', 'username', usernamem))[0]
             if (userid == null) {

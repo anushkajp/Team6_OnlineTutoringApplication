@@ -9,6 +9,8 @@ module.exports = {
     updateUsername: async function updateUsername(userId, newUsername) {
         return modifyItem("User",userId,"username", newUsername)
     },
+
+
     /**
      * Update the major for a user
      * @param {string} userId Database id for the user
@@ -17,6 +19,8 @@ module.exports = {
     updateUserMajor: async function updateUserMajor(userId, newMajorId) {
         return modifyItem("User",userId,"major", newMajorId)
     },
+
+
     /**
      * Update the phone number for a user
      * @param {string} userId Database id for the user
@@ -25,6 +29,8 @@ module.exports = {
     updateUserPhone: async function updateUserPhone(userId, newPhone) {
         return modifyItem("User",userId,"phone", newPhone)
     },
+
+
     /**
      * Update the email for a user
      * @param {string} userId Database id for the user
@@ -33,14 +39,28 @@ module.exports = {
     updateUserEmail: async function updateUserEmail(userId, newEmail) {
         return modifyItem("User",userId,"email", newEmail)
     },
+
+
         /**
      * Update the longbio for a user
      * @param {string} userId Database id for the user
      * @param {string} newLongBio New phone number for the user
      */
-    updateUserBio: async function updateUserBio(userId, newLongBio) {
+    updateUserLongBio: async function updateUserLongBio(userId, newLongBio) {
         return modifyItem("User",userId,"longBio", newLongBio)
     },
+
+
+    /**
+     * Update the shortbio for a user
+     * @param {string} userId Database id for the user
+     * @param {string} newShortBio New user short bio
+     */
+    updateUserShortBio: async function updateUserShortBio(userId, newShortBio) {
+        return modifyItem("User",userId,"shortBio", newShortBio)
+    },
+
+
         /**
      * Update the password hash for a user
      * @param {string} userId Database id for the user
@@ -49,16 +69,10 @@ module.exports = {
     updateUserPassword: async function updateUserPassword(userId, newPasswordHash) {
         return modifyItem("User",userId,"password", newPasswordHash)
     },
+
+
     /**
-     * Update the user rating
-     * @param {string} userId Database id for the user
-     * @param {number} newRating New rating for the user
-     */
-    updateUserRating: async function updateUserRating(userId, newRating) {
-        return modifyItem("User",userId,"rating", newRating)
-    },
-        /**
-     * Update the user rating
+     * Update the user profile picture
      * @param {string} userId Database id for the user
      * @param {ImageData} newProfilePic New profile picture for the user
      */
@@ -66,14 +80,18 @@ module.exports = {
         return modifyItem("User",userId,"profilePic", newProfilePic)
     },
 
+
+    
     /**
-     * Update tutor bio
-     * @param {string} tutorId Database id for the tutor
-     * @param {string} newTutorBio New tutor bio
+     * Update the user courses
+     * @param {string} userId Database id for the user
+     * @param {Array<string>} newUserCourses New array with courseIds
      */
-    updateTutorBio: async function updateTutorBio(tutorId, newTutorBio) {
-        return modifyItem("Tutor",tutorId,"shortBio", newTutorBio)
+    updateUserCourses: async function updateUserCourses(userId, newUserCourses){
+        return modifyItem("User",userId,"courses",newUserCourses)
     },
+
+
     /**
      * Update the tutor background check
      * @param {string} tutorId Database id for the user
@@ -83,6 +101,8 @@ module.exports = {
         return modifyItem("Tutor",tutorId,"backgroundCheck", newBkgrCheck)
 
     },
+
+
     /**
      * Update the tutor hours
      * @param {string} tutorId Database id for the user
@@ -91,6 +111,18 @@ module.exports = {
     updateTutorHours: async function updateTutorHours(tutorId, newTotalHours) {
         return modifyItem("Tutor",tutorId,"totalHours", newTotalHours)
     },
+
+
+        /**
+     * Update the user rating
+     * @param {string} userId Database id for the user
+     * @param {number} newRating New rating for the user
+     */
+        updateTutorRating: async function updateTutorRating(userId, newRating) {
+            return modifyItem("Tutor",userId,"rating", newRating)
+        },
+
+
     /**
      * Update the tutors weekly availability
      * @param {string} tutorId Database id for the user
@@ -99,6 +131,8 @@ module.exports = {
     updateTutorWeeklyAvail: async function updateTutorWeeklyAvail(tutorId, newWeeklyAvail) {
         return modifyItem("Tutor",tutorId,"weeklyAvailability", newWeeklyAvail)
     },
+
+
     /**
      * Update the tutors availability exception dates
      * @param {string} tutorId Database id for the user
@@ -107,6 +141,9 @@ module.exports = {
     updateTutorExceptAvail: async function updateTutorExceptAvail(tutorId, newExceptionsAvailability) {
         return modifyItem("Tutor",tutorId,"exceptionsAvailability", newExceptionsAvailability)
     },
+
+
+
     /**
      * Update the major name
      * @param {string} majorId Database id for the major
@@ -115,6 +152,9 @@ module.exports = {
     updateMajorName: async function updateMajorName(majorId,newMajorName){
         return modifyItem("Major",majorId,"majorName", newMajorName)
     },
+
+
+
     /**
      * Update the course name
      * @param {string} courseId Database id for the course
@@ -123,6 +163,8 @@ module.exports = {
     updateCourseName: async function updateCourseName(courseId, newCourseName) {
         return modifyItem("Course",courseId,"courseName", newCourseName)
     },
+
+
     /**
      * Update the course number
      * @param {string} courseId Database id for the cours
@@ -132,6 +174,8 @@ module.exports = {
         return modifyItem("Course",courseId,"courseNumber", newCourseNumber)
 
     },
+
+
     /**
      * Update the course credit hours
      * @param {string} courseId Database id for the cours
@@ -140,6 +184,9 @@ module.exports = {
     updateCourseCrdHours: async function updateCourseCrdHours(courseId, newCreditHours) {
         return modifyItem("Course",courseId,"creditHours", newCreditHours)
     },
+
+
+
     /**
      * Update the appointment start date and time
      * @param {string} appointmentId Database id for the appointment
@@ -148,6 +195,8 @@ module.exports = {
     updateAppDateTime: async function updateAppDateTime(appointmentId, newDateTime){
         return modifyItem("Appointment",appointmentId,"dateTime",newDateTime)
     },
+
+
         /**
      * Update the appointment length in minutes
      * @param {string} appointmentId Database id for the appointment
@@ -156,6 +205,8 @@ module.exports = {
     updateAppLength: async function updateAppLength(appointmentId, newLength){
         return modifyItem("Appointment",appointmentId,"length",newLength)
     },
+
+
     /**
      * Update the appointment medium, online or not
      * @param {string} appointmentId Database id for the appointment
@@ -164,6 +215,8 @@ module.exports = {
     updateAppMedium: async function updateAppMedium(appointmentId, newOnline){
         return modifyItem("Appointment",appointmentId,"online",newOnline)
     },
+
+
     /**
      * Update the appointment location
      * @param {string} appointmentId Database id for the appointment
@@ -172,6 +225,8 @@ module.exports = {
     updateAppLocation: async function updateAppLocation(appointmentId, newLocation){
         return modifyItem("Appointment",appointmentId,"location",newLocation)
     },
+
+
     /**
      * Update the appointment notes
      * @param {string} appointmentId Database id for the appointment
@@ -180,6 +235,8 @@ module.exports = {
     updateAppNotes: async function updateAppNotes(appointmentId, newNotes){
         return modifyItem("Appointment",appointmentId,"notes",newNotes)
     },
+
+
     /**
      * Update the appointment notes
      * @param {string} appointmentId Database id for the appointment
@@ -188,14 +245,18 @@ module.exports = {
     updateAppRating: async function updateRating(appointmentId, newRating){
         return modifyItem("Appointment",appointmentId,"rating",newRating)
     },
+
+
     /**
      * Update the appointment notes
      * @param {string} appointmentId Database id for the appointment
-     * @param {string} newReview New appointment review
+     * @param {string} newFeedback New appointment feedback
      */
-    updateAppReview: async function updateAppReview(appointmentId, newReview){
-        return modifyItem("Appointment",appointmentId,"review",newReview)
+    updateAppReview: async function updateAppReview(appointmentId, newFeedback){
+        return modifyItem("Appointment",appointmentId,"feedback",newFeedback)
     },
+
+
     /**
      * Update the appointment notes
      * @param {string} appointmentId Database id for the appointment
