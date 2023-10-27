@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Availability = require('../models/availability')
 const AvailabilityService = require('../services/availabilityService')
+bodyParser = require('body-parser').json();
+
 // GET ALL
 router.get('/', (req, res) => {
     try {
@@ -28,7 +30,7 @@ router.get('/:id', async(req, res) => {
     }
 });
 // CREATE ONE
-router.post('/', async(req, res) => {
+router.post('/', bodyParser, async(req, res) => {
     const availability = new availability({
         week: req.params.week,
         exceptions: req.params.exceptions
