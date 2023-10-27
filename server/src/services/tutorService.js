@@ -11,7 +11,7 @@ class TutorService {
     static async getAll() {
         // IF DB CAN FIND ID RETURN TUTOR OBJECT
         try {
-            const tutors = await getTutors()
+            const tutors = await read.getTutors()
             console.log("TutorService.getTutors() = " + tutors)
             return tutors
         }catch (err) {
@@ -59,7 +59,8 @@ class TutorService {
             throw e
         }
     }
-    // GET ALL AVAILABILITY BASED ON TUTOR
+    
+
     // POST
     static async create(tutordata) {
         try {
@@ -95,10 +96,21 @@ class TutorService {
             throw e
         }
     }
-    static async createAppointment (username, appointment) {
+    // GET ALL APPOINTMENTS BASED ON TUTOR
+    static async createAppointment(id, appInfo) {
         try {
-            const user = await db.searchItem('Tutor', 'username', username)
-            if (user)
+            console.log("\n[ TutorService.getAppointments ]")
+            const user = await db.searchItem('Tutor', 'username', id)
+            const userid = Object.keys(user)[0]
+            console.log("Userid: " + userid)
+            if (Object.keys(user).length === 0) {
+                return false
+            }
+            const appointment = add.addAppointment(userid, appInfo.studentId, appInfo.dateTime,
+                appInfo.length, appInfo.online, appInfo.location, appInfo.courses,
+                appInfo.notes, appInfo.rating, appInfo.feedback)
+                console.log("\nappointment: " + appointment)
+            return appointment
         }catch (e) {
             throw e
         }
