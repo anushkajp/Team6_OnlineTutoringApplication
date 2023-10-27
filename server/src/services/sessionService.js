@@ -34,7 +34,8 @@ class SessionService {
             throw err
         }
     }
-    static create(username, appointmetnInfo) {
+        
+    static async update(id) {
         try {
             const userid = Object.keys(await db.searchItem('Tutor', 'username', usernamem))[0]
             if (userid == null) {
@@ -48,9 +49,6 @@ class SessionService {
         }catch (e) {
             throw e
         }
-    }
-    static update(id) {
-        return null
     }
     static delete(id) {
         return null;

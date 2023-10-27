@@ -14,11 +14,12 @@ const PORT = 8000;
 const cors = require('cors'); 
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 const corsOptions = {
-    origin: 'http://localhost:3000', // Replace with the actual URL of your frontend
-    methods: 'GET,PATCH,POST,DELETE',
-    optionsSuccessStatus: 204, // Some legacy browsers (e.g., IE11) may not understand a 204 status
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Include OPTIONS method
+    optionsSuccessStatus: 204,
 };
 app.use(cors(corsOptions));
+
 app.get("/testInfo", (req, res) => {
 
     (async () => {
