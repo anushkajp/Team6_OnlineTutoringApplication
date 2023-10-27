@@ -22,8 +22,8 @@
 
 .profile_photo{
     border-radius: 50%; 
-    height: 400px;
-    width: 400px;
+    height: 350px;
+    width: 350px;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -43,6 +43,10 @@ h5{
     font-size: 17px;
     font-style: normal;
     font-weight: 400;
+}
+
+h4{
+  font-size: 15px;
 }
 
 h3{
