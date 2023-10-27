@@ -42,7 +42,6 @@ module.exports = {
     },
 
     deleteCourse:async function deleteCourse(courseId) {
-
         return addItem("Course", null,courseId)
     },
 
