@@ -2,19 +2,21 @@ import React from "react";
 import "./Calendar.css";
 
 const CalendarEvent = (props) => {
-  const sessions_info = props.sessions[props.date]; // Get the sessions for the specific date
+  const events = props.sessions[props.date];
 
-  if (!sessions_info) {
-    return null; // If no sessions for the date, return null
+  if (!events) {
+    return null;
   }
+
+  const eventArray = Array.isArray(events) ? events : [events];
 
   return (
     <div>
-      {Object.entries(sessions_info).map(([date, session]) => (
-        <div className="calendar-box" key={date}>
-          <time>{session.time}</time>
-          <p>{session.coursename}</p> {/* Use lowercase tag name */}
-          <p>{session.student}</p> {/* Use lowercase tag name */}
+      {eventArray.map((event, index) => (
+        <div className="calendar-box" key={index}>
+          <time>{event.time}</time>
+          <course-name>{event.coursename}</course-name>
+          <person>{event.student}</person>
         </div>
       ))}
     </div>

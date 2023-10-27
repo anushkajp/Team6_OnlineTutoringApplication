@@ -28,21 +28,18 @@ class CalendarPage extends Component {
     this.state = {
       currentDay: new Date(),
       sessions: {
-        "October 7, 2023": {
-          // Use the same date format
+        "10/7/2023": {
           time: "12:30",
           coursename: "AP Computer Science",
           student: "Best Student 22",
           tutor: "1",
         },
-        "October 8, 2023": {
-          // Use the same date format
+        "10/8/2023": {
           time: "11:00",
           coursename: "Discrete Math",
           student: "Top Student 23",
           tutor: "2",
         },
-        // Add more events for other days with the same date format
       },
     };
   }

@@ -17,7 +17,7 @@ import "./styles/TwoFactor.css";
 import "./styles/Login.css";
 import "./styles/reviewtile.css";
 import "./styles/tutor_reports.css";
-
+import "./pages/Calendar.css";
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";

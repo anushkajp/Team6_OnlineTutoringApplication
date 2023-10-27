@@ -38,9 +38,6 @@ function CalendarDays(props) {
     <div className="table-content">
       {currentDays.map((day) => {
         const dateKey = `${day.month + 1}/${day.number}/${day.year}`;
-        const sessionInfo = props.sessions[dateKey];
-        console.log("dateKey: ", dateKey);
-        console.log("sessionInfo: ", sessionInfo);
         return (
           <div
             className={
@@ -52,7 +49,7 @@ function CalendarDays(props) {
             key={`${day.month}-${day.number}-${day.year}`}
           >
             <p>{day.number}</p>
-            {sessionInfo && (
+            {props.sessions[dateKey] && (
               <CalendarEvent date={dateKey} sessions={props.sessions} />
             )}
           </div>

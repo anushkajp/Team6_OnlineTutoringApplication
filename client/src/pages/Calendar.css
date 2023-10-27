@@ -64,7 +64,7 @@
 }
 
 .calendar-day {
-  width: 175px;
+  width: 125px;
   height: 120px;
   position: relative;
   border: 1px solid #a6a6a6;
@@ -117,23 +117,28 @@
 }
 
 .calendar-box {
+  margin-top: 5px;
+  margin-left: 5px;
   border-radius: 5px;
   border: 2px solid #f2b9f3;
   background: rgba(242, 185, 243, 0.05);
-  width: 104px;
+  width: 90px;
   height: 81px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 5;
 }
 
 .calendar-box time {
   display: inline-flex;
   height: 20px;
+  width: 50px;
   padding: 0px 7px;
   align-items: center;
   gap: 10px;
+  justify-content: center;
   flex-shrink: 0;
   border-radius: 10px;
   background: #f2b9f3;
@@ -155,19 +160,19 @@
   font-style: normal;
   font-weight: 700;
   line-height: 10px;
-  width: 84px;
+  width: 50px;
   margin-bottom: 5px;
+  height: 10px;
 }
 
 .calendar-box person {
   color: #000;
-  text-align: right;
   font-family: Montserrat;
-  font-size: 9px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
-  width: 71.915px;
-  height: 7.108px;
-  flex-shrink: 0;
+  line-height: 10px;
+  width: 50px;
+  margin-bottom: 5px;
+  height: 10px;
 }
