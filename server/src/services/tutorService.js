@@ -43,25 +43,6 @@ class TutorService {
         }
         
     }
-    // GET ALL APPOINTMENTS BASED ON TUTOR
-    static async getAppointments(id) {
-        try {
-            console.log("\n[ TutorService.getAppointments ]")
-            const user = await searchItem('User', 'username', id)
-            console.log("\nuser: " + JSON.stringify(user))
-            const userid = Object.keys(user)[0]
-            if (Object.keys(user).length === 0) {
-                return false
-            }
-            console.log("\nuserid: " + userid)
-            const appointments = await searchItem('Appointment', 'tutorId', userid)
-            console.log("\nappointments: " + JSON.stringify(appointments))
-            return appointments
-            
-        }catch (e) {
-            throw e
-        }
-    }
     
 
     // POST
