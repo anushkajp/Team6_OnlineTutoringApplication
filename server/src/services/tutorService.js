@@ -14,7 +14,7 @@ class TutorService {
             const tutors = await read.getTutors()
             console.log("TutorService.getTutors() = " + tutors)
             return tutors
-        }catch (err) {
+        } catch (err) {
             throw err
         }
     }

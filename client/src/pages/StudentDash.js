@@ -4,6 +4,49 @@ import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
 
 const StudentDash = () => {
+
+  const favoriteTutors = [
+    "Diana Le",
+    "Anushka Pimple",
+    "Ryan Lahlou",
+    "Tommy Cheung"
+  ]
+
+  const sampleJSON = [
+    {
+      "class_name": "AP Computer Science A",
+      "student_name": "Anushka P",
+      "session_time": "3:00 PM Tuesday",
+      "session_rating": 4,
+      "session_comments": "TutorTopia rules"
+    },
+    {
+      "class_name": "Physics 101",
+      "student_name": "John D",
+      "session_time": "10:30 AM Wednesday",
+      "session_comments": "comment1"
+    },
+    {
+      "class_name": "Biology Lab",
+      "student_name": "Samantha L",
+      "session_time": "2:15 PM Monday",
+      "session_comments": "comment2"
+    },
+    {
+      "class_name": "Mathematics Advanced",
+      "student_name": "David S",
+      "session_time": "11:00 AM Thursday",
+      "session_comments": "comment3"
+    },
+    {
+      "class_name": "History of Art",
+      "student_name": "Emily B",
+      "session_time": "4:45 PM Friday",
+      "session_rating": 4,
+      "session_comments": "comment4"
+    }
+  ]
+
   return (
     <div className="dashboardPage">
       <Sidebar className="dbPageSidebar" renderType="student"></Sidebar>
@@ -34,15 +77,30 @@ const StudentDash = () => {
             </div>
             <div className="bottom_div">
               <DashboardTile cln="sessiontiles" title="Upcoming Sessions">
-                  <SessionTile></SessionTile>
-                  <SessionTile></SessionTile>
-                  <SessionTile></SessionTile>
-                  <SessionTile></SessionTile>
+                  {
+                    sampleJSON.slice(0,4).map((review, index) => (
+                      <SessionTile key={index} class_name={review.class_name}
+                      student_name={review.student_name}
+                      session_time={review.session_time}
+                      session_comments={review.session_comments}>
+                      </SessionTile>
+                    ))
+                  }
               </DashboardTile>
             </div>
           </div>
           <div className="right_div">
-              <DashboardTile title="My favorite tutors">Loading...</DashboardTile>
+              <DashboardTile title="My favorite tutors">
+                  <div className="favorites">
+                    {
+                      favoriteTutors.map((review, index) => (
+                        <div className="tutortile" key={index} >
+                            <h3 className="reviewTutor">{review}</h3>
+                        </div>
+                      ))
+                    }
+                  </div>
+              </DashboardTile>
           </div>
       </div>
     </div>
