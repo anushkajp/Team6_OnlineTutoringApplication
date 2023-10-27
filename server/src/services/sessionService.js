@@ -1,28 +1,35 @@
 const express = require("express");
 const router = express.Router();
 const Session = require("../models/session")
-const {getAppointment, getAppointments, getUserIds} = require('../db/read')
+const read = require('../db/read')
 
 class SessionService {
-    static getAll() {
+    // RETURNS ALL SESSIONS FROM ALL USERS
+    static async getAll() {
         try {
-            const session = new Session()
-            session = getAppointments()
-            return session
+            console.log("\n[ SessionService.getAll ]\n")
+            const sessions = await read.getAppointments()
+            return sessions
         } catch (err) {
-            return err
+            throw err
         }
     }
-    static getOne(id) {
+    // RETURNS SPECIFIC SESSION BY SESSION ID
+    static async getOne(id) {
         try {
-            const session = new Session()
-            const sessions = getUserIds()
-            console.log(sessions)
-            sessions = JSON.stringify(sessions)
-            session = getAppointment(id)
-            return session
+            console.log("\n[ SessionService.getOne ]\n")
+            const session = await read.getAppointment(id)
+
+            // SESSION FOUND
+            if (Object.keys(session).length > 0)
+                return session
+
+            // SESSION NOT FOUND
+            else 
+                return false
+
         }catch (err){
-            return err
+            throw err
         }
     }
     static create(id) {
