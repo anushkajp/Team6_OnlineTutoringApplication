@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Tutor = require("../models/tutor")
 const read = require("../db/read")
 const update = require ('../db/update')
 const add = require ('../db/add')
@@ -8,6 +7,17 @@ const db = require ('../db/db')
 const deletes=require("../db/delete")
        
 class TutorService {
+    // GENERIC FIND TUTOR FUNCTION
+    static async findUser(id) {
+        const PATH = 'Tutor'
+        const ATTRIBUTE = 'username'
+        const user = await db.searchItem(PATH, ATTRIBUTE, id)
+        if (Objects.keys(user).length === 0) {
+            console.log("[ ERROR ] User not found")
+            return false
+        }
+        return user
+    }
     // GET ALL
     static async getAll() {
         // IF DB CAN FIND ID RETURN TUTOR OBJECT
@@ -44,6 +54,23 @@ class TutorService {
         }
         
     }
+    // GET ALL APPOINTMENTS BASED ON TUTOR
+    static async getAppointments(id) {
+        try {
+            console.log("\n[ TutorService.getAppointments ]")
+            const user = await db.searchItem('Tutor', 'username', id)
+            const userid = Object.keys(user)[0]
+            if (Object.keys(user).length === 0) {
+                return false
+            }
+            const appointments = db.searchItem('Appointment', 'tutorId', userid)
+            return appointments
+            
+        }catch (e) {
+            throw e
+        }
+    }
+    // GET ALL AVAILABILITY BASED ON TUTOR
     // POST
     static async create(tutordata) {
         try {
@@ -79,25 +106,49 @@ class TutorService {
             throw e
         }
     }
-    // PATCH
-    static update(updateTutor){
+    static async createAppointment (username, appointment) {
         try {
+            const user = await db.searchItem('Tutor', 'username', username)
+            if (user)
+        }catch (e) {
+            throw e
+        }
+    }
+    // PATCH
+    static async update(username, updateTutor){
+        try {
+            // FIND TUTORID
+            console.log("\n[ TutorService.update ]\n")
+            const PATH = 'Tutor'
+            const ATTRIBUTE = 'username'
+            const data = JSON.parse(updateTutor)
+            const result = await searchItem(PATH, ATTRIBUTE, username)
+
+            // TUTOR DOESNT EXIST
+            if ( Object.keys(result).length === 0)
+                return false
+            console.log("updateTutor: " + updateTutor + "\n")
+            console.log("Tutor id: " + id + "\n")
+
+            const id = Object.keys(result)[0]
             // SEE WHAT CHANGED IN UPDATETUTOR AND CALL CORRESPONDING DB FUNCTION
             if (updateTutor.userId != null)
-                update.updateUsername(updateTutor.id, updateTutor.userId)
+                update.updateUsername(id, updateTutor.userId)
             if (updateTutor.major != null)
-                update.updateUserMajor(updateTutor.id, updateTutor.major)
+                update.updateUserMajor(id, updateTutor.major)
             if (updateTutor.password != null)
-                update.updateUserPassword(updateTutor.id, updateTutor.password)
+                update.updateUserPassword(id, updateTutor.password)
             if (updateTutor.email != null)
-                update.updateUserEmail(updateTutor.id, updateTutor.email)
+                update.updateUserEmail(id, updateTutor.email)
             if (updateTutor.longBio != null)
-                update.updateUserBio(updateTutor.id, updateTutor.longBio)
+                update.updateUserBio(id, updateTutor.longBio)
             if (updateTutor.phone != null)
-                update.updateUserPhone(updateTutor.id, updateTutor.phone)
+                update.updateUserPhone(id, updateTutor.phone)
             if (updateTutor.pfp != null)
-                update.updateUserProfilePic(updateTutor.id, updateTutor.pfp)
-            return getTutor(updateTutor.userId)
+                update.updateUserProfilePic(id, updateTutor.pfp)
+            if (updateTutor.shortBio != null)
+                update.updateTutorBio(id, update)
+            return getTutor(id)
         }catch (e) {
             throw e
         }
