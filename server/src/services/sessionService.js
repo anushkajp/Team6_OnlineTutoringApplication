@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Session = require("../models/session")
 const read = require('../db/read')
+const db = require ('../db/db')
+const add = require('../db/add')
 
 class SessionService {
     // RETURNS ALL SESSIONS FROM ALL USERS
@@ -32,8 +34,20 @@ class SessionService {
             throw err
         }
     }
-    static create(id) {
-        return 'hello'
+    static create(username, appointmetnInfo) {
+        try {
+            const userid = Object.keys(await db.searchItem('Tutor', 'username', usernamem))[0]
+            if (userid == null) {
+                return false
+            }
+            const appointment = add.addAppointment(userid, null, appointmentInfo.date,
+                appointmentInfo.length, appointmentInfo.online, appointmentInfo.location,
+                appointmentInfo.tutorNotes, appointmentInfo.studentNotes, appointmentInfo.rating,
+                appointmentInfo.review)
+            return appointment
+        }catch (e) {
+            throw e
+        }
     }
     static update(id) {
         return null
