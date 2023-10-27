@@ -1,37 +1,42 @@
+---
 openapi: 3.0.0
-servers:
-  - description: StuddySync API Auto Mocking
-    url: https://virtserver.swaggerhub.com/DIANALE201490/StudySyncAPI/1.0.0
-  - description: Stand in URL until host is created
-    url: https://randomurl.com
 info:
-  description: This is a simple API
-  version: "1.0.0"
   title: StudySync API
+  description: This is a simple API
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/DIANALE201490/StudySyncAPI/1.0.0
+  description: StuddySync API Auto Mocking
+- url: https://randomurl.com
+  description: Stand in URL until host is created
 tags:
-  - name: Appointments
-    description: Modify appointments
-  - name: Profile
-    description: Modify user profiles
+- name: Appointments
+  description: Modify appointments
+- name: Tutor Profile
+  description: Modify tutor profiles
+- name: Student Profile
+  description: Modify student profiles
+- name: Availability
+  description: Modify user availability
 paths:
-  /appointments/{appointmentId}:
+  /appointments/{userId}:
     get:
       tags:
-        - Appointments
-      summary: Gets a an appointment by ID
-      operationId: searchAppointment
-      description: |
-        By passing in a valid ID, you can search for
-        available appointment in the system
+      - Appointments
+      summary: Gets all appointments by userId
+      description: Finds all appointments in system with user ID
+      operationId: searchAppointmentByUser
       parameters:
-        - in: path
-          name: appointmentId
-          description: Appointment ID
-          required: true
-          schema:
-            type: integer
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
-        '200':
+        "200":
           description: ok
           content:
             application/json:
@@ -39,23 +44,54 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Appointment'
-        '400':
+        "400":
+          description: bad input parameter
+  /appointments/{appointmentId}:
+    get:
+      tags:
+      - Appointments
+      summary: Gets a an appointment by ID
+      description: |
+        By passing in a valid ID, you can search for
+        available appointment in the system
+      operationId: searchAppointment
+      parameters:
+      - name: appointmentId
+        in: path
+        description: Appointment ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        "400":
           description: bad input parameter
     put:
       tags:
-        - Appointments
+      - Appointments
       summary: Update an appointment by ID
       description: |
         Update the appointment by time, date, location, online, etc
       parameters:
-        - in: path
-          name: appointmentId
-          description: Appointment ID
-          required: true
-          schema: 
-            type: integer
+      - name: appointmentId
+        in: path
+        description: Appointment ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
-        '200':
+        "200":
           description: ok
           content:
             application/json:
@@ -63,23 +99,25 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Appointment'
-        '400':
+        "400":
           description: bad input parameter
     delete:
       tags:
-        - Appointments
+      - Appointments
       summary: Delete an appointment by ID
       description: |
         Delete the appointment
       parameters:
-        - in: path
-          name: appointmentId
-          description: Appointment ID
-          required: true
-          schema: 
-            type: integer
+      - name: appointmentId
+        in: path
+        description: Appointment ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
-        '200':
+        "200":
           description: ok
           content:
             application/json:
@@ -87,33 +125,270 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Appointment'
-        '400':
+        "400":
           description: bad input parameter
   /appointments:
     post:
       tags:
-        - Appointments
+      - Appointments
       summary: adds a new appointment
-      operationId: addAppointment
       description: Adds an appointment to the system
+      operationId: addAppointment
+      requestBody:
+        description: Appointment item to add
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Appointment'
       responses:
-        '201':
+        "201":
           description: appointment created
-        '400':
-          description: 'invalid input, object invalid'
-        '409':
+        "400":
+          description: "invalid input, object invalid"
+        "409":
           description: an existing appointment with this ID already exists
+  /appointments/review/{appointmentId}:
+    post:
+      tags:
+      - Appointments
+      summary: adds review to appointment id
+      description: Add a review to the appointment
+      parameters:
+      - name: appointmentId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/Review'
+      requestBody:
+        description: Appointment review to add
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Review'
+      responses:
+        "201":
+          description: appointment review created
+        "400":
+          description: "invalid input, object invalid"
+        "409":
+          description: a review for this appointment ID already exists
+  /user/{userId}:
+    get:
+      tags:
+      - Users
+      summary: Gets profile by userId
+      description: Finds user profile by id
+      operationId: searchUserProfile
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "400":
+          description: bad input parameter
+    put:
+      tags:
+      - Users
+      summary: Update a user by ID
+      description: |
+        Update the account related to user ID
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "400":
+          description: bad input parameter
+    delete:
+      tags:
+      - Users
+      summary: Delete a user by ID
+      description: |
+        Delete the account related to user ID
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "400":
+          description: bad input parameter
+  /user:
+    post:
+      tags:
+      - Users
+      summary: adds a new user
+      description: Adds a new user to the system
+      operationId: addUser
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Appointment'
-        description: Appointment item to add
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        "201":
+          description: user account created
+        "400":
+          description: "invalid input, object invalid"
+  /user/availability/{userId}:
+    get:
+      tags:
+      - Availability
+      summary: Gets availability for the user
+      description: Finds user profile by id
+      operationId: searchUserAvailability
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Availability'
+        "400":
+          description: bad input parameter
+    put:
+      tags:
+      - Availability
+      summary: Update availability by ID
+      description: |
+        Update the availability related to user ID
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Availability'
+        "400":
+          description: bad input parameter
+    post:
+      tags:
+      - Availability
+      summary: adds a new availability
+      description: Adds an availability for user to the system
+      operationId: addUserAvailability
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Availability'
+      responses:
+        "201":
+          description: availability created
+        "400":
+          description: "invalid input, object invalid"
+    delete:
+      tags:
+      - Availability
+      summary: Delete availability by user ID
+      description: |
+        Delete the availability linked to user ID
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Availability'
+        "400":
+          description: bad input parameter
 components:
   schemas:
     Appointment:
       type: object
       properties:
+        appointmentId:
+          type: string
         userID:
           type: string
           example: A123456
@@ -132,40 +407,57 @@ components:
           type: string
         notes:
           type: string
-          
-    InventoryItem:
+        rating:
+          type: integer
+    User:
       type: object
-      required:
-        - id
-        - name
-        - manufacturer
-        - releaseDate
       properties:
-        id:
+        userId:
           type: string
-          format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-        name:
+        major:
           type: string
-          example: Widget Adapter
-        releaseDate:
-          type: string
-          format: date-time
-          example: '2016-08-29T09:12:33.001Z'
-        manufacturer:
-          $ref: '#/components/schemas/Manufacturer'
-    Manufacturer:
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          example: ACME Corporation
-        homePage:
-          type: string
-          format: url
-          example: 'https://www.acme-corp.com'
+        courses:
+          type: array
+          items:
+            type: string
         phone:
           type: string
-          example: 408-867-5309
+        email:
+          type: string
+          format: email
+        longBio:
+          type: string
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        middleName:
+          type: string
+        password:
+          type: string
+        rating:
+          type: number
+          format: float
+          example: 4.35
+    Availability:
       type: object
+      properties:
+        tutorId:
+          type: string
+        weekly:
+          type: array
+          items:
+            type: string
+        exceptions:
+          type: array
+          items:
+            type: string
+    Review:
+      type: object
+      properties:
+        rate:
+          type: integer
+        description:
+          type: string
