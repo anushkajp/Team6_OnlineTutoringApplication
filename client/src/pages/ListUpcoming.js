@@ -6,30 +6,40 @@ import { fetchFromAPI } from '../services/api'
 const ListUpcoming = (props) => {
   const [renderSessions, setSessions] = useState([])
 
-  useEffect(() => {
-    fetchFromAPI(`${props.renderType}/${props.userName}`) 
-      .then(data => {
-        const dataArray = Object.entries(data).map(([key, value]) => ({
-          key,
-          firstName: value.firstName,
-          lastName: value.lastName,
-          middleName: value.middleName,
-          password: value.password,
-          userId: value.userId,
-          userName: value.userName,
-          courses: value.courses,
-          phone: value.phone,
-          email: value.email,
-          major: value.major,
-          hours: value.hours,
-          longBio: value.longBio
-        }));
-      })
-      .catch(error => {
-        setSessions([]);
-        console.log(error);
-      });
-  }, []);
+  const sampleJSON = [
+    {
+      "class_name": "AP Computer Science A",
+      "student_name": "Anushka P",
+      "session_time": "3:00 PM Tuesday",
+      "session_rating": 4,
+      "session_comments": "TutorTopia rules"
+    },
+    {
+      "class_name": "Physics 101",
+      "student_name": "John D",
+      "session_time": "10:30 AM Wednesday",
+      "session_comments": "comment1"
+    },
+    {
+      "class_name": "Biology Lab",
+      "student_name": "Samantha L",
+      "session_time": "2:15 PM Monday",
+      "session_comments": "comment2"
+    },
+    {
+      "class_name": "Mathematics Advanced",
+      "student_name": "David S",
+      "session_time": "11:00 AM Thursday",
+      "session_comments": "comment3"
+    },
+    {
+      "class_name": "History of Art",
+      "student_name": "Emily B",
+      "session_time": "4:45 PM Friday",
+      "session_rating": 4,
+      "session_comments": "comment4"
+    }
+  ]
 
   return (
     <div className="upcomingPage">
@@ -44,12 +54,15 @@ const ListUpcoming = (props) => {
           </nav>
         </div>
         <div className="upcomingSessionList">
-            <SessionTile></SessionTile>
-            <SessionTile></SessionTile>
-            <SessionTile></SessionTile>
-            <SessionTile></SessionTile>
-            <SessionTile></SessionTile>
-            <SessionTile></SessionTile>
+        {
+            sampleJSON.map((review, index) => (
+              <SessionTile key={index} class_name={review.class_name}
+                student_name={review.student_name}
+                session_time={review.session_time}
+                session_comments={review.session_comments}>
+              </SessionTile>
+              ))
+        }
         </div>
       </div>
     </div>
