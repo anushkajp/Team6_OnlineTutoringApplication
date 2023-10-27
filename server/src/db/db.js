@@ -139,11 +139,7 @@ async function searchItem(entity,child,matchValue,test=true){
         return data
       } else {
         console.log('No matching data found for path: '+path+child+', '+ matchValue);
-<<<<<<< HEAD
         return ""
-=======
-        return false;
->>>>>>> 66f1a0e80631ba15755296a61bac886c01758151
       }
     } catch(error){
         console.error(error)
