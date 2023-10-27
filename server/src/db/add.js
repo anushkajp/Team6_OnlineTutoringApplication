@@ -66,22 +66,8 @@ module.exports = {
      * @param {string} shortBio Short descriptive bio
      * @param {ImageData} profilePic Profile picture
      */
-    addStudent: async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio,shortBio, profilePic = null) {
-        const postDataUser = {
-            username: username,
-            major: major,
-            courses: courses,
-            phone: phone,
-            email: email,
-            longBio: longBio,
-            shortBio:shortBio,
-            firstName: firstName,
-            lastName: lastName,
-            middleName: middleName,
-            password: password,
-            profilePic: profilePic,
-        }
-        userKey = await addItem("User", postDataUser)
+    addStudent: async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic = null) {
+        userKey = await addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic = null)
         userKey = userKey["id"]
         const postDataStudent = {
             userId: userKey
@@ -110,22 +96,7 @@ module.exports = {
      * @param {number} rating The rating other users have given the tutor
      */
     addTutor: async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, weeklyAvailability = [], exceptionsAvailability = [], profilePic = null, rating = 0.00, backgroundCheck = false, totalHours = 0) {
-        const postDataUser = {
-            username: username,
-            major: major,
-            courses: courses,
-            phone: phone,
-            email: email,
-            longBio: longBio,
-            shortBio:shortBio,
-            firstName: firstName,
-            lastName: lastName,
-            middleName: middleName,
-            password: password,
-            // rating: rating,
-            profilePic: profilePic
-        }
-        userKey = await addItem("User", postDataUser)
+        userKey = await addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic = null)
         userKey = userKey["id"]
         const postDataTutor = {
             userId: userKey,
@@ -171,10 +142,12 @@ module.exports = {
      * @param {number} length The duration of the appointment, in minutes
      * @param {boolean} online Whether the appointment is online or in person
      * @param {string} location If in person, the address of the appointment, if online, a meeting URL
+     * @param {Array<String>} courses A list of course string ids 
      * @param {string} notes Notes about the meeting
      * @param {number} rating Appointment rating
+     * @param {string} feedback Feedback for the appointment
      */
-    addAppointment: function addAppointment(tutorId, studentId, dateTime, length, online, location,courses, notes, rating, reivew) {
+    addAppointment: function addAppointment(tutorId, studentId, dateTime, length, online, location,courses, notes, rating, feedback) {
         const postData = {
             tutorId: tutorId,
             studentId: studentId,

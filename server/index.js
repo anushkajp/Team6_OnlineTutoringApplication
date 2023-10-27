@@ -27,6 +27,9 @@ app.get("/testInfo", (req, res) => {
         const review = await reads.getReviews()
         // const search = await searchItem("User","username","bibilivesagain")
         // console.log(await search())
+        // for (i in searchItem("Tutor","courses", courseId)){
+        //     console.log(i)
+        // }
         res.send({
             // for testing
             data: {
