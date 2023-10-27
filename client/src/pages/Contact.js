@@ -2,6 +2,7 @@ import React from "react";
 import logo from "../assets/TT_Logo_Design.png";
 import laptop from "../assets/laptop.png";
 import "./Home.css";
+import emailjs from "emailjs-com";
 import { useNavigate } from "react-router-dom";
 
 const Contact = () => {
@@ -28,6 +29,31 @@ const Contact = () => {
 
   const pageStyle = {
     background: "#F1EFEF",
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const message = formData.get("message");
+
+    const serviceId = "service_dz0xhzf";
+    const templateId = "template_kxj0eqi";
+    const userId = "cWti8bd46sTP6-Sgr";
+
+    emailjs
+      .send(serviceId, templateId, { name, email, message }, userId)
+      .then((response) => {
+        console.log("Email sent successfully:", response);
+      })
+      .catch((error) => {
+        console.error("Email sending failed:", error);
+      });
+
+    alert("Email Sent!");
   };
 
   return (
@@ -62,7 +88,7 @@ const Contact = () => {
           <br></br>
           <br></br>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <div class="input">
               <input
                 type="text"
@@ -94,8 +120,13 @@ const Contact = () => {
             </div>
 
             <br></br>
+            <br></br>
 
-            
+            <div className="input">
+              <button type="submit" className="submit-button">
+                submit
+              </button>
+            </div>
           </form>
         </div>
       </div>

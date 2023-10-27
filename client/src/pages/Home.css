@@ -221,8 +221,8 @@ body {
   margin-left: -35%;
 }
 
-.submit-button {
-  width: 301px;
+.input > .submit-button {
+  width: 150px !important;
   height: 71px;
   flex-shrink: 0;
   border-radius: 30px;
@@ -241,4 +241,7 @@ body {
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  border: none;
+  margin-left: -80px;
+
 }
