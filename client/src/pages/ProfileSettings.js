@@ -11,26 +11,53 @@ const ProfileSettings = (props) => {
   const [editedPhone, setEditedPhone] = useState('');
   const [editedMethod, setEditedMethod] = useState('');
   const [renderData, setData] = useState({
-    userName:'Sad Cat',
-    schoolName: 'Erik Jonsson School of CS',
-    subject_expertise: ['Math', 'English'],
-    member_since: 'August 2023',
-    skills: ['ASL', 'Project Management'],
+    "firstName": "Diana",
+    "lastName": "Le",
+    "middleName": null,
+    "password": "12345",
+    "userId": "diananle",
+    "userName": "otherMeDee",
+    "courses": ["Tango", "Alpha"],
+    "phone": "1234566789",
+    "email": "gmail.com",
+    "major": "cs",
+    "hours": null,
+    "longBio": null
   })
 
   useEffect(() => {
-    fetchFromAPI(`${props.renderType}/${props.studentName}`) 
+    fetchFromAPI(`${props.renderType}/${props.userName}`) 
       .then(data => {
-        setData(data);
-        console.log(data)
+        const dataArray = Object.entries(data).map(([key, value]) => ({
+          key,
+          firstName: value.firstName,
+          lastName: value.lastName,
+          middleName: value.middleName,
+          password: value.password,
+          userId: value.userId,
+          userName: value.userName,
+          courses: value.courses,
+          phone: value.phone,
+          email: value.email,
+          major: value.major,
+          hours: value.hours,
+          longBio: value.longBio
+        }));
       })
       .catch(error => {
         setData({
-          userName:'Sad Cat',
-          schoolName: 'Erik Jonsson School of CS',
-          subject_expertise: ['Math', 'English'],
-          member_since: 'August 2023',
-          skills: ['ASL', 'Project Management'],
+          "firstName": "Test",
+          "lastName": "Le",
+          "middleName": null,
+          "password": "12345",
+          "userId": "diananle",
+          "userName": "otherMeDee",
+          "courses": ["Tango", "Alpha"],
+          "phone": "1234566789",
+          "email": "gmail.com",
+          "major": "cs",
+          "hours": null,
+          "longBio": null
         });
         console.log(error);
       });
@@ -64,6 +91,8 @@ const ProfileSettings = (props) => {
     }
   };
 
+  const excludedFields = ["password", "userId", "firstName", "middleName", "lastName"];
+
   return (
       <div>
         <div>
@@ -79,11 +108,13 @@ const ProfileSettings = (props) => {
                     <img src="https://picsum.photos/400/400" alt="Profile" />
                   </div>
                   <div className="profile_details"> 
-                    <h3>{renderData.userName}</h3>
-                    <h5><span class="header_text">School Name:</span> {renderData.schoolName}</h5>
-                    <h5><span class="header_text">Subject Expertise:</span> {renderData.subject_expertise.join(', ')}</h5>
-                    <h5><span class="header_text">Member Since:</span> {renderData.member_since}</h5>
-                    <h5><span class="header_text">Skills:</span> {renderData.skills.join(', ')}</h5>
+                    <h3>{renderData.firstName + " "  + renderData.lastName}</h3>
+                      {Object.entries(renderData).map(([field, value]) => (
+                        !excludedFields.includes(field) && value != null && (
+                          <div key={field}>
+                            <h4 className="bio_h4"><span className="header_text">{field}: </span>{Array.isArray(value) ? value.join(', ') : value}</h4>
+                          </div>
+                        )))}
                   </div>
               </div>
               <div className="editFields">
@@ -97,7 +128,7 @@ const ProfileSettings = (props) => {
                   onChange={(e) => handleInputChange('editedEmail', e)}
                 />
               ) : (
-                <span className="readOnly" id="emailDisplay">{email}</span>
+                <span className="readOnly" id="emailDisplay">{renderData.email}</span>
               )}
 
               <label htmlFor="phone">Phone:</label>
@@ -109,7 +140,7 @@ const ProfileSettings = (props) => {
                   onChange={(e) => handleInputChange('editedPhone', e)}
                 />
               ) : (
-                <span className="readOnly" id="phoneDisplay">{phone}</span>
+                <span className="readOnly" id="phoneDisplay">{renderData.phone}</span>
               )}
 
               {isEditing ? (
