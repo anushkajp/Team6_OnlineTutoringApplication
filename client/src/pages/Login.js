@@ -1,4 +1,11 @@
-import React from 'react'
+import React, { useState } from "react";
+import glass from "../assets/glassmorhpism.png";
+import logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
+
+// no functionality yet, just UI
+// need to add functionality with firebase auth
+// not completely responsive yet
 
 const Login = () => {
   const [email, setEmail] = useState("");

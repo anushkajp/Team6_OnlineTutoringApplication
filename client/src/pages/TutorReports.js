@@ -8,7 +8,8 @@ const TutorReports = (props) => {
       "class_name": "AP Computer Science A",
       "student_name": "Anushka P",
       "session_time": "3:00 PM Tuesday",
-      "session_rating": 4
+      "session_rating": 4,
+      "session_comments": "TutorTopia rules"
     },
     {
       "class_name": "Physics 101",
@@ -32,7 +33,8 @@ const TutorReports = (props) => {
       "class_name": "History of Art",
       "student_name": "Emily B",
       "session_time": "4:45 PM Friday",
-      "session_rating": 4
+      "session_rating": 4,
+      "session_comments" : "She aight"
     }
   ]
 
@@ -40,7 +42,8 @@ const TutorReports = (props) => {
     <ReviewTile class_name={review.class_name}
     student_name={review.student_name}
     session_time={review.session_time}
-    session_rating={review.session_rating}>
+    session_rating={review.session_rating}
+    session_comments={review.session_comments}>
     </ReviewTile>
   ));
 
