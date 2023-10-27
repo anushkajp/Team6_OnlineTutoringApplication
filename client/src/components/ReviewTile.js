@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CustomModal from './Modal';
+import { fetchFromAPI } from '../services/api'
 
 const ReviewTile = (props) => {
     
@@ -12,6 +13,8 @@ const ReviewTile = (props) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  
 
   return (
     <div className="review_tile">

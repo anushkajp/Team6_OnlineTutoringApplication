@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import Sidebar from '../components/sidebar'
 import SessionTile from '../components/SessionTile'
 import { fetchFromAPI } from '../services/api'
@@ -26,7 +26,7 @@ const ListUpcoming = (props) => {
         }));
       })
       .catch(error => {
-        setData([]);
+        setSessions([]);
         console.log(error);
       });
   }, []);
