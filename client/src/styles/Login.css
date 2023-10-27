@@ -1,0 +1,214 @@
+@import url("https://fonts.googleapis.com/css2?family=Modak&family=Poppins:wght@300;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.dont-acc {
+  color: #000;
+  text-align: right;
+  font-family: Montserrat;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  margin-right: 4%;
+  margin-top: -30px;
+  cursor: pointer;
+}
+
+.sign-up {
+  color: #2a6bb7;
+  font-family: Montserrat;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-decoration-line: underline;
+  cursor: pointer;
+}
+
+.body-background {
+  background: linear-gradient(180deg, #fff 0%, rgba(185, 204, 243, 0.35) 100%);
+  height: 100vh;
+  width: 100%;
+  display: flex;
+}
+
+.image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.image-container img {
+  object-fit: cover;
+  width: 100%;
+  height: 100vh;
+}
+
+.overlay-div {
+  background-color: transparent;
+  width: 42.5%;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px;
+  text-align: center;
+}
+
+.overlay-div > .second-overlay-div {
+  width: 60%;
+}
+
+.logo-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 550px;
+  height: 600px;
+  z-index: 1;
+}
+
+.login-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-box {
+  width: 620px;
+  height: 555px;
+  border-radius: 20px;
+  border: 4px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(
+    182deg,
+    rgba(255, 255, 255, 0.48) 1.24%,
+    rgba(255, 255, 255, 0.51) 104.24%
+  );
+  z-index: 1;
+}
+
+.header {
+  color: #3f485a;
+  text-align: center;
+  font-family: Modak;
+  font-size: 70px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 1.5px;
+  margin-top: 35px;
+}
+
+.header-forgot {
+  color: #3f485a;
+  text-align: center;
+  font-family: Modak;
+  font-size: 60px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 1.5px;
+  margin-top: 55px;
+  padding-bottom: 15px;
+}
+
+.header2 {
+  color: var(--928F8F, #928f8f);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -12%;
+}
+
+.header2-forgot {
+  color: var(--928F8F, #928f8f);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -12%;
+  text-align: center;
+  display: flex;
+  width: 550px;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.fields-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.field {
+  justify-content: left;
+  align-items: left;
+  width: 439px;
+  height: 78px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  background: #fff;
+  border: none;
+  box-shadow: inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.field::placeholder {
+  justify-content: left;
+  align-items: left;
+  color: var(--928F8F, #928f8f);
+  text-align: left;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-left: 5%;
+}
+
+.login-button {
+  width: 267.429px;
+  height: 54.857px;
+  flex-shrink: 0;
+  border-radius: 17.143px;
+  border: none;
+  background: var(--Bold-Purple, #a92ab7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-button-text {
+  color: #fff;
+  font-family: Montserrat;
+  font-size: 22.286px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 54.857px;
+  text-align: center;
+}
