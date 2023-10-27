@@ -1,21 +1,22 @@
 const { addItem } = require("./db")
 
 module.exports = {
-    loadJSONFile:function loadJSONFile(fileName,majorId){
+    loadJSONFile: async function loadJSONFile(fileName,majorId){
         var json=require(fileName)
         courseNumbers=[]
+        output= []
     
         for (i in json.report_data){
             currCourse = json.report_data[i]
             if (!courseNumbers.includes(currCourse.course_number) && !isNaN(parseFloat(currCourse.course_number[1]))){
                 courseNumbers.push(currCourse.course_number)
                 // console.log(majorId,currCourse.title,currCourse.course_number,currCourse.course_number[1])
-                this.addCourse(majorId,currCourse.title,currCourse.course_number,parseInt(currCourse.course_number[1]))
+                output.push( await this.addCourse(majorId,currCourse.title,currCourse.course_number,parseInt(currCourse.course_number[1])))
             }
             
             
         }
-        
+        return output
     },
     /**
      * Adds a new User to the database 
