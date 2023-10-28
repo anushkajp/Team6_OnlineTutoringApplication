@@ -108,7 +108,7 @@ const Login = () => {
               <button
                 className="login-button"
                 type="submit"
-                onClick={navigateToTwoFactor}
+                onClick={handleLoginButtonClick}
               >
                 <p className="login-button-text">Log in</p>
               </button>
