@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 // no functionality yet, just UI
 // need to add functionality with firebase auth
 // not completely responsive yet
@@ -13,6 +14,21 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  // handle submit 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log(userCredential);
+      const user = userCredential.user;
+      localStorage.setItem('token', user.accessToken);
+      localStorage.setItem('user', JSON.stringify(user));
+      naviganavigate("/TwoFactor");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
   };
