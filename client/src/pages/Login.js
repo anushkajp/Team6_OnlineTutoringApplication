@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
+// import 'dotenv/config'
+
 // no functionality yet, just UI
 // need to add functionality with firebase auth
 // not completely responsive yet
