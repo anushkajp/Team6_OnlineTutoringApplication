@@ -19,25 +19,6 @@ class Availability {
         this.sunday = sunday;
         this.exceptions = exceptions;
     }
-    // CREATE CONSTRUCTOR 7 VARIABLES, CREATE DICTIONARY
-    /**
-     * @param {Array<TimeBlock>} monday Monday availability
-     * @param {Array<TimeBlock>} tuesday Tuesday availability
-     * @param {Array<TimeBlock>} wednesday Wednesday availability
-     * @param {Array<TimeBlock>} thursday Thursday availability
-     * @param {Array<TimeBlock>} friday Friday availability
-     * @param {Array<TimeBlock>} saturday Saturday availability
-     * @param {Array<TimeBlock>} sunday Sunday availability
-     */
-    constructor (monday, tuesday, wednesday,thursday,friday,saturday,sunday) {
-        this.monday = monday;
-        this.tuesday = tuesday
-        this.wednesday = wednesday;
-        this.thursday = thursday;
-        this.friday = friday;
-        this.saturday = saturday;
-        this.sunday = sunday;
-        this.exceptions = null;
-    }
+
 }
 module.exports = Availability
