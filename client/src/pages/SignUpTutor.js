@@ -1,6 +1,11 @@
 import React, { useState } from "react";
+import { auth } from '../firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUpTutor = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -12,6 +17,9 @@ const SignUpTutor = () => {
   });
 
   const handleChange = (e) => {
+    setEmail(e.target.value)
+    setPassword(e.target.value)
+
     const { name, value } = e.target;
     setFormData({
       ...formData,
