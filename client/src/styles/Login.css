@@ -82,6 +82,7 @@ body {
   width: 550px;
   height: 600px;
   z-index: 1;
+  margin-top: -100px;
 }
 
 .login-container {
@@ -94,7 +95,7 @@ body {
 
 .login-box {
   width: 620px;
-  height: 665px;
+  height: 600px;
   border-radius: 20px;
   border: 4px solid rgba(255, 255, 255, 0.6);
   background: linear-gradient(
@@ -135,9 +136,10 @@ body {
 }
 
 .field {
-  justify-content: left;
-  align-items: left;
-  width: 439px;
+  justify-content: center;
+  align-items: center;
+  margin-left: 60px;
+  width: 500px;
   height: 78px;
   flex-shrink: 0;
   border-radius: 15px;
