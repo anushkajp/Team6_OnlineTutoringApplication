@@ -2,6 +2,7 @@ import React from 'react'
 import Sidebar from '../components/sidebar'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
+import LogoutButton from '../components/LogoutButton'
 
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -119,6 +120,7 @@ const StudentDash = () => {
                     }
                   </div>
               </DashboardTile>
+              <LogoutButton onClick={handleLogout} />
           </div>
       </div>
     </div>
