@@ -63,13 +63,10 @@ const Home = () => {
           <br></br>
           <br></br>
           <br></br>
-          <br></br>
-          <br></br>
 
           <div class="button-nav1">
             <p class="text1" onClick={navigateToSignUp}> Sign up - Tutor</p>
           </div>
-          <br></br>
           <br></br>
           <div class="button-nav2">
             <p class="text2" onClick={navigateToSignUpStudent}> Sign up - Student</p>
