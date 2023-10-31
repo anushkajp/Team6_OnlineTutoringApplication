@@ -5,6 +5,21 @@ import SessionTile from '../components/SessionTile'
 import ReviewTile from '../components/ReviewTile'
 
 const TutorDash = () => {
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      navigate("/Login");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const favoriteTutors = [
     "Diana Le",
     "Anushka Pimple",

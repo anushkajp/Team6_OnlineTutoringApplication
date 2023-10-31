@@ -4,6 +4,9 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 
 const SignUpStudent = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,6 +18,8 @@ const SignUpStudent = () => {
   });
 
   const handleChange = (e) => {
+    setEmail(e.target.value)
+    setPassword(e.target.value)
     const { name, value } = e.target;
     setFormData({
       ...formData,
