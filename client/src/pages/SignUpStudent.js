@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { auth } from '../firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUpStudent = () => {
   const [formData, setFormData] = useState({
@@ -19,8 +22,18 @@ const SignUpStudent = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(userCredential);
+      const user = userCredential.user;
+      localStorage.setItem('token', user.accessToken);
+      localStorage.setItem('user', JSON.stringify(user));
+      // navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
     console.log("Form data submitted:", formData);
     // Clear the form fields
     setFormData({

@@ -19,9 +19,19 @@ const SignUpTutor = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form data submitted:", formData);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(userCredential);
+      const user = userCredential.user;
+      localStorage.setItem('token', user.accessToken);
+      localStorage.setItem('user', JSON.stringify(user));
+      // navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
     // Clear the form fields
     setFormData({
       firstName: "",
