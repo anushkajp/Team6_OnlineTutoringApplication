@@ -30,15 +30,15 @@ class CalendarPage extends Component {
       sessions: {
         "10/7/2023": {
           time: "12:30",
-          coursename: "AP Computer Science",
+          coursename: "Data Structures",
           student: "Best Student 22",
-          tutor: "1",
+          tutor: "Best Tutor 1",
         },
         "10/8/2023": {
           time: "11:00",
           coursename: "Discrete Math",
           student: "Top Student 23",
-          tutor: "2",
+          tutor: "Top Tutor 2",
         },
       },
     };

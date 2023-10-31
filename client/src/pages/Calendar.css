@@ -123,7 +123,7 @@
   border: 2px solid #f2b9f3;
   background: rgba(242, 185, 243, 0.05);
   width: 90px;
-  height: 81px;
+  height: 95px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -150,18 +150,18 @@
   font-weight: 700;
   line-height: 20px;
   margin-bottom: 5px;
+  margin-top: -20px;
 }
 
 .calendar-box course-name {
   color: var(--Grey-Blue-50, #4d5e80);
-  font-feature-settings: "clig" off, "liga" off;
   font-family: Montserrat;
   font-size: 10px;
   font-style: normal;
   font-weight: 700;
   line-height: 10px;
   width: 50px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   height: 10px;
 }
 
@@ -173,6 +173,5 @@
   font-weight: 400;
   line-height: 10px;
   width: 50px;
-  margin-bottom: 5px;
   height: 10px;
 }
