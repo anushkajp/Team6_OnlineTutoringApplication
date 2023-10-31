@@ -4,6 +4,7 @@ import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+
 // no functionality yet, just UI
 // need to add functionality with firebase auth
 // not completely responsive yet
@@ -73,10 +74,13 @@ const Login = () => {
               <input
                 className="field"
                 placeholder="Enter email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                
                 type="email"
                 id="email"
                 name="email"
-                required
               />
 
               <br></br>
@@ -84,10 +88,14 @@ const Login = () => {
               <input
                 className="field"
                 placeholder="Enter Password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                
                 type="password"
                 id="password"
                 name="password"
-                required
+               
               />
 
               <br></br>
