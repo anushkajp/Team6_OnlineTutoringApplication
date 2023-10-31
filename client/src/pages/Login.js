@@ -23,7 +23,7 @@ const Login = () => {
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      naviganavigate("/TwoFactor");
+      navigate("/TwoFactor");
     } catch (error) {
       console.error(error);
     }
@@ -69,7 +69,7 @@ const Login = () => {
 
             <br></br>
 
-            <form className="fields-container">
+            <form onSubmit= {handleSubmit} className="fields-container">
               <input
                 className="field"
                 placeholder="Enter email"

@@ -3,9 +3,25 @@ import logo from "../assets/TT_Logo_Design.png";
 import laptop from "../assets/laptop.png";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
 
 const Home = () => {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user'));
+  // handle logout 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      navigate("/Login");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
   };
