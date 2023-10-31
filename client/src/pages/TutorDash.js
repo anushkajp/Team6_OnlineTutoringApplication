@@ -3,6 +3,11 @@ import Sidebar from '../components/sidebar'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
 import ReviewTile from '../components/ReviewTile'
+import LogoutButton from '../components/LogoutButton'
+
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const TutorDash = () => {
 
@@ -14,7 +19,7 @@ const TutorDash = () => {
       await signOut(auth);
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      navigate("/Login");
+      navigate("/Home");
     } catch (error) {
       console.error(error);
     }
@@ -152,6 +157,7 @@ const TutorDash = () => {
                     ))
                   }
               </DashboardTile>
+              <LogoutButton onClick={handleLogout} />
           </div>
       </div>
     </div>
