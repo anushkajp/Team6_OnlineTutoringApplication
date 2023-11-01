@@ -23,6 +23,7 @@ const SignUpStudent = () => {
   const handleChange = (e) => {
     setEmail(e.target.value)
     setPassword(e.target.value)
+
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -34,8 +35,8 @@ const SignUpStudent = () => {
     e.preventDefault();
     console.log("Form data submitted:", formData);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const { email, password } = formData;
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log(userCredential);
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
@@ -44,7 +45,7 @@ const SignUpStudent = () => {
     } catch (error) {
       console.error(error);
     }
-    console.log("Form data submitted:", formData);
+    // console.log("Form data submitted:", formData);
 
     // Clear the form fields
     // setFormData({
