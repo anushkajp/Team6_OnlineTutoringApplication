@@ -2,6 +2,7 @@ const { getUsers, getUser } = require ('../db/read')
 const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, updateUserBio,
         updateUserPassword, updateUserProfilePic} = require ('../db/update')
 const {addStudent} = require ('../db/add')
+const adds = require ('../db/add')
 const {searchItem} = require ('../db/db')
 const deletes = require("../db/delete")
 
@@ -38,22 +39,6 @@ class StudentService {
             throw e
         }
     }
-    static async getAppointments(id) {
-        try {
-            console.log("\n[ StudentService.getAppointments ]")
-            const user = await searchItem('User', 'username', id)
-            if (Object.keys(user).length === 0) {
-                return null
-            }
-            const userid = Object.keys(user)[0]
-            const appointments = await searchItem('Appointment', 'studentId', userid)
-            console.log("\nuserid: " + userid)
-            console.log("\appointments: " + appointments)
-            return appointments
-        }catch (e) {
-            throw e
-        }
-    }
     // post: create student
     static async create(studentData){ 
         try {
@@ -70,13 +55,19 @@ class StudentService {
             
             // ADD NEW STUDENT TO DB
             console.log("StudentService student:" + JSON.stringify(data) + "\n")
-            const studentInfo = await addStudent(
-                data.firstName, data.middleName,
-                data.lastName, data.password, data.userName, 
-                data.major, data.courses, data.phone, 
-                data.email, data.longBio, data.rating, 
-                data.pfp
-            )
+            // const studentInfo = await addStudent(
+            //     data.firstName, data.middleName,
+            //     data.lastName, data.password, data.userName, 
+            //     data.major, data.courses, data.phone, 
+            //     data.email, data.longBio, data.rating, 
+            //     data.pfp
+            // )
+            for (let name in data) {
+                console.log(name + "=" + data[name]);
+            }
+            
+            const studentInfo = await adds.addStudent(data.firstName, data.middleName, data.lastName, data.password, data.username,
+                data.major, data.courses, data.phone, data.email, data.longBio, data.shortBio, data.pfp)
             console.log(studentInfo)
             const newStudent = await searchItem("User", "username", "deedee")
             console.log("newStudent: " + newStudent + "\n")
