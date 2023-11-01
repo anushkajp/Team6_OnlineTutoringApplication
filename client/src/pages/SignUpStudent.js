@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const SignUpStudent = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +18,8 @@ const SignUpStudent = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setEmail(e.target.value)
     setPassword(e.target.value)
@@ -29,27 +32,31 @@ const SignUpStudent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form data submitted:", formData);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const { email, password } = formData;
       console.log(userCredential);
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      // navigate("/");
+      navigate("/StudentDash");
     } catch (error) {
       console.error(error);
     }
     console.log("Form data submitted:", formData);
+
     // Clear the form fields
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      university: "",
-      profile_photo: "",
-      password: "",
-    });
+    // setFormData({
+    //   firstName: "",
+    //   lastName: "",
+    //   email: "",
+    //   phone: "",
+    //   university: "",
+    //   profile_photo: "",
+    //   password: "",
+    // });
+
   };
 
   return (
