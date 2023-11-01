@@ -1,5 +1,11 @@
 const { addItem } = require("./db")
-
+const Availability = require("../models/availability")
+const Review = require("../models/review")
+const Course = require("../models/course")
+const Session = require("../models/session")
+const Student = require("../models/student")
+const Tutor = require("../models/tutor")
+const User = require("../models/user")
 module.exports = {
     loadJSONFile: async function loadJSONFile(fileName,majorId){
         var json=require(fileName)
@@ -33,47 +39,42 @@ module.exports = {
      * Adds a new Student to the database 
      * @param {Student} studentObject First name
      */
+    //TODO : student variable filter, get rid of reliance on old functions
     addStudent: async function addStudent(studentObject) {
-        userKey = await this.addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic = null)
-        userKey = userKey["id"]
-        const postDataStudent = {
-            userId: userKey
-        }
+        student={}
+        user={}
+
+        Object.keys(studentObject).forEach((key) => {
+                    if(!(key in new User()) || key === "userId"){
+                        student[key] =studentObject[key]
+                    }else{
+                        user[key]=studentObject[key]
+                    }
+            })
+        userKey = await this.addUser(user)
+        student["userId"] = userkey['id']
         return addItem("Student", postDataStudent, userKey)
     },
     /**
      * Adds a new Tutor to the database 
-     * @param {string} firstName First name
-     * @param {string} middleName Middle name
-     * @param {string} lastName Last name
-     * @param {string} password Hashed password
-     * @param {string} username Unique username
-     * @param {string} major Major
-     * @param {Array<string>} courses List of course ids 
-     * @param {string} phone Phone number
-     * @param {string} email Email
-     * @param {string} longBio Descriptive bio
-     * @param {string} shortBio A short bio for the tutor visible to students
-     * @param {Array<Date>} weeklyAvailability Weekly availability, should be an array<Date,7> storing time ranges in a standard format, index 0 is monday
-     * @param {Array<Date>} exceptionsAvailability A list of exceptions to the weekly schedule, stored as dates of unavailability
-     * @param {ImageData} profilePic 
-     * @param {number} rating Float rating of the user
-     * @param {boolean} backgroundCheck Defaults to false, whether a background check has passed or not
-     * @param {number} totalHours Total hours completed by tutor
-     * @param {number} rating The rating other users have given the tutor
+     * @param {Tutor} tutorObject First name
      */
-    addTutor: async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, weeklyAvailability = [], exceptionsAvailability = [], profilePic = null, rating = 0.00, backgroundCheck = false, totalHours = 0) {
-        userKey = await this.addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic = null)
+    //TODO: filter out user attributes
+    addTutor: async function addTutor(tutorObject) {
+        tutor = {}
+        user = {}
+        Object.keys(tutorObject).forEach((key) => {
+            if(key !== "userId"){
+                if(!(key in new User())){
+                    tutor[key] =tutorObject[key]
+                }else{
+                    user[key]=tutorObject[key]
+                }
+            }
+        })
+        userKey = await this.addUser(user)
         userKey = userKey["id"]
-        const postDataTutor = {
-            userId: userKey,
-            backgroundCheck: backgroundCheck,
-            totalHours: totalHours,
-            rating: rating,
-            weeklyAvailability: weeklyAvailability,
-            exceptionsAvailability: exceptionsAvailability
-        }
-        return addItem("Tutor", postDataTutor, userKey)
+        return addItem("Tutor", tutor, userKey)
     },
     /**
      * Adds a new Major to the database 
@@ -92,49 +93,18 @@ module.exports = {
     },
     /**
      * Adds a new Appointment to the database, should be tied to a tutor and a user
-     * @param {string} tutorId Tutor username
-     * @param {string} studentId Student username
-     * @param {Date} dateTime Date and time the appointment starts
-     * @param {number} length The duration of the appointment, in minutes
-     * @param {boolean} online Whether the appointment is online or in person
-     * @param {string} location If in person, the address of the appointment, if online, a meeting URL
-     * @param {Array<String>} courses A list of course string ids 
-     * @param {string} studentNotes Notes about the meeting for the user
-     * @param {string} tutorNotes Notes about the meeting for the tutor
-     * @param {number} rating Appointment rating
-     * @param {string} feedback Feedback for the appointment
+     * @param {Session} appointmentObject Tutor username
      */
-    addAppointment: function addAppointment(tutorId, studentId, dateTime, length, online, location,courses, studentNotes, tutorNotes, rating, feedback) {
-        const postData = {
-            tutorId: tutorId,
-            studentId: studentId,
-            dateTime: dateTime,
-            length: length,
-            online: online,
-            location: location,
-            courses:courses,
-            tutorNotes: tutorNotes,
-            studentNotes:studentNotes,
-            rating: rating,
-            feedback:feedback
-        }
-        return addItem("Appointment", postData)
+    addAppointment: function addAppointment(appointmentObject) {
+        return addItem("Appointment", appointmentObject)
     },
     /**
      * Adds a new Review to the database, should be tied to an appointment
-     * @param {string} tutorId Tutor username
-     * @param {string} studentId Student username
-     * @param {number} rate Review rating
-     * @param {string} description A short description/ comment of the appointment
+     * @param {Review} reviewObject Tutor username
      */
-    addReview: function addReview(tutorId, studentId, rate, description) {
-        const postData = {
-            tutorId: tutorId,
-            studentId: studentId,
-            rate: rate,
-            description: description
-        }
-        return addItem("Review", postData)
+    addReview: function addReview(reviewObject) {
+
+        return addItem("Review", reviewObject)
 
     }
 
