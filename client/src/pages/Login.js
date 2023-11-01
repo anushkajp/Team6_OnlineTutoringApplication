@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 // import 'dotenv/config'
 

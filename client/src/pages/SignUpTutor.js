@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpTutor = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +16,8 @@ const SignUpTutor = () => {
     profile_photo: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setEmail(e.target.value)
@@ -31,25 +34,27 @@ const SignUpTutor = () => {
     e.preventDefault();
     console.log("Form data submitted:", formData);
     try {
+      const { email, password } = formData;
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log(userCredential);
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      // navigate("/");
+      navigate("/TutorDash");
     } catch (error) {
       console.error(error);
     }
     // Clear the form fields
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      subjects: "",
-      profile_photo: "",
-      password: "",
-    });
+
+    // setFormData({
+    //   firstName: "",
+    //   lastName: "",
+    //   email: "",
+    //   phone: "",
+    //   subjects: "",
+    //   profile_photo: "",
+    //   password: "",
+    // });
   };
 
   return (
