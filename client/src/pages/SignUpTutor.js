@@ -6,16 +6,13 @@ import { useNavigate } from 'react-router-dom';
 const SignUpTutor = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [inputValue, setInputValue] = useState('');
-  const [arrayValue, setArrayValue] = useState([]);
-
 
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
-    subjects: [],
+    subjects: "",
     profile_photo: "",
     password: "",
   });
@@ -33,18 +30,8 @@ const SignUpTutor = () => {
     });
   };
 
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
-  const convertToArray = () => {
-    const values = inputValue.split(',').map((item) => item.trim());
-    setArrayValue(values);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    convertToArray();
     console.log("Form data submitted:", formData);
     try {
       const { email, password } = formData;
@@ -143,12 +130,13 @@ const SignUpTutor = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="subjects">Subjects (list separated by commas)</label>
+              <label htmlFor="subjects">Subjects</label>
               <input
                 type="text"
-                value={inputValue}
-                onChange={handleInputChange}
-                placeholder="Enter comma-separated values"
+                id="Subjects"
+                name="Subjects"
+                value={formData.subjects}
+                onChange={handleChange}
               />
             </div>
             <button className="create_acc_student_button" type="submit">
