@@ -21,8 +21,6 @@ const SignUpStudent = () => {
     university: "",
     profile_photo: "",
     password: "",
-    //  isTutor,
-    //  isStudent
   });
 
   const navigate = useNavigate();
