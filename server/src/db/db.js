@@ -1,7 +1,7 @@
 // NOTE: Currently the security rules of the firebaseDB do not allow any reads or writes!!!
 
 const { initializeApp } = require("firebase/app");
-const { getDatabase, ref, child, get, update, set, increment, push,query,orderByChild,equalTo, onValue, onChildAdded } = require("firebase/database");
+const { getDatabase, ref, child, get, update, set, increment, push, query, orderByChild, equalTo, onValue, onChildAdded } = require("firebase/database");
 
 
 // const swaggerUi = require('swagger-ui-express');
@@ -29,48 +29,81 @@ const db = getDatabase(fbApp);
  * @param {string} path Path of the item or entity to be read
  * @param {boolean} test Defaults to true, whether it is reading from the test path 
  */
- async function readPath(path, test = true) {
+async function readPath(path, test = true) {
     if (test) {
-        path = "/test/" +path;
-    }else{
+        path = "/test/" + path;
+    } else {
         path = path;
     }
-       return get(child(ref(db), path)).then((snapshot) => {
-            if (snapshot.exists()) {
-                // console.log("does exist")
-                // data = JSON.stringify(snapshot.toJSON())
-                data = snapshot.val()
-                // console.log(data)
-                return data;
-            } else {
-                console.log("No data available for: "+path);
+    return get(child(ref(db), path)).then((snapshot) => {
+        if (snapshot.exists()) {
+            // console.log("does exist")
+            // data = JSON.stringify(snapshot.toJSON())
+            data = snapshot.val()
+            // console.log(data)
+            return data;
+        } else {
+            console.log("No data available for: " + path);
 
-                return NaN;
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
+            return NaN;
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
 
 
 }
 
 
 
-// Write a new item into an existing table
-// TODO: Batch writes
+// /**
+//  * Adds a new item into the database, indexed by generated itemID
+//  * @param {string} entity Name of the entity, such as User, Availability, etc
+//  * @param {Object} postData The post data with valued fields, for example const postData = {author: username,uid: uid,body: body,title: title,starCount: 0,authorPic: picture};
+//  * @param {string} specificKey This can be used to modify existing data by pointing to the id of the object you wish to modify
+//  * @param {boolean} test Defaults to true, indicate whether this is a test write
+//  */
+// function addItem(entity, postData, specificKey = null, test = true) {
+
+//     newPostKey = specificKey;
+//     if (newPostKey == null) {
+//         newPostKey = push(child(ref(db), entity)).key
+//     }
+
+//     const updates = {}
+//     if (test) {
+//         updates["/test/" + entity + "/" + newPostKey] = postData;
+//     } else {
+//         updates["/" + entity + "/" + newPostKey] = postData;
+//     }
+//     return update(ref(db), updates).then(() => {
+//         postData["id"] = newPostKey
+//         return postData;
+//     }).catch((error) => {
+//         console.error(error);
+//         return NaN;
+//     });
+
+// }
 /**
- * Adds a new item into the database, indexed by generated itemID
+ * Adds a new item into the database by passing the relevent Object, indexed by generated itemID
  * @param {string} entity Name of the entity, such as User, Availability, etc
- * @param {Object} postData The post data with valued fields, for example const postData = {author: username,uid: uid,body: body,title: title,starCount: 0,authorPic: picture};
+ * @param {Object} postObject The post data with valued fields, for example const postData = {author: username,uid: uid,body: body,title: title,starCount: 0,authorPic: picture};
  * @param {string} specificKey This can be used to modify existing data by pointing to the id of the object you wish to modify
  * @param {boolean} test Defaults to true, indicate whether this is a test write
  */
-function addItem(entity, postData, specificKey = null,test = true) {
+function addItem(entity, postObject, specificKey = null, test = true) {
 
     newPostKey = specificKey;
-    if (newPostKey == null){
+    if (newPostKey == null) {
         newPostKey = push(child(ref(db), entity)).key
     }
+    postData = {}
+    Object.keys(postObject).forEach((key) => {
+        // console.log(key+" "+avail[key]);
+        // console.log(avail[key])
+        postData[key] = postObject[key];
+    })
 
     const updates = {}
     if (test) {
@@ -78,16 +111,15 @@ function addItem(entity, postData, specificKey = null,test = true) {
     } else {
         updates["/" + entity + "/" + newPostKey] = postData;
     }
-    return update(ref(db), updates).then(()=>{
-        postData["id"]=newPostKey
+    return update(ref(db), updates).then(() => {
+        postData["id"] = newPostKey
         return postData;
-    }).catch((error)=>{
+    }).catch((error) => {
         console.error(error);
         return NaN;
     });
 
 }
-
 /**
  * Reads a table item from the database using specified path
  * @param {string} entity Name of the entity, i.e User, Appointment, Tutor, Student, etc
@@ -96,29 +128,29 @@ function addItem(entity, postData, specificKey = null,test = true) {
  * @param {any} newValue The value to apply to the attribute
  * @param {boolean} test Defaults to true, whether it is reading from the test path 
  */
-function modifyItem(entity, entityId,key,newValue, test=true){
+function modifyItem(entity, entityId, key, newValue, test = true) {
 
-    path=""
+    path = ""
     if (test) {
-        path="/test/"+entity+"/"+entityId+"/"+key
+        path = "/test/" + entity + "/" + entityId + "/" + key
     } else {
-        path=entity+"/"+entityId+"/"+key
+        path = entity + "/" + entityId + "/" + key
     }
-    return update(ref(db), {[path]:newValue}).then(()=>{
+    return update(ref(db), { [path]: newValue }).then(() => {
         return true;
-    }).catch((error)=>{
+    }).catch((error) => {
         console.error(error);
         return false;
     });
-    
+
 }
 
-async function searchItem(entity,child,matchValue,test=true){
-    path=""
+async function searchItem(entity, child, matchValue, test = true) {
+    path = ""
     if (test) {
-        path="/test/"+entity+"/"
+        path = "/test/" + entity + "/"
     } else {
-        path=entity+"/"
+        path = entity + "/"
     }
     // onValue(query(ref(db,path), orderByChild(child),equalTo(matchValue)), (snapshot)=>{
     //     if(snapshot.exists()){
@@ -130,18 +162,18 @@ async function searchItem(entity,child,matchValue,test=true){
     //         return false
     //     }
     // },{onlyOnce:true})
-    try{
-    const snapshot = await get(query(ref(db,path), orderByChild(child),equalTo(matchValue)))
+    try {
+        const snapshot = await get(query(ref(db, path), orderByChild(child), equalTo(matchValue)))
 
-    if (snapshot.exists()) {
-        const data = snapshot.val();
-        // console.log(data);
-        return data
-      } else {
-        console.log('No matching data found for path: '+path+child+', '+ matchValue);
-        return false;
-      }
-    } catch(error){
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            // console.log(data);
+            return data
+        } else {
+            console.log('No matching data found for path: ' + path + child + ', ' + matchValue);
+            return false;
+        }
+    } catch (error) {
         console.error(error)
         return false;
     }
