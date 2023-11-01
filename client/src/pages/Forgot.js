@@ -21,7 +21,11 @@ const Forgot = () => {
     navigate("/Login");
   };
 
+  const handleForgot = async (e) => {
+  };
+
   const handleButtonClick = () => {
+    handleForgot()
     alert("Email Sent!");
   };
 

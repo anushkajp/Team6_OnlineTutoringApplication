@@ -1,13 +1,17 @@
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
 const SignUpTutor = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [arrayValue, setArrayValue] = useState([]);
+  //const [isTutor, setTutor] = useState('');
 
+  // let isTutor = true;
+  // let isStudent = false;
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -17,6 +21,8 @@ const SignUpTutor = () => {
     subjects: [],
     profile_photo: "",
     password: "",
+    // isTutor,
+    // isStudent,
   });
 
   const navigate = useNavigate();
