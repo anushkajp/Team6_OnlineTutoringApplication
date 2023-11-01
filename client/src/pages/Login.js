@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import StudentDash from "./StudentDash";
 
 // import 'dotenv/config'
 
@@ -11,10 +13,15 @@ import { auth } from '../firebase';
 // need to add functionality with firebase auth
 // not completely responsive yet
 
-const Login = () => {
+const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  // let isTutorLogin = props.isTutor;
+  // let isStudentLogin = props.isStudent;
+  // console.log(isStudentLogin)
+  // console.log(isTutorLogin)
 
   const navigate = useNavigate();
   // handle submit 
@@ -22,11 +29,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
+      // console.log(userCredential);
+      // console.log(isTutorLogin);
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      navigate("/TwoFactor");
+      //navigateToTwoFactor();
+      navigate("/StudentDash");
     } catch (error) {
       console.error(error);
     }
@@ -34,10 +43,18 @@ const Login = () => {
 
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
+    
   };
 
-  const navigateToTwoFactor = () => {
-    navigate("/TwoFactor");
+  const navigateToTwoFactor = () => { // needs to be changed to navigating to two-fac
+    // navigate("/TwoFactor");
+    // if(isTutorLogin){
+    //   navigate("/TutorDash")
+    // }else{
+    //   navigate("/StudentDash")
+    // }
+
+    navigate("/StudentDash");
   };
 
   const navigateToForgot = () => {

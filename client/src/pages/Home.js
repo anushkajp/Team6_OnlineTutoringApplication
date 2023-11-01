@@ -3,8 +3,6 @@ import logo from "../assets/TT_Logo_Design.png";
 import laptop from "../assets/laptop.png";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
-import { auth } from '../firebase';
-import { signOut } from 'firebase/auth';
 
 const Home = () => {
   const navigate = useNavigate();

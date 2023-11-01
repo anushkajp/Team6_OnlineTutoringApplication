@@ -8,8 +8,8 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 
-const StudentDash = () => {
-  
+const StudentDash = (props) => {
+  // const isStudentLogin = props.isStudent;
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const StudentDash = () => {
       await signOut(auth);
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      navigate("/Login");
+      navigate("/Home");
     } catch (error) {
       console.error(error);
     }
@@ -65,6 +65,8 @@ const StudentDash = () => {
       "session_comments": "comment4"
     }
   ]
+
+  // console.log(isStudentLogin)
 
   return (
     <div className="dashboardPage">

@@ -13,7 +13,7 @@ const firebaseConfig = {
 //   appId: process.env.FIREBASE_APP_ID,
 //   measurementId: process.env.FIREBASE_MEASUREMENT_ID
 
-  apiKey: "<replace key>",
+  apiKey: "AIzaSyBnvqIAxssjpgjpEBDDn3iRU9emgNlh3TA",
   authDomain: "tutortopia-7d536.firebaseapp.com",
   databaseURL: "https://tutortopia-7d536-default-rtdb.firebaseio.com",
   projectId: "tutortopia-7d536",
