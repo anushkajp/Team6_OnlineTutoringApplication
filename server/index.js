@@ -67,8 +67,30 @@ app.get("/testPost", (req, res) => {
         // updates.updateUsername("-NgePx3To2rYbOgfYW_g", null)
         const major = await adds.addMajor("Computer Science")
         const majorId =await major["id"]
-        const course = await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
-
+        // const course = await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
+        const availability =
+        {
+            "monday":[
+                {
+                "start_time":"10:00",
+                "end_time":"14:00"
+                },
+                {
+                "start_time":"17:00",
+                "end_time":"18:00"
+                }
+            ],
+            "tuesday":[
+                {
+                "start_time":"10:00",
+                "end_time":"14:00"
+                },
+                {
+                "start_time":"17:00",
+                "end_time":"18:00"
+                }
+            ]
+        }
 
         
 
@@ -85,7 +107,7 @@ app.get("/testPost", (req, res) => {
                                             "bibi4eva@gmail.com",
                                             "Long Bio",
                                             "short bio",
-                                            [dateAvailable,dateAvailable],
+                                            availability,
                                             [],
                                             null,
                                             5,
@@ -120,7 +142,8 @@ app.get("/testPost", (req, res) => {
                                                         true,
                                                         "www.google.com",
                                                         [],
-                                                        "",
+                                                        "Student Notes",
+                                                        "Tutor Notes",
                                                         0,
                                                         "feedback"
                                                         )
@@ -134,7 +157,7 @@ app.get("/testPost", (req, res) => {
                 tutor: tutor,
                 student: student,
                 major: major,
-                course: course,
+                // course: course,
                 review: review,
                 appointment:appointment
 
