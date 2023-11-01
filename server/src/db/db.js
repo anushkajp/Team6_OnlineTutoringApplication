@@ -98,22 +98,22 @@ function addItem(entity, postObject, specificKey = null, test = true) {
     if (newPostKey == null) {
         newPostKey = push(child(ref(db), entity)).key
     }
-    postData = {}
-    Object.keys(postObject).forEach((key) => {
-        // console.log(key+" "+avail[key]);
-        // console.log(avail[key])
-        postData[key] = postObject[key];
-    })
+    // postData = {}
+    // Object.keys(postObject).forEach((key) => {
+    //     // console.log(key+" "+avail[key]);
+    //     // console.log(avail[key])
+    //     postData[key] = postObject[key];
+    // })
 
     const updates = {}
     if (test) {
-        updates["/test/" + entity + "/" + newPostKey] = postData;
+        updates["/test/" + entity + "/" + newPostKey] = postObject;
     } else {
-        updates["/" + entity + "/" + newPostKey] = postData;
+        updates["/" + entity + "/" + newPostKey] = postObject;
     }
     return update(ref(db), updates).then(() => {
-        postData["id"] = newPostKey
-        return postData;
+        postObject["id"] = newPostKey
+        return postObject;
     }).catch((error) => {
         console.error(error);
         return NaN;
