@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
+/* CREDIT: https://derrickotte.medium.com/how-to-create-a-calendar-from-scratch-in-react-1f2db197454d */
+
 .calendar {
   width: 70%;
   height: 80%;
