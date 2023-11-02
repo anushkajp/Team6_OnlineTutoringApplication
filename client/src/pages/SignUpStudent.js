@@ -21,6 +21,7 @@ const SignUpStudent = () => {
     university: "",
     profile_photo: "",
     password: "",
+    accountType: "student"
   });
 
   const navigate = useNavigate();
