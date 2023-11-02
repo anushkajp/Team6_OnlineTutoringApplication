@@ -1,6 +1,5 @@
 const User = require('./user');
 const Availability = require('./availability');
-const Review = require('../models/review')
 class Tutor extends User {
     /**
      * Adds a new Tutor to the database 
@@ -34,7 +33,6 @@ class Tutor extends User {
         const availability = new Availability(week, exceptions);
         this.availability = availability;
         this.bgCheck = bgCheck;
-        this.review = new Review()
     }
 }
 module.exports = Tutor

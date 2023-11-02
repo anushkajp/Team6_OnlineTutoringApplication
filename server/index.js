@@ -5,7 +5,9 @@ const { searchItem } = require("./src/db/db");
 const reads = require("./src/db/read")
 const updates = require("./src/db/update")
 const adds = require("./src/db/add")
-const deletes=require("./src/db/delete")
+const obAdds = require("./src/db/obAdd")
+const deletes = require("./src/db/delete")
+const User = require("./src/models/user")
 
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
@@ -43,14 +45,14 @@ app.get("/testInfo", (req, res) => {
                 user: user,
                 tutor: tutor,
                 student: student,
-                appointment:appointment,
+                appointment: appointment,
                 major: major,
                 course: course,
                 review:review,
                 searchs: search
 
             }
-            
+
 
             // console.log(await readPath("User"))
 
@@ -66,87 +68,88 @@ app.get("/testPost", (req, res) => {
 
         // updates.updateUsername("-NgePx3To2rYbOgfYW_g", null)
         const major = await adds.addMajor("Computer Science")
-        const majorId =await major["id"]
+        const majorId = await major["id"]
         // const course = await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
         const availability =
         {
-            "monday":[
+            "monday": [
                 {
-                "start_time":"10:00",
-                "end_time":"14:00"
+                    "start_time": "10:00",
+                    "end_time": "14:00"
                 },
                 {
-                "start_time":"17:00",
-                "end_time":"18:00"
+                    "start_time": "17:00",
+                    "end_time": "18:00"
                 }
             ],
-            "tuesday":[
+            "tuesday": [
                 {
-                "start_time":"10:00",
-                "end_time":"14:00"
+                    "start_time": "10:00",
+                    "end_time": "14:00"
                 },
                 {
-                "start_time":"17:00",
-                "end_time":"18:00"
+                    "start_time": "17:00",
+                    "end_time": "18:00"
                 }
             ]
         }
 
-        
+
 
 
         const dateAvailable = new Date().toTimeString()
-        const tutor = await adds.addTutor("Bibi",
-                                            "Bamble",
-                                            "Duke",
-                                            "saltedhash",
-                                            "bibi4eva",
-                                            majorId,
-                                            [],
-                                            "1233211234",
-                                            "bibi4eva@gmail.com",
-                                            "Long Bio",
-                                            "short bio",
-                                            availability,
-                                            [],
-                                            null,
-                                            5,
-                                            true,
-                                            5
-                                            )
+        const tutor = await adds.addTutor(
+            "Bibi",
+            "Bamble",
+            "Duke",
+            "saltedhash",
+            "bibi4eva",
+            majorId,
+            [],
+            "1233211234",
+            "bibi4eva@gmail.com",
+            "Long Bio",
+            "short bio",
+            availability,
+            [],
+            null,
+            5,
+            true,
+            5
+        )
         const tutorId = await tutor["id"]
         const student = await adds.addStudent("Jason",
-                                                "Hemroid",
-                                                "Stevens",
-                                                "Jackintheboxmmm",
-                                                "jroid92",
-                                                majorId,
-                                                [],
-                                                "1233211234",
-                                                "jroid92@gmail.com",
-                                                "London bridge wouldnt have fallen on my watch. Always hustling",
-                                                "short bio",
-                                                null
-                                                )
-        const studentId =await student["id"]
+            "Hemroid",
+            "Stevens",
+            "Jackintheboxmmm",
+            "jroid92",
+            majorId,
+            [],
+            "1233211234",
+            "jroid92@gmail.com",
+            "London bridge wouldnt have fallen on my watch. Always hustling",
+            "short bio",
+            null
+        )
+        const studentId = await student["id"]
         const review = await adds.addReview(tutorId,
-                                            studentId,
-                                            0,
-                                            "description"
-                                            )
-        const reviewId =await review["id"]
+            studentId,
+            0,
+            "description"
+        )
+        const reviewId = await review["id"]
         const appointment = await adds.addAppointment(tutorId,
-                                                        studentId,
-                                                        dateAvailable,
-                                                        10,
-                                                        true,
-                                                        "www.google.com",
-                                                        [],
-                                                        "Student Notes",
-                                                        "Tutor Notes",
-                                                        0,
-                                                        "feedback"
-                                                        )
+            studentId,
+            dateAvailable,
+            10,
+            true,
+            "www.google.com",
+            [],
+            "Student Notes",
+            "Tutor Notes",
+            0,
+            "feedback"
+        )
         // for(i in await searchItem("User","username","deedee")){
         //     deletes.deleteUser(i)
         // }
@@ -159,7 +162,7 @@ app.get("/testPost", (req, res) => {
                 major: major,
                 // course: course,
                 review: review,
-                appointment:appointment
+                appointment: appointment
 
             }
 
@@ -170,20 +173,61 @@ app.get("/testPost", (req, res) => {
 
     })()
 });
+
+app.get("/testPostTemp", (req, res) => {
+
+    (async () => {
+        user = new User(
+            "Jason",
+            "Hemroid",
+            "Stevens",
+            "Jackintheboxmmm",
+            "",
+            "jroid92",
+            [],
+            "1233211234",
+            "jroid92@gmail.com",
+            "majorId",
+            5,
+            "London bridge wouldnt have fallen on my watch. Always hustling",
+            "short bio",
+            null
+            )
+        const reture = await obAdds.addUser(user)
+        user.userId= await reture["id"]
+        res.send({
+            // for testing
+            data: {
+                user: user
+
+            }
+
+
+
+
+        })
+    })()
+
+
+
+}
+
+)
+
 app.get("/testDelete", (req, res) => {
 
     (async () => {
-        for (i in await reads.getUsers()){
+        for (i in await reads.getUsers()) {
             console.log("UserID : " + i)
             deletes.deleteUser(i)
         }
-        for(i in await reads.getAppointments()){
+        for (i in await reads.getAppointments()) {
             deletes.deleteAppointment(i)
         }
-        for(i in await reads.getMajors()){
+        for (i in await reads.getMajors()) {
             deletes.deleteMajor(i)
         }
-        for(i in await reads.getCourses()){
+        for (i in await reads.getCourses()) {
             deletes.deleteCourse(i)
         }
         // for(i in await searchItem("User","username","deedee")){
@@ -202,7 +246,7 @@ app.get("/testDelete", (req, res) => {
 
         //     }
 
-            // console.log(await readPath("User"))
+        // console.log(await readPath("User"))
 
 
         // });
@@ -223,6 +267,7 @@ const reviewRouter = require('./src/routes/reviews')
 const availabilityRouter = require('./src/routes/availability')
 app.use('/tutor', tutorRouter)
 app.use('/student', studentRouter)
+app.use('/appointments', sessionRouter)
 app.use('/appointments', sessionRouter)
 app.use('/session/review', reviewRouter)
 app.use('/tutor/availability', availabilityRouter)
