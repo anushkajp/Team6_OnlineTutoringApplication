@@ -18,11 +18,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // let isTutorLogin = props.isTutor;
-  // let isStudentLogin = props.isStudent;
-  // console.log(isStudentLogin)
-  // console.log(isTutorLogin)
-
   const navigate = useNavigate();
   // handle submit 
   const handleSubmit = async (e) => {
@@ -33,14 +28,11 @@ const Login = () => {
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      // navigate("/StudentDash");
-      // navigate("/TutorDash")
+      navigateToTwoFactor();
     } catch (error) {
-      setError("Invalid email or password");
-      console.error("Firebase Authentication Error:", error);
       console.error(error);
     }
-  }
+    }
 
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
@@ -48,13 +40,6 @@ const Login = () => {
   };
 
   const navigateToTwoFactor = () => { // needs to be changed to navigating to two-fac
-    // navigate("/TwoFactor");
-    // if(isTutorLogin){
-    //   navigate("/TutorDash")
-    // }else{
-    //   navigate("/StudentDash")
-    // }
-
     // navigate("/TwoFactor");
     navigate("/StudentDash")
   };
@@ -125,9 +110,9 @@ const Login = () => {
               <button
                 className="login-button"
                 type="submit"
-                onClick={navigateToTwoFactor}
+                onSubmit={navigateToTwoFactor}
               >
-                <p className="login-button-text">Log in</p>
+                <p type = "submit" className="login-button-text">Log in</p>
               </button>
             </form>
             <br></br>
