@@ -4,13 +4,20 @@
   "description": "server side for online tutoring app",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "supervisor index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "jest-w": "jest --watch",
+    "test:unit": "jest _tests_/unit/",
+    "test:integration": "jest  --testPathPattern=src/js/tests/integration"
   },
   "author": "Team6",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "firebase": "^10.4.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

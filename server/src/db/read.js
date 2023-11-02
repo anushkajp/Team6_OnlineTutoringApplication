@@ -3,35 +3,35 @@ module.exports={// Only read user Ids from these tables so references to informa
     getUserIds: async function getUserIds() {
         return Object.keys(await readPath("User"))
     },
-    getUsers: function getUsers(){
-        return readPath("User")
+    getUsers: async function getUsers(){
+        return await readPath("User")
     },
 
     getTutorIds: async function getTutorIds() {
         return Object.keys(await readPath("Tutor"))
     },
-    getTutors: function getTutors(){
-        return readPath("Tutor")
+    getTutors: async function getTutors(){
+        return await readPath("Tutor")
     },
 
     getStudentIds: async function getStudentIds() {
         return Object.keys(await readPath("Student"))
     },
-    getStudents: function getStudents(){
-        return readPath("Student")
+    getStudents: async function getStudents(){
+        return await readPath("Student")
     },
     // Only read by Id to ensure data is being read with intent
-    getUser: function getUser(userId) {
-        return readPath("User/" + userId)
+    getUser: async function getUser(userId) {
+        return await readPath("User/" + userId)
     },
-    getTutor: function getTutor(userId) {
-        return readPath("Tutor/" + userId)
+    getTutor: async function getTutor(userId) {
+        return await readPath("Tutor/" + userId)
     },
-    getTutorAvailability: function getAvailability(tutorId) {
-        return readPath("Availability/" + tutorId)
+    getTutorAvailability: async function getAvailability(tutorId) {
+        return await readPath("Availability/" + tutorId)
     },
-    getStudent: function getStudent(userId) {
-        return readPath("Student/" + userId)
+    getStudent: async function getStudent(userId) {
+        return await readPath("Student/" + userId)
     },
 
 

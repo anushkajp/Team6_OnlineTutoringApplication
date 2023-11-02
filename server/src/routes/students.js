@@ -1,11 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const Student = require('../models/student')
-const Service = require('../service/service')
-// GET ALL
-router.get('/', (req, res) => {
+const StudentService = require('../services/studentService')
+bodyParser = require('body-parser').json();
+
+// LOGIN
+router.get('/login', bodyParser, async (req, res) => {
     try {
-        const student = Student.findAll()
+        const student = await StudentService.login(JSON.stringify(req.body))
+        if (student === false)
+            res.status(400).json({message: "User does not exist"})
+        else 
+            res.status(200).json(student)
+    }catch (err){
+        res.status(500).json({ message: err.message});
+    }
+});
+// GET ALL
+router.get('/', async (req, res) => {
+    try {
+        const student = await StudentService.getAll()
         res.status(200).json(student)
     }catch (err){
         res.status(500).json({ message: err.message});
@@ -13,64 +26,71 @@ router.get('/', (req, res) => {
 });
 // GET ONE
 router.get('/:id', async(req, res) => {
+    (async () => {
+        try {
+            const student = await StudentService.getOne(req.params.id)
+            console.log("\nStudent routes.get(/:id): Student: " + student)
+            if (student === false)
+                res.status(400).json({message: "User does not exist"})
+            else 
+                res.status(200).json(student)
+        }catch (err){
+            res.status(500).json({ message: err.message});
+        }
+    })()
+});
+// GET ALL APPOINTMENTS
+router.get('/:id/appointments', async(req,res) => {
     try {
-        const student = new Student('Diana', 'Le', null, '12345', 'deedee',
-        [],'1234566789','gmai.com','cs','hello there', null,null)
-        // const student = await Student.find(req.params.id)
-        res.status(200).json(student)
-    }catch (err){
+        console.log("\n[ Student routes get all appointments ]")
+        const appointments = StudentService.getAppointments(req.params.id)
+        if (appointments === null)
+            res.status(400).json({message: req.params.id + ' is not a valid id'})
+        else 
+            res.status(200).json(appointments)
+    }catch (err) {
         res.status(500).json({ message: err.message});
     }
 });
 // CREATE ONE
-router.post('/', async(req, res) => {
-    const student = new Student();
-    student.firstName = req.body.firstName;
-    student.lastName = req.body.lastName;
-    student.middleName = req.body.middleName;
-    student.password = req.body.password;
-    student.userId = req.body.userId;
-    student.courses = req.body.courses;
-    student.phone = req.body.phone;
-    student.email = req.body.email;
-    student.major = req.body.major;
-    student.longBio = req.body.longBio;
-    student.shortBio = req.body.shortBio;
+router.post('/', bodyParser, async(req, res) => {
     try {
-        const newStudent = await student.create(req.params.appointmentId);
-        res.status(201).json(newStudent)
+        console.log("Student controller post req.body: " + JSON.stringify(req.body))
+        const newStudent = await StudentService.create(JSON.stringify(req.body));
+        if (newStudent === false)
+            res.status(401).json({message: "User with this username already exists"})
+        else
+            res.status(201).json(newStudent)
     }catch (err) {
         res.status(400).json({ message: err.message});
     }
 });
 // UPDATE ONE
-router.patch('/:id', async (req, res) => {
-    const student = new Student();
-    student.firstName = req.body.firstName;
-    student.lastName = req.body.lastName;
-    student.middleName = req.body.middleName;
-    student.password = req.body.passwordl;
-    student.userId = req.body.userId;
-    student.courses = req.body.courses;
-    student.phone = req.body.phone;
-    student.email = req.body.email;
-    student.major = req.body.major;
-    student.longBio = req.body.longBio;
-    student.shortBio = req.body.shortBio;
+router.patch('/:id', bodyParser, async (req, res) => {
     try {
-        const newStudent = await student.create(req.params.id);
-        res.status(201).json(newStudent)
+        console.log("Student controller patch req.body: " + JSON.stringify(req.body))
+        const newStudent = await StudentService.update(req.params.id,JSON.stringify(req.body));
+        if (newStudent == false)
+            res.status(404).json({message: "User not found"})
+        else
+            res.status(201).json(newStudent)
     }catch (err) {
-        res.status(400).json({ message: err.message});
+        res.status(500).json({ message: err.message});
     }
 });
 // DELETE ONE
-router.delete('/:id', (req, res) => {
-    try {
-        const student = Student.delete(req.params.id)
-        res.status(200).json(student)
-    }catch (err){
-        res.status(500).json({ message: err.message});
-    }
-})
+router.delete('/:id', async(req, res) => {
+    (async () => {
+        try {
+            const student = await StudentService.delete(req.params.id)
+            console.log("\nStudent routes.get(/:id): Student: " + student)
+            if (student === false)
+                res.status(404).json({message: "User not found"})
+            else 
+                res.status(200).json(student)
+        }catch (err){
+            res.status(500).json({ message: err.message});
+        }
+    })()
+});
 module.exports = router
