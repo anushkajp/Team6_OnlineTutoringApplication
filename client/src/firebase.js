@@ -13,7 +13,7 @@ const firebaseConfig = {
 //   appId: process.env.FIREBASE_APP_ID,
 //   measurementId: process.env.FIREBASE_MEASUREMENT_ID
 
-  apiKey: "<replace key>",
+  apiKey: "key",
   authDomain: "tutortopia-7d536.firebaseapp.com",
   databaseURL: "https://tutortopia-7d536-default-rtdb.firebaseio.com",
   projectId: "tutortopia-7d536",
@@ -25,6 +25,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 export const auth = getAuth();
+
 export default app;

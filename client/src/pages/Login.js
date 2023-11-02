@@ -13,7 +13,7 @@ import StudentDash from "./StudentDash";
 // need to add functionality with firebase auth
 // not completely responsive yet
 
-const Login = (props) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -29,14 +29,15 @@ const Login = (props) => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      // console.log(userCredential);
-      // console.log(isTutorLogin);
+      console.log(userCredential);
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      //navigateToTwoFactor();
-      navigate("/StudentDash");
+      // navigate("/StudentDash");
+      // navigate("/TutorDash")
     } catch (error) {
+      setError("Invalid email or password");
+      console.error("Firebase Authentication Error:", error);
       console.error(error);
     }
   }
@@ -54,7 +55,8 @@ const Login = (props) => {
     //   navigate("/StudentDash")
     // }
 
-    navigate("/StudentDash");
+    // navigate("/TwoFactor");
+    navigate("/StudentDash")
   };
 
   const navigateToForgot = () => {
