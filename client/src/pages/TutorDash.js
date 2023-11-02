@@ -3,8 +3,28 @@ import Sidebar from '../components/sidebar'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
 import ReviewTile from '../components/ReviewTile'
+import LogoutButton from '../components/LogoutButton'
+
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const TutorDash = () => {
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      navigate("/Home");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const favoriteTutors = [
     "Diana Le",
     "Anushka Pimple",
@@ -137,6 +157,7 @@ const TutorDash = () => {
                     ))
                   }
               </DashboardTile>
+              <LogoutButton onClick={handleLogout} />
           </div>
       </div>
     </div>

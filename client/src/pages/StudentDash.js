@@ -2,8 +2,26 @@ import React from 'react'
 import Sidebar from '../components/sidebar'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
+import LogoutButton from '../components/LogoutButton'
+
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const StudentDash = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      navigate("/Home");
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const favoriteTutors = [
     "Diana Le",
@@ -46,6 +64,8 @@ const StudentDash = () => {
       "session_comments": "comment4"
     }
   ]
+
+  // console.log(isStudentLogin)
 
   return (
     <div className="dashboardPage">
@@ -101,6 +121,7 @@ const StudentDash = () => {
                     }
                   </div>
               </DashboardTile>
+              <LogoutButton onClick={handleLogout} />
           </div>
       </div>
     </div>
