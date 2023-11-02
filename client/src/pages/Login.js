@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
-import StudentDash from "./StudentDash";
 
 // import 'dotenv/config'
 
@@ -39,9 +38,8 @@ const Login = () => {
     
   };
 
-  const navigateToTwoFactor = () => { // needs to be changed to navigating to two-fac
-    // navigate("/TwoFactor");
-    navigate("/StudentDash")
+  const navigateToTwoFactor = () => { 
+    navigate("/TwoFactor");
   };
 
   const navigateToForgot = () => {
