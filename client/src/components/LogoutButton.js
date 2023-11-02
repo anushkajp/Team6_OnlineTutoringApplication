@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate, navigate } from 'react-router';
-
+import './LogoutButton.css';
 const LogoutButton = () => {
     const navigate = useNavigate();
 

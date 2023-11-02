@@ -1,0 +1,22 @@
+.logout-button {
+    width: 267.429px;
+    height: 54.857px;
+    flex-shrink: 0;
+    border-radius: 17.143px;
+    border: none;
+    background: var(--Bold-Purple, #fff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .logout-button-text {
+    color: #a92ab7;
+    font-family: Montserrat;
+    font-size: 22.286px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 54.857px;
+    text-align: center;
+  }
+  
