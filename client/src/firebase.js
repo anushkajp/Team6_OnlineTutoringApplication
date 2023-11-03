@@ -1,30 +1,20 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-
-// require("dotenv").config();
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-//   apiKey: process.env.FIREBASE_API_KEY,
-//   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-//   databaseURL: process.env.FIREBASE_DATABASE_URL,
-//   projectId: process.env.FIREBASE_PROJECT_ID,
-//   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-//   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-//   appId: process.env.FIREBASE_APP_ID,
-//   measurementId: process.env.FIREBASE_MEASUREMENT_ID
-
-  apiKey: "api key",
-  authDomain: "tutortopia-7d536.firebaseapp.com",
-  databaseURL: "https://tutortopia-7d536-default-rtdb.firebaseio.com",
-  projectId: "tutortopia-7d536",
-  storageBucket: "tutortopia-7d536.appspot.com",
-  messagingSenderId: "1067384641270",
-  appId: "1:1067384641270:web:e11a33425bbc86a43f3ed7",
-  measurementId: "G-43L355452Y"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth();
+// Initialize Firebase Auth
+const auth = getAuth(app);
 
-export default app;
+export { auth };
