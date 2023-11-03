@@ -45,7 +45,7 @@ class StudentService {
             const ATTRIBUTE = 'username'
             // console.log("StudentService.create studentData: " + studentData + "\n")
             const data = JSON.parse(studentData)
-            const result = await searchItem(PATH, ATTRIBUTE, data.userName)     // FIND IF ANOTHER USER HAS SAME USERNAME
+            const result = await searchItem(PATH, ATTRIBUTE, data.username)     // FIND IF ANOTHER USER HAS SAME USERNAME
             console.log("\nStudentService.create result: " + result)
             
             // STUDENT WITH USERNAME ALREADY EXISTS
@@ -55,43 +55,70 @@ class StudentService {
             let student = new Student()
             console.log(typeof student)
             
-            if (data.hasOwnProperty("firstName"))
-                student.firstName = data.firstName
-            if (data.hasOwnProperty("lastName"))
-                student.lastName = data.lastName
-            if (data.hasOwnProperty("middleName"))
-                student.middleName = data.middleName
-            else
-                student.middleName = null
-            if (data.hasOwnProperty("password"))
-                student.password = data.password
-            if (data.hasOwnProperty("username"))
-                student.username = data.username
-            if (data.hasOwnProperty("courses"))
-                student.courses = data.courses;
-            else student.courses = []
-            if (data.hasOwnProperty("phone"))
-                student.phone = data.phone
-            else student.phone = null
-            if (data.hasOwnProperty("email"))
-                student.email = data.email
-            if (data.hasOwnProperty("major"))
-                student.major = data.major
-            else student.major = null
-            if (data.hasOwnProperty("hours"))
-                student.hours = data.hours
-            else student.hours = null
-            if (data.hasOwnProperty("longBio"))
-                student.longBio = data.longBio
-            else student.longBio = null
-            if (data.hasOwnProperty("shortBio"))
-                student.longBio = data.longBio
-            else student.shortBio = null
-            if (data.hasOwnProperty("pfp"))
-                student.pfp = data.pfp
-            else student.pfp = null
-            student.userId = null
-
+            // if (data.hasOwnProperty("firstName"))
+            //     student.firstName = data.firstName
+            // if (data.hasOwnProperty("lastName"))
+            //     student.lastName = data.lastName
+            // if (data.hasOwnProperty("middleName"))
+            //     student.middleName = data.middleName
+            // else
+            //     student.middleName = null
+            // if (data.hasOwnProperty("password"))
+            //     student.password = data.password
+            // if (data.hasOwnProperty("username"))
+            //     student.username = data.username
+            // if (data.hasOwnProperty("courses"))
+            //     student.courses = data.courses;
+            // else student.courses = []
+            // if (data.hasOwnProperty("phone"))
+            //     student.phone = data.phone
+            // else student.phone = null
+            // if (data.hasOwnProperty("email"))
+            //     student.email = data.email
+            // if (data.hasOwnProperty("major"))
+            //     student.major = data.major
+            // else student.major = null
+            // if (data.hasOwnProperty("hours"))
+            //     student.hours = data.hours
+            // else student.hours = null
+            // if (data.hasOwnProperty("longBio"))
+            //     student.longBio = data.longBio
+            // else student.longBio = null
+            // if (data.hasOwnProperty("shortBio"))
+            //     student.longBio = data.longBio
+            // else student.shortBio = null
+            // if (data.hasOwnProperty("pfp"))
+            //     student.pfp = data.pfp
+            // else student.pfp = null
+            // student.userId = null
+            const propertyMap = {
+                
+                firstName: null,
+                lastName: null,
+                middleName: null,
+                password: null,
+                username: null,
+                courses: null,
+                phone: null,
+                email: null,
+                major: null,
+                hours: null,
+                longBio: null,
+                shortBio: null,
+                pfp: null,
+                userId: null,
+            };
+    
+            // Loop through the data object and set the corresponding properties
+            for (const key in propertyMap) {
+                if (data.hasOwnProperty(key)) {
+                    student[key] = data[key];
+                }
+            }
+            for (const key in student) {
+                if (student[key] === undefined)
+                    student[key] = null
+            }
             // TODO: get utils to work for same object
 
             // JSON OBJECT DOESNT MATCH STUDENT MODEL
@@ -128,6 +155,7 @@ class StudentService {
             console.log("Student id: " + id + "\n")
             console.log(typeof data.userName)
             console.log("\nNew Username: "+ data.userName + "\n") 
+            
             // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM USERID
             if (data.password != null)
                 await updateUserPassword(id, data.password)

@@ -11,12 +11,14 @@ class Session {
      * @param {string} notes Notes about the meeting
      * @param {number} rating Appointment rating
      * @param {string} feedback Feedback for the appointment
+     * @param {string} course Course the student will get tutored for
      */
     constructor(tutorId, studentId, datetime, length, online, location, notes, feedback) {
         this.tutorId = tutorId;
         this.studentId = studentId;
         this.datetime = datetime;
         this.length = length;
+        this.course = course;
         this.online = online;
         this.location = location;
         this.notes = notes;
