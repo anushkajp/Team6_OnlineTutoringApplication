@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import CustomModal from './Modal';
-import React, { useState } from 'react';
-import CustomModal from './Modal';
 
 const ReviewTile = (props) => {
     
@@ -16,15 +14,7 @@ const ReviewTile = (props) => {
   };
 
     
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   return (
     <div className="review_tile">
