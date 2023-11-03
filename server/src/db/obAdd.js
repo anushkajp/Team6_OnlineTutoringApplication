@@ -52,8 +52,8 @@ module.exports = {
                     }
             })
         userKey = await this.addUser(user)
-        student["userId"] = userkey['id']
-        return addItem("Student", postDataStudent, userKey)
+        student["userId"] = userKey['id']
+        return addItem("Student", student, userKey)
     },
     /**
      * Adds a new Tutor to the database 
