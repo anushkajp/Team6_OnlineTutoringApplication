@@ -56,70 +56,36 @@ async function readPath(path, test = true) {
 
 
 
-// /**
-//  * Adds a new item into the database, indexed by generated itemID
-//  * @param {string} entity Name of the entity, such as User, Availability, etc
-//  * @param {Object} postData The post data with valued fields, for example const postData = {author: username,uid: uid,body: body,title: title,starCount: 0,authorPic: picture};
-//  * @param {string} specificKey This can be used to modify existing data by pointing to the id of the object you wish to modify
-//  * @param {boolean} test Defaults to true, indicate whether this is a test write
-//  */
-// function addItem(entity, postData, specificKey = null, test = true) {
-
-//     newPostKey = specificKey;
-//     if (newPostKey == null) {
-//         newPostKey = push(child(ref(db), entity)).key
-//     }
-
-//     const updates = {}
-//     if (test) {
-//         updates["/test/" + entity + "/" + newPostKey] = postData;
-//     } else {
-//         updates["/" + entity + "/" + newPostKey] = postData;
-//     }
-//     return update(ref(db), updates).then(() => {
-//         postData["id"] = newPostKey
-//         return postData;
-//     }).catch((error) => {
-//         console.error(error);
-//         return NaN;
-//     });
-
-// }
 /**
- * Adds a new item into the database by passing the relevent Object, indexed by generated itemID
+ * Adds a new item into the database, indexed by generated itemID
  * @param {string} entity Name of the entity, such as User, Availability, etc
- * @param {Object} postObject The post data with valued fields, for example const postData = {author: username,uid: uid,body: body,title: title,starCount: 0,authorPic: picture};
+ * @param {Object} postData The post data with valued fields, for example const postData = {author: username,uid: uid,body: body,title: title,starCount: 0,authorPic: picture};
  * @param {string} specificKey This can be used to modify existing data by pointing to the id of the object you wish to modify
  * @param {boolean} test Defaults to true, indicate whether this is a test write
  */
-function addItem(entity, postObject, specificKey = null, test = true) {
+function addItem(entity, postData, specificKey = null, test = true) {
 
     newPostKey = specificKey;
     if (newPostKey == null) {
         newPostKey = push(child(ref(db), entity)).key
     }
-    // postData = {}
-    // Object.keys(postObject).forEach((key) => {
-    //     // console.log(key+" "+avail[key]);
-    //     // console.log(avail[key])
-    //     postData[key] = postObject[key];
-    // })
 
     const updates = {}
     if (test) {
-        updates["/test/" + entity + "/" + newPostKey] = postObject;
+        updates["/test/" + entity + "/" + newPostKey] = postData;
     } else {
-        updates["/" + entity + "/" + newPostKey] = postObject;
+        updates["/" + entity + "/" + newPostKey] = postData;
     }
     return update(ref(db), updates).then(() => {
-        postObject["id"] = newPostKey
-        return postObject;
+        postData["id"] = newPostKey
+        return postData;
     }).catch((error) => {
         console.error(error);
         return NaN;
     });
 
 }
+
 /**
  * Reads a table item from the database using specified path
  * @param {string} entity Name of the entity, i.e User, Appointment, Tutor, Student, etc
