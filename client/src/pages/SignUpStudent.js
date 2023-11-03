@@ -1,37 +1,108 @@
 import React, { useState } from "react";
 
+class User {
+  constructor(firstName, lastName, middleName,
+      password, userId, username, courses, phone, email, major,
+      hours, longBio, shortBio, pfp) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.middleName = middleName;
+      this.password = password;
+      this.userId = userId;
+      this.username = username;
+      this.courses = courses;
+      this.phone = phone;
+      this.email = email;
+      this.major = major;
+      this.hours = hours;
+      this.longBio = longBio;
+      this.shortBio = shortBio;
+      this.pfp = pfp;
+  }
+}
+class Student extends User {
+  constructor(firstName, lastName, middleName,
+      password, userId, userName, courses, phone, email, major, hours,
+      longBio, shortBio, pfp) {
+      super(firstName, lastName, middleName,
+          password, userId, userName, courses, phone, email, major,
+          longBio, shortBio, pfp);
+  }
+}
+
 const SignUpStudent = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    university: "",
-    profile_photo: "",
-    password: "",
-  });
+  //   const [formData, setFormData] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   email: "",
+  //   phone: "",
+  //   university: "",
+  //   profile_photo: "",
+  //   password: "",
+  // });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const initialStudent = new Student();
+  const [student, setStudent] = useState(initialStudent);
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value,
+  //   });
+  // };
+
+  const createFields = (student,setStudent)=>{
+    const fieldsToSkip=['userId'
+    ]
+    return(
+    <div className="form-group">
+        {Object.keys(student).map((fields,index)=>{
+          if (fieldsToSkip.includes(fields)){
+            return null;
+          }
+          return (<div key={index}  className="form-group">
+            <label key={index} htmlFor={fields}>{fields}</label>
+            <input
+            type={fields==="pfp"? "file" : "text"}
+            id={fields}
+            name={fields}
+            value={student[fields]}
+            onChange={(e)=>setStudent({...student,[fields]:e.target.value})}
+            required
+          />
+          </div>
+          )
+        }
+        
+        
+        
+        )}
+
+</div>
+
+    )
+  }
+  
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("Form data submitted:", formData);
+  //   // Clear the form fields
+  //   setFormData({
+  //     firstName: "",
+  //     lastName: "",
+  //     email: "",
+  //     phone: "",
+  //     university: "",
+  //     profile_photo: "",
+  //     password: "",
+  //   });
+  // };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
+    console.log("Form data submitted:", student);
     // Clear the form fields
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      university: "",
-      profile_photo: "",
-      password: "",
-    });
+    setStudent(new Student());
   };
 
   return (
@@ -40,7 +111,7 @@ const SignUpStudent = () => {
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="profile_photo">Upload Profile Photo</label>
               <input
                 type="file"
@@ -116,7 +187,8 @@ const SignUpStudent = () => {
                 onChange={handleChange}
                 required
               />
-            </div>
+            </div> */}
+            {createFields(student,setStudent)}
             <button className="create_acc_student_button" type="submit">
               Create Student Account
             </button>

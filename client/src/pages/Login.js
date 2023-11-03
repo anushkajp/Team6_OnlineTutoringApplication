@@ -3,7 +3,7 @@ import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs-react"
-
+import { fetchFromAPI } from '../services/api'
 // no functionality yet, just UI
 // need to add functionality with firebase auth
 // not completely responsive yet
