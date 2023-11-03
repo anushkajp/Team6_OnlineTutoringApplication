@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import bcrypt from "bcryptjs-react"
 
 // no functionality yet, just UI
 // need to add functionality with firebase auth
@@ -10,9 +11,29 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // const [data, setData] = useState({
+  //   email:'',
+  //   password:''
+  // });
+  // const {email, password} =data;
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+
+  const hashPassword = () =>{
+    bcrypt.hash(password,10,function(err, hash){
+      console.log("Hash generated: "+hash)
+    }
+    )
+    // return hash
+  }
+
+  const handleSubmit = (e) =>{
+    console.log(password)
+    console.log(hashPassword(password))
+  }
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
   };
@@ -60,6 +81,11 @@ const Login = () => {
                 type="email"
                 id="email"
                 name="email"
+                value={email}
+                onChange={(e)=>{
+                  setEmail(e.target.value)
+
+                }}
                 required
               />
 
@@ -71,6 +97,12 @@ const Login = () => {
                 type="password"
                 id="password"
                 name="password"
+                value={password}
+                onChange={(e)=>{
+                  setPassword(e.target.value)
+
+                }}
+                // onInputCapture={el =>{console.log(el)}}
                 required
               />
 
@@ -80,7 +112,7 @@ const Login = () => {
               <button
                 className="login-button"
                 type="submit"
-                onClick={navigateToTwoFactor}
+                onClick={handleSubmit}
               >
                 <p className="login-button-text">Log in</p>
               </button>
