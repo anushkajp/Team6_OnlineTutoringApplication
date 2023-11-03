@@ -23,19 +23,33 @@ const Login = () => {
   const navigate = useNavigate();
 
 
-  const hashPassword = () =>{
-    bcrypt.hash(password,10,function(err, hash){
-      console.log("Hash generated: "+hash)
-      setHash(hash)
-    }
-    )
+  const hashPassword = async() =>{
+    const hash = await new Promise((resolve, reject)=> {
+      bcrypt.hash(password,10,function(error, hash){
+        if(error){
+          reject(error)
+        }else{
+          resolve(hash)
+        }
+
+        
+      })
+    })
+    console.log("Hash generated: "+hash)
+    setHash(hash)
+
     // return hash
+  }
+
+  const comparePassword = async()=>{
+    console.log(await bcrypt.compare(password,hash))
   }
 
   const handleSubmit = (e) =>{
     console.log(password)
     hashPassword(password)
     console.log(hash)
+    comparePassword()
   }
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
@@ -103,7 +117,7 @@ const Login = () => {
                 value={password}
                 onChange={(e)=>{
                   setPassword(e.target.value)
-
+                  hashPassword()
                 }}
                 // onInputCapture={el =>{console.log(el)}}
                 required
