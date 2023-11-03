@@ -115,6 +115,7 @@ class StudentService {
                     student[key] = data[key];
                 }
             }
+            // LOOP THROUGH OBJ, ANY UNDEFINED REPLACCE WITH NULL
             for (const key in student) {
                 if (student[key] === undefined)
                     student[key] = null
@@ -149,12 +150,10 @@ class StudentService {
             
             // STUDENT DOESNT EXIST
             if ( Object.keys(result).length === 0)
-                return false
+                throw new CustomError("The userid already exists", 400)
             console.log("StudentService.update studentData: " + studentData + "\n")
             const id = Object.keys(result)[0]
             console.log("Student id: " + id + "\n")
-            console.log(typeof data.userName)
-            console.log("\nNew Username: "+ data.userName + "\n") 
             
             // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM USERID
             if (data.password != null)
