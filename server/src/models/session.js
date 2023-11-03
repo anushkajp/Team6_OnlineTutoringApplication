@@ -10,8 +10,10 @@ class Session {
      * @param {string} location If in person, the address of the appointment, if online, a meeting URL
      * @param {string} feedback Feedback for the appointment
      * @param {string} course Course the student will get tutored for
+     * @param {string} tutorNotes Notes from the tutor to the student
+     * @param {string} studentNotes Notes from the student to the tutor
      */
-    constructor(tutorId, studentId, datetime, length, course, online, location, feedback) {
+    constructor(tutorId, studentId, datetime, length, course, online, location, feedback, tutorNotes, studentNotes) {
         this.tutorId = tutorId;
         this.studentId = studentId;
         this.datetime = datetime;
@@ -20,6 +22,8 @@ class Session {
         this.online = online;
         this.location = location;
         this.feedback = feedback;
+        this.tutorNotes = tutorNotes;
+        this.studentNotes = studentNotes;
     }
 }
 module.exports = Session

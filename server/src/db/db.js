@@ -80,7 +80,6 @@ function addItem(entity, postData, specificKey = null, test = true) {
         postData["id"] = newPostKey
         return postData;
     }).catch((error) => {
-        console.log("I have erroroed in my ways")
         console.error(error);
         return NaN;
     });
