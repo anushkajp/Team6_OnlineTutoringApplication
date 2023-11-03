@@ -1,20 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const StudentService = require('../services/studentService')
-bodyParser = require('body-parser').json();
-
-// LOGIN
-router.get('/login', bodyParser, async (req, res) => {
-    try {
-        const student = await StudentService.login(JSON.stringify(req.body))
-        if (student === false)
-            res.status(400).json({message: "User does not exist"})
-        else 
-            res.status(200).json(student)
-    }catch (err){
-        res.status(500).json({ message: err.message});
-    }
-});
+const bodyParser = require('body-parser').json();
+const CustomError = require('../utils/customError')
 // GET ALL
 router.get('/', async (req, res) => {
     try {
@@ -35,6 +23,7 @@ router.get('/:id', async(req, res) => {
             else 
                 res.status(200).json(student)
         }catch (err){
+            if (err instanceof CustomError)
             res.status(500).json({ message: err.message});
         }
     })()
@@ -57,12 +46,14 @@ router.post('/', bodyParser, async(req, res) => {
     try {
         console.log("Student controller post req.body: " + JSON.stringify(req.body))
         const newStudent = await StudentService.create(JSON.stringify(req.body));
-        if (newStudent === false)
-            res.status(401).json({message: "User with this username already exists"})
-        else
-            res.status(201).json(newStudent)
+        res.status(201).json(newStudent)
     }catch (err) {
-        res.status(400).json({ message: err.message});
+        console.log("err instance of CustomError?")
+        console.log(err instanceof CustomError)
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
     }
 });
 // UPDATE ONE

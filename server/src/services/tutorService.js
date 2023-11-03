@@ -14,7 +14,7 @@ class TutorService {
             const tutors = await read.getTutors()
             console.log("TutorService.getTutors() = " + tutors)
             return tutors
-        } catch (err) {
+        }catch (err) {
             throw err
         }
     }
@@ -64,6 +64,22 @@ class TutorService {
             // ADD NEW STUDENT TO DB
             const data = JSON.parse(tutordata)
             console.log("nTutorService student:" + JSON.stringify(data) + "\n")
+            const propertyMap = {
+                firstName: null,
+                lastName: null,
+                middleName: null,
+                password: null,
+                username: null,
+                courses: [],
+                phone: null,
+                email: null,
+                major: null,
+                hours: null,
+                longBio: null,
+                shortBio: null,
+                pfp: null,
+                userId: null,
+            };
             const tutorInfo = await addTutor(
                 data.firstName, data.middleName,
                 data.lastName, data.password, data.userName, 

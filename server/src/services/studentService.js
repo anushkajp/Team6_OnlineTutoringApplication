@@ -1,15 +1,14 @@
 const { getUsers, getUser } = require ('../db/read')
 const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, updateUserBio,
         updateUserPassword, updateUserProfilePic} = require ('../db/update')
-const {addStudent} = require ('../db/add')
+// const {addStudent} = require ('../db/add')
+const adds = require ('../db/obAdd')
 const {searchItem} = require ('../db/db')
 const deletes = require("../db/delete")
-
+const { sameObject } = require ('../utils/utils')
+const Student = require ('../models/student')
+const CustomError = require ('../utils/customError')
 class StudentService {
-    // LOGIN
-    static async login (studentInfo) {
-        // USE MAHIS INFO
-    }
     // GET ALL
     static async getAll() {
         try {
@@ -30,26 +29,10 @@ class StudentService {
             // SEARCH FOR USER W USERNAME
             const search = await searchItem(PATH, ATTRIBUTE, id)
             console.log(await search)
-            if (Object.keys(search).length > 0)         // USER FOUND
+            if (Object.keys(search).length > 0)
                 return search
             else
-                return false                            // USER CANNOT BE FOUND
-        }catch (e) {
-            throw e
-        }
-    }
-    static async getAppointments(id) {
-        try {
-            console.log("\n[ StudentService.getAppointments ]")
-            const user = await searchItem('User', 'username', id)
-            if (Object.keys(user).length === 0) {
-                return null
-            }
-            const userid = Object.keys(user)[0]
-            const appointments = await searchItem('Appointment', 'studentId', userid)
-            console.log("\nuserid: " + userid)
-            console.log("\appointments: " + appointments)
-            return appointments
+                throw new CustomError("User not found", 400)
         }catch (e) {
             throw e
         }
@@ -62,26 +45,94 @@ class StudentService {
             const ATTRIBUTE = 'username'
             // console.log("StudentService.create studentData: " + studentData + "\n")
             const data = JSON.parse(studentData)
-            const result = await searchItem(PATH, ATTRIBUTE, data.userName)     // FIND IF ANOTHER USER HAS SAME USERNAME
+            const result = await searchItem(PATH, ATTRIBUTE, data.username)     // FIND IF ANOTHER USER HAS SAME USERNAME
             console.log("\nStudentService.create result: " + result)
-            console.log("\nStudentService.create result.length: " + Object.keys(result).length)
-            if ( Object.keys(result).length > 0)
-                return false
             
+            // STUDENT WITH USERNAME ALREADY EXISTS
+            if ( Object.keys(result).length > 0)
+                throw new CustomError("The userid already exists", 400)
+            
+            let student = new Student()
+            console.log(typeof student)
+            
+            // if (data.hasOwnProperty("firstName"))
+            //     student.firstName = data.firstName
+            // if (data.hasOwnProperty("lastName"))
+            //     student.lastName = data.lastName
+            // if (data.hasOwnProperty("middleName"))
+            //     student.middleName = data.middleName
+            // else
+            //     student.middleName = null
+            // if (data.hasOwnProperty("password"))
+            //     student.password = data.password
+            // if (data.hasOwnProperty("username"))
+            //     student.username = data.username
+            // if (data.hasOwnProperty("courses"))
+            //     student.courses = data.courses;
+            // else student.courses = []
+            // if (data.hasOwnProperty("phone"))
+            //     student.phone = data.phone
+            // else student.phone = null
+            // if (data.hasOwnProperty("email"))
+            //     student.email = data.email
+            // if (data.hasOwnProperty("major"))
+            //     student.major = data.major
+            // else student.major = null
+            // if (data.hasOwnProperty("hours"))
+            //     student.hours = data.hours
+            // else student.hours = null
+            // if (data.hasOwnProperty("longBio"))
+            //     student.longBio = data.longBio
+            // else student.longBio = null
+            // if (data.hasOwnProperty("shortBio"))
+            //     student.longBio = data.longBio
+            // else student.shortBio = null
+            // if (data.hasOwnProperty("pfp"))
+            //     student.pfp = data.pfp
+            // else student.pfp = null
+            // student.userId = null
+            const propertyMap = {
+                
+                firstName: null,
+                lastName: null,
+                middleName: null,
+                password: null,
+                username: null,
+                courses: null,
+                phone: null,
+                email: null,
+                major: null,
+                hours: null,
+                longBio: null,
+                shortBio: null,
+                pfp: null,
+                userId: null,
+            };
+    
+            // Loop through the data object and set the corresponding properties
+            for (const key in propertyMap) {
+                if (data.hasOwnProperty(key)) {
+                    student[key] = data[key];
+                }
+            }
+            for (const key in student) {
+                if (student[key] === undefined)
+                    student[key] = null
+            }
+            // TODO: get utils to work for same object
+
+            // JSON OBJECT DOESNT MATCH STUDENT MODEL
+            // const s = new Student()
+            // if (!sameObject(studentData, JSON.stringify(s.toObj()))) {
+            //     console.log("same obj false")
+            //     throw new CustomError("The JSON object provided does not match Student model", 400)
+            // }
+                
+                
             // ADD NEW STUDENT TO DB
-            console.log("StudentService student:" + JSON.stringify(data) + "\n")
-            const studentInfo = await addStudent(
-                data.firstName, data.middleName,
-                data.lastName, data.password, data.userName, 
-                data.major, data.courses, data.phone, 
-                data.email, data.longBio, data.rating, 
-                data.pfp
-            )
-            console.log(studentInfo)
-            const newStudent = await searchItem("User", "username", "deedee")
-            console.log("newStudent: " + newStudent + "\n")
-            console.log("StudentService studentInfo: " + JSON.stringify(studentInfo) + "\n")
-            // FIND THE NEW STUDENT FROM DB WITH USERID
+            console.log(student)
+            const studentInfo = await adds.addStudent(student)
+            console.log("StudentInfo " + studentInfo)
             return studentInfo
         }catch (e) {
             throw e
@@ -104,6 +155,7 @@ class StudentService {
             console.log("Student id: " + id + "\n")
             console.log(typeof data.userName)
             console.log("\nNew Username: "+ data.userName + "\n") 
+            
             // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM USERID
             if (data.password != null)
                 await updateUserPassword(id, data.password)
