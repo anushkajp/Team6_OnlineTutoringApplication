@@ -17,9 +17,10 @@ const TwoFactor = () => {
 
   const handleValidation = () => {
     if (inputValue == verificationCode) {
+      alert("Correct Code!");
        navigate("/TutorDash");
       console.log("Validation is performed with input value:", inputValue);
-      //alert("Correct Code!");
+      //
     } else {
       console.log("Verification code does not match.");
       alert("Invalid Code!");

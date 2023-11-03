@@ -23,24 +23,30 @@ const Login = () => {
   };
 
   const navigateToTwoFactor = () => {
-    const code = generateVerificationCode(); 
-  navigate("/TwoFactor", { state: { verificationCode: code } });
-  sendVerificationEmail(code); 
+    const code = generateVerificationCode();
+    navigate("/TwoFactor", { state: { verificationCode: code } });
+    sendVerificationEmail(code, email);
   };
 
   const generateVerificationCode = () => {
     return Math.floor(100000 + Math.random() * 900000);
   };
 
-  const sendVerificationEmail = (code) => {
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const sendVerificationEmail = (code, email) => {
     const serviceId = "service_dz0xhzf";
     const templateId = "template_xs9buif";
     const userId = "cWti8bd46sTP6-Sgr";
 
     const templateParams = {
       verification_code: code,
-      email: email,
+      to_email: email,
     };
+
+    console.log("email: ", email);
 
     emailjs
       .send(
@@ -52,7 +58,6 @@ const Login = () => {
       .then(
         (response) => {
           console.log("Email sent:", response);
-          navigate("/TutorDash");
         },
         (error) => {
           console.error("Email could not be sent:", error);
@@ -95,6 +100,7 @@ const Login = () => {
                 type="email"
                 id="email"
                 name="email"
+                onChange={handleEmailChange}
                 required
               />
 
