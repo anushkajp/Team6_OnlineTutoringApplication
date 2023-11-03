@@ -1,18 +1,30 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const TwoFactor = () => {
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const verificationCode = location.state.verificationCode;
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
+    console.log("Input Value: ", e.target.value);
+    console.log("Code: ", verificationCode);
   };
 
   const handleValidation = () => {
-    navigate("/TutorDash");
-    console.log("Validation is performed with input value:", inputValue);
+    if (inputValue == verificationCode) {
+       navigate("/TutorDash");
+      console.log("Validation is performed with input value:", inputValue);
+      //alert("Correct Code!");
+    } else {
+      console.log("Verification code does not match.");
+      alert("Invalid Code!");
+      navigate("/Login");
+    }
   };
 
   return (
