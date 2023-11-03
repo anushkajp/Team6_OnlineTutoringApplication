@@ -17,23 +17,9 @@ class SessionService {
         }
     }
     // RETURNS SPECIFIC SESSION BY SESSION ID
-    static async getOne(id) {
-        try {
-            console.log("\n[ SessionService.getOne ]\n")
-            const session = await read.getAppointment(id)
+    //how do we get the id of the session from firebase?
 
-            // SESSION FOUND
-            if (Object.keys(session).length > 0)
-                return session
-
-            // SESSION NOT FOUND
-            else 
-                return false
-
-        }catch (err){
-            throw err
-        }
-    }
+    //GET SESSIONS BY USER
     static async getByUser(id, path) {
         try {
             console.log("\n[ SessionService.getAppointments ]")
@@ -84,8 +70,7 @@ class SessionService {
             throw e
         }
     }
-    static delete(id) {
-        return null;
-    }
+    //DELETE SESSION
+    //how do we get id from database
 }
 module.exports = SessionService
