@@ -20,6 +20,7 @@ import "./styles/reviewtile.css";
 import "./styles/tutor_reports.css";
 import "./styles/Calendar.css";
 import "./styles/Home.css";
+import "./styles/AddTutorSession.css"
 
 
 // import pages
