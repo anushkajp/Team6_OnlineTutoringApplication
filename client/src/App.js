@@ -18,12 +18,13 @@ import "./styles/TwoFactor.css";
 import "./styles/Login.css";
 import "./styles/reviewtile.css";
 import "./styles/tutor_reports.css";
+import "./styles/Calendar.css";
 import "./styles/Home.css";
 
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
-import Calendar from "./pages/Calendar";
+import CalendarPage from "./pages/CalendarPage";
 import Contact from "./pages/Contact";
 import Forgot from "./pages/Forgot";
 import Home from "./pages/Home";
@@ -46,7 +47,7 @@ function App() {
       {/* <nav>
         <ul>
           <li><a href="/AddTutorSession">AddTutorSession</a></li>
-          <li><a href="/Calendar">Calendar</a></li>
+          <li><a href="/CalendarPage">CalendarPage</a></li>
           <li><a href="/Contact">Contact</a></li>
           <li><a href="/Forgot">Forgot</a></li>
           <li><a href="/Home">Home</a></li>
@@ -68,8 +69,9 @@ function App() {
       <BrowserRouter>
       <Routes>
       <Route path="/" element={<Navigate to="/Home" />} />
+      <Route path="/" element={<Navigate to="/Home" />} />
         <Route path="/AddTutorSession" element={<AddTutorSession />} />
-        <Route path="/Calendar" element={<Calendar />} />
+        <Route path="/CalendarPage" element={<CalendarPage />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Forgot" element={<Forgot />} />
         <Route path="/Home" element={<Home />} />

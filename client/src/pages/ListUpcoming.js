@@ -44,7 +44,7 @@ function ListUpcoming(props){
         <div className="switchView">
           <nav>
             <a href="/ListUpcoming">List View | </a>
-            <a href="/Calendar">Calendar View</a>
+            <a href="/CalendarPage">Calendar View</a>
           </nav>
         </div>
         <div className="upcomingSessionList">

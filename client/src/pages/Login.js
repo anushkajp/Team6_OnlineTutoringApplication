@@ -7,6 +7,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
 // import 'dotenv/config'
+import emailjs from "emailjs-com";
 
 // no functionality yet, just UI
 // need to add functionality with firebase auth
@@ -38,12 +39,51 @@ const Login = () => {
     
   };
 
-  const navigateToTwoFactor = () => { 
-    navigate("/TwoFactor");
-  };
-
   const navigateToForgot = () => {
     navigate("/Forgot");
+  };
+
+  const navigateToTwoFactor = () => {
+    const code = generateVerificationCode();
+    navigate("/TwoFactor", { state: { verificationCode: code } });
+    sendVerificationEmail(code, email);
+  };
+
+  const generateVerificationCode = () => {
+    return Math.floor(100000 + Math.random() * 900000);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const sendVerificationEmail = (code, email) => {
+    const serviceId = "service_dz0xhzf";
+    const templateId = "template_xs9buif";
+    const userId = "cWti8bd46sTP6-Sgr";
+
+    const templateParams = {
+      verification_code: code,
+      to_email: email,
+    };
+
+    console.log("email: ", email);
+
+    emailjs
+      .send(
+        serviceId,
+        templateId,
+        templateParams,
+        userId
+      )
+      .then(
+        (response) => {
+          console.log("Email sent:", response);
+        },
+        (error) => {
+          console.error("Email could not be sent:", error);
+        }
+      );
   };
 
   return (
@@ -80,11 +120,10 @@ const Login = () => {
                 placeholder="Enter email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                
                 type="email"
                 id="email"
                 name="email"
+                onChange={handleEmailChange}
               />
 
               <br></br>
