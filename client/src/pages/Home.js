@@ -1,7 +1,6 @@
 import React from "react";
 import logo from "../assets/TT_Logo_Design.png";
 import laptop from "../assets/laptop.png";
-import "./Home.css";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {

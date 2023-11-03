@@ -18,6 +18,7 @@ import "./styles/TwoFactor.css";
 import "./styles/Login.css";
 import "./styles/reviewtile.css";
 import "./styles/tutor_reports.css";
+import "./styles/Home.css";
 
 
 // import pages
@@ -74,7 +75,7 @@ function App() {
         <Route path="/Home" element={<Home />} />
         <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/ProfileSettings" element={<ProfileSettings renderType="student" userName="diananle"/>} />
+        <Route path="/ProfileSettings" element={<ProfileSettings renderType="student" userName="deedee"/>} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />
         <Route path="/SignUpStudent" element={<SignUpStudent />} />

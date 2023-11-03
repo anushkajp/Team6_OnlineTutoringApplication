@@ -3,32 +3,18 @@ import Sidebar from '../components/sidebar'
 import LogoutButton from '../components/LogoutButton'
 import { fetchFromAPI } from '../services/api'
 
-const ProfileSettings = (props) => {
+function ProfileSettings(props){
   const [isEditing, setIsEditing] = useState(false);
   const [email, setEmail] = useState('sampleemail@gmail.com');
   const [editedEmail, setEditedEmail] = useState('');
   const [phone, setPhone] = useState(4445559999);
   const [editedPhone, setEditedPhone] = useState('');
-  const [editedMethod, setEditedMethod] = useState('');
-  const [renderData, setData] = useState({
-    "firstName": "Diana",
-    "lastName": "Le",
-    "middleName": null,
-    "password": "12345",
-    "userId": "diananle",
-    "userName": "otherMeDee",
-    "courses": ["Tango", "Alpha"],
-    "phone": "1234566789",
-    "email": "gmail.com",
-    "major": "cs",
-    "hours": null,
-    "longBio": null
-  })
+  const [renderData, setData] = useState([])
 
   useEffect(() => {
     fetchFromAPI(`${props.renderType}/${props.userName}`) 
       .then(data => {
-        const dataArray = Object.entries(data).map(([key, value]) => ({
+        const render_data = Object.entries(data).map(([key, value]) => ({
           key,
           firstName: value.firstName,
           lastName: value.lastName,
@@ -42,20 +28,22 @@ const ProfileSettings = (props) => {
           major: value.major,
           hours: value.hours,
           longBio: value.longBio
-        }));
+        }
+        ));
+        setData(render_data[0]);
       })
       .catch(error => {
         setData({
-          "firstName": "Test",
-          "lastName": "Le",
+          "firstName": "Loading...",
+          "lastName": "Loading...",
           "middleName": null,
-          "password": "12345",
-          "userId": "diananle",
-          "userName": "otherMeDee",
-          "courses": ["Tango", "Alpha"],
-          "phone": "1234566789",
-          "email": "gmail.com",
-          "major": "cs",
+          "password": "Loading...",
+          "userId": "Loading...",
+          "userName": "Loading...",
+          "courses": [],
+          "phone": "Loading...",
+          "email": "Loading...",
+          "major": "Loading...",
           "hours": null,
           "longBio": null
         });
@@ -83,15 +71,12 @@ const ProfileSettings = (props) => {
       case 'editedPhone':
         setEditedPhone(event.target.value);
         break;
-      case 'editedMethod':
-        setEditedMethod(event.target.value);
-        break;
       default:
         break;
     }
   };
 
-  const excludedFields = ["password", "userId", "firstName", "middleName", "lastName"];
+  const excludedFields = ["password", "userId", "firstName", "middleName", "lastName", "key"];
 
   return (
       <div>

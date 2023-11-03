@@ -3,43 +3,37 @@ import Sidebar from '../components/sidebar'
 import SessionTile from '../components/SessionTile'
 import { fetchFromAPI } from '../services/api'
 
-const ListUpcoming = (props) => {
+function ListUpcoming(props){
+
   const [renderSessions, setSessions] = useState([])
 
-  const sampleJSON = [
-    {
-      "class_name": "AP Computer Science A",
-      "student_name": "Anushka P",
-      "session_time": "3:00 PM Tuesday",
-      "session_rating": 4,
-      "session_comments": "TutorTopia rules"
-    },
-    {
-      "class_name": "Physics 101",
-      "student_name": "John D",
-      "session_time": "10:30 AM Wednesday",
-      "session_comments": "comment1"
-    },
-    {
-      "class_name": "Biology Lab",
-      "student_name": "Samantha L",
-      "session_time": "2:15 PM Monday",
-      "session_comments": "comment2"
-    },
-    {
-      "class_name": "Mathematics Advanced",
-      "student_name": "David S",
-      "session_time": "11:00 AM Thursday",
-      "session_comments": "comment3"
-    },
-    {
-      "class_name": "History of Art",
-      "student_name": "Emily B",
-      "session_time": "4:45 PM Friday",
-      "session_rating": 4,
-      "session_comments": "comment4"
-    }
-  ]
+  useEffect(() => {
+    fetchFromAPI(`appointments/${props.renderType}/${props.userName}`) 
+      .then(data => {
+          const render_data = Object.entries(data).map(([key, value]) => ({
+          key,
+          class_name: value.course,
+          student_name: props.userName,
+          session_time: value.dateTime,
+          session_rating: value.rating,
+          session_comments: value.notes,
+          modality: value.online
+        }));
+        setSessions(render_data);
+      })
+      .catch(error => {
+        setSessions({
+          "key": "Loading...",
+          "class_name": "Loading...",
+          "student_name": "Loading...",
+          "session_time": "Loading...",
+          "session_rating": 0,
+          "session_comments": "Loading...",
+          "modality": "Loading..."
+        });
+        console.log(error);
+      });
+  }, [props.renderType, props.userName]);
 
   return (
     <div className="upcomingPage">
@@ -55,13 +49,13 @@ const ListUpcoming = (props) => {
         </div>
         <div className="upcomingSessionList">
         {
-            sampleJSON.map((review, index) => (
+            Array.isArray(renderSessions) ? renderSessions.map((review, index) => (
               <SessionTile key={index} class_name={review.class_name}
                 student_name={review.student_name}
                 session_time={review.session_time}
                 session_comments={review.session_comments}>
               </SessionTile>
-              ))
+            )) : <h4>You have no upcoming sessions just yet!</h4>
         }
         </div>
       </div>
