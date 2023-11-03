@@ -11,6 +11,7 @@ import bcrypt from "bcryptjs-react"
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [hash, setHash] = useState("");
 
   // const [data, setData] = useState({
   //   email:'',
@@ -25,6 +26,7 @@ const Login = () => {
   const hashPassword = () =>{
     bcrypt.hash(password,10,function(err, hash){
       console.log("Hash generated: "+hash)
+      setHash(hash)
     }
     )
     // return hash
@@ -32,7 +34,8 @@ const Login = () => {
 
   const handleSubmit = (e) =>{
     console.log(password)
-    console.log(hashPassword(password))
+    hashPassword(password)
+    console.log(hash)
   }
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
