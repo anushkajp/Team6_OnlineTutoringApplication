@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+
+// import 'dotenv/config'
 import emailjs from "emailjs-com";
 
 // no functionality yet, just UI
@@ -14,8 +19,24 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  // handle submit 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log(userCredential);
+      const user = userCredential.user;
+      localStorage.setItem('token', user.accessToken);
+      localStorage.setItem('user', JSON.stringify(user));
+      navigateToTwoFactor();
+    } catch (error) {
+      console.error(error);
+    }
+    }
+
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
+    
   };
 
   const navigateToForgot = () => {
@@ -93,15 +114,16 @@ const Login = () => {
 
             <br></br>
 
-            <form className="fields-container">
+            <form onSubmit= {handleSubmit} className="fields-container">
               <input
                 className="field"
                 placeholder="Enter email"
+                required
+                value={email}
                 type="email"
                 id="email"
                 name="email"
                 onChange={handleEmailChange}
-                required
               />
 
               <br></br>
@@ -109,10 +131,14 @@ const Login = () => {
               <input
                 className="field"
                 placeholder="Enter Password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                
                 type="password"
                 id="password"
                 name="password"
-                required
+               
               />
 
               <br></br>
@@ -121,9 +147,9 @@ const Login = () => {
               <button
                 className="login-button"
                 type="submit"
-                onClick={navigateToTwoFactor}
+                onSubmit={navigateToTwoFactor}
               >
-                <p className="login-button-text">Log in</p>
+                <p type = "submit" className="login-button-text">Log in</p>
               </button>
             </form>
             <br></br>

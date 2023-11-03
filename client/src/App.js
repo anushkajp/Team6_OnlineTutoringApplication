@@ -2,6 +2,7 @@ import "./App.css";
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
+
 // import styles
 import "./styles/global.css";
 import "./styles/signup.css";
@@ -17,7 +18,9 @@ import "./styles/TwoFactor.css";
 import "./styles/Login.css";
 import "./styles/reviewtile.css";
 import "./styles/tutor_reports.css";
-import "./pages/Calendar.css";
+import "./styles/Calendar.css";
+import "./styles/Home.css";
+
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
@@ -66,6 +69,7 @@ function App() {
       <BrowserRouter>
       <Routes>
       <Route path="/" element={<Navigate to="/Home" />} />
+      <Route path="/" element={<Navigate to="/Home" />} />
         <Route path="/AddTutorSession" element={<AddTutorSession />} />
         <Route path="/CalendarPage" element={<CalendarPage />} />
         <Route path="/Contact" element={<Contact />} />
@@ -73,7 +77,7 @@ function App() {
         <Route path="/Home" element={<Home />} />
         <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/ProfileSettings" element={<ProfileSettings renderType="tutor"/>} />
+        <Route path="/ProfileSettings" element={<ProfileSettings renderType="student" userName="deedee"/>} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />
         <Route path="/SignUpStudent" element={<SignUpStudent />} />

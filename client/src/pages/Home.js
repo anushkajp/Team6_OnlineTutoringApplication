@@ -1,7 +1,6 @@
 import React from "react";
 import logo from "../assets/TT_Logo_Design.png";
 import laptop from "../assets/laptop.png";
-import "./Home.css";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -63,10 +62,13 @@ const Home = () => {
           <br></br>
           <br></br>
           <br></br>
+          <br></br>
+          <br></br>
 
           <div class="button-nav1">
             <p class="text1" onClick={navigateToSignUp}> Sign up - Tutor</p>
           </div>
+          <br></br>
           <br></br>
           <div class="button-nav2">
             <p class="text2" onClick={navigateToSignUpStudent}> Sign up - Student</p>

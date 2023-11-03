@@ -1,6 +1,7 @@
 .tile_contents{
     float: right;
     display: flex;
+    width: -webkit-fill-available;
 }
 
 .dbPageSidebar .navbar{
@@ -10,4 +11,29 @@
 
 .dashboardPage{
     display: flex;
+}
+
+.reviewTutor {
+    font-size: 20px;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.tutortile{
+    background-color: white;
+    border-radius: 20px;
+    width: -webkit-fill-available;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.right_div{
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+}
+
+.favorites{
+    width: -webkit-fill-available;
+    padding-right: 30px;
 }
