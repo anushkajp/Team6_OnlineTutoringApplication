@@ -226,15 +226,16 @@ module.exports = {
         return modifyItem("Appointment",appointmentId,"location",newLocation)
     },
 
-
+    
     /**
      * Update the appointment notes
      * @param {string} appointmentId Database id for the appointment
      * @param {string} newNotes New appointment notes
      */
+    /*
     updateAppNotes: async function updateAppNotes(appointmentId, newNotes){
         return modifyItem("Appointment",appointmentId,"notes",newNotes)
-    },
+    },*/
 
 
     /**

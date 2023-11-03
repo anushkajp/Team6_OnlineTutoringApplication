@@ -1,44 +1,43 @@
 const express = require("express");
 const router = express.Router();
 const Session = require("../models/session")
-const read = require('../db/read')
-const add = require('../db/add')
+
+const {getAppointments, getAppointment} = require('../db/read')
+const {addAppointment} = require('../db/obAdd')
 const {searchItem} = require ('../db/db')
-const deletes=require("../db/delete")
+const {deleteAppointment} = require("../db/delete")
 class SessionService {
     // RETURNS ALL SESSIONS FROM ALL USERS
     static async getAll() {
-        try {
-            console.log("\n[ SessionService.getAll ]\n")
-            const sessions = await read.getAppointments()
+        try {          
+            const sessions = await getAppointments()
+            console.log("SessionService.getAll() = " + JSON.stringify(sessions) + "\n")
             return sessions
         } catch (err) {
             throw err
         }
     }
     // RETURNS SPECIFIC SESSION BY SESSION ID
-    //how do we get the id of the session from firebase?
-
-    //GET SESSIONS BY USER
-    static async getByUser(id, path) {
+    static async getOne(id) {
         try {
-            console.log("\n[ SessionService.getAppointments ]")
-            const user = await searchItem('User', 'username', id)
-            console.log("\nuser: " + JSON.stringify(user))
-            const userid = Object.keys(user)[0]
-            if (Object.keys(user).length === 0) {
+            console.log("\n[ SessionService.getOne ]\n")
+            const session = await getAppointment(id)
+
+            // SESSION FOUND
+            if (Object.keys(session).length > 0)
+                return session
+
+            // SESSION NOT FOUND
+            else 
                 return false
-            }
-            console.log("\nuserid: " + userid)
-            const appointments = await searchItem('Appointment', path, userid)
-            console.log("\nappointments: " + JSON.stringify(appointments))
-            return appointments
-            
-        }catch (e) {
-            throw e
+
+        }catch (err){
+            throw err
         }
     }
+
     // CREATE NEW APPOINTMENT
+    /*
     static async createAppointment(appInfo) {
         try {
             const data = JSON.parse(appInfo)
@@ -53,24 +52,52 @@ class SessionService {
         }catch (e) {
             throw e
         }
-    }
-    // UPDATE EXISTING APPOINTMENT
-    static async update(id) {
+    }*/
+
+    static async create(appData){ 
         try {
-            const userid = Object.keys(await db.searchItem('Tutor', 'username', usernamem))[0]
-            if (userid == null) {
-                return false
+            console.log("\nSessionService.create\n")
+            const data = JSON.parse(appData)
+           
+            let session = new Session()
+                        
+            const propertyMap = {
+                
+                tutorId : null,
+                studentId : null,
+                datetime : null,
+                length : null,
+                course : null,
+                online : null,
+                location : null,
+                feedback : null,
+                tutorNotes : null,
+                studentNotes : null,
+            };
+    
+            // Loop through the data object and set the corresponding properties
+            for (const key in propertyMap) {
+                if (data.hasOwnProperty(key)) {
+                    session[key] = data[key];
+                }
             }
-            const appointment = add.addAppointment(userid, null, appointmentInfo.date,
-                appointmentInfo.length, appointmentInfo.online, appointmentInfo.location,
-                appointmentInfo.tutorNotes, appointmentInfo.studentNotes, appointmentInfo.rating,
-                appointmentInfo.review)
-            return appointment
+            // LOOP THROUGH OBJ, ANY UNDEFINED REPLACCE WITH NULL
+            for (const key in session) {
+                if (session[key] === undefined)
+                session[key] = null
+            }              
+                
+            // ADD NEW SESSION TO DB
+            console.log(session)
+            const sessionInfo = await addAppointment(session)
+            console.log("SessionInfo " + sessionInfo)
+            return sessionInfo
         }catch (e) {
             throw e
         }
     }
-    //DELETE SESSION
-    //how do we get id from database
+
+      
+
 }
 module.exports = SessionService
