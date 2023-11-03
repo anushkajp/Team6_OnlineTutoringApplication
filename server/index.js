@@ -4,8 +4,8 @@ const { searchItem } = require("./src/db/db");
 
 const reads = require("./src/db/read")
 const updates = require("./src/db/update")
-const adds = require("./src/db/add")
-const obAdds = require("./src/db/obAdd")
+// const adds = require("./src/db/add")
+const adds = require("./src/db/obAdd")
 const deletes = require("./src/db/delete")
 const User = require("./src/models/user")
 

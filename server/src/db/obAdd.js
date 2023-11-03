@@ -52,7 +52,7 @@ module.exports = {
                     }
             })
         userKey = await this.addUser(user)
-        student["userId"] = userKey['id']
+        userKey = userKey['id']
         return addItem("Student", student, userKey)
     },
     /**

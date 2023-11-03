@@ -41,6 +41,15 @@ const SignUpStudent = () => {
   //   password: "",
   // });
 
+  const labelData = {
+    firstName:{"label":"First Name"},
+    lastName:{},
+    middleName:{},
+    password:{},
+    username:{},
+    
+
+  }
   const initialStudent = new Student();
   const [student, setStudent] = useState(initialStudent);
 
@@ -52,6 +61,14 @@ const SignUpStudent = () => {
   //   });
   // };
 
+  const handleChange = (e)=>{
+    const {name, value} = e.target;
+    setStudent({
+      ...student,
+      [name]:value
+    })
+    console.log(student)
+  }
   const createFields = (student,setStudent)=>{
     const fieldsToSkip=['userId'
     ]
@@ -68,7 +85,8 @@ const SignUpStudent = () => {
             id={fields}
             name={fields}
             value={student[fields]}
-            onChange={(e)=>setStudent({...student,[fields]:e.target.value})}
+            onChange={handleChange}
+            // onChange={(e)=>setStudent({...student,[fields]:e.target.value})}
             required
           />
           </div>
