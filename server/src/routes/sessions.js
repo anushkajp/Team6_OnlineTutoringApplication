@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const Session = require('../models/session')
 const SessionService = require('../services/sessionService')
-const bodyParser = require('body-parser').json();
-const CustomError = require('../utils/customError')
+bodyParser = require('body-parser').json();
+
 // GET ALL
 router.get('/', async (req, res) => {
     try {
@@ -12,6 +13,7 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message});
     }
 });
+
 // GET ONE
 router.get('/:id', async(req, res) => {
     (async () =>{
@@ -28,18 +30,68 @@ router.get('/:id', async(req, res) => {
     })()
 });
 
-//CREATE ONE SESSION
+/*
+// GET ALL APPOINTMENTS BY USER ID
+router.get('/:user/:id', async(req, res) => {
+    try {
+        console.log("\n[ Session routes get all appointments ]")
+        let appointments = new Session()
+        if (req.params.user === 'tutor')
+            appointments = await SessionService.getAllAppointmentsByUser(req.params.id, 'tutorId')
+        else if (req.params.user === 'student')
+            appointments = await SessionService.getAllAppointmentsByUser(req.params.id, 'studentId')
+        if (appointments === null)
+            res.status(400).json({message: req.params.id + ' is not a valid id'})
+        else 
+            res.status(200).json(appointments)
+    }catch (err) {
+        res.status(500).json({ message: err.message});
+    }
+});
+*/
+
+// CREATE ONE
 router.post('/', bodyParser, async(req, res) => {
     try {
-        console.log("Session controller post req.body: " + JSON.stringify(req.body))
-        const newSession = await SessionService.create(JSON.stringify(req.body));
-        if (newSession === false) {
+        const newsession = await SessionService.createAppointment(JSON.stringify(req.body));
+        if (newsession === false) {
             res.status(401).json({ message: "Failed to create new appointment"})
         }
         else
-            res.status(201).json(newSession)
+            res.status(201).json(newsession)
     }catch (err) {
         res.status(400).json({ message: err.message});
+    }
+});
+
+/*
+// UPDATE ONE
+router.patch('/:id', async (req, res) => {
+
+    try {
+        console.log("Session controller patch req.body: " + JSON.stringify(req.body))
+        const updatedAppointment = await SessionService.updateAppointment(req.params.id,JSON.stringify(req.body));
+        if (updatedAppointment == false)
+            res.status(404).json({message: "Appointment not found"})
+        else
+            res.status(201).json(updatedAppointment)
+    }catch (err) {
+        res.status(500).json({ message: err.message});
+    }
+});
+*/
+
+// DELETE ONE
+router.delete('/:id', (req, res) => {
+    try {
+        const deletedAppt = SessionService.delAppointment(req.params.id)
+        if (deletedAppt === null) {
+            res.status(404).json({ message: "Appointment not found" });
+        } else {
+            res.status(200).json(deletedAppt);
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 
