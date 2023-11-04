@@ -28,6 +28,10 @@ const TwoFactor = () => {
     }
   };
 
+  const handleLoginNavigation = () =>{
+    
+  }
+
   return (
     <div className="with-gradient">
       <div className="two-page">

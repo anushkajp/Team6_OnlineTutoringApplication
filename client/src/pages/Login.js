@@ -28,8 +28,10 @@ const Login = () => {
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
+      alert("Navigating to two factor.....");
       navigateToTwoFactor();
     } catch (error) {
+      alert("Incorrect password entered!");
       console.error(error);
     }
     }
@@ -58,9 +60,9 @@ const Login = () => {
   };
 
   const sendVerificationEmail = (code, email) => {
-    const serviceId = "service_dz0xhzf";
-    const templateId = "template_xs9buif";
-    const userId = "cWti8bd46sTP6-Sgr";
+    const serviceId = "service_ia60n69";
+    const templateId = "template_d2sya2n";
+    const userId = "BSLbkagTdMxLeJe1L";
 
     const templateParams = {
       verification_code: code,
