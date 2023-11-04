@@ -226,34 +226,12 @@ module.exports = {
         return modifyItem("Appointment",appointmentId,"location",newLocation)
     },
 
-    
-    /**
-     * Update the appointment notes
-     * @param {string} appointmentId Database id for the appointment
-     * @param {string} newNotes New appointment notes
-     */
-    /*
-    updateAppNotes: async function updateAppNotes(appointmentId, newNotes){
-        return modifyItem("Appointment",appointmentId,"notes",newNotes)
-    },*/
-
-
-    /**
-     * Update the appointment notes
-     * @param {string} appointmentId Database id for the appointment
-     * @param {number} newRating New appointment rating
-     */
-    updateAppRating: async function updateRating(appointmentId, newRating){
-        return modifyItem("Appointment",appointmentId,"rating",newRating)
-    },
-
-
     /**
      * Update the appointment notes
      * @param {string} appointmentId Database id for the appointment
      * @param {string} newFeedback New appointment feedback
      */
-    updateAppReview: async function updateAppReview(appointmentId, newFeedback){
+    updateAppFeedback: async function updateAppReview(appointmentId, newFeedback){
         return modifyItem("Appointment",appointmentId,"feedback",newFeedback)
     },
 
@@ -265,6 +243,24 @@ module.exports = {
      */
     updateAppUserId: async function updateAppUserId(appointmentId, newUserId) {
         return modifyItem("Appointment",appointmentId,"userId",newUserId)
+    },
+
+    /**
+     * Update the appointment student notes
+     * @param {string} appointmentId Database id for the appointment
+     * @param {string} newNotes New appointment notes
+     */
+    updateAppTutorNotes: async function updateAppNotes(appointmentId, newNotes){
+        return modifyItem("Appointment",appointmentId,"notes",newNotes)
+    },
+
+    /**
+     * Update the appointment student notes
+     * @param {string} appointmentId Database id for the appointment
+     * @param {string} newNotes New appointment notes
+     */
+    updateAppStudentNotes: async function updateAppNotes(appointmentId, newNotes){
+        return modifyItem("Appointment",appointmentId,"notes",newNotes)
     }
 
     //TODO: update Review attributes
