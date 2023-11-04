@@ -3,6 +3,7 @@ const Session = require("../models/session")
 const {getAppointments, getAppointment} = require('../db/read')
 const {addAppointment} = require('../db/obAdd')
 const {searchItem} = require ('../db/db')
+const { deleteAppointment } = require("../db/delete")
 
 class SessionService {
     // RETURNS ALL SESSIONS FROM ALL USERS
@@ -92,6 +93,20 @@ class SessionService {
         }
     }
 
+        // DELETE AN APPOINTMENT
+        static async delAppointment(apptId) {
+            try {
+                const deletedAppt = await deleteAppointment(apptId);
+                console.log("SessionService.delAppointment() = " + JSON.stringify(deletedAppt) + "\n")
+                if (deletedAppt === null) {
+                    return null;
+                } else {
+                    return deletedAppt;
+                }
+            } catch (error) {
+                throw new Error("Error deleting the review: " + error.message);
+            }
+        }
       
 
 }
