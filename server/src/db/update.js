@@ -265,4 +265,6 @@ module.exports = {
     updateAppUserId: async function updateAppUserId(appointmentId, newUserId) {
         return modifyItem("Appointment",appointmentId,"userId",newUserId)
     }
+
+    //TODO: update Review attributes
 }

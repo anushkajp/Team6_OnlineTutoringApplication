@@ -43,17 +43,23 @@ module.exports = {
     addStudent: async function addStudent(studentObject) {
         student={}
         user={}
-
+        
         Object.keys(studentObject).forEach((key) => {
+            
                     if(!(key in new User()) || key === "userId"){
+                        console.log(key)
                         student[key] =studentObject[key]
                     }else{
+                        console.log("user: "+key)
                         user[key]=studentObject[key]
                     }
             })
         userKey = await this.addUser(user)
-        student["userId"] = userkey['id']
-        return addItem("Student", postDataStudent, userKey)
+        console.log("userKey")
+        console.log(userKey)    
+        student["userId"] = userKey['id']
+        console.log(student["userId"])
+        return addItem("Student", student, userKey["userId"])
     },
     /**
      * Adds a new Tutor to the database 
