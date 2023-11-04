@@ -49,7 +49,23 @@ router.get('/:user/:id', async(req, res) => {
     }
 });
 */
-
+// GET ALL APPOINTMENTS BY USER ID
+router.get('/:user/:username', async(req, res) => {
+    try {
+        console.log("\n[ Session routes get all appointments ]")
+        let appointments = null
+        if (req.params.user === 'tutor')
+            appointments = await SessionService.getAllByUser(req.params.username, 'tutorUsername')
+        else if (req.params.user === 'student')
+            appointments = await SessionService.getAllByUser(req.params.username, 'studentUsername')
+        if (appointments === null)
+            res.status(400).json({message: req.params.id + ' is not a valid id'})
+        else 
+            res.status(200).json(appointments)
+    }catch (err) {
+        res.status(500).json({ message: err.message});
+    }
+});
 // CREATE ONE
 router.post('/', bodyParser, async(req, res) => {
     try {
@@ -63,10 +79,8 @@ router.post('/', bodyParser, async(req, res) => {
         res.status(400).json({ message: err.message});
     }
 });
-
-/*
 // UPDATE ONE
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', bodyParser, async (req, res) => {
 
     try {
         console.log("Session controller patch req.body: " + JSON.stringify(req.body))
@@ -76,11 +90,12 @@ router.patch('/:id', async (req, res) => {
         else
             res.status(201).json(updatedAppointment)
     }catch (err) {
-        res.status(500).json({ message: err.message});
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
     }
 });
-*/
-
 // DELETE ONE
 router.delete('/:id', (req, res) => {
     try {

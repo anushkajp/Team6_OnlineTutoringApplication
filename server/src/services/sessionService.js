@@ -31,25 +31,7 @@ class SessionService {
             throw err
         }
     }
-
     // CREATE NEW APPOINTMENT
-    /*
-    static async createAppointment(appInfo) {
-        try {
-            const data = JSON.parse(appInfo)
-            const appointment = add.addAppointment(data.tutorId, data.studentId, data.dateTime,
-                data.length, data.online, data.location, data.courses,
-                data.notes, data.rating, data.feedback)
-            console.log("\nappointment: " + JSON.stringify(appointment))
-            if (Object.keys(appointment).length > 0)
-                return appointment
-            else 
-                return false
-        }catch (e) {
-            throw e
-        }
-    }*/
-
     static async create(appData){ 
         try {
             console.log("\nSessionService.create\n")
@@ -92,22 +74,85 @@ class SessionService {
             throw e
         }
     }
-
-        // DELETE AN APPOINTMENT
-        static async delAppointment(apptId) {
-            try {
-                const deletedAppt = await deleteAppointment(apptId);
-                console.log("SessionService.delAppointment() = " + JSON.stringify(deletedAppt) + "\n")
-                if (deletedAppt === null) {
-                    return null;
-                } else {
-                    return deletedAppt;
-                }
-            } catch (error) {
-                throw new Error("Error deleting the review: " + error.message);
+    //GET ALL APPOINTMENTS BY USER
+    static async getAllByUser(id, path) {
+        try {
+            console.log("\n[ SessionService.getAllAppointmentsByUser ]")
+            const user = await searchItem('User', 'username', id)
+            console.log("\nuser: " + JSON.stringify(user))
+            const userid = Object.keys(user)[0]
+            if (Object.keys(user).length === 0) {
+                return false
             }
+            //not really sure how this would work?
+            const appointments = await searchItem('Appointment', path, userid)
+            console.log("\nappointments: " + JSON.stringify(appointments))
+            return appointments
+            
+        }catch (e) {
+            throw e
         }
-      
+    }
+    //UPDATE SPECIFIC APPOINTMENT
+    static async updateAppointment(id, apptData) {
+        try {
+            console.log("\n[ SessionService.updateAppointment(): ]")
+            /*
+            const PATH = 'User'
+            const ATTRIBUTE = 'username'
+            */
+            const data = JSON.parse(apptData)
+            /*
+            const appointments = await searchItem('Appointment', path, userid)
+			console.log("SessionService.updateAppointment() = " + JSON.stringify(appointments) + "\n")
+            
+            
+            // Appointment DOESN'T EXIST
+            if ( Object.keys(appointments).length === 0)
+                return false
+			
+            const appointmentId = Object.keys(appointments)[0]
+            */
 
+            // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM USERID
+			if (data.dateTime != null)
+				updateAppDateTime(appointmentId, data.dateTime)
+			if (data.length != null)
+				updateAppLength(appointmentId, data.length)
+			if (data.online != null)
+				updateAppMedium(appointmentId, data.online)
+			if (data.location != null)
+				updateAppLocation(appointmentId, data.location)
+			if (data.feedback != null)
+				updateAppReview(appointmentId, data.feedback)
+            if (data.tutorNotes != null)
+                updateAppTutorNotes(appointmentId, data.tutorNotes)
+            if (data.studentNotes != null)
+                updateAppStudentNotes(appointmentId, data.studentNotes)
+            //if(data.tutorId != null)
+            //if(data.studentID != null)
+
+			// Fetch the updated appointment and return
+            const appointment = await getAppointment(id)
+            return appointment
+
+        }catch (e) {
+            throw e
+        }
+    }
+    // DELETE AN APPOINTMENT
+    static async delAppointment(apptId) {
+    try {
+        const deletedAppt = await deleteAppointment(apptId);
+        console.log("SessionService.delAppointment() = " + JSON.stringify(deletedAppt) + "\n")
+            if (deletedAppt === null) {
+                return null;
+            }else {
+                return deletedAppt;
+            }
+        }catch (error) {
+                throw new Error("Error deleting the review: " + error.message);
+        }
+    }    
 }
 module.exports = SessionService
