@@ -6,8 +6,8 @@ const CustomError = require('../utils/customError')
 // GET ALL
 router.get('/', async (req, res) => {
     try {
-        const student = await SessionService.getAll()
-        res.status(200).json(student)
+        const session = await SessionService.getAll()
+        res.status(200).json(session)
     }catch (err){
         res.status(500).json({ message: err.message});
     }
@@ -37,22 +37,10 @@ router.post('/', bodyParser, async(req, res) => {
             res.status(401).json({ message: "Failed to create new appointment"})
         }
         else
-            res.status(201).json(newsession)
+            res.status(201).json(newSession)
     }catch (err) {
         res.status(400).json({ message: err.message});
     }
 });
 
-router.post('/', bodyParser, async(req, res) => {
-    try {
-        console.log("Session controller post req.body: " + JSON.stringify(req.body))
-        const newSession = await SessionService.create(JSON.stringify(req.body));
-        res.status(201).json(newSession)
-    }catch (err) {
-        if (err instanceof CustomError)
-            res.status(err.code).json({message: err.message})
-        else
-            res.status(500).json({ message: err.message});
-    }
-});
 module.exports = router

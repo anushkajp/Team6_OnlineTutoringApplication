@@ -1,11 +1,9 @@
 const express = require("express");
-const router = express.Router();
 const Session = require("../models/session")
-
 const {getAppointments, getAppointment} = require('../db/read')
 const {addAppointment} = require('../db/obAdd')
 const {searchItem} = require ('../db/db')
-const {deleteAppointment} = require("../db/delete")
+
 class SessionService {
     // RETURNS ALL SESSIONS FROM ALL USERS
     static async getAll() {
@@ -22,15 +20,12 @@ class SessionService {
         try {
             console.log("\n[ SessionService.getOne ]\n")
             const session = await getAppointment(id)
-
             // SESSION FOUND
             if (Object.keys(session).length > 0)
                 return session
-
             // SESSION NOT FOUND
             else 
-                return false
-
+            throw new CustomError("Session not found", 400)
         }catch (err){
             throw err
         }
