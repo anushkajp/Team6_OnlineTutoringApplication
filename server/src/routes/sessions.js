@@ -53,7 +53,7 @@ router.get('/:user/:id', async(req, res) => {
 // CREATE ONE
 router.post('/', bodyParser, async(req, res) => {
     try {
-        const newsession = await SessionService.createAppointment(JSON.stringify(req.body));
+        const newsession = await SessionService.create(JSON.stringify(req.body));
         if (newsession === false) {
             res.status(401).json({ message: "Failed to create new appointment"})
         }
