@@ -13,7 +13,10 @@ class TutorService {
         let addOns
         for (const key in tutorIds) {
             propertyMap[tutorIds[key].userId] = await read.getUser(tutorIds[key].userId)
-            addOns = getTutor
+            addOns = getTutor(tutorIds[key].userId)
+            for (const key2 in addOns) {
+                propertyMap[tutorIds[key]].key2 = addOns[key]
+            }
         }
         console.log("StudentService.getAll() = " + JSON.stringify(propertyMap) + "\n")
         return propertyMap

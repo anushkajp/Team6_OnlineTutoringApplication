@@ -14,6 +14,7 @@ class StudentService {
         // GET ALL USERS BACK IN DB AS LIST
         const studentIds = await read.getStudents()
         const propertyMap = {}
+        // POPULATE STUDENTS BY GETTING EVERY STUDENT USER BY USERID
         for (const key in studentIds) {
             propertyMap[studentIds[key].userId] = await read.getUser(studentIds[key].userId)
         }
@@ -25,9 +26,16 @@ class StudentService {
         console.log("\nStudentService.getone\n")
         // SEARCH FOR USER W USERNAME
         const search = await searchItem(USER, USERNAME, id)
-        console.log(await search)
-        if (Object.keys(search).length > 0)
-            return search
+        // USER IS FOUND, NOT NECESSARILY A STUDENT
+        if (Object.keys(search).length > 0) {
+            // GET STUDENT BASED ON USERID
+            const student = await read.getStudent(search[0])
+            // USER IS A TUTOR
+            if (isNaN(student)) {
+                throw new CustomError("User is not a student", 400)
+            }
+            return student
+        }
         else
             throw new CustomError("User not found", 400)
     }
@@ -118,14 +126,21 @@ class StudentService {
             const data = JSON.parse(studentData)
             const result = await searchItem(USER, USERNAME, username)     
             
-            // STUDENT DOESNT EXIST
+            // USER DOESNT EXIST
             if ( Object.keys(result).length === 0)
-                throw new CustomError("The userid already exists", 400)
+                throw new CustomError("User does not exist", 400)
+
             console.log("StudentService.update studentData: " + studentData + "\n")
+            // GET USER ID
             const id = Object.keys(result)[0]
+
+            // CHECK TO SEE IF USER IS A STUDENT
+            const student = await getStudent(id)
+            if (isNaN(student))
+                throw new CustomError("User is not a student", 400) 
             console.log("Student id: " + id + "\n")
             
-            // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM USERID
+            // REPLACE OLD VALUES WTIH NEW FROM USERID
             if (data.password != null)
                 await updateUserPassword(id, data.password)
             if (data.userName != null)
