@@ -1,31 +1,29 @@
-const express = require("express");
-const router = express.Router();
 const read = require("../db/read")
 const update = require ('../db/update')
 const add = require ('../db/add')
 const {searchItem} = require ('../db/db')
 const deletes=require("../db/delete")
-       
+const USER = 'User'
+const USERNAME = 'username'
 class TutorService {
     // GET ALL
     static async getAll() {
-        // IF DB CAN FIND ID RETURN TUTOR OBJECT
-        try {
-            const tutors = await read.getTutors()
-            console.log("TutorService.getTutors() = " + tutors)
-            return tutors
-        }catch (err) {
-            throw err
+        const tutorIds = await read.getTutors()
+        const propertyMap = {}
+        let addOns
+        for (const key in tutorIds) {
+            propertyMap[tutorIds[key].userId] = await read.getUser(tutorIds[key].userId)
+            addOns = getTutor
         }
+        console.log("StudentService.getAll() = " + JSON.stringify(propertyMap) + "\n")
+        return propertyMap
     }
     // GET ONE
     static async getOne(id) {
         console.log("\n[ TutorService.getone ]\n")
-        const PATH = 'User'
-        const ATTRIBUTE = 'username'
 
         // SEARCH FOR USER W USERNAME
-        const search = await searchItem(PATH, ATTRIBUTE, id)
+        const search = await searchItem(USER, USERNAME, id)
         console.log(await search)
         
         // USER FOUND
@@ -53,11 +51,9 @@ class TutorService {
         try {
 
             console.log("\n[ TutorService.create ]\n")
-            const PATH = 'Tutor'
-            const ATTRIBUTE = 'username'
 
             // SEARCH FOR USER W USERNAME
-            const search = await searchItem(PATH, ATTRIBUTE, id)
+            const search = await searchItem(USER, USERNAME, id)
             console.log(await search)
 
             // USER FOUND
@@ -95,10 +91,8 @@ class TutorService {
         try {
             // FIND TUTORID
             console.log("\n[ TutorService.update ]\n")
-            const PATH = 'Tutor'
-            const ATTRIBUTE = 'username'
             const data = JSON.parse(updateTutor)
-            const result = await searchItem(PATH, ATTRIBUTE, username)
+            const result = await searchItem(USER, USERNAME, username)
 
             // TUTOR DOESNT EXIST
             if ( Object.keys(result).length === 0)
@@ -134,12 +128,8 @@ class TutorService {
         try {
 
             // FIND USERID FROM USERNAME
-            const PATH = 'Tutor'
-            const ATTRIBUTE = 'username'
             console.log("\nTutorService.delete")
-            
-            // const search = JSON.parse(await searchItem(PATH, ATTRIBUTE, id))
-            const search = await searchItem(PATH, ATTRIBUTE, id)
+            const search = await searchItem(USER, USERNAME, id)
             console.log("Username: " + Object.keys(search)[0])
             if (Object.keys(search).length > 0) {
                 deletes.deleteUser(Object.keys(search)[0])
