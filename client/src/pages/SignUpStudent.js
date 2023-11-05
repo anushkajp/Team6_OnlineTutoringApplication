@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { fetchFromAPI } from '../services/api'
 class User {
   constructor(firstName, lastName, middleName,
       password, userId, username, courses, phone, email, major,
@@ -30,6 +30,15 @@ class Student extends User {
   }
 }
 
+class Major{
+  constructor(majorName,majorId){
+      this.majorName = majorName
+      this.majorId = majorId
+  }
+
+
+}
+
 const SignUpStudent = () => {
   //   const [formData, setFormData] = useState({
   //   firstName: "",
@@ -42,17 +51,23 @@ const SignUpStudent = () => {
   // });
 
   const labelData = {
-    firstName:{"label":"First Name"},
-    lastName:{},
-    middleName:{},
-    password:{},
-    username:{},
-    
+    firstName:{"label":"First name"},
+    lastName:{"label":"Last name"},
+    middleName:{"label":"Middle name"},
+    password:{"label":"Password"},
+    username:{"label":"Username"},
+    courses:{"label":"Courses"},
+    phone:{"label":"Phone number"},
+    email:{"label":"Email"},
+    major:{"label":"Major"},
+    pfp:{"label":"Profile Picture"}
+
 
   }
   const initialStudent = new Student();
   const [student, setStudent] = useState(initialStudent);
 
+  const [major, setMajor] = useState([]);
   // const handleChange = (e) => {
   //   const { name, value } = e.target;
   //   setFormData({
@@ -69,26 +84,58 @@ const SignUpStudent = () => {
     })
     console.log(student)
   }
+  const getMajors = async (e)=>{
+    await fetchFromAPI(`major/`).then(data=>{
+      for (let i in data){
+        const thisMajor = new Major(i.majorName,Object.keys(i)[0])
+        setMajor([...major,thisMajor])
+      }
+    },(err)=>{console.log(err)})
+  }
+
   const createFields = (student,setStudent)=>{
-    const fieldsToSkip=['userId'
-    ]
+    const fieldsToSkip=['userId','hours',"longBio","shortBio","middleName"]
     return(
     <div className="form-group">
         {Object.keys(student).map((fields,index)=>{
           if (fieldsToSkip.includes(fields)){
             return null;
           }
-          return (<div key={index}  className="form-group">
-            <label key={index} htmlFor={fields}>{fields}</label>
-            <input
-            type={fields==="pfp"? "file" : "text"}
-            id={fields}
-            name={fields}
-            value={student[fields]}
-            onChange={handleChange}
-            // onChange={(e)=>setStudent({...student,[fields]:e.target.value})}
-            required
-          />
+          return (
+          <div key={index}  className="form-group">
+            <label key={index} htmlFor={fields}>{labelData[fields]["label"]}</label>
+            {(()=>{
+              if (fields==="major"){
+                getMajors()
+                return(
+                  <select>
+                    {Object.keys(major).map((fields,index)=>{
+                      
+                    })}
+                  </select>
+
+                )
+               
+              }
+              else if (fields === "courses"){
+
+              }else{
+                return (<input
+                  type={fields==="pfp"? "file" : "text"}
+                  id={fields}
+                  name={fields}
+                  value={student[fields]}
+                  onChange={handleChange}
+                  // onChange={(e)=>setStudent({...student,[fields]:e.target.value})}
+                  required
+                />)
+              }
+
+
+            })()
+            }
+            
+
           </div>
           )
         }
