@@ -1,10 +1,12 @@
-const express = require("express");
 const Session = require("../models/session")
 const {getAppointments, getAppointment} = require('../db/read')
 const {addAppointment} = require('../db/obAdd')
 const {searchItem} = require ('../db/db')
 const { updateAppDateTime, updateAppLength, updateAppMedium, updateAppLocation, updateAppFeedback, updateAppUserId, updateAppTutorNotes, updateAppStudentNotes} = require ('../db/update')
 const { deleteAppointment } = require("../db/delete")
+const USER = 'User'
+const USERNAME = 'username'
+const CustomError = require ('../utils/customError')
 
 class SessionService {
     // RETURNS ALL SESSIONS FROM ALL USERS
@@ -100,6 +102,15 @@ class SessionService {
         console.log("\nSessionService.update\n")
         const data = JSON.parse(apptData)
         console.log("\nData has been parsed\n")
+
+        const username = data.studentId
+        const result = await searchItem(USER, USERNAME, username) 
+
+        if ( Object.keys(result).length === 0)
+        throw new CustomError("The userid does not exist", 400)
+
+        const patchStudentId = Object.keys(result)[0]
+        console.log("Updated Student id: " + patchStudentId + "\n")
         
         // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM APPOINTMENTID
         if (data.datetime != null)
@@ -116,10 +127,10 @@ class SessionService {
             await updateAppTutorNotes(id, data.tutorNotes)
         if (data.studentNotes != null)
             await updateAppStudentNotes(id, data.studentNotes)
-            
-        //tutorID
-        //studentID
-
+        //not sure if this works properly
+        if (data.studentId != null)
+            await updateAppUserId(id, patchStudentId)            
+        
         // Fetch the updated appointment and return
         return await getAppointment(id)
 
