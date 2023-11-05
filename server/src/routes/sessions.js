@@ -81,14 +81,10 @@ router.post('/', bodyParser, async(req, res) => {
 });
 // UPDATE ONE
 router.patch('/:id', bodyParser, async (req, res) => {
-
     try {
         console.log("Session controller patch req.body: " + JSON.stringify(req.body))
-        const updatedAppointment = await SessionService.updateAppointment(req.params.id,JSON.stringify(req.body));
-        if (updatedAppointment == false)
-            res.status(404).json({message: "Appointment not found"})
-        else
-            res.status(201).json(updatedAppointment)
+        const updatedAppointment = await SessionService.update(req.params.id, JSON.stringify(req.body));
+        res.status(201).json(updatedAppointment)
     }catch (err) {
         if (err instanceof CustomError)
             res.status(err.code).json({message: err.message})

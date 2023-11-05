@@ -94,39 +94,39 @@ class SessionService {
             throw e
         }
     }
-    //UPDATE SPECIFIC APPOINTMENT
-    static async updateAppointment(id, apptData) {
-        try {
-            console.log("\nSessionService.update\n")
-            const data = JSON.parse(apptData)
-            console.log("SessionService.update sessionData: " + apptData + "\n")
+   //UPDATE SPECIFIC APPOINTMENT
+   static async update(id, apptData) {
+    try {
+        console.log("\nSessionService.update\n")
+        const data = JSON.parse(apptData)
+        console.log("\nData has been parsed\n")
+        
+        // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM APPOINTMENTID
+        if (data.datetime != null)
+            await updateAppDateTime(id, data.datetime)
+        if (data.length != null)
+            await updateAppLength(id, data.length)
+        if (data.online != null)
+            await updateAppMedium(id, data.online)
+        if (data.location != null)
+            await updateAppLocation(id, data.location)
+        if (data.feedback != null)
+            await updateAppFeedback(id, data.feedback)
+        if (data.tutorNotes != null)
+            await updateAppTutorNotes(id, data.tutorNotes)
+        if (data.studentNotes != null)
+            await updateAppStudentNotes(id, data.studentNotes)
+            
+        //tutorID
+        //studentID
 
-            // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM APPOINTMENTID
-			if (data.dateTime != null)
-				updateAppDateTime(id, data.dateTime)
-			if (data.length != null)
-				updateAppLength(id, data.length)
-			if (data.online != null)
-				updateAppMedium(id, data.online)
-			if (data.location != null)
-				updateAppLocation(id, data.location)
-			if (data.feedback != null)
-				updateAppFeedback(id, data.feedback)
-            if (data.tutorNotes != null)
-                updateAppTutorNotes(id, data.tutorNotes)
-            if (data.studentNotes != null)
-                updateAppStudentNotes(id, data.studentNotes)
-            //if(data.tutorId != null)
-            //if(data.studentID != null)
+        // Fetch the updated appointment and return
+        return await getAppointment(id)
 
-			// Fetch the updated appointment and return
-            const appointment = await getAppointment(id)
-            return appointment
-
-        }catch (e) {
-            throw e
-        }
+    }catch (e) {
+        throw e
     }
+}
     // DELETE AN APPOINTMENT
     static async delAppointment(apptId) {
     try {
