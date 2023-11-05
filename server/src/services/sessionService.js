@@ -78,7 +78,7 @@ class SessionService {
         }
     }
     //GET ALL APPOINTMENTS BY USER
-    static async getAllByUser(id, path) {
+    static async getAllAppointmentsByUser(id, path) {
         try {
             console.log("\n[ SessionService.getAllAppointmentsByUser ]")
             const user = await searchItem('User', 'username', id)
@@ -87,7 +87,6 @@ class SessionService {
             if (Object.keys(user).length === 0) {
                 return false
             }
-            //not really sure how this would work?
             const appointments = await searchItem('Appointment', path, userid)
             console.log("\nappointments: " + JSON.stringify(appointments))
             return appointments

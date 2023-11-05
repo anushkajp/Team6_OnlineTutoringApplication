@@ -30,8 +30,6 @@ router.get('/:id', async(req, res) => {
         }
     })()
 });
-
-/*
 // GET ALL APPOINTMENTS BY USER ID
 router.get('/:user/:id', async(req, res) => {
     try {
@@ -49,7 +47,6 @@ router.get('/:user/:id', async(req, res) => {
         res.status(500).json({ message: err.message});
     }
 });
-*/
 // GET ALL APPOINTMENTS BY USER ID
 router.get('/:user/:username', async(req, res) => {
     try {
