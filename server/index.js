@@ -7,7 +7,14 @@ const updates = require("./src/db/update")
 // const adds = require("./src/db/add")
 const adds = require("./src/db/obAdd")
 const deletes = require("./src/db/delete")
-const User = require("./src/models/user")
+const Availability = require("../server/src/models/availability")
+const Review = require("../server/src/models/review")
+const Course = require("../server/src/models/course")
+const Session = require("../server/src/models/session")
+const Student = require("../server/src/models/student")
+const Tutor = require("../server/src/models/tutor")
+const User = require("../server/src/models/user")
+const Major = require("../server/src/models/major")
 
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
@@ -67,9 +74,10 @@ app.get("/testPost", (req, res) => {
     (async () => {
 
         // updates.updateUsername("-NgePx3To2rYbOgfYW_g", null)
-        const major = await adds.addMajor("Computer Science")
+        // newMajor = new Major("Computer Science",null)
+        const major = await adds.addMajor({majorName:"Computer Science"})
         const majorId = await major["id"]
-        // const course = await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
+        const course = await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
         const availability =
         {
             "monday": [
@@ -266,9 +274,11 @@ const sessionRouter = require('./src/routes/sessions')
 const reviewRouter = require('./src/routes/reviews')
 const availabilityRouter = require('./src/routes/availability')
 const majorRouter = require('./src/routes/major')
+const courseRouter = require('./src/routes/courses')
 app.use('/tutor', tutorRouter)
 app.use('/student', studentRouter)
 app.use('/appointments', sessionRouter)
 app.use('/session/review', reviewRouter)
 app.use('/tutor/availability', availabilityRouter)
 app.use('/major',majorRouter)
+app.use('/course', courseRouter)
