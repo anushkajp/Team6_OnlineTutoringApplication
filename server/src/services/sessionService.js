@@ -3,6 +3,7 @@ const Session = require("../models/session")
 const {getAppointments, getAppointment} = require('../db/read')
 const {addAppointment} = require('../db/obAdd')
 const {searchItem} = require ('../db/db')
+const { updateAppDateTime, updateAppLength, updateAppMedium, updateAppLocation, updateAppFeedback, updateAppUserId, updateAppTutorNotes, updateAppStudentNotes} = require ('../db/update')
 const { deleteAppointment } = require("../db/delete")
 
 class SessionService {
@@ -96,39 +97,25 @@ class SessionService {
     //UPDATE SPECIFIC APPOINTMENT
     static async updateAppointment(id, apptData) {
         try {
-            console.log("\n[ SessionService.updateAppointment(): ]")
-            /*
-            const PATH = 'User'
-            const ATTRIBUTE = 'username'
-            */
+            console.log("\nSessionService.update\n")
             const data = JSON.parse(apptData)
-            /*
-            const appointments = await searchItem('Appointment', path, userid)
-			console.log("SessionService.updateAppointment() = " + JSON.stringify(appointments) + "\n")
-            
-            
-            // Appointment DOESN'T EXIST
-            if ( Object.keys(appointments).length === 0)
-                return false
-			
-            const appointmentId = Object.keys(appointments)[0]
-            */
+            console.log("SessionService.update sessionData: " + apptData + "\n")
 
-            // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM USERID
+            // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM APPOINTMENTID
 			if (data.dateTime != null)
-				updateAppDateTime(appointmentId, data.dateTime)
+				updateAppDateTime(id, data.dateTime)
 			if (data.length != null)
-				updateAppLength(appointmentId, data.length)
+				updateAppLength(id, data.length)
 			if (data.online != null)
-				updateAppMedium(appointmentId, data.online)
+				updateAppMedium(id, data.online)
 			if (data.location != null)
-				updateAppLocation(appointmentId, data.location)
+				updateAppLocation(id, data.location)
 			if (data.feedback != null)
-				updateAppReview(appointmentId, data.feedback)
+				updateAppFeedback(id, data.feedback)
             if (data.tutorNotes != null)
-                updateAppTutorNotes(appointmentId, data.tutorNotes)
+                updateAppTutorNotes(id, data.tutorNotes)
             if (data.studentNotes != null)
-                updateAppStudentNotes(appointmentId, data.studentNotes)
+                updateAppStudentNotes(id, data.studentNotes)
             //if(data.tutorId != null)
             //if(data.studentID != null)
 

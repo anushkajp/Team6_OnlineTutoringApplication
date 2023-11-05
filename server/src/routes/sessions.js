@@ -100,6 +100,7 @@ router.patch('/:id', bodyParser, async (req, res) => {
 router.delete('/:id', (req, res) => {
     try {
         const deletedAppt = SessionService.delAppointment(req.params.id)
+        console.log("\Session routes.get(/:id): Session: " + session)
         if (deletedAppt === null) {
             res.status(404).json({ message: "Appointment not found" });
         } else {
