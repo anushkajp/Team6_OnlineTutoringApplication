@@ -14,7 +14,13 @@ class Tutor extends User {
      * @param {string} email Email
      * @param {string} longBio Descriptive bio
      * @param {string} shortBio A short bio for the tutor visible to students
-     * @param {Array<Date>} weeklyAvailability Weekly availability, should be an array<Date,7> storing time ranges in a standard format, index 0 is monday
+     * @param {Array<TimeBlock>} monday List of availability object TimeBlock for Monday
+     * @param {Array<TimeBlock>} tuesday List of availability object TimeBlock for tuesday
+     * @param {Array<TimeBlock>} wednesday List of availability object TimeBlock for wednesday
+     * @param {Array<TimeBlock>} thursday List of availability object TimeBlock for thursday
+     * @param {Array<TimeBlock>} friday List of availability object TimeBlock for friday
+     * @param {Array<TimeBlock>} saturday List of availability object TimeBlock for saturday
+     * @param {Array<TimeBlock>} sunday List of availability object TimeBlock for sunday
      * @param {Array<Date>} exceptionsAvailability A list of exceptions to the weekly schedule, stored as dates of unavailability
      * @param {ImageData} profilePic 
      * @param {number} hours
@@ -25,14 +31,49 @@ class Tutor extends User {
      */
     constructor(firstName, lastName, middleName,
         password, userId, username, courses, phone, email, major, hours,
-        longBio, shortBio, pfp, rating, week, exceptions, bgCheck) {
-        super(firstName, lastName, middleName,
-            password, userId, username, courses, phone, email, major, hours,
-            longBio, shortBio, pfp);
+        longBio, shortBio, pfp, rating, monday, tuesday, wednesday, thursday, 
+        friday, saturday, sunday, exceptions, bgCheck) {
+        super(
+            firstName,
+            lastName,
+            middleName,
+            password,
+            userId,
+            username,
+            courses,
+            phone,
+            email,
+            major,
+            hours,
+            longBio,
+            shortBio,
+            pfp
+            );
         this.rating = rating;
-        const availability = new Availability(week, exceptions);
+        const availability = new Availability(monday, tuesday, wednesday, thursday, friday, saturday, sunday, exceptions);
         this.availability = availability;
         this.bgCheck = bgCheck;
+    }
+    static toObj() {
+        return {
+            firstName: null,
+            lastName: null,
+            middleName: null,
+            password: null,
+            username: null,
+            courses: null,
+            phone: null,
+            email: null,
+            major: null,
+            hours: null,
+            longBio: null,
+            shortBio: null,
+            pfp: null,
+            userId: null,
+            rating: null,
+            availability: null,
+            bgCheck: null
+        };
     }
 }
 module.exports = Tutor
