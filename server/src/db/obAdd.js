@@ -6,6 +6,7 @@ const Session = require("../models/session")
 const Student = require("../models/student")
 const Tutor = require("../models/tutor")
 const User = require("../models/user")
+const Major = require("../models/major")
 module.exports = {
     loadJSONFile: async function loadJSONFile(fileName,majorId){
         var json=require(fileName)
@@ -17,7 +18,8 @@ module.exports = {
             if (!courseNumbers.includes(currCourse.course_number) && !isNaN(parseFloat(currCourse.course_number[1]))){
                 courseNumbers.push(currCourse.course_number)
                 // console.log(majorId,currCourse.title,currCourse.course_number,currCourse.course_number[1])
-                output.push( await this.addCourse(majorId,currCourse.title,currCourse.course_number,parseInt(currCourse.course_number[1])))
+                course = new Course(currCourse.title,currCourse.course_number,majorId,parseInt(currCourse.course_number[1]))
+                output.push( await this.addCourse(course))
             }
             
             
