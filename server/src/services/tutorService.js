@@ -20,27 +20,30 @@ class TutorService {
     }
     // GET ONE
     static async getOne(id) {
-        try {
+        console.log("\n[ TutorService.getone ]\n")
+        const PATH = 'User'
+        const ATTRIBUTE = 'username'
 
-            console.log("\n[ TutorService.getone ]\n")
-            const PATH = 'User'
-            const ATTRIBUTE = 'username'
-
-            // SEARCH FOR USER W USERNAME
-            const search = await searchItem(PATH, ATTRIBUTE, id)
-            console.log(await search)
-            
-            // USER FOUND
-            if (Object.keys(search).length > 0)
-                return search
-
-            // USER NOT FOUND
-            else
-                return false 
-
-        }catch (e) {
-            throw e
+        // SEARCH FOR USER W USERNAME
+        const search = await searchItem(PATH, ATTRIBUTE, id)
+        console.log(await search)
+        
+        // USER FOUND
+        if (Object.keys(search).length > 0) {
+            const propertyMap = Tutor.toObj();
+            let tutor = new Tutor();
+            for (const key in propertyMap) {
+                if (search.hasOwnProperty(key)) {
+                    tutor[key] = search[key];
+                }
+            }
+            return search
         }
+            
+
+        // USER NOT FOUND
+        else
+            throw new CustomError("User not found", 400)
         
     }
     
@@ -59,59 +62,30 @@ class TutorService {
 
             // USER FOUND
             if (Object.keys(search).length === 0)         
-                return false
+                throw new CustomError("Username currently used", 400)
             
             // ADD NEW STUDENT TO DB
             const data = JSON.parse(tutordata)
             console.log("nTutorService student:" + JSON.stringify(data) + "\n")
-            const propertyMap = {
-                firstName: null,
-                lastName: null,
-                middleName: null,
-                password: null,
-                username: null,
-                courses: [],
-                phone: null,
-                email: null,
-                major: null,
-                hours: null,
-                longBio: null,
-                shortBio: null,
-                pfp: null,
-                userId: null,
-            };
-            const tutorInfo = await addTutor(
-                data.firstName, data.middleName,
-                data.lastName, data.password, data.userName, 
-                data.major, data.courses, data.phone, 
-                data.email, data.longBio, data.shortBio, data.availability.week,
-                data.availability.exceptions, data.pfp, data.rating, 
-                data.bkgdCheck, data.hours
-            )
+            let tutor = new Tutor();
+            const propertyMap = Tutor.toObj();
+            // Loop through the data object and set the corresponding properties
+            for (const key in propertyMap) {
+                if (data.hasOwnProperty(key)) {
+                    tutor[key] = data[key];
+                }
+            }
+            // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
+            for (const key in tutor) {
+                if (tutor[key] === undefined)
+                    tutor[key] = null
+            }
+            const tutorInfo = await addTutor(tutor)
+            
             console.log(tutorInfo)
             console.log("TutorService tutorInfo: " + JSON.stringify(tutorInfo) + "\n")
             // FIND THE NEW STUDENT FROM DB WITH USERID
             return tutorInfo
-        }catch (e) {
-            throw e
-        }
-    }
-    // GET ALL APPOINTMENTS BASED ON TUTOR
-    static async createAppointment(id, appInfo) {
-        try {
-            console.log("\n[ TutorService.createAppointments ]")
-            const user = await searchItem('User', 'username', id)
-            const userid = Object.keys(user)[0]
-            console.log("Userid: " + userid)
-            if (Object.keys(user).length === 0) {
-                return false
-            }
-            const data = JSON.parse(appInfo)
-            const appointment = add.addAppointment(userid, data.studentId, data.dateTime,
-                data.length, data.online, data.location, data.courses,
-                data.notes, data.rating, data.feedback)
-            console.log("\nappointment: " + JSON.stringify(appointment))
-            return appointment
         }catch (e) {
             throw e
         }
@@ -128,7 +102,7 @@ class TutorService {
 
             // TUTOR DOESNT EXIST
             if ( Object.keys(result).length === 0)
-                return false
+                throw new CustomError("Username currently used", 400)
             console.log("updateTutor: " + updateTutor + "\n")
             console.log("Tutor id: " + id + "\n")
 
@@ -172,7 +146,7 @@ class TutorService {
                 return search
             }
             else
-                return false
+                throw new CustomError("User not found", 400)
         }catch (e) {
             throw e
         }

@@ -23,7 +23,7 @@ class Student extends User {
     middleName,
     password,
     userId,
-    userName,
+    username,
     courses,
     phone,
     email,
@@ -39,7 +39,7 @@ class Student extends User {
       middleName,
       password,
       userId,
-      userName,
+      username,
       courses,
       phone,
       email,
@@ -50,23 +50,23 @@ class Student extends User {
       pfp
     );
   }
-  toObj() {
+  static toObj() {
     return {
-        firstName,
-        lastName,
-        middleName,
-        password,
-        userId,
-        userName,
-        courses,
-        phone,
-        email,
-        major,
-        hours,
-        longBio,
-        shortBio,
-        pfp
-    }
+      firstName: null,
+      lastName: null,
+      middleName: null,
+      password: null,
+      userId: null,
+      username: null,
+      courses: null,
+      phone: null,
+      email: null,
+      major: null,
+      hours: null,
+      longBio: null,
+      shortBio: null,
+      pfp: null
+  };
   }
 }
 module.exports = Student;

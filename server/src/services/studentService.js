@@ -1,21 +1,26 @@
-const { getUsers, getUser } = require ('../db/read')
+const read = require ('../db/read')
 const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, updateUserBio,
         updateUserPassword, updateUserProfilePic} = require ('../db/update')
-// const {addStudent} = require ('../db/add')
 const adds = require ('../db/obAdd')
 const {searchItem} = require ('../db/db')
 const deletes = require("../db/delete")
-const { sameObject } = require ('../utils/utils')
 const Student = require ('../models/student')
 const CustomError = require ('../utils/customError')
+const USER = 'User'
+const STUDENT = 'Student'
+const USERNAME = 'username'
 class StudentService {
     // GET ALL
     static async getAll() {
         try {
             // GET ALL USERS BACK IN DB AS LIST
-            const students = await getUsers()
-            console.log("StudentService.getAll() = " + JSON.stringify(students) + "\n")
-            return students
+            const studentIds = await read.getStudents()
+            const propertyMap = {}
+            for (const key in studentIds) {
+                propertyMap[studentIds[key].userId] = await read.getUser(studentIds[key].userId)
+            }
+            console.log("StudentService.getAll() = " + JSON.stringify(propertyMap) + "\n")
+            return propertyMap
         }catch (e) {
             throw e
         }
@@ -24,10 +29,8 @@ class StudentService {
     static async getOne(id) {
         try {
             console.log("\nStudentService.getone\n")
-            const PATH = 'User'
-            const ATTRIBUTE = 'username'
             // SEARCH FOR USER W USERNAME
-            const search = await searchItem(PATH, ATTRIBUTE, id)
+            const search = await searchItem(USER, USERNAME, id)
             console.log(await search)
             if (Object.keys(search).length > 0)
                 return search
@@ -41,11 +44,9 @@ class StudentService {
     static async create(studentData){ 
         try {
             console.log("\nStudentService.create\n")
-            const PATH = 'User'
-            const ATTRIBUTE = 'username'
             // console.log("StudentService.create studentData: " + studentData + "\n")
             const data = JSON.parse(studentData)
-            const result = await searchItem(PATH, ATTRIBUTE, data.username)     // FIND IF ANOTHER USER HAS SAME USERNAME
+            const result = await searchItem(USER, USERNAME, data.username)     // FIND IF ANOTHER USER HAS SAME USERNAME
             console.log("\nStudentService.create result: " + result)
             
             // STUDENT WITH USERNAME ALREADY EXISTS
@@ -91,23 +92,7 @@ class StudentService {
             //     student.pfp = data.pfp
             // else student.pfp = null
             // student.userId = null
-            const propertyMap = {
-                
-                firstName: null,
-                lastName: null,
-                middleName: null,
-                password: null,
-                username: null,
-                courses: null,
-                phone: null,
-                email: null,
-                major: null,
-                hours: null,
-                longBio: null,
-                shortBio: null,
-                pfp: null,
-                userId: null,
-            };
+            const propertyMap = Student.toObj();
     
             // Loop through the data object and set the corresponding properties
             for (const key in propertyMap) {
@@ -115,7 +100,7 @@ class StudentService {
                     student[key] = data[key];
                 }
             }
-            // LOOP THROUGH OBJ, ANY UNDEFINED REPLACCE WITH NULL
+            // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
             for (const key in student) {
                 if (student[key] === undefined)
                     student[key] = null
@@ -143,10 +128,8 @@ class StudentService {
     static async update(username, studentData) {
         try {
             console.log("\nStudentService.update\n")
-            const PATH = 'User'
-            const ATTRIBUTE = 'username'
             const data = JSON.parse(studentData)
-            const result = await searchItem(PATH, ATTRIBUTE, username)     
+            const result = await searchItem(USER, USERNAME, username)     
             
             // STUDENT DOESNT EXIST
             if ( Object.keys(result).length === 0)
@@ -175,7 +158,7 @@ class StudentService {
             if (data.pfp != null)
                 await updateUserProfilePic(id, data.pfp)
             
-            return await getUser(id)
+            return await read.getUser(id)
         } catch (e) {
             throw e;
         }
@@ -184,18 +167,28 @@ class StudentService {
     static async delete(id) {
         try {
             // FIND USERID FROM USERNAME
-            const PATH = 'User'
-            const ATTRIBUTE = 'username'
             console.log("\nStudentService.delete")
-            // const search = JSON.parse(await searchItem(PATH, ATTRIBUTE, id))
-            const search = await searchItem(PATH, ATTRIBUTE, id)
-            console.log("Username: " + Object.keys(search)[0])
-            if (Object.keys(search).length > 0) {
-                deletes.deleteUser(Object.keys(search)[0])
-                return search
+            const studentIds = await read.getStudents()
+            let student = new Student;
+            for (const key in studentIds) {
+                console.log(studentIds[key])
+                console.log(studentIds[key].userId)
+                student = await read.getUser(studentIds[key].userId)
+                console.log(student)
+                console.log(student.username)
+                if (student.username === id) {
+                    deletes.deleteStudent(studentIds[key].userId)
+                    return student
+                }
             }
-            else
-                return false
+            // const search = await searchItem(USER, USERNAME, id)
+            // console.log("Username: " + Object.keys(search)[0])
+            // if (Object.keys(search).length > 0) {
+            //     deletes.deleteUser(Object.keys(search)[0])
+            //     return search
+            // }
+            // else
+                throw new CustomError("User not found", 400)
         }catch (e) {
             throw e
         }
