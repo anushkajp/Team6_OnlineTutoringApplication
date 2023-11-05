@@ -3,6 +3,7 @@ const router = express.Router();
 const Session = require('../models/session')
 const SessionService = require('../services/sessionService')
 bodyParser = require('body-parser').json();
+const CustomError = require ('../utils/customError')
 
 // GET ALL
 router.get('/', async (req, res) => {

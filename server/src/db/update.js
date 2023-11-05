@@ -242,7 +242,7 @@ module.exports = {
      * @param {string} newUserId Updates the user id for the appointment
      */
     updateAppUserId: async function updateAppUserId(appointmentId, newUserId) {
-        return modifyItem("Appointment",appointmentId,"userId",newUserId)
+        return modifyItem("Appointment",appointmentId,"studentId",newUserId)
     },
 
     /**
