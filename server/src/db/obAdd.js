@@ -59,7 +59,7 @@ module.exports = {
         console.log(userKey)    
         student["userId"] = userKey['id']
         console.log(student["userId"])
-        return addItem("Student", student, userKey["userId"])
+        return addItem("Student", student, student["userId"])
     },
     /**
      * Adds a new Tutor to the database 
