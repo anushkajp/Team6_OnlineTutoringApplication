@@ -67,9 +67,20 @@ app.get("/testPost", (req, res) => {
     (async () => {
 
         // updates.updateUsername("-NgePx3To2rYbOgfYW_g", null)
-        const major = await adds.addMajor("Computer Science")
-        const majorId = await major["id"]
-        // const course = await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
+        const cs = await adds.addMajor("Computer Science")
+        const csId = await cs["id"]
+        const csCourses = await adds.loadJSONFile("./2023_CS_Courses.json",csId)
+        const ee = await adds.addMajor("Electrical Engineering")
+        const eeId = await ee["id"]
+        const eeCourses = await adds.loadJSONFile("./2023_EE_Courses.json",eeId)
+        const ce = await adds.addMajor("Computer Engineering")
+        const ceId = ce["id"]
+        const ceCourses = await adds.loadJSONFile("./2023_CE_Courses",ceId)
+        const ecs= await adds.addMajor("Engineering and Computer Science")
+        const ecsId = ecs["id"]
+        const ecsCourses = await adds.loadJSONFile("./2023_ECS_Courses.json",ecsId)
+        
+        
         const availability =
         {
             "monday": [
