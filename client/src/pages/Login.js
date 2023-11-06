@@ -28,7 +28,7 @@ const Login = () => {
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      alert("Navigating to two factor.....");
+      // alert("Navigating to two factor.....");
       navigateToTwoFactor();
     } catch (error) {
       alert("Incorrect password entered!");
