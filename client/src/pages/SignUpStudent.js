@@ -41,12 +41,18 @@ class Major {
 }
 
 class Course {
-  constructor(name, number, department, hours, courseId) {
-    this.name = name; // string
-    this.number = number;
-    this.department = department;
-    this.hours = hours
-    this.courseId = courseId
+  /**
+   * Adds a new Course to the database 
+   * @param {string} majorId Database major ID
+   * @param {string} courseName Name of the course
+   * @param {string} courseNumber Course number
+   * @param {number} creditHours Number of credit hours this course offers
+   */
+  constructor (courseName, courseNumber, majorId, creditHours) {
+      this.courseName = courseName;
+      this.courseNumber = courseNumber;
+      this.majorId = majorId;
+      this.creditHours = creditHours
   }
 }
 
@@ -124,12 +130,14 @@ const SignUpStudent = () => {
       const majorArray=[]
       const majorKeys=[]
       for (let i in data) { 
-        if(Object.keys(data)[0] in majorKeys){
-          continue;
-        }
+        // if(Object.keys(data)[0] in majorKeys){
+        //   continue;
+        // }
         // console.log(data[i])
         // console.log(data["majorName"]) 
-        const thisMajor = new Major(data[i].majorName, Object.keys(data)[0])
+        const majorKey = i
+        console.log(i)
+        const thisMajor = new Major(data[i].majorName, i)
         // console.log( Object.keys(data)[0])
         // if(!(thisMajor in majors)){
         // setMajors([...majors, thisMajor])
@@ -147,15 +155,15 @@ const SignUpStudent = () => {
   useEffect(() => {
     console.log('useEffect for courses is running.');
     console.log('selectedMajor:', selectedMajor);
-    // setCourses([])
-    // setSelectedCourses([])
+    setCourses([])
+    setSelectedCourses([])
     const courseArray=[]
     const courseKeys=[]
     if (selectedMajor.majorId) {
       // console.log("Past majorId: " + selectedMajor.majorId) 
       // console.log(selectedMajor.majorId)
       fetchFromAPI(`course/${selectedMajor.majorId}`).then(data => {
-        // console.log(data)  
+        console.log(data)  
         for (let i in data) { 
           if(Object.keys(data)[0] in courseKeys){
             continue;
@@ -163,18 +171,20 @@ const SignUpStudent = () => {
           // console.log(data[i])
           // console.log(data["majorName"])
           // console.log(Object.keys(data)[0])
-          const thisCourse = new Course(data[i].courseName, data[i].courseNumber, data[i].majorId, data[i].creditHours, Object.keys(data)[0])
+          const thisCourse = new Course(data[i].courseName, data[i].courseNumber, data[i].majorId, data[i].creditHours)
           // console.log(thisMajor)
           // if(!(thisMajor in majors)){
           // }
+          thisCourse["courseId"] = Object.keys(data)[0]
           courseArray.push(thisCourse)
         }
+        setCourses(courseArray)
+
       }, (err) => {
         console.log(err)
       })
     }
-    setCourses(courseArray)
-    console.log(courses)
+    // console.log(courses)
   }, [selectedMajor])
 
   // useEffect()
@@ -213,7 +223,7 @@ const SignUpStudent = () => {
                   return (
                     <select defaultValue={selectedCourses} multiple>
                       {courses.map((course) => (
-                        <option key={course.courseId} value={course.name}>{course.name}</option>
+                        <option key={course.courseId} value={course.courseName}>{course.courseName}</option>
               ))}
                     </select>
 

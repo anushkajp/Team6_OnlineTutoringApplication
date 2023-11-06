@@ -6,7 +6,7 @@ class CourseService {
     static async getAll(majorId) {
         try {
             
-            const courses = await searchItem("Course","department",majorId)
+            const courses = await searchItem("Course","majorId",majorId)
             return courses
         } catch (err) {
             return err
