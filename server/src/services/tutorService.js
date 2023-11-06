@@ -41,7 +41,7 @@ class TutorService {
 
             // DETERMINE IF USER IS A TUTOR
             const tutorAdds = await read.getTutor(Object.keys(search)[0])
-            const tutorId = await read.searchItem()
+            const tutorId = await searchItem()
             console.log(Object.keys(search)[0])
             console.log(tutorAdds)
             console.log(tutorAdds.userId)

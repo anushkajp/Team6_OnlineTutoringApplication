@@ -16,10 +16,14 @@ class StudentService {
         const studentIds = await read.getStudents()
         console.log(studentIds)
         const propertyMap = {}
+        let addOns = {}
         // POPULATE STUDENTS BY GETTING EVERY STUDENT USER BY USERID
         for (const key in studentIds) {
             console.log(key)
             propertyMap[key] = await read.getUser(key)
+            // ATTACH THE FAVORITE TUTORS ARRAY TO STUDENT OBJECT
+            addOns = await read.getStudent(key)
+            propertyMap[key] = {...propertyMap[key], ...addOns}
         }
         console.log(propertyMap)
         return propertyMap
