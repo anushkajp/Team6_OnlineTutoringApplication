@@ -2,25 +2,21 @@ const express = require("express");
 const router = express.Router();
 const Review = require("../models/review")
 const {getReview} = require ('../db/read')
+
+const read = require("../db/read")
+
 class ReviewService {
-    
-    static getAll(id) {
-        try {
-            const tutor = new Tutor();
-            tutor = getTutor(id)
-            const review = new Review()
-            review = tutor.review
-            return review
-        } catch (err) {
-            return err
-        }
+      // GET ALL
+      static async getAll() {
+            console.log("\n[ ReviewService.getAll ]\n");
+            const reviews = await read.getReviews();
+            return reviews;
     }
+
+    // GET ONE REVIEW BY ID 
     static getOne(id) {
-        try {
-            const review = getReview(id)
-        }catch (err){
-            return err
-        }
+        
+
     }
     static create() {
 
