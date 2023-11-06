@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
+// import 'dotenv/config'
 import emailjs from "emailjs-com";
 
 // no functionality yet, just UI
@@ -15,8 +16,7 @@ import emailjs from "emailjs-com";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [error, setError] = useState("");
-  
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
   // handle submit 
@@ -28,6 +28,7 @@ const Login = () => {
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
+      alert("Navigating to two factor.....");
       navigateToTwoFactor();
     } catch (error) {
       alert("Incorrect password entered!");
