@@ -103,13 +103,6 @@ class SessionService {
         console.log("\nData has been parsed\n")
 
         const username = data.studentId
-        const result = await searchItem(USER, USERNAME, username) 
-
-        if ( Object.keys(result).length === 0)
-        throw new CustomError("The userid does not exist", 400)
-
-        const patchStudentId = Object.keys(result)[0]
-        console.log("Updated Student id: " + patchStudentId + "\n")
         
         // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM APPOINTMENTID
         if (data.datetime != null)
@@ -123,12 +116,23 @@ class SessionService {
         if (data.feedback != null)
             await updateAppFeedback(id, data.feedback)
         if (data.tutorNotes != null)
-            await updateAppTutorNotes(id, data.tutorNotes)
+            await updateAppTutorNotes(id, data.tutorNotes)           
         if (data.studentNotes != null)
             await updateAppStudentNotes(id, data.studentNotes)
-        //not sure if this works properly
-        if (data.studentId != null)
-            await updateAppUserId(id, patchStudentId)            
+        if (username !== null) {
+            // Continue with the actions 
+            const result = await searchItem(USER, USERNAME, username);
+                
+            if (Object.keys(result).length === 0) {
+                throw new CustomError("The userid does not exist", 400);
+            }
+              
+            const patchStudentId = Object.keys(result)[0];
+            console.log("Updated Student id: " + patchStudentId + "\n");
+
+            await updateAppUserId(id, patchStudentId) 
+        }   
+        //if (data.studentId != null)                     
         
         // Fetch the updated appointment and return
         return await getAppointment(id)
