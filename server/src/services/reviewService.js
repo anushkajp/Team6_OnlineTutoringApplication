@@ -3,6 +3,7 @@ const router = express.Router();
 const Review = require("../models/review")
 const {getReview} = require ('../db/read')
 class ReviewService {
+    
     static getAll(id) {
         try {
             const tutor = new Tutor();
@@ -32,4 +33,3 @@ class ReviewService {
     }
 }
 module.exports = ReviewService
-
