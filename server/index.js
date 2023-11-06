@@ -15,6 +15,7 @@ const Availability = require("./src/models/availability")
 const Session = require("./src/models/session")
 const Review = require("./src/models/review")
 const Course = require("./src/models/course")
+const TimeBlock = require("./src/models/timeBlock")
 
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
@@ -129,8 +130,7 @@ app.get("/testPost", (req, res) => {
                                   "shortBio",
                                   "profile pic",
                                   3,
-                                  ["monday"],
-                                  ["tuesday"],
+                                  new Availability(new TimeBlock("start","end"),new TimeBlock("start","end"),new TimeBlock("start","end"),new TimeBlock("start","end"),new TimeBlock("start","end"),new TimeBlock("start","end"),new TimeBlock("start","end"),["exceptions"]),
                                   false)
         const tutor = await obAdds.addTutor(tutorOb)
         const tutorId = await tutor["id"]
@@ -154,7 +154,7 @@ app.get("/testPost", (req, res) => {
         const obReview = new Review(tutorId, studentId, 2, "This way")
         const review = await obAdds.addReview(obReview)
         const reviewId = await review["id"]
-        const obAppointment = new Session(tutorId, studentId, dateAvailable,20, true,"location","notes","feedback")
+        const obAppointment = new Session(tutorId, studentId, dateAvailable,20,"course", true,"location","feedback","tutorNotes","studentNotes")
         const appointment = await obAdds.addAppointment(obAppointment)
         // for(i in await searchItem("User","username","deedee")){
         //     deletes.deleteUser(i)
@@ -165,7 +165,6 @@ app.get("/testPost", (req, res) => {
             data: {
                 tutor: tutor,
                 student: student,
-                major: major,
                 // course: course,
                 review: review,
                 appointment: appointment

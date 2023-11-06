@@ -25,12 +25,12 @@ class Tutor extends User {
      */
     constructor(firstName, lastName, middleName,
         password, userId, username, courses, phone, email, major, hours,
-        longBio, shortBio, pfp, rating, week, exceptions, bgCheck) {
+        longBio, shortBio, pfp, rating, availability, bgCheck) {
         super(firstName, lastName, middleName,
             password, userId, username, courses, phone, email, major, hours,
             longBio, shortBio, pfp);
         this.rating = rating;
-        const availability = new Availability(week, exceptions);
+        // const availability = new Availability(week, exceptions);
         this.availability = availability;
         this.bgCheck = bgCheck;
     }
