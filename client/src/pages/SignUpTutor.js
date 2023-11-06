@@ -8,10 +8,6 @@ const SignUpTutor = () => {
   const [password, setPassword] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [arrayValue, setArrayValue] = useState([]);
-  //const [isTutor, setTutor] = useState('');
-
-  // let isTutor = true;
-  // let isStudent = false;
 
   const [formData, setFormData] = useState({
     firstName: "",

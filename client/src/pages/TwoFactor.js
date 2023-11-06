@@ -18,9 +18,8 @@ const TwoFactor = () => {
   const handleValidation = () => {
     if (inputValue == verificationCode) {
       alert("Correct Code!");
-       navigate("/TutorDash");
-      console.log("Validation is performed with input value:", inputValue);
-      //
+       console.log("Validation is performed with input value:", inputValue);
+        navigate("/TutorDash");
     } else {
       console.log("Verification code does not match.");
       alert("Invalid Code!");
@@ -28,9 +27,6 @@ const TwoFactor = () => {
     }
   };
 
-  const handleLoginNavigation = () =>{
-    
-  }
 
   return (
     <div className="with-gradient">

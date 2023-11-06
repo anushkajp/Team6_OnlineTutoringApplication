@@ -8,11 +8,6 @@ const SignUpStudent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
-  // let isTutor = false;
-  // let isStudent = true;
-  // console.log(isStudent)
-  // console.log(isTutor)
-
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
