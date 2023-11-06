@@ -14,10 +14,12 @@ module.exports = {
     
         for (i in json.report_data){
             currCourse = json.report_data[i]
+            
             if (!courseNumbers.includes(currCourse.course_number) && !isNaN(parseFloat(currCourse.course_number[1]))){
                 courseNumbers.push(currCourse.course_number)
+                course = new Course(currCourse.title,currCourse.course_number,majorId,parseInt(currCourse.course_number[1]))
                 // console.log(majorId,currCourse.title,currCourse.course_number,currCourse.course_number[1])
-                output.push( await this.addCourse(majorId,currCourse.title,currCourse.course_number,parseInt(currCourse.course_number[1])))
+                output.push( await this.addCourse(course))
             }
             
             
