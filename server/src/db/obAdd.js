@@ -71,6 +71,7 @@ module.exports = {
         user = {}
         Object.keys(tutorObject).forEach((key) => {
             if(key !== "userId"){
+                console.log(key)
                 if(!(key in new User())){
                     tutor[key] =tutorObject[key]
                 }else{
@@ -80,6 +81,7 @@ module.exports = {
         })
         userKey = await this.addUser(user)
         userKey = userKey["id"]
+        console.log(userKey)
         return addItem("Tutor", tutor, userKey)
     },
     /**

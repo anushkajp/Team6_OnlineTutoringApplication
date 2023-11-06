@@ -4,7 +4,6 @@ class Tutor extends User {
     /**
      * Adds a new Tutor to the database 
      * @param {string} firstName First name
-     * @param {string} middleName Middle name
      * @param {string} lastName Last name
      * @param {string} password Hashed password
      * @param {string} username Unique username
@@ -29,21 +28,18 @@ class Tutor extends User {
      * @param {number} totalHours Total hours completed by tutor
      * @param {number} rating The rating other users have given the tutor
      */
-    constructor(firstName, lastName, middleName,
+    constructor(firstName, lastName, 
         password, userId, username, courses, phone, email, major, hours,
         longBio, shortBio, pfp, rating, monday, tuesday, wednesday, thursday, 
         friday, saturday, sunday, exceptions, bgCheck) {
         super(
             firstName,
             lastName,
-            middleName,
             password,
             userId,
             username,
-            courses,
             phone,
             email,
-            major,
             hours,
             longBio,
             shortBio,
@@ -53,12 +49,13 @@ class Tutor extends User {
         const availability = new Availability(monday, tuesday, wednesday, thursday, friday, saturday, sunday, exceptions);
         this.availability = availability;
         this.bgCheck = bgCheck;
+        this.courses = courses;
+        this.major = major;
     }
     static toObj() {
         return {
             firstName: null,
             lastName: null,
-            middleName: null,
             password: null,
             username: null,
             courses: null,
@@ -71,7 +68,16 @@ class Tutor extends User {
             pfp: null,
             userId: null,
             rating: null,
-            availability: null,
+            availability: {
+                monday: null,
+                tuesday: null,
+                wednesday: null,
+                thursday: null,
+                friday: null,
+                saturday: null,
+                sunday: null,
+                exceptions: null
+            },
             bgCheck: null
         };
     }
