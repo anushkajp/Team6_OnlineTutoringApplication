@@ -224,12 +224,12 @@ app.get("/testDelete", (req, res) => {
         for (i in await reads.getAppointments()) {
             deletes.deleteAppointment(i)
         }
-        for (i in await reads.getMajors()) {
-            deletes.deleteMajor(i)
-        }
-        for (i in await reads.getCourses()) {
-            deletes.deleteCourse(i)
-        }
+        // for (i in await reads.getMajors()) {
+        //     deletes.deleteMajor(i)
+        // }
+        // for (i in await reads.getCourses()) {
+        //     deletes.deleteCourse(i)
+        // }
         // for(i in await searchItem("User","username","deedee")){
         //     deletes.deleteUser(i)
         // }

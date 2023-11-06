@@ -145,8 +145,9 @@ class StudentService {
             const id = Object.keys(result)[0]
 
             // CHECK TO SEE IF USER IS A STUDENT
-            const student = await getStudent(id)
-            if (isNaN(student))
+            const student = await read.getStudent(id)
+            console.log(student)
+            if (student.userId === undefined)
                 throw new CustomError("User is not a student", 400) 
             console.log("Student id: " + id + "\n")
             
