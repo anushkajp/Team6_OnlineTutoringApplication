@@ -10,7 +10,6 @@
     "test:unit": "jest _tests_/unit/",
     "test:integration": "jest  --testPathPattern=src/js/tests/integration"
   },
-  "type": "module",
   "author": "Team6",
   "license": "ISC",
   "dependencies": {
