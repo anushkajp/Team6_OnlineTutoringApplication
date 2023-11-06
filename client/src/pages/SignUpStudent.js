@@ -121,16 +121,24 @@ const SignUpStudent = () => {
   // }
   useEffect(() => {
     fetchFromAPI(`major/`).then(data => { 
+      const majorArray=[]
+      const majorKeys=[]
       for (let i in data) { 
-        // console.log(data[i])   
+        if(Object.keys(data)[0] in majorKeys){
+          continue;
+        }
+        // console.log(data[i])
         // console.log(data["majorName"]) 
         const thisMajor = new Major(data[i].majorName, Object.keys(data)[0])
-        // console.log(thisMajor)
+        // console.log( Object.keys(data)[0])
         // if(!(thisMajor in majors)){
-        setMajors([...majors, thisMajor])
+        // setMajors([...majors, thisMajor])
         // }
+        majorArray.push(thisMajor)
 
       }
+      setMajors(majorArray)
+      // console.log(majors)
     }, (err) => {
       console.log(err)
     })
@@ -139,29 +147,34 @@ const SignUpStudent = () => {
   useEffect(() => {
     console.log('useEffect for courses is running.');
     console.log('selectedMajor:', selectedMajor);
-    setCourses([])
-    setSelectedCourses([])
-    
+    // setCourses([])
+    // setSelectedCourses([])
+    const courseArray=[]
+    const courseKeys=[]
     if (selectedMajor.majorId) {
-      console.log("Past majorId: " + selectedMajor.majorId) 
+      // console.log("Past majorId: " + selectedMajor.majorId) 
       // console.log(selectedMajor.majorId)
       fetchFromAPI(`course/${selectedMajor.majorId}`).then(data => {
-        // console.log(data)
-        for (let i in data) {
+        // console.log(data)  
+        for (let i in data) { 
+          if(Object.keys(data)[0] in courseKeys){
+            continue;
+          }
           // console.log(data[i])
           // console.log(data["majorName"])
           // console.log(Object.keys(data)[0])
-          const thisCourse = new Course(data[i].name, data[i].number, data[i].majorId, data[i].hours, Object.keys(data)[0])
+          const thisCourse = new Course(data[i].courseName, data[i].courseNumber, data[i].majorId, data[i].creditHours, Object.keys(data)[0])
           // console.log(thisMajor)
           // if(!(thisMajor in majors)){
-          setCourses([...courses, thisCourse])
           // }
-
+          courseArray.push(thisCourse)
         }
       }, (err) => {
         console.log(err)
       })
     }
+    setCourses(courseArray)
+    console.log(courses)
   }, [selectedMajor])
 
   // useEffect()
@@ -186,11 +199,11 @@ const SignUpStudent = () => {
                       const selectedMajorName = e.target.value;
                       const selectedMajorObject = majors.find(major => major.majorName === selectedMajorName);
                       setMajor(selectedMajorObject);
-                    }}>
-                      {Object.keys(majors).map((fields1) => {
-                        // console.log(fields1+index1)
-                        return (<option key={majors[fields1].majorId} value={majors[fields1].majorName}>{majors[fields1].majorName}</option>)
-                      })}
+                    }}> 
+                      {majors.map( (major) => (
+                        // console.log(fields1+index1) 
+                        <option key={major.majorId} value={major.majorName}>{major.majorName}</option>
+              ))}
                     </select>
 
                   )
@@ -199,10 +212,9 @@ const SignUpStudent = () => {
                 else if (fields === "courses") {
                   return (
                     <select defaultValue={selectedCourses} multiple>
-                      {Object.keys(courses).map((fields1) => {
-                        console.log(courses[fields1].courseId)
-                        return (<option key={courses[fields1].courseId} value={courses[fields1].name}>{courses[fields1].name}</option>)
-                      })}
+                      {courses.map((course) => (
+                        <option key={course.courseId} value={course.name}>{course.name}</option>
+              ))}
                     </select>
 
                   )
