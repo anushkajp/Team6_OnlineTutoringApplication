@@ -69,4 +69,6 @@ for (i in new Session()){
         return modifyItem(className,dbId, fieldName, newValue)
     }
 }
+// Example to update the tutorId of a Session
+//updateFunctions["updateSessiontutorId"](dbid, string)
 module.exports= updateFunctions
