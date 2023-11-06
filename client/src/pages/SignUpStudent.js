@@ -1,60 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { fetchFromAPI } from '../services/api'
-class User {
-  constructor(firstName, lastName, middleName,
-    password, userId, username, courses, phone, email, major,
-    hours, longBio, shortBio, pfp) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.middleName = middleName;
-    this.password = password;
-    this.userId = userId;
-    this.username = username;
-
-    this.phone = phone;
-    this.email = email;
-    this.major = major;
-    this.courses = courses;
-    this.hours = hours;
-    this.longBio = longBio;
-    this.shortBio = shortBio;
-    this.pfp = pfp;
-  }
-}
-class Student extends User {
-  constructor(firstName, lastName, middleName,
-    password, userId, userName, courses, phone, email, major, hours,
-    longBio, shortBio, pfp) {
-    super(firstName, lastName, middleName,
-      password, userId, userName, courses, phone, email, major,
-      longBio, shortBio, pfp);
-  }
-}
-
-class Major {
-  constructor(majorName, majorId) {
-    this.majorName = majorName
-    this.majorId = majorId
-  }
+import User from '../../../server/src/models/user'
+import Student from '../../../server/models/student'
+import Tutor from '../../../server/models/tutor'
+import Major from '../../../server/models/major'
+import Course from '../../../server/models/course'
 
 
-}
-
-class Course {
-  /**
-   * Adds a new Course to the database 
-   * @param {string} majorId Database major ID
-   * @param {string} courseName Name of the course
-   * @param {string} courseNumber Course number
-   * @param {number} creditHours Number of credit hours this course offers
-   */
-  constructor (courseName, courseNumber, majorId, creditHours) {
-      this.courseName = courseName;
-      this.courseNumber = courseNumber;
-      this.majorId = majorId;
-      this.creditHours = creditHours
-  }
-}
 
 const SignUpStudent = () => {
   //   const [formData, setFormData] = useState({
