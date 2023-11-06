@@ -155,5 +155,7 @@ module.exports = {
     addItem,
     modifyItem,
     searchItem
+    modifyItem,
+    searchItem
 }
 

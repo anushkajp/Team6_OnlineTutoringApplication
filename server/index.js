@@ -40,6 +40,9 @@ app.get("/testInfo", (req, res) => {
         const student = await reads.getStudents()
         const major = await reads.getMajors()
         const course = await reads.getCourses()
+        // const review = await reads.getReviews()
+        // const search = await searchItem("User","username","bibilivesagain")
+        // console.log(await search())
         const review = await reads.getReviews()
         const search = await searchItem("User","username","bibilivesagain")
         // console.log(await search())
@@ -52,7 +55,8 @@ app.get("/testInfo", (req, res) => {
                 user: user,
                 tutor: tutor,
                 student: student,
-                appointment: appointment,
+                appointment:appointment,
+                // appointment: appointment,
                 major: major,
                 course: course,
                 review:review,
@@ -169,11 +173,13 @@ app.get("/testPost", (req, res) => {
                 appointment: appointment
 
             }
+            
 
             // console.log(await readPath("User"))
 
 
         });
+        // console.log(searchItem())
 
     })()
 });
