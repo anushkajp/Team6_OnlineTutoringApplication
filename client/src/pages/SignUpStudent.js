@@ -147,7 +147,8 @@ const SignUpStudent = () => {
     return (
       <div className="form-group">
         {Object.keys(student).map((fields, index) => {
-          if (fieldsToSkip.includes(fields)) {
+          // console.log(labelData)
+          if (fieldsToSkip.includes(fields) || labelData[fields]===undefined) {
             return null;
           }
           return (
@@ -314,7 +315,7 @@ const SignUpStudent = () => {
                 required
               />
             </div> */}
-            {createFields(student, setStudent)}
+            {createFields(student)}
             <button className="create_acc_student_button" type="submit">
               Create Student Account
             </button>
