@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { fetchFromAPI } from '../services/api'
-import User from '../../../server/src/models/user'
-import Student from '../../../server/models/student'
-import Tutor from '../../../server/models/tutor'
-import Major from '../../../server/models/major'
-import Course from '../../../server/models/course'
+import User from '../models/user'
+import Student from '../models/student'
+import Tutor from '../models/tutor'
+import Major from '../models/major'
+import Course from '../models/course'
 
 
 

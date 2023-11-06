@@ -26,6 +26,7 @@ import Forgot from "./pages/Forgot";
 import Home from "./pages/Home";
 import ListUpcoming from "./pages/ListUpcoming";
 import Login from "./pages/Login";
+import Login from "./pages/Login";
 import ProfileSettings from "./pages/ProfileSettings";
 import SavedCoursesStudent from "./pages/SavedCoursesStudent";
 import SearchTutor from "./pages/SearchTutor";
