@@ -3,11 +3,18 @@
 const { searchItem } = require("./src/db/db");
 
 const reads = require("./src/db/read")
-const updates = require("./src/db/update")
-const adds = require("./src/db/add")
+const updates = require("./src/db/obUpdate")
 const obAdds = require("./src/db/obAdd")
+const adds= require("./src/db/add")
+// const obAdds = require("./src/db/obAdd")
 const deletes = require("./src/db/delete")
 const User = require("./src/models/user")
+const Tutor = require("./src/models/tutor")
+const Student = require("./src/models/student")
+const Availability = require("./src/models/availability")
+const Session = require("./src/models/session")
+const Review = require("./src/models/review")
+const Course = require("./src/models/course")
 
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
@@ -79,8 +86,7 @@ app.get("/testPost", (req, res) => {
         const ecs= await adds.addMajor("Engineering and Computer Science")
         const ecsId = ecs["id"]
         const ecsCourses = await adds.loadJSONFile("./2023_ECS_Courses.json",ecsId)
-        
-        
+        const majorId = "this is major"
         const availability =
         {
             "monday": [
@@ -107,60 +113,49 @@ app.get("/testPost", (req, res) => {
 
 
 
-
         const dateAvailable = new Date().toTimeString()
-        const tutor = await adds.addTutor(
-            "Bibi",
-            "Bamble",
-            "Duke",
-            "saltedhash",
-            "bibi4eva",
-            majorId,
-            [],
-            "1233211234",
-            "bibi4eva@gmail.com",
-            "Long Bio",
-            "short bio",
-            availability,
-            [],
-            null,
-            5,
-            true,
-            5
-        )
+        const tutorOb = new Tutor("firstName",
+                                  "lastName",
+                                  "middleName",
+                                  "password",
+                                  "Not yet known",
+                                  "userName",
+                                  ["course 1","course 2"],
+                                  "phoneNumber",
+                                  "email",
+                                  majorId,
+                                  20,
+                                  "longBio",
+                                  "shortBio",
+                                  "profile pic",
+                                  3,
+                                  ["monday"],
+                                  ["tuesday"],
+                                  false)
+        const tutor = await obAdds.addTutor(tutorOb)
         const tutorId = await tutor["id"]
-        const student = await adds.addStudent("Jason",
-            "Hemroid",
-            "Stevens",
-            "Jackintheboxmmm",
-            "jroid92",
-            majorId,
-            [],
-            "1233211234",
-            "jroid92@gmail.com",
-            "London bridge wouldnt have fallen on my watch. Always hustling",
-            "short bio",
-            null
-        )
+        const studentOb = new Student("firstName",
+                                        "lastName",
+                                        "middleName",
+                                        "password",
+                                        "Not yet known",
+                                        "userName",
+                                        ["course 1","course 2"],
+                                        "phoneNumber",
+                                        "email",
+                                        majorId,
+                                        5,
+                                        "longBio",
+                                        "shortBio",
+                                        "profile pic")
+        const student = await obAdds.addStudent(studentOb)
         const studentId = await student["id"]
-        const review = await adds.addReview(tutorId,
-            studentId,
-            0,
-            "description"
-        )
+
+        const obReview = new Review(tutorId, studentId, 2, "This way")
+        const review = await obAdds.addReview(obReview)
         const reviewId = await review["id"]
-        const appointment = await adds.addAppointment(tutorId,
-            studentId,
-            dateAvailable,
-            10,
-            true,
-            "www.google.com",
-            [],
-            "Student Notes",
-            "Tutor Notes",
-            0,
-            "feedback"
-        )
+        const obAppointment = new Session(tutorId, studentId, dateAvailable,20, true,"location","notes","feedback")
+        const appointment = await obAdds.addAppointment(obAppointment)
         // for(i in await searchItem("User","username","deedee")){
         //     deletes.deleteUser(i)
         // }
@@ -188,35 +183,35 @@ app.get("/testPost", (req, res) => {
 app.get("/testPostTemp", (req, res) => {
 
     (async () => {
-        user = new User(
-            "Jason",
-            "Hemroid",
-            "Stevens",
-            "Jackintheboxmmm",
-            "",
-            "jroid92",
-            [],
-            "1233211234",
-            "jroid92@gmail.com",
-            "majorId",
-            5,
-            "London bridge wouldnt have fallen on my watch. Always hustling",
-            "short bio",
-            null
-            )
-        const reture = await obAdds.addUser(user)
-        user.userId= await reture["id"]
-        res.send({
-            // for testing
-            data: {
-                user: user
+        // user = new User(
+        //     "Jason",
+        //     "Hemroid",
+        //     "Stevens",
+        //     "Jackintheboxmmm",
+        //     "",
+        //     "jroid92",
+        //     [],
+        //     "1233211234",
+        //     "jroid92@gmail.com",
+        //     "majorId",
+        //     5,
+        //     "London bridge wouldnt have fallen on my watch. Always hustling",
+        //     "short bio",
+        //     null
+        //     )
+        // const reture = await obAdds.addUser(user)
+        // user.userId= await reture["id"]
+        // res.send({
+        //     // for testing
+        //     data: {
+        //         user: user
 
-            }
-
-
+        //     }
 
 
-        })
+
+
+        // })
     })()
 
 
@@ -240,6 +235,9 @@ app.get("/testDelete", (req, res) => {
         }
         for (i in await reads.getCourses()) {
             deletes.deleteCourse(i)
+        }
+        for (i in await reads.getReviews()){
+            deletes.deleteReview(i)
         }
         // for(i in await searchItem("User","username","deedee")){
         //     deletes.deleteUser(i)
