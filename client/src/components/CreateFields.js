@@ -97,7 +97,7 @@ import bcrypt from "bcryptjs-react"
         }
         setMajors(majorArray)
         // console.log(majors)
-      }, (err) => {
+      }, (err) => { 
         console.log(err)
       })
   }
