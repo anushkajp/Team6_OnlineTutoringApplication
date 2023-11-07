@@ -5,15 +5,7 @@ import CreateFields from '../components/CreateFields'
 
 
 const SignUpStudent = () => {
-  //   const [formData, setFormData] = useState({
-  //   firstName: "",
-  //   lastName: "",
-  //   email: "",
-  //   phone: "",
-  //   university: "",
-  //   profile_photo: "",
-  //   password: "",
-  // });
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form data submitted:", student);
@@ -42,15 +34,6 @@ const SignUpStudent = () => {
   const [student, setStudent] = useState(initialStudent);
 
 
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setStudent({
@@ -59,41 +42,6 @@ const SignUpStudent = () => {
     })
     console.log(student)
   }
-  // const getMajors = (e)=>{
-
-  //   fetchFromAPI(`major/`).then(data=>{
-  //     for (let i in data){
-  //       console.log(data[i])
-  //       console.log(data["majorName"])
-  //       const thisMajor = new Major(data[i].majorName,Object.keys(data)[0])
-  //       console.log(thisMajor)
-  //       if(!(thisMajor in major)){
-  //         setMajors([...major,thisMajor])
-  //       }
-
-  //     }
-  //   },(err)=>{
-  //     console.log(err)
-  //   })
-  // }
-
-
-  // useEffect()
- 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log("Form data submitted:", formData);
-  //   // Clear the form fields
-  //   setFormData({
-  //     firstName: "",
-  //     lastName: "",
-  //     email: "",
-  //     phone: "",
-  //     university: "",
-  //     profile_photo: "",
-  //     password: "",
-  //   });
-  // };
 
 
   return (
