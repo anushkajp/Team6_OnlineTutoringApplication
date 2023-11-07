@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchFromAPI } from '../services/api'
+import { fetchFromAPI,uploadToAPI } from '../services/api'
 import User from '../models/user'
 import Student from '../models/student'
 import Tutor from '../models/tutor'
@@ -77,78 +77,60 @@ const SignUpStudent = () => {
   //     console.log(err)
   //   })
   // }
-  useEffect(() => {
-    fetchFromAPI(`major/`).then(data => { 
-      const majorArray=[]
-      const majorKeys=[]
-      for (let i in data) { 
-        // if(Object.keys(data)[0] in majorKeys){
-        //   continue;
-        // }
-        // console.log(data[i])
-        // console.log(data["majorName"]) 
-        const majorKey = i
-        console.log(i)
-        const thisMajor = new Major(data[i].majorName, i)
-        // console.log( Object.keys(data)[0])
-        // if(!(thisMajor in majors)){
-        // setMajors([...majors, thisMajor])
-        // }
-        majorArray.push(thisMajor)
 
-      }
-      setMajors(majorArray)
-      // console.log(majors)
-    }, (err) => {
-      console.log(err)
-    })
 
-  }, [])
-  useEffect(() => {
-    console.log('useEffect for courses is running.');
-    console.log('selectedMajor:', selectedMajor);
-    setCourses([])
-    setSelectedCourses([])
-    const courseArray=[]
-    const courseKeys=[]
-    if (selectedMajor.majorId) {
-      // console.log("Past majorId: " + selectedMajor.majorId) 
-      // console.log(selectedMajor.majorId)
-      fetchFromAPI(`course/${selectedMajor.majorId}`).then(data => {
-        console.log(data)  
+  // useEffect()
+  const CreateFields = (student) => {
+    const fieldsToSkip = ['userId', 'hours', "longBio", "shortBio", "middleName"]
+    useEffect(() => {
+      fetchFromAPI(`major/`).then(data => { 
+        const majorArray=[]
+        const majorKeys=[]
         for (let i in data) { 
-          if(Object.keys(data)[0] in courseKeys){
-            continue;
-          }
-          // console.log(data[i])
-          // console.log(data["majorName"])
-          // console.log(Object.keys(data)[0])
-          const thisCourse = new Course(data[i].courseName, data[i].courseNumber, data[i].majorId, data[i].creditHours)
-          // console.log(thisMajor)
-          // if(!(thisMajor in majors)){
-          // }
-          thisCourse["courseId"] = Object.keys(data)[0]
-          courseArray.push(thisCourse)
+          const majorKey = i
+          const thisMajor = new Major(data[i].majorName, i)
+          majorArray.push(thisMajor)
+  
         }
-        setCourses(courseArray)
-
+        setMajors(majorArray)
+        // console.log(majors)
       }, (err) => {
         console.log(err)
       })
-    }
-    // console.log(courses)
-  }, [selectedMajor])
-
-  // useEffect()
-  const createFields = (student) => {
-    const fieldsToSkip = ['userId', 'hours', "longBio", "shortBio", "middleName"]
-
+  
+    }, [])
+    useEffect(() => {
+      console.log('useEffect for courses is running.');
+      console.log('selectedMajor:', selectedMajor);
+      setCourses([])
+      setSelectedCourses([])
+      const courseArray=[]
+      const courseKeys=[]
+      if (selectedMajor.majorId) {
+        fetchFromAPI(`course/${selectedMajor.majorId}`).then(data => {
+          console.log(data)  
+          for (let i in data) { 
+            if(Object.keys(data)[0] in courseKeys){
+              continue;
+            }
+            const thisCourse = new Course(data[i].courseName, data[i].courseNumber, data[i].majorId, data[i].creditHours)
+            thisCourse["courseId"] = Object.keys(data)[0]
+            courseArray.push(thisCourse)
+          }
+          setCourses(courseArray)
+  
+        }, (err) => {
+          console.log(err)
+        })
+      }
+      // console.log(courses)
+    }, [selectedMajor])
 
     return (
       <div className="form-group">
         {Object.keys(student).map((fields, index) => {
           // console.log(labelData)
-          if (fieldsToSkip.includes(fields) || labelData[fields]===undefined) {
+          if (labelData[fields]===undefined) {
             return null;
           }
           return (
@@ -156,7 +138,6 @@ const SignUpStudent = () => {
               <label key={index} htmlFor={fields}>{labelData[fields]["label"]}</label>
               {(() => {
                 if (fields === "major") {
-                  // getMajors() 
                   return (
                     <select  onChange={(e) => {
                       const selectedMajorName = e.target.value;
@@ -228,8 +209,13 @@ const SignUpStudent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form data submitted:", student);
+    (async ()=>{
+      const data = await uploadToAPI("student/",student)
+      console.log(data)
+    })()
+
     // Clear the form fields
-    setStudent(new Student());
+    // setStudent(new Student());
   };
 
   return (
@@ -315,7 +301,7 @@ const SignUpStudent = () => {
                 required
               />
             </div> */}
-            {createFields(student)}
+            {CreateFields(student)}
             <button className="create_acc_student_button" type="submit">
               Create Student Account
             </button>
