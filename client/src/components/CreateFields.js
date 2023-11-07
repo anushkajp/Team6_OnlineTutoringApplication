@@ -49,7 +49,8 @@ import Course from '../models/course'
     }
 
     useEffect(() => {
-      fetchFromAPI(`major/`).then(data => { 
+      if ("major" in labelData){
+        fetchFromAPI(`major/`).then(data => { 
         const majorArray=[]
         const majorKeys=[]
         for (let i in data) { 
@@ -63,10 +64,11 @@ import Course from '../models/course'
       }, (err) => {
         console.log(err)
       })
-  
+  }
     }, [])
     useEffect(() => {
-      console.log('useEffect for courses is running.');
+        if("major" in labelData && "courses" in labelData)
+      {console.log('useEffect for courses is running.');
       console.log('selectedMajor:', selectedMajor);
       setCourses([])
       setSelectedCourses([])
@@ -88,7 +90,7 @@ import Course from '../models/course'
         }, (err) => {
           console.log(err)
         })
-      }
+      }}
       // console.log(courses)
     }, [selectedMajor])
   
