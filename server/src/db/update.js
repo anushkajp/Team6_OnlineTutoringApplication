@@ -251,7 +251,7 @@ module.exports = {
      * @param {string} newNotes New appointment notes
      */
     updateAppTutorNotes: async function updateAppNotes(appointmentId, newNotes){
-        return modifyItem("Appointment",appointmentId,"notes",tutorNotes)
+        return modifyItem("Appointment",appointmentId,"tutorNotes",newNotes)
     },
 
     /**
@@ -260,7 +260,7 @@ module.exports = {
      * @param {string} newNotes New appointment notes
      */
     updateAppStudentNotes: async function updateAppNotes(appointmentId, newNotes){
-        return modifyItem("Appointment",appointmentId,"notes",studentNotes)
+        return modifyItem("Appointment",appointmentId,"studentNotes",newNotes)
     }
 
     //TODO: update Review attributes
