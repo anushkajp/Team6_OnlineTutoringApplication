@@ -20,7 +20,7 @@ class ReviewService {
         // SEARCH FOR REVIEW 
         const review = await read.getReview(id)
         console.log(await search)
-        
+
         // REVIEW FOUND
         if (Object.keys(search).length > 0) {
             return search
@@ -33,7 +33,6 @@ class ReviewService {
     }
 
     static create() {
-
     }
     static update() {
 
