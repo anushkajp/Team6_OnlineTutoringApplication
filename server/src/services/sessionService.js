@@ -102,8 +102,7 @@ class SessionService {
         const data = JSON.parse(apptData)
         console.log("\nData has been parsed\n")
 
-        const username = data.studentId
-        
+              
         // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM APPOINTMENTID
         if (data.datetime != null)
             await updateAppDateTime(id, data.datetime)
@@ -119,23 +118,37 @@ class SessionService {
             await updateAppTutorNotes(id, data.tutorNotes)           
         if (data.studentNotes != null)
             await updateAppStudentNotes(id, data.studentNotes)
-        if (username !== null) {
+       
+        /*if (data.studentId != null) {
             // Continue with the actions 
-            const result = await searchItem(USER, USERNAME, username);
+            const result = await searchItem(USER, USERNAME, data.studentId);
                 
             if (Object.keys(result).length === 0) {
                 throw new CustomError("The userid does not exist", 400);
             }
+            else
               
             const patchStudentId = Object.keys(result)[0];
             console.log("Updated Student id: " + patchStudentId + "\n");
 
-            await updateAppUserId(id, patchStudentId) 
-        }   
-        //if (data.studentId != null)                     
+            if (data.studentId != null)   
+                await updateAppUserId(id, patchStudentId) 
+        }*/
+
+        if (data.studentId != null) {
+            // Continue with the actions 
+            const result = await searchItem(USER, USERNAME, data.studentId);
         
-        // Fetch the updated appointment and return
-        return await getAppointment(id)
+            if (Object.keys(result).length === 0) {
+                throw new CustomError("The userid does not exist", 400);
+            } else {
+                const patchStudentId = Object.keys(result)[0];
+                console.log("Updated Student id: " + patchStudentId + "\n");
+                await updateAppUserId(id, patchStudentId);
+            }
+        } 
+        
+        return await getAppointment(id);
 
     }catch (e) {
         throw e
