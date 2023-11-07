@@ -67,8 +67,8 @@ module.exports = {
      */
     //TODO: filter out user attributes
     addTutor: async function addTutor(tutorObject) {
-        tutor = {}
-        user = {}
+        let tutor = {}
+        let user = {}
         Object.keys(tutorObject).forEach((key) => {
             if(key !== "userId"){
                 console.log(key)
