@@ -5,6 +5,7 @@ const {searchItem} = require ('../db/db')
 const deletes=require("../db/delete")
 const USER = 'User'
 const USERNAME = 'username'
+const EMAIL = 'email'
 const CustomError = require ('../utils/customError')
 const Tutor = require ('../models/tutor')
 class TutorService {
@@ -41,7 +42,7 @@ class TutorService {
 
             // DETERMINE IF USER IS A TUTOR
             const tutorAdds = await read.getTutor(Object.keys(search)[0])
-            const tutorId = await read.searchItem()
+            const tutorId = await searchItem()
             console.log(Object.keys(search)[0])
             console.log(tutorAdds)
             console.log(tutorAdds.userId)
@@ -73,12 +74,16 @@ class TutorService {
             console.log("\n[ TutorService.create ]\n")
             const data = JSON.parse(tutordata)
             // SEARCH FOR USER W USERNAME
-            const search = await searchItem(USER, USERNAME, data.username)
-            console.log(await search)
+            const userResult = await searchItem(USER, USERNAME, data.username)
+            const emailResult = await searchItem(USER, EMAIL, data.email)
 
             // USER FOUND
-            if (Object.keys(search).length > 0)         
+            if (Object.keys(userResult).length > 0)         
                 throw new CustomError("Username already exists", 400)
+
+            // EMAIL FOUND
+            if (Object.keys(emailResult).length > 0)         
+                throw new CustomError("Email already in use", 400)
             
             // ADD NEW STUDENT TO DB
             
@@ -103,7 +108,7 @@ class TutorService {
             console.log(tutorInfo)
             console.log("TutorService tutorInfo: " + JSON.stringify(tutorInfo) + "\n")
             // FIND THE NEW STUDENT FROM DB WITH USERID
-            return tutorInfo
+            // return tutorInfo
         }catch (e) {
             throw e
         }
@@ -114,7 +119,8 @@ class TutorService {
             // FIND TUTORID
             console.log("\n[ TutorService.update ]\n")
             const data = JSON.parse(updateTutor)
-            const result = await searchItem(USER, USERNAME, username)
+            console.log(updateTutor.username)
+            const result = await searchItem(USER, USERNAME, updateTutor.username)
 
             // TUTOR DOESNT EXIST
             if ( Object.keys(result).length === 0)
@@ -122,7 +128,7 @@ class TutorService {
             console.log("updateTutor: " + updateTutor + "\n")
             console.log("Tutor id: " + id + "\n")
 
-            const id = Object.keys(result)[0]
+            const id = Object.keys(await searchItem(USER, USERNAME, username))[0]
             // SEE WHAT CHANGED IN UPDATETUTOR AND CALL CORRESPONDING DB FUNCTION
             if (updateTutor.userId != null)
                 update.updateUsername(id, updateTutor.userId)
@@ -130,8 +136,12 @@ class TutorService {
                 update.updateUserMajor(id, updateTutor.major)
             if (updateTutor.password != null)
                 update.updateUserPassword(id, updateTutor.password)
-            if (updateTutor.email != null)
+            if (updateTutor.email != null) {
+                const emailResult = await searchItem(USER, EMAIL, updateTutor.email)
+                if (Object.keys(emailResult).length > 0)         
+                    throw new CustomError("Email already in use", 400)
                 update.updateUserEmail(id, updateTutor.email)
+            }
             if (updateTutor.longBio != null)
                 update.updateUserBio(id, updateTutor.longBio)
             if (updateTutor.phone != null)
