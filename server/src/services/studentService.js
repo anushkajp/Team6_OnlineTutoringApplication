@@ -76,11 +76,12 @@ class StudentService {
 
         // Loop through the data object and set the corresponding properties
         for (const key in propertyMap) {
+            console.log(key)
             if (data.hasOwnProperty(key)) {
                 student[key] = data[key];
             }
         }
-        // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
+        // // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
         for (const key in student) {
             if (student[key] === undefined)
                 student[key] = null

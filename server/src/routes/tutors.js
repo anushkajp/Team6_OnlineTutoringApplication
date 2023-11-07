@@ -32,8 +32,8 @@ router.get('/:id', async(req, res) => {
 router.post('/', bodyParser, async(req, res) => {
 
     try {
-        await TutorService.create(JSON.stringify(req.body));
-        res.status(201).json({ message: "Successfully created tutor"})
+        const tutor = await TutorService.create(JSON.stringify(req.body));
+        res.status(201).json(tutor)
     }catch (err) {
         if (err instanceof CustomError)
             res.status(err.code).json({message: err.message})
@@ -58,7 +58,9 @@ router.post('/', bodyParser, async(req, res) => {
 // UPDATE ONE
 router.patch('/:id', bodyParser, async (req, res) => {
     try {
-        const newTutor = await TutorService.update(JSON.stringify(req.body));
+        console.log(req.body)
+        console.log(JSON.stringify(req.body))
+        const newTutor = await TutorService.update(req.params.id, JSON.stringify(req.body));
         res.status(201).json(newTutor)
     }catch (err) {
         if (err instanceof CustomError)
