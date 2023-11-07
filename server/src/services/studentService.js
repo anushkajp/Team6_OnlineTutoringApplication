@@ -8,6 +8,8 @@ const Student = require ('../models/student')
 const CustomError = require ('../utils/customError')
 const USER = 'User'
 const USERNAME = 'username'
+const EMAIL = 'email'
+
 class StudentService {
     // GET ALL
     static async getAll() {
@@ -55,55 +57,21 @@ class StudentService {
         console.log("\n[ StudentService.create ]\n")
         // console.log("StudentService.create studentData: " + studentData + "\n")
         const data = JSON.parse(studentData)
-        const result = await searchItem(USER, USERNAME, data.username)     // FIND IF ANOTHER USER HAS SAME USERNAME
+        const userResult = await searchItem(USER, USERNAME, data.username)     // FIND IF ANOTHER USER HAS SAME USERNAME
+        const emailResult = await searchItem(USER, EMAIL, data.email)
         console.log("\nStudentService.create result: " + result)
         
         // STUDENT WITH USERNAME ALREADY EXISTS
-        if ( Object.keys(result).length === 1)
+        if ( Object.keys(userResult).length > 0)
             throw new CustomError("Username already exists", 400)
 
-        else if (Object.keys(result).length > 1)
-            throw new CustomError("Multiple users with this username already exists", 400)
+        // STUDENT WITH EMAIL ALREADY EXISTS
+        if ( Object.keys(emailResult).length === 1)
+            throw new CustomError("Email already in use", 400)
         
         let student = new Student()
         console.log(typeof student)
         
-        // if (data.hasOwnProperty("firstName"))
-        //     student.firstName = data.firstName
-        // if (data.hasOwnProperty("lastName"))
-        //     student.lastName = data.lastName
-        // if (data.hasOwnProperty("middleName"))
-        //     student.middleName = data.middleName
-        // else
-        //     student.middleName = null
-        // if (data.hasOwnProperty("password"))
-        //     student.password = data.password
-        // if (data.hasOwnProperty("username"))
-        //     student.username = data.username
-        // if (data.hasOwnProperty("courses"))
-        //     student.courses = data.courses;
-        // else student.courses = []
-        // if (data.hasOwnProperty("phone"))
-        //     student.phone = data.phone
-        // else student.phone = null
-        // if (data.hasOwnProperty("email"))
-        //     student.email = data.email
-        // if (data.hasOwnProperty("major"))
-        //     student.major = data.major
-        // else student.major = null
-        // if (data.hasOwnProperty("hours"))
-        //     student.hours = data.hours
-        // else student.hours = null
-        // if (data.hasOwnProperty("longBio"))
-        //     student.longBio = data.longBio
-        // else student.longBio = null
-        // if (data.hasOwnProperty("shortBio"))
-        //     student.longBio = data.longBio
-        // else student.shortBio = null
-        // if (data.hasOwnProperty("pfp"))
-        //     student.pfp = data.pfp
-        // else student.pfp = null
-        // student.userId = null
         const propertyMap = Student.toObj();
 
         // Loop through the data object and set the corresponding properties
@@ -117,21 +85,12 @@ class StudentService {
             if (student[key] === undefined)
                 student[key] = null
         }
-        // TODO: get utils to work for same object
-
-        // JSON OBJECT DOESNT MATCH STUDENT MODEL
-        // const s = new Student()
-        // if (!sameObject(studentData, JSON.stringify(s.toObj()))) {
-        //     console.log("same obj false")
-        //     throw new CustomError("The JSON object provided does not match Student model", 400)
-        // }
-            
             
         // ADD NEW STUDENT TO DB
         console.log(student)
         const studentInfo = await adds.addStudent(student)
         console.log("StudentInfo " + studentInfo)
-        return studentInfo
+        // return studentInfo
     }
     // patch: UPDATE STUDENT
     static async update(username, studentData) {
@@ -164,8 +123,13 @@ class StudentService {
             //     await updatecourses(id, data.courses)
             if (data.phone != null)
                 await updateUserPhone(id, data.phone)
-            if (data.email != null)
+            if (data.email != null) {
+                const emailResult = await searchItem(USER, emailResult, data.email)
+                if (Object.keys(emailResult).length > 0)
+                    throw new CustomError("Email already in use", 400)
                 await updateUserEmail(id, data.email)
+            }
+                
             if (data.major != null)
                 await updateUserMajor(id, data.major)
             if (data.longBio != null)
