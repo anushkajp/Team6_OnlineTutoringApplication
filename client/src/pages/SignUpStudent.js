@@ -31,7 +31,6 @@ const SignUpStudent = () => {
     middleName: { "label": "Middle name" },
     password: { "label": "Password" },
     username: { "label": "Username" },
-    courses: { "label": "Courses" },
     phone: { "label": "Phone number" },
     email: { "label": "Email" },
     major: { "label": "Major" },
