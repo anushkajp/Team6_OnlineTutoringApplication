@@ -224,12 +224,12 @@ app.get("/testDelete", (req, res) => {
         for (i in await reads.getAppointments()) {
             deletes.deleteAppointment(i)
         }
-        for (i in await reads.getMajors()) {
-            deletes.deleteMajor(i)
-        }
-        for (i in await reads.getCourses()) {
-            deletes.deleteCourse(i)
-        }
+        // for (i in await reads.getMajors()) {
+        //     deletes.deleteMajor(i)
+        // }
+        // for (i in await reads.getCourses()) {
+        //     deletes.deleteCourse(i)
+        // }
         // for(i in await searchItem("User","username","deedee")){
         //     deletes.deleteUser(i)
         // }
@@ -267,7 +267,6 @@ const reviewRouter = require('./src/routes/reviews')
 const availabilityRouter = require('./src/routes/availability')
 app.use('/tutor', tutorRouter)
 app.use('/student', studentRouter)
-app.use('/appointments', sessionRouter)
 app.use('/appointments', sessionRouter)
 app.use('/session/review', reviewRouter)
 app.use('/tutor/availability', availabilityRouter)

@@ -59,7 +59,7 @@ module.exports = {
         console.log(userKey)    
         student["userId"] = userKey['id']
         console.log(student["userId"])
-        return addItem("Student", student, userKey["userId"])
+        return addItem("Student", student, student["userId"])
     },
     /**
      * Adds a new Tutor to the database 
@@ -67,10 +67,11 @@ module.exports = {
      */
     //TODO: filter out user attributes
     addTutor: async function addTutor(tutorObject) {
-        tutor = {}
-        user = {}
+        let tutor = {}
+        let user = {}
         Object.keys(tutorObject).forEach((key) => {
             if(key !== "userId"){
+                console.log(key)
                 if(!(key in new User())){
                     tutor[key] =tutorObject[key]
                 }else{
@@ -80,6 +81,7 @@ module.exports = {
         })
         userKey = await this.addUser(user)
         userKey = userKey["id"]
+        console.log(userKey)
         return addItem("Tutor", tutor, userKey)
     },
     /**
