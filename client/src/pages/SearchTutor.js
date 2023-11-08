@@ -1,19 +1,18 @@
 import React, { useState } from "react";
-import Sidebar from '../components/sidebar'
+import Sidebar from "../components/sidebar";
 import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
 //import "font-awesome/css/font-awesome.min.css";
 import { TutorTileCard } from "./TutorTile";
 import TutorModal from "./TutorModal";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 // source used for like button
 // https://chayanit-chaisri.medium.com/how-to-add-a-like-button-react-usestate-3f79aac27d90
 
 function SearchTutor(props) {
-  const [date, setDate] = useState("Select Date");
+  const [date, setDate] = useState(new Date());
   const [subject, setSubject] = useState("Select Subject");
   const [tutor, setTutor] = useState("Select Tutor");
   const [modal, setModal] = useState(false);
@@ -22,8 +21,9 @@ function SearchTutor(props) {
     setModal(!modal);
   }
 
-  const handleDateChange = (event) => {
-    setDate(event.target.value);
+  const handleDateChange = (date) => {
+    setDate(date);
+    console.log(date);
   };
 
   const handleSubjectChange = (event) => {
@@ -37,7 +37,7 @@ function SearchTutor(props) {
   return (
     <div>
       <div className="main-container">
-      <Sidebar className="dbPageSidebar" renderType="student"></Sidebar>
+        <Sidebar className="dbPageSidebar" renderType="student"></Sidebar>
 
         <div className="main-columns">
           {/* <h2> Second column </h2>
@@ -47,19 +47,14 @@ function SearchTutor(props) {
           <div className="container-filters">
             <div className="box-filters">
               <div className="text-under-find">Date</div>
-              <select
-                id="filterSelect"
+              <DatePicker
+                className="base-input-style datepicker-input"
+                selected={date}
                 onChange={handleDateChange}
-                value={date}
-              >
-                <option value="Select Date">Select Date</option>
-                <option value="Oct 1">Oct 1</option>
-                <option value="Oct 2">Oct 2</option>
-                <option value="Oct 3">Oct 3</option>
-              </select>
+              />
             </div>
-            <div class="box-filters">
-              <div class="text-under-find">Subject</div>
+            <div className="box-filters">
+              <div className="text-under-find">Subject</div>
               <select
                 id="filterSelect"
                 onChange={handleSubjectChange}
@@ -72,8 +67,8 @@ function SearchTutor(props) {
                 <option value="CS 3345">CS 4348</option>
               </select>
             </div>
-            <div class="box-filters">
-              <div class="text-under-find">Tutor</div>
+            <div className="box-filters">
+              <div className="text-under-find">Tutor</div>
               <select
                 id="filterSelect"
                 onChange={handleTutorChange}
@@ -87,7 +82,9 @@ function SearchTutor(props) {
           </div>
 
           <div className="tutor-container">
-            {(tutor === "Tasnim Mahi" || (subject === "CS 1336" || subject === "CS 2336")) && (
+            {(tutor === "Tasnim Mahi" ||
+              subject === "CS 1336" ||
+              subject === "CS 2336") && (
               <TutorTileCard
                 pfp={pfp1}
                 stars={"⭐ ⭐ ⭐ ⭐ ⭐ (489)"}
@@ -99,7 +96,9 @@ function SearchTutor(props) {
                 cost={50}
               ></TutorTileCard>
             )}
-            {(tutor === "Diana Le" || (subject === "CS 3345" || subject === "CS 4348")) && (
+            {(tutor === "Diana Le" ||
+              subject === "CS 3345" ||
+              subject === "CS 4348") && (
               <TutorTileCard
                 pfp={pfp2}
                 stars={"⭐ ⭐ ⭐ ⭐ ⭐ (20)"}
@@ -116,7 +115,7 @@ function SearchTutor(props) {
         <div className="main-columns">
           {/* <h2> Third column </h2>
           <p> This is Third column of our grid system</p> */}
-          <TutorModal toggle={modal} action={open} selectedTutor={tutor}/>
+          <TutorModal toggle={modal} action={open} selectedTutor={tutor} />
         </div>
       </div>
     </div>
