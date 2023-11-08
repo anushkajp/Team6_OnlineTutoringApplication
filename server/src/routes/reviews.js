@@ -12,7 +12,7 @@ router.get('/', async (req,res) => {
     }
 });
 // GET ONE
-router.get('/:apointmentId', (req, res) => {
+router.get('/:reviewId', (req, res) => {
     try {
         const review = ReviewService.getOne(req.body.appointmentId)
         res.status(200).json(review)
@@ -21,7 +21,7 @@ router.get('/:apointmentId', (req, res) => {
     }
 });
 // CREATE ONE
-router.post('/:appointmentId', async (req, res) => {
+router.post('/:reviewId', async (req, res) => {
     const review = new Review(req.body.rating,req.body.review);
     try {
         const newReview = await ReviewService.create(req.params.appointmentId);
@@ -31,7 +31,7 @@ router.post('/:appointmentId', async (req, res) => {
     }
 });
 // UPDATE ONE
-router.patch('/:appointmentId', async(req, res) => {
+router.patch('/:reviewId', async(req, res) => {
     const review = new Review();
     review.rating = req.body.rating;
     review.review = req.body.review;
@@ -43,7 +43,7 @@ router.patch('/:appointmentId', async(req, res) => {
     }
 });
 // DELETE ONE
-router.delete('/:appointmentId', (req, res) => {
+router.delete('/:reviewId', (req, res) => {
     try {
         const review = ReviewService.delete(req.params.appointmentId)
         res.status(200).json(review)

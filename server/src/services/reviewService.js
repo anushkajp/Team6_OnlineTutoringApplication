@@ -6,6 +6,8 @@ const {searchItem} = require ('../db/db')
 const read = require("../db/read")
 const {deleteReview} = require("../db/delete")
 const CustomError = require ('../utils/customError')
+const USER = 'User'
+const USERNAME = 'username'
 
 class ReviewService {
       // GET ALL
