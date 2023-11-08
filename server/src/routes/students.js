@@ -32,8 +32,8 @@ router.get('/:id', async(req, res) => {
 router.post('/', bodyParser, async(req, res) => {
     try {
         console.log("Student controller post req.body: " + JSON.stringify(req.body))
-        const newStudent = await StudentService.create(JSON.stringify(req.body));
-        res.status(201).json(newStudent)
+        const student = await StudentService.create(JSON.stringify(req.body));
+        res.status(201).json(student)
     }catch (err) {
         if (err instanceof CustomError)
             res.status(err.code).json({message: err.message})
