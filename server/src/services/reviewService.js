@@ -4,7 +4,6 @@ const Review = require("../models/review")
 const {getReview, getReviews} = require ('../db/read')
 const {searchItem} = require ('../db/db')
 const read = require("../db/read")
-
 const {deleteReview} = require("../db/delete")
 const CustomError = require ('../utils/customError')
 
@@ -72,6 +71,7 @@ class ReviewService {
     }
     
     static async update(reviewID, newReviewData) {
+        
 
     }
     //DELETE A REVIEW
