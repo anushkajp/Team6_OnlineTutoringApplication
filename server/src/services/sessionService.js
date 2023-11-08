@@ -34,8 +34,26 @@ class SessionService {
             throw err
         }
     }
+    //GET ALL APPOINTMENTS BY USER
+    static async getAllAppointmentsByUser(id, path) {
+        try {
+            console.log("\n[ SessionService.getAllAppointmentsByUser ]")
+            const user = await searchItem('User', 'username', id)
+            console.log("\nuser: " + JSON.stringify(user))
+            const userid = Object.keys(user)[0]
+            if (Object.keys(user).length === 0) {
+                return false
+            }
+            const appointments = await searchItem('Appointment', path, userid)
+            console.log("\nappointments: " + JSON.stringify(appointments))
+            return appointments
+            
+        }catch (e) {
+            throw e
+        }
+    }   
     // CREATE NEW APPOINTMENT
-    /*static async create(appData){ 
+    static async create(appData){ 
         try {
             console.log("\nSessionService.create\n")
             const data = JSON.parse(appData)
@@ -76,66 +94,7 @@ class SessionService {
         }catch (e) {
             throw e
         }
-    }*/
-    static async create(appData) {
-        try {
-            console.log("\nSessionService.create\n");
-            const data = JSON.parse(appData);
-    
-            // Check if an appointment with the same student and datetime already exists
-            const existingAppointments = await getAppointments(); 
-
-            const existingAppointmentsArray = Array.from(existingAppointments);
-    
-            const duplicateAppointment = existingAppointmentsArray.find((appointment) => {
-                return (
-                    appointment.studentId === data.studentId &&
-                    appointment.datetime === data.datetime
-                );
-            });
-    
-            if (duplicateAppointment) {
-                // Appointment with the same student and datetime already exists
-                throw new Error("Appointment with the same student and datetime already exists.");
-            }
-    
-            let session = new Session();
-    
-            const propertyMap = {
-                tutorId: null,
-                studentId: null,
-                datetime: null, // Set the datetime to null initially
-                length: null,
-                course: null,
-                online: null,
-                location: null,
-                feedback: null,
-                tutorNotes: null,
-                studentNotes: null,
-            };
-    
-            // Loop through the data object and set the corresponding properties
-            for (const key in propertyMap) {
-                if (data.hasOwnProperty(key)) {
-                    session[key] = data[key];
-                }
-            }
-    
-            // If datetime is still null, set it to the current time
-            if (session.datetime === null) {
-                session.datetime = new Date().toTimeString();
-            }
-    
-            // ADD NEW SESSION TO DB
-            console.log(session);
-            const sessionInfo = await addAppointment(session);
-            console.log("SessionInfo " + sessionInfo);
-            return sessionInfo;
-        } catch (e) {
-            throw e;
-        }
     }
-    
    //UPDATE SPECIFIC APPOINTMENT
    static async update(id, apptData) {
     try {
@@ -143,7 +102,15 @@ class SessionService {
         const data = JSON.parse(apptData)
         console.log("\nData has been parsed\n")
 
-              
+        const username = data.studentId
+        const result = await searchItem(USER, USERNAME, username) 
+
+        if ( Object.keys(result).length === 0)
+        throw new CustomError("The userid does not exist", 400)
+
+        const patchStudentId = Object.keys(result)[0]
+        console.log("Updated Student id: " + patchStudentId + "\n")
+        
         // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM APPOINTMENTID
         if (data.datetime != null)
             await updateAppDateTime(id, data.datetime)
@@ -156,40 +123,15 @@ class SessionService {
         if (data.feedback != null)
             await updateAppFeedback(id, data.feedback)
         if (data.tutorNotes != null)
-            await updateAppTutorNotes(id, data.tutorNotes)           
+            await updateAppTutorNotes(id, data.tutorNotes)
         if (data.studentNotes != null)
             await updateAppStudentNotes(id, data.studentNotes)
-       
-        /*if (data.studentId != null) {
-            // Continue with the actions 
-            const result = await searchItem(USER, USERNAME, data.studentId);
-                
-            if (Object.keys(result).length === 0) {
-                throw new CustomError("The userid does not exist", 400);
-            }
-            else
-              
-            const patchStudentId = Object.keys(result)[0];
-            console.log("Updated Student id: " + patchStudentId + "\n");
-
-            if (data.studentId != null)   
-                await updateAppUserId(id, patchStudentId) 
-        }*/
-
-        if (data.studentId != null) {
-            // Continue with the actions 
-            const result = await searchItem(USER, USERNAME, data.studentId);
+        //not sure if this works properly
+        if (data.studentId != null)
+            await updateAppUserId(id, patchStudentId)            
         
-            if (Object.keys(result).length === 0) {
-                throw new CustomError("The userid does not exist", 400);
-            } else {
-                const patchStudentId = Object.keys(result)[0];
-                console.log("Updated Student id: " + patchStudentId + "\n");
-                await updateAppUserId(id, patchStudentId);
-            }
-        } 
-        
-        return await getAppointment(id);
+        // Fetch the updated appointment and return
+        return await getAppointment(id)
 
     }catch (e) {
         throw e
