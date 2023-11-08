@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const Review = require("../models/review")
-const {getReview} = require ('../db/read')
+const {getReview, getReviews} = require ('../db/read')
 const {searchItem} = require ('../db/db')
 const read = require("../db/read")
-const deletes=require("../db/delete")
+
+const {deleteReview} = require("../db/delete")
+const CustomError = require ('../utils/customError')
+
 class ReviewService {
       // GET ALL
       static async getAll() {
@@ -75,7 +78,7 @@ class ReviewService {
     static async delete(reviewId) {
         try {
             const reviewDelete = await deleteReview(reviewId);
-            console.log("ReviewService.delAppointment() = " + JSON.stringify(reviewDelete) + "\n")
+            console.log("ReviewService.delReview() = " + JSON.stringify(reviewDelete) + "\n")
                 if (reviewDelete === null) {
                     return null;
                 }else {
