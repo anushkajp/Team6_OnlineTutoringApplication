@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
 import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
@@ -7,6 +7,7 @@ import { TutorTileCard } from "./TutorTile";
 import TutorModal from "./TutorModal";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { fetchFromAPI } from "../services/api";
 
 // source used for like button
 // https://chayanit-chaisri.medium.com/how-to-add-a-like-button-react-usestate-3f79aac27d90
@@ -16,6 +17,9 @@ function SearchTutor(props) {
   const [subject, setSubject] = useState("Select Subject");
   const [tutor, setTutor] = useState("Select Tutor");
   const [modal, setModal] = useState(false);
+  const [tutorList, setTutorList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   function open() {
     setModal(!modal);
@@ -32,7 +36,50 @@ function SearchTutor(props) {
 
   const handleTutorChange = (event) => {
     setTutor(event.target.value);
+    console.log('Tutor List:', tutorList);
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+    setError(null); 
+
+    fetchFromAPI('tutor/')
+      .then((data) => {
+        const tutorList = Object.entries(data).map(([key, value]) => ({
+          key,
+          firstName: value.firstName,
+          lastName: value.lastName,
+          password: value.password,
+          username: value.username,
+          major: value.major,
+          courses: value.courses,
+          phone: value.phone,
+          email: value.email,
+          longBio: value.longBio,
+          shortBio: value.shortBio,
+          monday: value.monday,
+          tuesday: value.tuesday,
+          wednesday: value.wednesday,
+          thursday: value.thursday,
+          friday: value.friday,
+          saturday: value.saturday,
+          sunday: value.sunday,
+          exceptionsAvailability: value.exceptionsAvailability,
+          profilePic: value.profilePic,
+          hours: value.hours,
+          rating: value.rating,
+          bgCheck: value.bgCheck,
+          totalHours: value.totalHours,
+        }));
+        setTutorList(tutorList);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setIsLoading(false);
+        console.error("Error fetching tutor data:", error);
+      });
+  }, []);
 
   return (
     <div>
