@@ -35,7 +35,7 @@ class SessionService {
         }
     }
     // CREATE NEW APPOINTMENT
-    static async create(appData){ 
+    /*static async create(appData){ 
         try {
             console.log("\nSessionService.create\n")
             const data = JSON.parse(appData)
@@ -76,25 +76,66 @@ class SessionService {
         }catch (e) {
             throw e
         }
-    }
-    //GET ALL APPOINTMENTS BY USER
-    static async getAllAppointmentsByUser(id, path) {
+    }*/
+    static async create(appData) {
         try {
-            console.log("\n[ SessionService.getAllAppointmentsByUser ]")
-            const user = await searchItem('User', 'username', id)
-            console.log("\nuser: " + JSON.stringify(user))
-            const userid = Object.keys(user)[0]
-            if (Object.keys(user).length === 0) {
-                return false
+            console.log("\nSessionService.create\n");
+            const data = JSON.parse(appData);
+    
+            // Check if an appointment with the same student and datetime already exists
+            const existingAppointments = await getAppointments(); 
+
+            const existingAppointmentsArray = Array.from(existingAppointments);
+    
+            const duplicateAppointment = existingAppointmentsArray.find((appointment) => {
+                return (
+                    appointment.studentId === data.studentId &&
+                    appointment.datetime === data.datetime
+                );
+            });
+    
+            if (duplicateAppointment) {
+                // Appointment with the same student and datetime already exists
+                throw new Error("Appointment with the same student and datetime already exists.");
             }
-            const appointments = await searchItem('Appointment', path, userid)
-            console.log("\nappointments: " + JSON.stringify(appointments))
-            return appointments
-            
-        }catch (e) {
-            throw e
+    
+            let session = new Session();
+    
+            const propertyMap = {
+                tutorId: null,
+                studentId: null,
+                datetime: null, // Set the datetime to null initially
+                length: null,
+                course: null,
+                online: null,
+                location: null,
+                feedback: null,
+                tutorNotes: null,
+                studentNotes: null,
+            };
+    
+            // Loop through the data object and set the corresponding properties
+            for (const key in propertyMap) {
+                if (data.hasOwnProperty(key)) {
+                    session[key] = data[key];
+                }
+            }
+    
+            // If datetime is still null, set it to the current time
+            if (session.datetime === null) {
+                session.datetime = new Date().toTimeString();
+            }
+    
+            // ADD NEW SESSION TO DB
+            console.log(session);
+            const sessionInfo = await addAppointment(session);
+            console.log("SessionInfo " + sessionInfo);
+            return sessionInfo;
+        } catch (e) {
+            throw e;
         }
     }
+    
    //UPDATE SPECIFIC APPOINTMENT
    static async update(id, apptData) {
     try {
