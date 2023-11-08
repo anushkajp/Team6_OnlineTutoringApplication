@@ -8,6 +8,7 @@ const {deleteReview} = require("../db/delete")
 const CustomError = require ('../utils/customError')
 const USER = 'User'
 const USERNAME = 'username'
+const { updateAppReview, updateRating, updateAppUserId} = require ('../db/update')
 
 class ReviewService {
       // GET ALL
@@ -73,7 +74,45 @@ class ReviewService {
     }
     
     static async update(reviewID, newReviewData) {
-        
+        try {
+            console.log("\nReviewService.update\n")
+            const data = JSON.parse(newReviewData)
+            console.log("\nData has been parsed\n")
+    
+            const username = data.studentId
+            const result = await searchItem(USER, USERNAME, username) 
+    
+            // USER IS FOUND, NOT NECESSARILY A STUDENT
+            if (Object.keys(result).length > 0) {
+                // GET STUDENT BASED ON USERID
+                const student = await read.getStudent(Object.keys(result)[0])
+                console.log(student.userId)
+                console.log(typeof student.userId)
+                // USER IS A TUTOR
+                if (student.userId === undefined) {
+                    throw new CustomError("User is not a student", 400)
+                }
+            }
+            else{
+                throw new CustomError("User not found", 400)
+            }
+
+
+            const patchStudentId = Object.keys(result)[0]
+            console.log("Updated Student id: " + patchStudentId + "\n")
+
+            if (data.rating != null)
+                await updateRating(reviewID, data.rating);
+            if (data.description != null)
+                await updateAppReview(reviewID, data.description);      
+            if (data.studentId != null)
+            await updateAppUserId(reviewID, patchStudentId)        
+            
+            return await getReview(reviewID);
+    
+        }catch{
+            throw new CustomError("Error updating review", 400)
+        }
 
     }
     //DELETE A REVIEW
