@@ -31,9 +31,44 @@ class ReviewService {
         }    
     }
 
-    static create() {
+    static async create(reviewData) {
+        try {
+            console.log("\nReviewService.create\n")
+            const data = JSON.parse(reviewData)
+           
+            let review = new Review()
+                        
+            const propertyMap = {
+                tutorId :  null, 
+                studentId: null,
+                rating: null,
+                description: null
+            };
+    
+            // Loop through the data object and set the corresponding properties
+            for (const key in propertyMap) {
+                if (data.hasOwnProperty(key)) {
+                    review[key] = data[key];
+                }
+            }
+            // LOOP THROUGH OBJ, ANY UNDEFINED REPLACCE WITH NULL
+            for (const key in review) {
+                if (review[key] === undefined)
+                review[key] = null
+            }              
+                
+            // ADD NEW REVIEW TO DB
+            console.log(review)
+            const reviewInfo = await addAppointment(review)
+            console.log("ReviewInfo " + reviewInfo)
+            return reviewInfo
+        }catch (e) {
+            throw new CustomError("Error creating review", 400)
+        }
+        
     }
-    static update() {
+    
+    static async update(reviewID, newReviewData) {
 
     }
     //DELETE A REVIEW
