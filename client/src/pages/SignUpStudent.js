@@ -2,14 +2,39 @@ import React, { useState, useEffect } from "react";
 import { fetchFromAPI,uploadToAPI } from '../services/api'
 import Student from '../models/student'
 import CreateFields from '../components/CreateFields'
-
+import bcrypt from "bcryptjs-react"
 
 const SignUpStudent = () => {
+  const [password, setPassword] = useState("");
+  const [hash, setHash] = useState("");
+
+  const hashPassword = async() =>{
+    const hash = await new Promise((resolve, reject)=> {
+      bcrypt.hash(password,10,function(error, hash){
+        if(error){
+          reject(error)
+        }else{
+          resolve(hash)
+        }
+
+        
+      })
+    })
+    // console.log("Hash generated: "+hash)
+    
+    setHash(await hash)
+    return await hash
+    // return hash
+  }
  
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", student);
+    
+    
     (async ()=>{
+      await hashPassword(student.password)
+      student.password=  hash
+      console.log("Form data submitted:", student);
       const data = await uploadToAPI("student/",student)
       console.log(data)
     })()
@@ -32,16 +57,6 @@ const SignUpStudent = () => {
   }
   const initialStudent = new Student();
   const [student, setStudent] = useState(initialStudent);
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setStudent({
-      ...student,
-      [name]: value
-    })
-    console.log(student)
-  }
 
 
   return (

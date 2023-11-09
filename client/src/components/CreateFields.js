@@ -2,7 +2,7 @@ import React, { useState, useEffect} from "react";
 import { fetchFromAPI } from '../services/api'
 import Major from '../models/major'
 import Course from '../models/course'
-import bcrypt from "bcryptjs-react"
+
 // NOTE: Change student to general object
 // NOTE: there are new changes here to be applied to sign up student
 
@@ -30,46 +30,15 @@ import bcrypt from "bcryptjs-react"
   
     const [selectedCourses, setSelectedCourses] = useState([])
 
-    const [password, setPassword] = useState("");
-    const [hash, setHash] = useState("");
 
-    const hashPassword = async() =>{
-      const hash = await new Promise((resolve, reject)=> {
-        bcrypt.hash(password,10,function(error, hash){
-          if(error){
-            reject(error)
-          }else{
-            resolve(hash)
-          }
-  
-          
-        })
-      })
-      // console.log("Hash generated: "+hash)
-      setHash(hash)
-  
-      // return hash
-    }
     const handleChange = (e) => {
       const { name, value } = e.target;
-      if (name === "password"){
-        (async ()=>{
-          await hashPassword(value)
-          console.log(hash)
-          setObject({
-            ...object,
-            [name]: hash
-          })
-        
-        })()
-
-      }else{
         setObject({
           ...object,
           [name]: value
         })
         
-      }
+      // alert(object)
       console.log(object)
     }
   
