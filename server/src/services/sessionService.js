@@ -52,18 +52,13 @@ class SessionService {
             throw e
         }
     }   
-    // CREATE NEW APPOINTMENT
-    static async create(appData){ 
+     // CREATE NEW APPOINTMENT
+     static async create(appData){ 
         try {
             console.log("\nSessionService.create\n")
             const data = JSON.parse(appData)
            
             let session = new Session()
-
-            const appointments = await searchItem('Appointment', path, userid)
-
-            //const userResult = await searchItem(USER, USERNAME, data.username)     
-            //const emailResult = await searchItem(USER, EMAIL, data.email)
                         
             const propertyMap = {
                 
