@@ -8,181 +8,11 @@ import TutorModal from "./TutorModal";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { fetchFromAPI } from "../services/api";
-<<<<<<< HEAD
-
-=======
->>>>>>> 980fb35e51b7db8ecc5062c9d1dfd4d5f7956483
 
 // source used for like button
 // https://chayanit-chaisri.medium.com/how-to-add-a-like-button-react-usestate-3f79aac27d90
 
-
 function SearchTutor(props) {
-<<<<<<< HEAD
- const [date, setDate] = useState(new Date());
- const [subject, setSubject] = useState("Select Subject");
- const [tutor, setTutor] = useState("Select Tutor");
- const [modal, setModal] = useState(false);
- const [tutorList, setTutorList] = useState([]);
- const [isLoading, setIsLoading] = useState(true);
- const [error, setError] = useState(null);
-
-
- function open() {
-   setModal(!modal);
- }
-
-
- const handleDateChange = (date) => {
-   setDate(date);
-   console.log(date);
- };
-
-
- const handleSubjectChange = (event) => {
-   setSubject(event.target.value);
- };
-
-
- const handleTutorChange = (event) => {
-   setTutor(event.target.value);
-   console.log('Tutor List:', tutorList);
- };
-
-
- useEffect(() => {
-   setIsLoading(true);
-   setError(null);
-
-
-   fetchFromAPI('tutor/')
-     .then((data) => {
-       const tutorList = Object.entries(data).map(([key, value]) => ({
-         key,
-         firstName: value.firstName,
-         lastName: value.lastName,
-         password: value.password,
-         username: value.username,
-         major: value.major,
-         courses: value.courses,
-         phone: value.phone,
-         email: value.email,
-         longBio: value.longBio,
-         shortBio: value.shortBio,
-         monday: value.monday,
-         tuesday: value.tuesday,
-         wednesday: value.wednesday,
-         thursday: value.thursday,
-         friday: value.friday,
-         saturday: value.saturday,
-         sunday: value.sunday,
-         exceptionsAvailability: value.exceptionsAvailability,
-         profilePic: value.profilePic,
-         hours: value.hours,
-         rating: value.rating,
-         bgCheck: value.bgCheck,
-         totalHours: value.totalHours,
-       }));
-       setTutorList(tutorList);
-       setIsLoading(false);
-     })
-     .catch((error) => {
-       setError(error);
-       setIsLoading(false);
-       console.error("Error fetching tutor data:", error);
-     });
- }, []);
-
-
- return (
-   <div>
-     <div className="main-container">
-       <Sidebar className="dbPageSidebar" renderType="student"></Sidebar>
-
-
-       <div className="main-columns">
-         {/* <h2> Second column </h2>
-         <p> This is Second column of our grid system</p>
-*/}
-         <p className="find-text">Find your tutor</p>
-         <div className="container-filters">
-           <div className="box-filters">
-             <div className="text-under-find">Date</div>
-             <DatePicker
-               className="base-input-style datepicker-input"
-               selected={date}
-               onChange={handleDateChange}
-             />
-           </div>
-           <div className="box-filters">
-             <div className="text-under-find">Subject</div>
-             <select
-               id="filterSelect"
-               onChange={handleSubjectChange}
-               value={subject}
-             >
-               <option value="Select Subject">Select Subject</option>
-               <option value="CS 1336">CS 1336</option>
-               <option value="CS 2336">CS 2336</option>
-               <option value="CS 3345">CS 3345</option>
-               <option value="CS 3345">CS 4348</option>
-             </select>
-           </div>
-           <div className="box-filters">
-             <div className="text-under-find">Tutor</div>
-             <select
-               id="filterSelect"
-               onChange={handleTutorChange}
-               value={tutor}
-             >
-               <option value="Select Tutor">Select Tutor</option>
-               <option value="Tasnim Mahi">Tasnim Mahi</option>
-               <option value="Diana Le">Diana Le</option>
-             </select>
-           </div>
-         </div>
-
-
-         <div className="tutor-container">
-           {(tutor === "Tasnim Mahi" ||
-             subject === "CS 1336" ||
-             subject === "CS 2336") && (
-             <TutorTileCard
-               pfp={pfp1}
-               stars={"⭐ ⭐ ⭐ ⭐ ⭐ (489)"}
-               name={"Tasnim Mahi"}
-               subjects={"📚 CS 1336, CS 2336"}
-               bio={
-                 "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
-               }
-               cost={50}
-             ></TutorTileCard>
-           )}
-           {(tutor === "Diana Le" ||
-             subject === "CS 3345" ||
-             subject === "CS 4348") && (
-             <TutorTileCard
-               pfp={pfp2}
-               stars={"⭐ ⭐ ⭐ ⭐ ⭐ (20)"}
-               name={"Diana Le"}
-               subjects={"📚 CS 3345, CS 4348"}
-               bio={
-                 "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
-               }
-               cost={30}
-             ></TutorTileCard>
-           )}
-         </div>
-       </div>
-       <div className="main-columns">
-         {/* <h2> Third column </h2>
-         <p> This is Third column of our grid system</p> */}
-         <TutorModal toggle={modal} action={open} selectedTutor={tutor} />
-       </div>
-     </div>
-   </div>
- );
-=======
   const [date, setDate] = useState(new Date());
   const [subject, setSubject] = useState("Select Subject");
   const [tutor, setTutor] = useState("Select Tutor");
@@ -190,6 +20,8 @@ function SearchTutor(props) {
   const [tutorList, setTutorList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [allSubjects, setAllSubjects] = useState([]);
+  const [selectedTutor, setSelectedTutor] = useState("Select Tutor");
 
   function open() {
     setModal(!modal);
@@ -205,15 +37,15 @@ function SearchTutor(props) {
   };
 
   const handleTutorChange = (event) => {
-    setTutor(event.target.value);
-    console.log('Tutor List:', tutorList);
+    setSelectedTutor(event.target.value);
+    console.log("Selected Tutor:", event.target.value);
   };
 
   useEffect(() => {
     setIsLoading(true);
-    setError(null); 
+    setError(null);
 
-    fetchFromAPI('tutor/')
+    fetchFromAPI("tutor/")
       .then((data) => {
         const tutorList = Object.entries(data).map(([key, value]) => ({
           key,
@@ -222,7 +54,7 @@ function SearchTutor(props) {
           password: value.password,
           username: value.username,
           major: value.major,
-          courses: value.courses,
+          courses: value.courses || [],
           phone: value.phone,
           email: value.email,
           longBio: value.longBio,
@@ -243,6 +75,22 @@ function SearchTutor(props) {
         }));
         setTutorList(tutorList);
         setIsLoading(false);
+
+        const subjects = new Set();
+        tutorList.forEach((tutor) => {
+          if (tutor.courses) {
+            tutor.courses
+              .filter((course) => course)
+              .forEach((course) => subjects.add(course));
+          }
+        });
+
+        setAllSubjects(Array.from(subjects));
+        console.log(subjects);
+
+        const uniqueSubjects = Array.from(subjects);
+        setAllSubjects(uniqueSubjects);
+        console.log("Unique subjects:", uniqueSubjects);
       })
       .catch((error) => {
         setError(error);
@@ -250,6 +98,18 @@ function SearchTutor(props) {
         console.error("Error fetching tutor data:", error);
       });
   }, []);
+
+  const getFilteredTutors = () => {
+    return tutorList.filter((tutorItem) => {
+      const matchesSubject =
+        subject === "Select Subject" ||
+        (tutorItem.courses && tutorItem.courses.includes(subject));
+      const matchesTutor =
+        selectedTutor === "Select Tutor" ||
+        `${tutorItem.firstName} ${tutorItem.lastName}` === selectedTutor;
+      return matchesSubject && matchesTutor;
+    });
+  };
 
   return (
     <div>
@@ -278,10 +138,11 @@ function SearchTutor(props) {
                 value={subject}
               >
                 <option value="Select Subject">Select Subject</option>
-                <option value="CS 1336">CS 1336</option>
-                <option value="CS 2336">CS 2336</option>
-                <option value="CS 3345">CS 3345</option>
-                <option value="CS 3345">CS 4348</option>
+                {allSubjects.map((subject) => (
+                  <option key={subject} value={subject}>
+                    {subject}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="box-filters">
@@ -292,41 +153,30 @@ function SearchTutor(props) {
                 value={tutor}
               >
                 <option value="Select Tutor">Select Tutor</option>
-                <option value="Tasnim Mahi">Tasnim Mahi</option>
-                <option value="Diana Le">Diana Le</option>
+                {tutorList.map((tutor) => (
+                  <option
+                    key={tutor.key}
+                    value={`${tutor.firstName} ${tutor.lastName}`}
+                  >
+                    {tutor.firstName} {tutor.lastName}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
 
           <div className="tutor-container">
-            {(tutor === "Tasnim Mahi" ||
-              subject === "CS 1336" ||
-              subject === "CS 2336") && (
+            {getFilteredTutors().map((filteredTutor) => (
               <TutorTileCard
-                pfp={pfp1}
-                stars={"⭐ ⭐ ⭐ ⭐ ⭐ (489)"}
-                name={"Tasnim Mahi"}
-                subjects={"📚 CS 1336, CS 2336"}
-                bio={
-                  "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
-                }
+                key={filteredTutor.key}
+                pfp={filteredTutor.profilePic}
+                stars={`⭐ ${filteredTutor.rating}`}
+                name={`${filteredTutor.firstName} ${filteredTutor.lastName}`}
+                subjects={filteredTutor.courses.join(", ")}
+                bio={filteredTutor.shortBio}
                 cost={50}
-              ></TutorTileCard>
-            )}
-            {(tutor === "Diana Le" ||
-              subject === "CS 3345" ||
-              subject === "CS 4348") && (
-              <TutorTileCard
-                pfp={pfp2}
-                stars={"⭐ ⭐ ⭐ ⭐ ⭐ (20)"}
-                name={"Diana Le"}
-                subjects={"📚 CS 3345, CS 4348"}
-                bio={
-                  "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching."
-                }
-                cost={30}
-              ></TutorTileCard>
-            )}
+              />
+            ))}
           </div>
         </div>
         <div className="main-columns">
@@ -337,8 +187,6 @@ function SearchTutor(props) {
       </div>
     </div>
   );
->>>>>>> 980fb35e51b7db8ecc5062c9d1dfd4d5f7956483
 }
-
 
 export default SearchTutor;
