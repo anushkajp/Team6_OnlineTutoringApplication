@@ -59,6 +59,11 @@ class SessionService {
             const data = JSON.parse(appData)
            
             let session = new Session()
+
+            const appointments = await searchItem('Appointment', path, userid)
+
+            //const userResult = await searchItem(USER, USERNAME, data.username)     
+            //const emailResult = await searchItem(USER, EMAIL, data.email)
                         
             const propertyMap = {
                 
@@ -95,6 +100,65 @@ class SessionService {
             throw e
         }
     }
+    /*
+static async create(appData) {
+    try {
+        console.log("\nSessionService.create\n");
+        const data = JSON.parse(appData);
+
+        // Check if an appointment with the same student and datetime already exists
+        const existingAppointments = await getAppointments(); // Replace with the actual method to retrieve appointments
+
+        const duplicateAppointment = existingAppointments.find((appointment) => {
+            return (
+                appointment.studentId === data.studentId &&
+                appointment.datetime === data.datetime
+            );
+        });
+
+        if (duplicateAppointment) {
+            // Appointment with the same student and datetime already exists
+            throw new Error("Appointment with the same student and datetime already exists.");
+        }
+
+        let session = new Session();
+
+        const propertyMap = {
+            tutorId: null,
+            studentId: null,
+            datetime: null, // Set the datetime to null initially
+            length: null,
+            course: null,
+            online: null,
+            location: null,
+            feedback: null,
+            tutorNotes: null,
+            studentNotes: null,
+        };
+
+        // Loop through the data object and set the corresponding properties
+        for (const key in propertyMap) {
+            if (data.hasOwnProperty(key)) {
+                session[key] = data[key];
+            }
+        }
+
+        // If datetime is still null, set it to the current time
+        if (session.datetime === null) {
+            session.datetime = new Date().toTimeString();
+        }
+
+        // ADD NEW SESSION TO DB
+        console.log(session);
+        const sessionInfo = await addAppointment(session);
+        console.log("SessionInfo " + sessionInfo);
+        return sessionInfo;
+    } catch (e) {
+        throw e;
+    }
+}
+
+    */
    //UPDATE SPECIFIC APPOINTMENT
    static async update(id, apptData) {
     try {
