@@ -3,6 +3,8 @@ const router = express.Router();
 const Review = require('../models/review')
 const ReviewService = require('../services/reviewService')
 const bodyParser = require('body-parser').json();
+const CustomError = require ('../utils/customError')
+
 // GET ALL REVIEWS FOR TUTOR
 router.get('/', async (req,res) => {
     try {
@@ -22,11 +24,12 @@ router.get('/:reviewId', (req, res) => {
     }
 });
 // CREATE ONE
-router.post('/', bodyParser, async (req, res) => {
-    //const review = new ReviewService(req.body.rating,req.body.review);
+router.post('/', bodyParser, async(req, res) => {
     try {
-        const newReview = await ReviewService.create(JSON.stringify(req.body));
-        res.status(201).json(newReview)
+        console.log("test1")
+        const review = await ReviewService.create(JSON.stringify(req.body));
+        console.log("test2")
+        res.status(201).json(review)
     }catch (err) {
         if (err instanceof CustomError)
             res.status(err.code).json({message: err.message})
@@ -34,6 +37,8 @@ router.post('/', bodyParser, async (req, res) => {
             res.status(500).json({ message: err.message});
     }
 });
+
+
 // UPDATE ONE
 router.patch('/:reviewId', async(req, res) => {
     const review = new Review();

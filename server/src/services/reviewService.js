@@ -8,8 +8,10 @@ const {deleteReview} = require("../db/delete")
 const CustomError = require ('../utils/customError')
 const USER = 'User'
 const USERNAME = 'username'
-const { updateAppReview, updateRating, updateAppUserId} = require ('../db/update');
-const { addReview } = require("../db/add");
+const {addReview} = require('../db/obAdd')
+const adds = require ('../db/obAdd')
+
+const { updateAppReview, updateRating, updateAppUserId} = require ('../db/update')
 
 class ReviewService {
       // GET ALL
@@ -38,36 +40,44 @@ class ReviewService {
     }
 
     static async create(reviewData) {
-        try {
-            console.log("\nReviewService.create\n")
-            const data = JSON.parse(reviewData)
-           
-            const studentIdResult = await searchItem(USER, USERNAME, data.studentId)
-            const tutorIdResult = await searchItem(USER, USERNAME, data.tutorId)
-            let newReview = new Review()
-            const propertyMap = Review.toObj();
-            // Loop through the data object and set the corresponding properties
-            for (const key in propertyMap) {
-                if (data.hasOwnProperty(key)) {
-                    newReview[key] = data[key];
-                }
-            }
-            newReview.studentId = studentIdResult
-            newReview.tutorId = tutorIdResult
-            // LOOP THROUGH OBJ, ANY UNDEFINED REPLACCE WITH NULL
-            for (const key in newReview) {
-                if (newReview[key] === undefined)
-                newReview[key] = null
-            }              
 
-            // ADD NEW REVIEW TO DB
-            console.log(newReview)
-            const reviewInfo = await addReview(newReview)
-            console.log("ReviewInfo " + reviewInfo)
-            return reviewInfo
-        }catch (e) {
-            throw new CustomError("Error creating review", 400)
+        console.log("\n[ ReviewService.create ]\n")
+        const data = JSON.parse(reviewData)
+
+        const tutorUsername = data.tutorId
+        const studentUsername = data.studentId
+
+        const userTutor = await searchItem('User', 'username', tutorUsername)
+        const userStudent = await searchItem('User', 'username', studentUsername)
+
+        const tutoruserid = Object.keys(userTutor)[0]
+        const studentuserid = Object.keys(userStudent)[0]
+        
+        
+        let review = new Review()
+        review.tutorId = tutoruserid;
+        review.studentId = studentuserid;
+
+        const propertyMap = Review.toObj();
+
+        // Loop through the data object and set the corresponding properties
+        for (const key in propertyMap) {
+            console.log(key)
+            if (data.hasOwnProperty(key)) {
+               review[key] = data[key];
+            }
         }
+        // // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
+        for (const key in review) {
+            if (review[key] === undefined)
+                review[key] = null
+        }
+            
+        // ADD NEW STUDENT TO DB
+        console.log(review)
+        const reviewInfo = await adds.addReview(review)
+        console.log("ReviewInfo " + reviewInfo)
+        return reviewInfo
     }
     
     static async update(reviewID, newReviewData) {
