@@ -5,13 +5,8 @@ import pfp2 from "../assets/Profile_Pic_2.png";
 export default function TutorModal(props) {
   const { toggle, action, tutorData } = props;
 
-  if (!tutorData) {
-    // render null or a loading spinner
+  if (!tutorData || !toggle) {
     return null;
-  }
-
-  if (!toggle) {
-    return null; // don't render the modal if toggle is false
   }
 
   return (

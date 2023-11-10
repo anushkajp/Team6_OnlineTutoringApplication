@@ -20,6 +20,11 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
     setModal(false); // Close the modal
   };
 
+  const handleOpenModal = () => {
+    setSelectedTutorData({ pfp, stars, name, subjects, bio, cost });
+    setModal(true);
+  };
+
   const handleLike = (e) => {
     e.stopPropagation();
     // Toggle the like state
@@ -67,7 +72,7 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
         <div class="vertical-component">
           <p className="per-hour">per hour</p>
         </div>
-        <div class="book-button" onClick={open} action={handleBook} >
+        <div class="book-button" onClick={handleOpenModal} action={handleBook}>
           Book
         </div>
         <TutorModal
