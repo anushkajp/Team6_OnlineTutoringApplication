@@ -58,14 +58,27 @@ class SessionService {
             console.log("\nSessionService.create\n")
             const data = JSON.parse(appData)
            
+            //retirieving student and tutor usernames
             const tutorUsername = data.tutorId
             const studentUsername = data.studentId
-
+            
+            //searching for the student and tutor via their username on the database
             const userTutor = await searchItem('User', 'username', tutorUsername)
             const userStudent = await searchItem('User', 'username', studentUsername)
-
+            
+            //getting student and tutor userIds
             const tutoruserid = Object.keys(userTutor)[0]
             const studentuserid = Object.keys(userStudent)[0]
+
+            //need to convert appointment length from minutes to hours
+            const minutes = data.length
+            const hours = minutes/ 60
+
+            console.log(`Equivalent time in hours: ${hours}`)
+            
+            //variable to update
+            const tutorHours = userTutor.hours + hours
+            const studentHours = userStudent.hours + hours
 
             let session = new Session()
 
