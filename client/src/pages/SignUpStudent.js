@@ -5,10 +5,10 @@ import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
 
 const SignUpStudent = () => {
-  const [password, setPassword] = useState("");
-  const [hash, setHash] = useState("");
+  const initialStudent = new Student();
+  const [student, setStudent] = useState(initialStudent);
 
-  const hashPassword = async() =>{
+  const hashPassword = async(password) =>{
     const gennedHash = await new Promise((resolve, reject)=> {
       bcrypt.hash(password,10,function(error, hash){
         if(error){
@@ -20,7 +20,7 @@ const SignUpStudent = () => {
         
       })
     })
-    console.log("Hash generated: "+gennedHash)
+    // console.log("Hash generated: "+gennedHash)
     
     return gennedHash
     // return hash
@@ -54,8 +54,7 @@ const SignUpStudent = () => {
 
 
   }
-  const initialStudent = new Student();
-  const [student, setStudent] = useState(initialStudent);
+
 
 
   return (

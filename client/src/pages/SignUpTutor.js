@@ -4,21 +4,41 @@ import Tutor from '../models/tutor'
 import Major from '../models/major'
 import Course from '../models/course'
 import CreateFields from '../components/CreateFields'
-
+import bcrypt from "bcryptjs-react"
 
 
 
 
 const SignUpTutor = () => {
+  
+  const initialTutor = new Tutor();
+  const [tutor, setTutor] = useState(initialTutor);
+  
+  const hashPassword = async(password) =>{
+    const gennedHash = await new Promise((resolve, reject)=> {
+      bcrypt.hash(password,10,function(error, hash){
+        if(error){
+          reject(error)
+        }else{
+          resolve(hash)
+        }
 
-
-
+        
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
+    
+    return gennedHash
+    // return hash
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form data submitted:", tutor);
     (async ()=>{
       try{
+      const pwdHash = await hashPassword(tutor.password)
+      tutor.password=  pwdHash
       const data = await uploadToAPI("tutor/",tutor)
       console.log(data)
       }catch(e){
@@ -45,8 +65,7 @@ const SignUpTutor = () => {
 
 
   }
-  const initialTutor = new Tutor();
-  const [tutor, setTutor] = useState(initialTutor);
+
 
 
  
