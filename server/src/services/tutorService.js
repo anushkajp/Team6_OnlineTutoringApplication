@@ -9,6 +9,7 @@ const EMAIL = 'email'
 const CustomError = require ('../utils/customError')
 const Tutor = require ('../models/tutor')
 const Availability = require ('../models/availability')
+
 class TutorService {
     // GET ALL
     static async getAll() {
