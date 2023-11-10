@@ -69,8 +69,8 @@ class SessionService {
 
             let session = new Session()
 
-            session.tutorId = tutorId;
-            session.studentId = studentId;
+            session.tutorId = tutoruserid;
+            session.studentId = studentuserid;
                         
             const propertyMap = {
                 
