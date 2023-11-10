@@ -7,18 +7,262 @@ info:
 servers:
 - url: https://randomurl.com
   description: Stand in URL until host is created
+- url: https://tutortopia.duckdns.org
+  description: Server website
 tags:
-- name: Appointments
-  description: Modify appointment between tutor and student
 - name: Tutor
   description: Modify tutor profiles
 - name: Student
   description: Modify student profiles
-- name: Courses
-  description: Get current semester courses
+- name: Appointments
+  description: Modify appointment between tutor and student
+- name: Availability
+  description: Modify a tutor's availability
 - name: Review
   description: Modify student's reviews of tutors
+- name: Courses
+  description: Get current semester courses
+
 paths:
+  /availability/{username}:
+    get:
+      tags:
+      - Availability
+      summary: Get all availability for a tutor by username
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Tutor username
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: "#/components/schemas/Availability"
+        "400":
+          description: Bad Request
+        "500":
+          description: Server error 
+  /availability/{username}/{dayOfTheWeek}:
+    get:
+      tags:
+      - Availability
+      summary: Get the availability for a specific day of the week
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Tutor username
+          schema:
+            type: string
+        - name: dayOfTheWeek
+          in: path
+          required: true
+          description: Day of the week (Monday, Tuesday, etc.)
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimeBlock"
+        "400":
+          description: Bad Request
+        "500":
+          description: Server error 
+    post:
+      tags:
+      - Availability
+      summary: Create new availability for a specific day of the week
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Tutor username
+          schema:
+            type: string
+        - name: dayOfTheWeek
+          in: path
+          required: true
+          description: Day of the week (Monday, Tuesday, etc.)
+          schema:
+            type: string
+      requestBody:
+        description: Create availability for specific day of the week
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/TimeBlock"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimeBlock"
+        "400":
+          description: Bad Request
+        "500":
+          description: Server error 
+    patch:
+      tags:
+      - Availability
+      summary: Update the availability for a specific day of the week
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Tutor username
+          schema:
+            type: string
+        - name: dayOfTheWeek
+          in: path
+          required: true
+          description: Day of the week (Monday, Tuesday, etc.)
+          schema:
+            type: string
+      requestBody:
+        description: Create availability for specific day of the week
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/TimeBlock"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimeBlock"
+        "400":
+          description: Bad Request
+        "500":
+          description: Server error 
+    delete:
+      tags:
+      - Availability
+      summary: Delete all availability for a specific day of the week
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Tutor username
+          schema:
+            type: string
+        - name: dayOfTheWeek
+          in: path
+          required: true
+          description: Day of the week (Monday, Tuesday, etc.)
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimeBlock"
+        "400":
+          description: Bad Request
+        "500":
+          description: Server error 
+  /availability/{username}/exceptions:
+    get:
+      tags:
+      - Availability
+      summary: Get all days off for a tutor by username
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Tutor username
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: string
+                  format: date
+        "400":
+          description: Bad Request
+        "500":
+          description: Server error 
+  /availability/{username}/exceptions/{date}:
+    post:
+      tags:
+      - Availability
+      summary: Add day off for a tutor by username
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Tutor username
+          schema:
+            type: string
+        - name: date
+          in: path
+          required: true
+          description: Tutor username
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+        "500":
+          description: Server error 
+    delete:
+      tags:
+      - Availability
+      summary: Delete day off for a tutor by username
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Tutor username
+          schema:
+            type: string
+        - name: date
+          in: path
+          required: true
+          description: Tutor username
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+        "500":
+          description: Server error 
   /appointments:
     get:
       tags:
@@ -33,6 +277,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Appointment"
+        "400":
+          description: Bad Request
         "500":
           description: Server error
     post:
@@ -44,7 +290,7 @@ paths:
         content:
           application/json:
             schema:
-                $ref: "#/components/schemas/Appointment"
+              $ref: "#/components/schemas/Appointment"
       responses:
         "201":
           description: Appointment created successfully
@@ -271,7 +517,7 @@ paths:
       - Review
       summary: Create new review for tutor
       parameters:
-      - name: appointmentId
+      - name: username
         in: path
         required: true
         schema:
