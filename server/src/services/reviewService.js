@@ -8,7 +8,8 @@ const {deleteReview} = require("../db/delete")
 const CustomError = require ('../utils/customError')
 const USER = 'User'
 const USERNAME = 'username'
-const { updateAppReview, updateRating, updateAppUserId} = require ('../db/update')
+const { updateAppReview, updateRating, updateAppUserId} = require ('../db/update');
+const { addReview } = require("../db/add");
 
 class ReviewService {
       // GET ALL
@@ -41,36 +42,32 @@ class ReviewService {
             console.log("\nReviewService.create\n")
             const data = JSON.parse(reviewData)
            
-            let review = new Review()
-                        
-            const propertyMap = {
-                tutorId :  null, 
-                studentId: null,
-                rating: null,
-                description: null
-            };
-    
+            const studentIdResult = await searchItem(USER, USERNAME, data.studentId)
+            const tutorIdResult = await searchItem(USER, USERNAME, data.tutorId)
+            let newReview = new Review()
+            const propertyMap = Review.toObj();
             // Loop through the data object and set the corresponding properties
             for (const key in propertyMap) {
                 if (data.hasOwnProperty(key)) {
-                    review[key] = data[key];
+                    newReview[key] = data[key];
                 }
             }
+            newReview.studentId = studentIdResult
+            newReview.tutorId = tutorIdResult
             // LOOP THROUGH OBJ, ANY UNDEFINED REPLACCE WITH NULL
-            for (const key in review) {
-                if (review[key] === undefined)
-                review[key] = null
+            for (const key in newReview) {
+                if (newReview[key] === undefined)
+                newReview[key] = null
             }              
-                
+
             // ADD NEW REVIEW TO DB
-            console.log(review)
-            const reviewInfo = await addAppointment(review)
+            console.log(newReview)
+            const reviewInfo = await addReview(newReview)
             console.log("ReviewInfo " + reviewInfo)
             return reviewInfo
         }catch (e) {
             throw new CustomError("Error creating review", 400)
         }
-        
     }
     
     static async update(reviewID, newReviewData) {

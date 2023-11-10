@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Review = require('../models/review')
 const ReviewService = require('../services/reviewService')
+const bodyParser = require('body-parser').json();
 // GET ALL REVIEWS FOR TUTOR
 router.get('/', async (req,res) => {
     try {
@@ -21,13 +22,16 @@ router.get('/:reviewId', (req, res) => {
     }
 });
 // CREATE ONE
-router.post('/', async (req, res) => {
-    const review = new Review(req.body.rating,req.body.review);
+router.post('/', bodyParser, async (req, res) => {
+    //const review = new ReviewService(req.body.rating,req.body.review);
     try {
-        const newReview = await ReviewService.create(req.params.appointmentId);
+        const newReview = await ReviewService.create(JSON.stringify(req.body));
         res.status(201).json(newReview)
     }catch (err) {
-        res.status(400).json({ message: err.message});
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
     }
 });
 // UPDATE ONE
