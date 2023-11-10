@@ -1,0 +1,666 @@
+---
+openapi: 3.0.0
+info:
+  title: TutorTopia API
+  description: CRUD operations on tutors and students for TutorTopia
+  version: 1.0.0
+servers:
+- url: https://randomurl.com
+  description: Stand in URL until host is created
+tags:
+- name: Appointments
+  description: Modify appointment between tutor and student
+- name: Tutor
+  description: Modify tutor profiles
+- name: Student
+  description: Modify student profiles
+- name: Courses
+  description: Get current semester courses
+- name: Review
+  description: Modify student's reviews of tutors
+paths:
+  /appointments:
+    get:
+      tags:
+      - Appointments
+      summary: Get all appointments from all Users
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Appointment"
+        "500":
+          description: Server error
+    post:
+      tags:
+      - Appointments
+      summary: Student creates a new appointment
+      requestBody:
+        description: Create new appointment
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/Appointment"
+      responses:
+        "201":
+          description: Appointment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment" 
+  /appointments/{appointmentId}:
+    get:
+      tags:
+      - Appointments
+      summary: Gets one appointment by appointmentId
+      parameters:
+      - name: appointmentId
+        in: path
+        description: Appointment ID
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    patch:
+      tags:
+      - Appointments
+      summary: Update an appointments by appointmentId
+      parameters:
+      - name: appointmentId
+        in: path
+        description: Appointment ID
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    delete:
+      tags:
+      - Appointments
+      summary: Delete an appointments by appointmentId
+      parameters:
+      - name: appointmentId
+        in: path
+        description: Appointment ID
+        required: true    
+        style: simple
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+  /appointments/student/{username}:
+    get:
+      tags:
+      - Appointments
+      summary: Gets all student's appointments from username
+      parameters:
+      - name: username
+        in: path
+        description: Student username
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+  /appointments/tutor/{username}:
+    get:
+      tags:
+      - Appointments
+      summary: Gets all tutor's appointments from username
+      parameters:
+      - name: username
+        in: path
+        description: Tutor username
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+  /review/{reviewId}:
+    get:
+      tags:
+      - Review
+      summary: Get one review by unique id
+      parameters:
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    patch:
+      tags:
+      - Review
+      summary: Update review by unique id
+      parameters:
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Review object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    delete:
+      tags:
+      - Review
+      summary: Delete one review by unique id
+      parameters:
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+  /review/student/{username}:
+    get:
+      tags:
+      - Review
+      summary: Get all reviews student wrote
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Review"
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Review
+      summary: Create new review for tutor
+      parameters:
+      - name: appointmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Review'
+      requestBody:
+        description: Review object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        "201":
+          description: appointment review created
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+  /tutor:
+    get:
+      tags:
+      - Tutor
+      summary: Gets all tutors
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tutor'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Tutor
+      summary: Create new tutor
+      requestBody:
+        description: Tutor object to add
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tutor"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tutor'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+  /tutor/{username}:
+    get:
+      tags:
+      - Tutor
+      summary: Gets one tutor by username
+      parameters:
+      - name: username
+        in: path
+        description: Tutor username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tutor'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    patch:
+      tags:
+      - Tutor
+      summary: Update a tutor by username
+      parameters:
+      - name: username
+        in: path
+        description: Tutor username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tutor'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    delete:
+      tags:
+      - Tutor
+      summary: Delete a tutor by username
+      parameters:
+      - name: username
+        in: path
+        description: Tutor username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tutor'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+  /student:
+    get:
+      tags:
+      - Student
+      summary: Gets all students
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Student
+      summary: Create new student
+      requestBody:
+        description: Student object to add
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+  /student/{username}:
+    get:
+      tags:
+      - Student
+      summary: Gets one student by username
+      parameters:
+      - name: username
+        in: path
+        description: Student username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    patch:
+      tags:
+      - Student
+      summary: Update a student by username
+      parameters:
+      - name: username
+        in: path
+        description: Student username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+    delete:
+      tags:
+      - Student
+      summary: Delete a student by username
+      parameters:
+      - name: username
+        in: path
+        description: Student username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        "400":
+          description: Bad Request
+        "500":
+          description: Server Error
+components:
+  schemas:
+    Appointment:
+      type: object
+      properties:
+        tutorId:
+          type: string
+        studentId:
+          type: string
+        date-time:
+          type: string
+          format: date-time
+        length:
+          type: integer
+          minimum: 30
+        online:
+          type: boolean
+        location:
+          type: string
+        feedback:
+          type: string
+        course:
+          type: string
+        tutorNotes:
+          type: string
+          description: Notes from tutor to student
+        studentNotes:
+          type: string
+          description: Notes from student to tutor
+    User:
+      type: object
+      properties:
+        firstnName:
+          type: string
+        lastName:
+          type: string
+        password:
+          type: string
+        username:
+          type: string
+        userId:
+          type: string
+          description: unique ID from Firebase
+        phone:
+          type: string
+        email:
+          type: string
+          format: email
+        hours:
+          type: number
+          description: Total hours user was tutored/got tutored
+        longBio:
+          type: string
+        shortBio:
+          type: string
+        pfp:
+          type: string
+          description: JPEG of user image
+    Tutor:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            rating:
+              type: number
+              description: Average rating of a tutor from reviews
+            availability:
+              type: object
+              $ref: '#/components/schemas/Availability'
+            bgCheck:
+              type: boolean
+              description: background check
+            courses:
+              type: array
+              items:
+                $ref: '#/components/schemas/Course'
+            major:
+              type: string
+    Student:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            favoriteTutors:
+              type: array
+              items:
+                type: string
+              description: list of a student's favorite tutors
+    Availability:
+      type: object
+      properties:
+        monday:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        tuesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        wednesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        thursday:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        friday:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        saturday:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        sunday:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        exceptions:
+          type: array
+          items:
+            type: string
+            format: date
+    Review:
+      type: object
+      properties:
+        tutorId:
+          type: string
+          description: Unique FB created userId
+        studentId:
+          type: string
+          description: Unique FB created userId
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        description:
+          type: string
+          description: Student's comments on Tutor
+    TimeBlock:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        online:
+          type: boolean
+    Course:
+      type: object
+      properties:
+        courseName:
+          type: string
+        courseNumber:
+          type: integer
+        majorId:
+          type: string
+        creditHours:
+          type: integer
+          minimum: 1
