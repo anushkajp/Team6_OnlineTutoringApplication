@@ -58,7 +58,19 @@ class SessionService {
             console.log("\nSessionService.create\n")
             const data = JSON.parse(appData)
            
+            const tutorUsername = data.tutorId
+            const studentUsername = data.studentId
+
+            const userTutor = await searchItem('User', 'username', tutorUsername)
+            const userStudent = await searchItem('User', 'username', studentUsername)
+
+            const tutoruserid = Object.keys(userTutor)[0]
+            const studentuserid = Object.keys(userStudent)[0]
+
             let session = new Session()
+
+            session.tutorId = tutorId;
+            session.studentId = studentId;
                         
             const propertyMap = {
                 
@@ -75,8 +87,17 @@ class SessionService {
             };
     
             // Loop through the data object and set the corresponding properties
+            /*
             for (const key in propertyMap) {
                 if (data.hasOwnProperty(key)) {
+                    session[key] = data[key];
+                }
+            }*/
+
+            // Loop through the data object and set the corresponding properties
+            for (const key in propertyMap) {
+                // Skip tutorId and studentId
+                if (key !== 'tutorId' && key !== 'studentId' && data.hasOwnProperty(key)) {
                     session[key] = data[key];
                 }
             }
@@ -186,8 +207,10 @@ static async create(appData) {
         if (data.studentNotes != null)
             await updateAppStudentNotes(id, data.studentNotes)
         //not sure if this works properly
+        //not required and cannot change anymore
+        /*
         if (data.studentId != null)
-            await updateAppUserId(id, patchStudentId)            
+            await updateAppUserId(id, patchStudentId)*/            
         
         // Fetch the updated appointment and return
         return await getAppointment(id)
