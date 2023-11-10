@@ -1,14 +1,14 @@
 ﻿{
   "openapi": "3.0.0",
   "info": {
-    "title": "StudySync API",
+    "title": "TutorTopia API",
     "description": "This is a simple API",
     "version": "1.0.0"
   },
   "servers": [
     {
       "url": "https://tutortopia-7d536-default-rtdb.firebaseio.com",
-      "description": "StuddySync API Auto Mocking"
+      "description": "TutorTopia API Auto Mocking"
     },
     {
       "url": "https://randomurl.com",
@@ -18,7 +18,7 @@
   "tags": [
     {
       "name": "Appointments",
-      "description": "Modify appointments"
+      "description": "Modify appointment between tutor and student"
     },
     {
       "name": "Tutor Profile",
@@ -29,8 +29,8 @@
       "description": "Modify student profiles"
     },
     {
-      "name": "Availability",
-      "description": "Modify user availability"
+      "name": "Courses",
+      "description": "Get current semester courses"
     }
   ],
   "paths": {
