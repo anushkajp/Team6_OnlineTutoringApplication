@@ -182,7 +182,12 @@ function SearchTutor(props) {
         <div className="main-columns">
           {/* <h2> Third column </h2>
           <p> This is Third column of our grid system</p> */}
-          <TutorModal toggle={modal} action={open} selectedTutor={tutor} />
+          <TutorModal
+            toggle={modal}
+            action={open}
+            selectedTutor={selectedTutor}
+            tutorList={tutorList}
+          />
         </div>
       </div>
     </div>

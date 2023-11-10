@@ -6,6 +6,11 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
   const [modal, setModal] = useState(false);
   const [book, setBook] = useState(false);
   const [likedTutors, setLikedTutors] = useState([]); // store liked tutors in an array
+  const [selectedTutorData, setSelectedTutorData] = useState({});
+
+  const handleBook = () => {
+    setSelectedTutorData({ pfp, stars, name, subjects, bio, cost });
+  };
 
   const open = () => {
     setModal(true); // Open the modal
@@ -35,11 +40,6 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
     console.log("Liked Tutors:", likedTutors);
   };
 
-  const handleBook = () => {
-    open();
-    setBook(!book);
-  };
-
   return (
     <div className="tutor-wrapper">
       <div class="left-column">
@@ -67,14 +67,13 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
         <div class="vertical-component">
           <p className="per-hour">per hour</p>
         </div>
-        <div class="book-button" onClick={open} action={handleBook}>
+        <div class="book-button" onClick={open} action={handleBook} >
           Book
         </div>
         <TutorModal
           toggle={modal}
           action={close}
-          name={name}
-          subjects={subjects}
+          tutorData={selectedTutorData}
         />
       </div>
     </div>
