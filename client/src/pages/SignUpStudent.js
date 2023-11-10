@@ -9,7 +9,7 @@ const SignUpStudent = () => {
   const [hash, setHash] = useState("");
 
   const hashPassword = async() =>{
-    const hash = await new Promise((resolve, reject)=> {
+    const gennedHash = await new Promise((resolve, reject)=> {
       bcrypt.hash(password,10,function(error, hash){
         if(error){
           reject(error)
@@ -20,10 +20,9 @@ const SignUpStudent = () => {
         
       })
     })
-    // console.log("Hash generated: "+hash)
+    console.log("Hash generated: "+gennedHash)
     
-    setHash(await hash)
-    return await hash
+    return gennedHash
     // return hash
   }
  
@@ -32,8 +31,8 @@ const SignUpStudent = () => {
     
     
     (async ()=>{
-      await hashPassword(student.password)
-      student.password=  hash
+      const pwdHash = await hashPassword(student.password)
+      student.password=  pwdHash
       console.log("Form data submitted:", student);
       const data = await uploadToAPI("student/",student)
       console.log(data)

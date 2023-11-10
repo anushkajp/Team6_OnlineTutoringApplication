@@ -42,16 +42,7 @@ import Course from '../models/course'
       console.log(object)
     }
   
-    const handleCourseSelection=(selectedCourseId, isSelected)=>{
-      setSelectedCourses((prevSelectedCourses)=>{
-        if (isSelected){
-          return [...prevSelectedCourses,selectedCourseId]
-        }else{
-          return prevSelectedCourses.filter((id)=> id !== selectedCourseId)
-        }
-      })
-      setObject({...object,["courses"]:selectedCourses})
-    }
+
 
     useEffect(() => {
       if ("major" in labelData){
@@ -81,13 +72,15 @@ import Course from '../models/course'
       const courseKeys=[]
       if (selectedMajor.majorId) {
         fetchFromAPI(`course/${selectedMajor.majorId}`).then(data => {
-          console.log(data)  
-          for (let i in data) { 
-            if(Object.keys(data)[0] in courseKeys){
+          // console.log(data)  
+          for (let i in data) {
+            const dbId = i
+            if(dbId in courseKeys){
               continue;
             }
+
             const thisCourse = new Course(data[i].courseName, data[i].courseNumber, data[i].majorId, data[i].creditHours)
-            thisCourse["courseId"] = Object.keys(data)[0]
+            thisCourse["courseId"] = dbId
             courseArray.push(thisCourse)
           }
           setCourses(courseArray)
@@ -116,9 +109,10 @@ import Course from '../models/course'
                       const selectedMajorName = e.target.value;
                       const selectedMajorObject = majors.find(major => major.majorName === selectedMajorName);
                       setMajor(selectedMajorObject);
+                      // SET MAJOR
                       setObject({
                         ...object,
-                        [fields]: selectedMajorObject.majorId
+                        [fields]: selectedMajorObject.majorName
                       })
                     }}> 
                       {majors.map( (major) => (
@@ -134,21 +128,31 @@ import Course from '../models/course'
                   return (
                     <select defaultValue={selectedCourses} multiple 
                     onChange={(e) => {
+                      // setSelectedCourses([])
                       const selectedOptions = Array.from(e.target.selectedOptions);
-                      const selectedCourseIds = selectedOptions.map((option) => option.value);
+                      console.log(e.target.selectedOptions)
+                      const selectedCourseIds = []
+                      // const selectedCourseIds = selectedOptions.map((option) => {
+                      //   courses.find(course => )
+                      // });
         
                       // Iterate through the selected course IDs and handle selection/deselection
-                      selectedCourseIds.forEach((courseId) => {
-                        const isSelected = selectedCourses.includes(courseId);
-        
-                        // Call the handleCourseSelection function
-                        handleCourseSelection(courseId, isSelected);
+                      selectedOptions.forEach((courseId) => {
+                        const dbId = courseId.value
+                        console.log(dbId)
+                        const course = courses.find(course => course.courseId === dbId)
+                        
+                        selectedCourseIds.push(course.courseName)
+                        
                       });
-                      setObject({...object, [fields]:selectedCourses})
+                      setSelectedCourses(selectedCourseIds)
+                      console.log("selected Courses : "+selectedCourses)
+                      console.log("selected course ids : "+selectedCourseIds)
+                      setObject({...object, [fields]:selectedCourseIds})
                     }}
                   >
                       {courses.map((course) => (
-                        <option key={course.courseId} value={course.courseName}>{course.courseName}</option>
+                        <option key={course.courseId} value={course.courseId}>{course.courseName}</option>
               ))}
                     </select>
   
