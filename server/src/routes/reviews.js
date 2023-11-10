@@ -21,7 +21,7 @@ router.get('/:reviewId', (req, res) => {
     }
 });
 // CREATE ONE
-router.post('/:reviewId', async (req, res) => {
+router.post('/', async (req, res) => {
     const review = new Review(req.body.rating,req.body.review);
     try {
         const newReview = await ReviewService.create(req.params.appointmentId);
