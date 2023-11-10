@@ -2,7 +2,8 @@ const Session = require("../models/session")
 const {getAppointments, getAppointment} = require('../db/read')
 const {addAppointment} = require('../db/obAdd')
 const {searchItem} = require ('../db/db')
-const { updateAppDateTime, updateAppLength, updateAppMedium, updateAppLocation, updateAppFeedback, updateAppUserId, updateAppTutorNotes, updateAppStudentNotes} = require ('../db/update')
+const { updateAppDateTime, updateAppLength, updateAppMedium, updateAppLocation, updateAppFeedback, updateAppTutorNotes, updateAppStudentNotes} = require ('../db/update')
+const {updateStudentHours, updateTutorHours} = require ('../db/update')
 const { deleteAppointment } = require("../db/delete")
 const USER = 'User'
 const USERNAME = 'username'
@@ -80,6 +81,12 @@ class SessionService {
             const tutorHours = userTutor.hours + hours
             const studentHours = userStudent.hours + hours
 
+            //updating student and tutor hours
+            //tutor
+            await updateTutorHours(tutoruserid, tutorHours)
+            //student
+            await updateStudentHours(studentuserid, studentHours)
+
             let session = new Session()
 
             session.tutorId = tutoruserid;
@@ -129,65 +136,6 @@ class SessionService {
             throw e
         }
     }
-    /*
-static async create(appData) {
-    try {
-        console.log("\nSessionService.create\n");
-        const data = JSON.parse(appData);
-
-        // Check if an appointment with the same student and datetime already exists
-        const existingAppointments = await getAppointments(); // Replace with the actual method to retrieve appointments
-
-        const duplicateAppointment = existingAppointments.find((appointment) => {
-            return (
-                appointment.studentId === data.studentId &&
-                appointment.datetime === data.datetime
-            );
-        });
-
-        if (duplicateAppointment) {
-            // Appointment with the same student and datetime already exists
-            throw new Error("Appointment with the same student and datetime already exists.");
-        }
-
-        let session = new Session();
-
-        const propertyMap = {
-            tutorId: null,
-            studentId: null,
-            datetime: null, // Set the datetime to null initially
-            length: null,
-            course: null,
-            online: null,
-            location: null,
-            feedback: null,
-            tutorNotes: null,
-            studentNotes: null,
-        };
-
-        // Loop through the data object and set the corresponding properties
-        for (const key in propertyMap) {
-            if (data.hasOwnProperty(key)) {
-                session[key] = data[key];
-            }
-        }
-
-        // If datetime is still null, set it to the current time
-        if (session.datetime === null) {
-            session.datetime = new Date().toTimeString();
-        }
-
-        // ADD NEW SESSION TO DB
-        console.log(session);
-        const sessionInfo = await addAppointment(session);
-        console.log("SessionInfo " + sessionInfo);
-        return sessionInfo;
-    } catch (e) {
-        throw e;
-    }
-}
-
-    */
    //UPDATE SPECIFIC APPOINTMENT
    static async update(id, apptData) {
     try {
@@ -205,10 +153,15 @@ static async create(appData) {
         console.log("Updated Student id: " + patchStudentId + "\n")
         
         // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM APPOINTMENTID
+        //need to check if this should be done
         if (data.datetime != null)
             await updateAppDateTime(id, data.datetime)
+        /*
         if (data.length != null)
             await updateAppLength(id, data.length)
+        */
+        // for the below 4 need to check if null should even be used, since 
+        //when the appt is created these can be null
         if (data.online != null)
             await updateAppMedium(id, data.online)
         if (data.location != null)
