@@ -66,6 +66,9 @@ class SessionService {
             //searching for the student and tutor via their username on the database
             const userTutor = await searchItem('User', 'username', tutorUsername)
             const userStudent = await searchItem('User', 'username', studentUsername)
+
+            console.log(userTutor)
+            console.log(userStudent)
             
             //getting student and tutor userIds
             const tutoruserid = Object.keys(userTutor)[0]
@@ -76,16 +79,31 @@ class SessionService {
             const hours = minutes/ 60
 
             console.log(`Equivalent time in hours: ${hours}`)
+            console.log(data.dateTime)
             
-            //variable to update
-            const tutorHours = userTutor.hours + hours
-            const studentHours = userStudent.hours + hours
+            //update tutor hours
+            if (userTutor.hours != null) {
+                console.log(`Tutor hours: ${userTutor.hours}`)
+                const tutorHours = userTutor.hours + hours;
+                await updateUserHours(tutoruserid, tutorHours);
+            } else {
+                await updateUserHours(tutoruserid, hours);
+            }
 
+            if (userTutor.hours != null) {
+                console.log(`Tutor hours: ${userStudent.hours}`)
+                const studentHours = userStudent.hours + hours
+                await updateUserHours(studentuserid, studentHours)
+            } else {
+                await updateUserHours(studentuserid, hours)
+            }
+            
+           
             //updating student and tutor hours
             //tutor
-            await updateUserHours(tutoruserid, tutorHours)
+            //await updateUserHours(tutoruserid, tutorHours)
             //student
-            await updateUserHours(studentuserid, studentHours)
+            //await updateUserHours(studentuserid, studentHours)
 
             let session = new Session()
 
