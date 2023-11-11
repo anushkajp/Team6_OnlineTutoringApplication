@@ -143,7 +143,7 @@ const CreateFields = (object, setObject, labelData) => {
                         console.log(dbId)
                         const course = courses.find(course => course.courseId === dbId)
 
-                        selectedCourseIds.push(course.courseName)
+                        selectedCourseIds.push(course.courseNumber)
 
                       });
                       setSelectedCourses(selectedCourseIds)
