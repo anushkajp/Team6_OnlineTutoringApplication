@@ -2,7 +2,7 @@ const { addItem } = require("./db")
 // DEPRECATED
 module.exports = {
     /**
-     * @deprecated 
+     * @deprecated No longer supported
      * @param {string} fileName 
      * @param {string} majorId 
      * @returns 
@@ -38,7 +38,7 @@ module.exports = {
      * @param {string} longBio Descriptive bio
      * @param {string} shortBio Short descriptive bio
      * @param {ImageData} profilePic Profile picture
-     * @deprecated
+     * @deorecated  No longer supported
      */
     addUser: function addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, pfp = null) {
         const postData = {
@@ -73,7 +73,7 @@ module.exports = {
      * @param {string} longBio Descriptive bio
      * @param {string} shortBio Short descriptive bio
      * @param {ImageData} profilePic Profile picture
-     * @deprecated
+     * @deorecated  No longer supported
      */
     addStudent: async function addStudent(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic = null) {
         userKey = await this.addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic = null)
@@ -103,7 +103,7 @@ module.exports = {
      * @param {boolean} backgroundCheck Defaults to false, whether a background check has passed or not
      * @param {number} totalHours Total hours completed by tutor
      * @param {number} rating The rating other users have given the tutor
-     * @deprecated
+     * @deorecated  No longer supported
      */
     addTutor: async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, weeklyAvailability = [], exceptionsAvailability = [], profilePic = null, rating = 0.00, backgroundCheck = false, totalHours = 0) {
         userKey = await this.addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic = null)
@@ -134,7 +134,7 @@ module.exports = {
      * @param {string} courseName Name of the course
      * @param {string} courseNumber Course number
      * @param {number} creditHours Number of credit hours this course offers
-     * @deprecated
+     * @deorecated  No longer supported
      */
     addCourse: function addCourse(majorId, courseName, courseNumber, creditHours) {
         const postData = {
@@ -158,7 +158,7 @@ module.exports = {
      * @param {string} tutorNotes Notes about the meeting for the tutor
      * @param {number} rating Appointment rating
      * @param {string} feedback Feedback for the appointment
-     * @deprecated
+     * @deorecated  No longer supported
      */
     addAppointment: function addAppointment(tutorId, studentId, dateTime, length, online, location,courses, studentNotes, tutorNotes, rating, feedback) {
         const postData = {
@@ -182,7 +182,7 @@ module.exports = {
      * @param {string} studentId Student username
      * @param {number} rate Review rating
      * @param {string} description A short description/ comment of the appointment
-     * @deprecated
+     * @deorecated  No longer supported
      */
     addReview: function addReview(tutorId, studentId, rate, description) {
         const postData = {
