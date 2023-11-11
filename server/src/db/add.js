@@ -8,10 +8,11 @@ module.exports = {
     
         for (i in json.report_data){
             currCourse = json.report_data[i]
-            if (!courseNumbers.includes(currCourse.course_number) && !isNaN(parseFloat(currCourse.course_number[1]))){
-                courseNumbers.push(currCourse.course_number)
+            const currCourseNumber = currCourse.course_prefix + currCourse.course_number
+            if (!courseNumbers.includes(currCourseNumber) && !isNaN(parseFloat(currCourse.course_number[1]))){
+                courseNumbers.push(currCourseNumber)
                 // console.log(majorId,currCourse.title,currCourse.course_number,currCourse.course_number[1])
-                output.push( await this.addCourse(majorId,currCourse.title,currCourse.course_number,parseInt(currCourse.course_number[1])))
+                output.push( await this.addCourse(majorId,currCourse.title,currCourseNumber,parseInt(currCourse.course_number[1])))
             }
             
             
