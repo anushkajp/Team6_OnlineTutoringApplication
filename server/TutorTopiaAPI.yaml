@@ -80,44 +80,6 @@ paths:
           description: Bad Request
         "500":
           description: Server error 
-    post:
-      tags:
-      - Availability
-      summary: Create new availability for a specific day of the week
-      parameters:
-        - name: username
-          in: path
-          required: true
-          description: Tutor username
-          schema:
-            type: string
-        - name: dayOfTheWeek
-          in: path
-          required: true
-          description: Day of the week (Monday, Tuesday, etc.)
-          schema:
-            type: string
-      requestBody:
-        description: Create availability for specific day of the week
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/TimeBlock"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema: 
-                type: array
-                items:
-                  $ref: "#/components/schemas/TimeBlock"
-        "400":
-          description: Bad Request
-        "500":
-          description: Server error 
     patch:
       tags:
       - Availability
