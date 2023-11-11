@@ -3,7 +3,7 @@ const {getAppointments, getAppointment} = require('../db/read')
 const {addAppointment} = require('../db/obAdd')
 const {searchItem} = require ('../db/db')
 const { updateAppDateTime, updateAppLength, updateAppMedium, updateAppLocation, updateAppFeedback, updateAppTutorNotes, updateAppStudentNotes} = require ('../db/update')
-const {updateStudentHours, updateTutorHours} = require ('../db/update')
+const {updateUserHours} = require ('../db/update')
 const { deleteAppointment } = require("../db/delete")
 const USER = 'User'
 const USERNAME = 'username'
@@ -83,9 +83,9 @@ class SessionService {
 
             //updating student and tutor hours
             //tutor
-            await updateTutorHours(tutoruserid, tutorHours)
+            await updateUserHours(tutoruserid, tutorHours)
             //student
-            await updateStudentHours(studentuserid, studentHours)
+            await updateUserHours(studentuserid, studentHours)
 
             let session = new Session()
 

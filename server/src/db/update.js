@@ -96,9 +96,10 @@ module.exports = {
      * @param {string} studentId Database id for the user
      * @param {number} newTotalHours New hours for the student
      */
+    /*
      updateStudentHours: async function updateStudentHours(studentId, newTotalHours) {
         return modifyItem("Student",studentId,"hours", newTotalHours)
-    },   
+    },*/
 
 
     /**
@@ -113,12 +114,12 @@ module.exports = {
 
 
     /**
-     * Update the tutor hours
-     * @param {string} tutorId Database id for the user
-     * @param {number} newTotalHours New hours for the tutor
+     * Update the user hours
+     * @param {string} userId Database id for the user
+     * @param {number} newTotalHours New hours for the user
      */
-    updateTutorHours: async function updateTutorHours(tutorId, newTotalHours) {
-        return modifyItem("Tutor",tutorId,"hours", newTotalHours)
+    updateUserHours: async function updateUserHours(userId, newTotalHours) {
+        return modifyItem("User",userId,"hours", newTotalHours)
     },
 
 
