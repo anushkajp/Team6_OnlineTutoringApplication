@@ -90,6 +90,7 @@ class SessionService {
                 await updateUserHours(tutoruserid, hours);
             }
 
+            //update student hours
             if (userTutor.hours != null) {
                 console.log(`Tutor hours: ${userStudent.hours}`)
                 const studentHours = userStudent.hours + hours
@@ -98,13 +99,6 @@ class SessionService {
                 await updateUserHours(studentuserid, hours)
             }
             
-           
-            //updating student and tutor hours
-            //tutor
-            //await updateUserHours(tutoruserid, tutorHours)
-            //student
-            //await updateUserHours(studentuserid, studentHours)
-
             let session = new Session()
 
             session.tutorId = tutoruserid;
@@ -124,14 +118,6 @@ class SessionService {
                 studentNotes : null,
             };
     
-            // Loop through the data object and set the corresponding properties
-            /*
-            for (const key in propertyMap) {
-                if (data.hasOwnProperty(key)) {
-                    session[key] = data[key];
-                }
-            }*/
-
             // Loop through the data object and set the corresponding properties
             for (const key in propertyMap) {
                 // Skip tutorId and studentId
