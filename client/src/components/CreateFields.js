@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { fetchFromAPI } from '../services/api'
 import Major from '../models/major'
 import Course from '../models/course'
@@ -20,62 +20,62 @@ import Course from '../models/course'
 //     major: { "label": "Major" },
 //     pfp: { "label": "Profile Picture" }
 //   }
-  const CreateFields = (object,setObject,labelData) => {
+const CreateFields = (object, setObject, labelData) => {
 
-    const [majors, setMajors] = useState([]);
-    const [courses, setCourses] = useState([]);
-  
-    const initialMajor = new Major();
-    const [selectedMajor, setMajor] = useState(initialMajor);
-  
-    const [selectedCourses, setSelectedCourses] = useState([])
+  const [majors, setMajors] = useState([]);
+  const [courses, setCourses] = useState([]);
 
+  const initialMajor = new Major();
+  const [selectedMajor, setMajor] = useState(initialMajor);
 
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-        setObject({
-          ...object,
-          [name]: value
-        })
-        
-      // alert(object)
-      console.log(object)
-    }
-  
+  const [selectedCourses, setSelectedCourses] = useState([])
 
 
-    useEffect(() => {
-      if ("major" in labelData){
-        fetchFromAPI(`major/`).then(data => { 
-        const majorArray=[]
-        const majorKeys=[]
-        for (let i in data) { 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setObject({
+      ...object,
+      [name]: value
+    })
+
+    // alert(object)
+    console.log(object)
+  }
+
+
+
+  useEffect(() => {
+    if ("major" in labelData) {
+      fetchFromAPI(`major/`).then(data => {
+        const majorArray = []
+        const majorKeys = []
+        for (let i in data) {
           const majorKey = i
           const thisMajor = new Major(data[i].majorName, i)
           majorArray.push(thisMajor)
-  
+
         }
         setMajors(majorArray)
         // console.log(majors)
-      }, (err) => { 
+      }, (err) => {
         console.log(err)
       })
-  }
-    }, [])
-    useEffect(() => {
-        if("major" in labelData && "courses" in labelData)
-      {console.log('useEffect for courses is running.');
-      console.log('selectedMajor:', selectedMajor);
+    }
+  }, [])
+  useEffect(() => {
+    if ("major" in labelData && "courses" in labelData) {
+      // console.log('useEffect for courses is running.');
+      // console.log('selectedMajor:', selectedMajor);
       setCourses([])
       setSelectedCourses([])
-      const courseArray=[]
-      const courseKeys=[]
+      const courseArray = []
+      const courseKeys = []
       if (selectedMajor.majorId) {
         fetchFromAPI(`course/${selectedMajor.majorId}`).then(data => {
           // console.log(data)  
           for (let i in data) {
             const dbId = i
-            if(dbId in courseKeys){
+            if (dbId in courseKeys) {
               continue;
             }
 
@@ -84,49 +84,50 @@ import Course from '../models/course'
             courseArray.push(thisCourse)
           }
           setCourses(courseArray)
-  
+
         }, (err) => {
           console.log(err)
         })
-      }}
-      // console.log(courses)
-    }, [selectedMajor])
-  
-    return (
-      <div className="form-group">
-        {Object.keys(object).map((fields, index) => {
-          // console.log(labelData)
-          if (labelData[fields]===undefined) {
-            return null;
-          }
-          return (
-            <div key={index} className="form-group">
-              <label key={index} htmlFor={fields}>{labelData[fields]["label"]}</label>
-              {(() => {
-                if (fields === "major") {
-                  return (
-                    <select  onChange={(e) => {
-                      const selectedMajorName = e.target.value;
-                      const selectedMajorObject = majors.find(major => major.majorName === selectedMajorName);
-                      setMajor(selectedMajorObject);
-                      // SET MAJOR
-                      setObject({
-                        ...object,
-                        [fields]: selectedMajorObject.majorName
-                      })
-                    }}> 
-                      {majors.map( (major) => (
-                        // console.log(fields1+index1) 
-                        <option key={major.majorId} value={major.majorName}>{major.majorName}</option>
-              ))}
-                    </select>
-  
-                  )
-  
-                }
-                else if (fields === "courses") {
-                  return (
-                    <select defaultValue={selectedCourses} multiple 
+      }
+    }
+    // console.log(courses)
+  }, [selectedMajor])
+
+  return (
+    <div className="form-group">
+      {Object.keys(object).map((fields, index) => {
+        // console.log(labelData)
+        if (labelData[fields] === undefined) {
+          return null;
+        }
+        return (
+          <div key={index} className="form-group">
+            <label key={index} htmlFor={fields}>{labelData[fields]["label"]}</label>
+            {(() => {
+              if (fields === "major") {
+                return (
+                  <select onChange={(e) => {
+                    const selectedMajorName = e.target.value;
+                    const selectedMajorObject = majors.find(major => major.majorName === selectedMajorName);
+                    setMajor(selectedMajorObject);
+                    // SET MAJOR
+                    setObject({
+                      ...object,
+                      [fields]: selectedMajorObject.majorName
+                    })
+                  }}>
+                    {majors.map((major) => (
+                      // console.log(fields1+index1) 
+                      <option key={major.majorId} value={major.majorName}>{major.majorName}</option>
+                    ))}
+                  </select>
+
+                )
+
+              }
+              else if (fields === "courses") {
+                return (
+                  <select defaultValue={selectedCourses} multiple
                     onChange={(e) => {
                       // setSelectedCourses([])
                       const selectedOptions = Array.from(e.target.selectedOptions);
@@ -135,47 +136,47 @@ import Course from '../models/course'
                       // const selectedCourseIds = selectedOptions.map((option) => {
                       //   courses.find(course => )
                       // });
-        
+
                       // Iterate through the selected course IDs and handle selection/deselection
                       selectedOptions.forEach((courseId) => {
                         const dbId = courseId.value
                         console.log(dbId)
                         const course = courses.find(course => course.courseId === dbId)
-                        
+
                         selectedCourseIds.push(course.courseName)
-                        
+
                       });
                       setSelectedCourses(selectedCourseIds)
-                      console.log("selected Courses : "+selectedCourses)
-                      console.log("selected course ids : "+selectedCourseIds)
-                      setObject({...object, [fields]:selectedCourseIds})
+                      console.log("selected Courses : " + selectedCourses)
+                      console.log("selected course ids : " + selectedCourseIds)
+                      setObject({ ...object, [fields]: selectedCourseIds })
                     }}
                   >
-                      {courses.map((course) => (
-                        <option key={course.courseId} value={course.courseId}>{course.courseName}</option>
-              ))}
-                    </select>
-  
-                  )
-                }
-                // else if(fields === "password"){
-                //   return(                  
-                //   <input
-                //     type={"password"}
-                //     id={fields}
-                //     name={fields}
-                //     value={object[fields]}
-                //     onChange={async (e)=>{
-                //       const hash = await hashPassword(e.target.value)
-                      
-                //     }}
-                //     // onChange={(e)=>setObject({...object,[fields]:e.target.value})}
-                //     required
-                //   />
-                //   )
-                // }
-                 else {
-                  return (
+                    {courses.map((course) => (
+                      <option key={course.courseId} value={course.courseId}>{course.courseName}</option>
+                    ))}
+                  </select>
+
+                )
+              }
+              // else if(fields === "password"){
+              //   return(                  
+              //   <input
+              //     type={"password"}
+              //     id={fields}
+              //     name={fields}
+              //     value={object[fields]}
+              //     onChange={async (e)=>{
+              //       const hash = await hashPassword(e.target.value)
+
+              //     }}
+              //     // onChange={(e)=>setObject({...object,[fields]:e.target.value})}
+              //     required
+              //   />
+              //   )
+              // }
+              else {
+                return (
                   <input
                     type={(fields === "pfp" || fields === "password") ? (fields === "pfp" ? "file" : "password") : "text"}
                     id={fields}
@@ -185,25 +186,25 @@ import Course from '../models/course'
                     // onChange={(e)=>setObject({...object,[fields]:e.target.value})}
                     required
                   />
-                  )
-                }
-  
-  
-              })()
+                )
               }
-  
-  
-            </div>
-          )
-        }
-  
-  
-  
-        )}
-  
-      </div>
-  
-    )
-  }
+
+
+            })()
+            }
+
+
+          </div>
+        )
+      }
+
+
+
+      )}
+
+    </div>
+
+  )
+}
 
 export default CreateFields
