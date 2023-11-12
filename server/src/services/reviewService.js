@@ -15,36 +15,10 @@ const { updateAppReview, updateRating, updateAppUserId} = require ('../db/update
 
 class ReviewService {
       // GET ALL
-
-    static async getAll() {
-        try {          
-            const reviews = await getReviews();
-            
-            // Transform the data structure and filter unnecessary information
-            const  transformedReviews = Object.entries(reviews).map(([id, review]) => {
-                const { tutorId, studentId, rating,description } = review;
-
-                const tutorUsername = review.tutorId
-                const studentUsername = review.studentId
-    
-                const userTutor = searchItem('User', 'username', tutorUsername)
-                const userStudent = searchItem('User', 'username', studentUsername)
-    
-                return {
-                    id,
-                    studentId: userStudent,
-                    tutorId: userTutor,
-                    description,
-                    rating,
-                    
-                };
-            });
-    
-            console.log("ReviewService.getAll() = " + JSON.stringify(transformedReviews) + "\n");
-            return transformedReviews;
-        } catch (err) {
-            throw err;
-        }
+      static async getAll() {
+            console.log("\n[ ReviewService.getAll ]\n");
+            const reviews = await read.getReviews();
+            return reviews;
     }
 
     // GET ONE REVIEW BY ID 
