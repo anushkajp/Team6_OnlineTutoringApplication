@@ -50,6 +50,8 @@ class AvailabilityService{
         const tutorId = await Object.keys(TutorService.getOne(username))[0]
         // IF dayOfTheWeek IS A DAY, CONTINUE
         if (Availability.toObj().hasOwnProperty(dayOfTheWeek)) {
+            // CHECK IF TIME SLOT IS VALID
+            
             // REPLACE OLD DAY OF THE WEEK WITH NEW
             oldAvailability[dayOfTheWeek] = [data]
             await update.updateTutorWeeklyAvail(tutorId, oldAvailability)
