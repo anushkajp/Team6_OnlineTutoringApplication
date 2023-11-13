@@ -54,8 +54,16 @@ class SessionService {
         }
     }   
     static async checkConflict(newStart, newEnd, existingAppointment) {
+        console.log('New Start:', newStart);
+        console.log('New End:', newEnd);
+        
+        console.log('existingAppointment.dateTime:', existingAppointment.dateTime);
+
         const existingStart = new Date(existingAppointment.dateTime);
         const existingEnd = new Date(existingStart.getTime() + existingAppointment.length * 60 * 1000);
+    
+        console.log('Existing Start:', existingStart);
+        console.log('Existing End:', existingEnd);
     
         // Check if the appointment is being created at the same time and on the same date
         const sameTimeAndDate = (
@@ -79,8 +87,13 @@ class SessionService {
             newEnd.getTime() <= existingEnd.getTime()
         );
     
+        console.log('Same Time and Date:', sameTimeAndDate);
+        console.log('Same Date:', sameDate);
+        console.log('In Between:', inBetween);
+    
         return sameTimeAndDate || (sameDate && !inBetween);
     }
+    
      // CREATE NEW APPOINTMENT
      static async create(appData){ 
         try {
@@ -126,6 +139,7 @@ class SessionService {
             
             for (const appointment of studentAppointmentsArray) {
                 if (SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, appointment)) {
+                    console.log('Calling checkConflict with - newStart:', newAppointmentStartTime, 'newEnd:', newAppointmentEndTime, 'existingAppointment:', appointment);
                     throw new CustomError("Student has conflict for either the time or the day, appointmnet cannot be created", 400)
                 }
             }           
