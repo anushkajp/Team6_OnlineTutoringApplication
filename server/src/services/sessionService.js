@@ -53,6 +53,45 @@ class SessionService {
             throw e
         }
     }   
+    static async checkConflict(newStart, newEnd, existingAppointment) {
+        const existingStart = new Date(existingAppointment.dateTime);
+        const existingEnd = new Date(existingStart.getTime() + existingAppointment.length * 60 * 1000);
+    
+        return (
+            (newStart >= existingStart && newStart < existingEnd) ||
+            (newEnd > existingStart && newEnd <= existingEnd) ||
+            (newStart <= existingStart && newEnd >= existingEnd)
+        );
+    }
+    static async checkAppointmentConflict(dateTime, durationHours, tutorUsername, studentUsername) {
+        try {
+            const tutorAppointments = await SessionService.getAllAppointmentsByUser(tutorUsername, 'tutorUsername');
+            const studentAppointments = await SessionService.getAllAppointmentsByUser(studentUsername, 'studentUsername');
+    
+            const newAppointmentStartTime = new Date(dateTime);
+            const newAppointmentEndTime = new Date(newAppointmentStartTime.getTime() + durationHours * 60 * 60 * 1000);
+            
+            console.log('Type of tutorAppointments:', typeof tutorAppointments);
+            
+            // Check for conflicts in tutor's appointments
+            for (const appointment of tutorAppointments) {
+                if (SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, appointment)) {
+                    return true;
+                }
+            }
+    
+            // Check for conflicts in student's appointments
+            for (const appointment of studentAppointments) {
+                if (SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, appointment)) {
+                    return true;
+                }
+            }
+    
+            return false;
+        } catch (e) {
+            throw e;
+        }
+    }
      // CREATE NEW APPOINTMENT
      static async create(appData){ 
         try {
@@ -62,7 +101,7 @@ class SessionService {
             //retirieving student and tutor usernames
             const tutorUsername = data.tutorId
             const studentUsername = data.studentId
-            
+           
             //searching for the student and tutor via their username on the database
             const userTutor = await searchItem('User', 'username', tutorUsername)
             const userStudent = await searchItem('User', 'username', studentUsername)
@@ -80,6 +119,12 @@ class SessionService {
 
             console.log(`Equivalent time in hours: ${hours}`)
             console.log(data.dateTime)
+
+            const conflict = await SessionService.checkAppointmentConflict(data.dateTime, hours, tutorUsername, studentUsername);
+
+            if (conflict) {
+                throw new CustomError("Appointment conflict: Another appointment already exists at this time.", 400)
+            }
             
             //update tutor hours
             if (userTutor.hours != null) {
@@ -139,7 +184,7 @@ class SessionService {
         }catch (e) {
             throw e
         }
-    }
+    }       
    //UPDATE SPECIFIC APPOINTMENT
    static async update(id, apptData) {
     try {
