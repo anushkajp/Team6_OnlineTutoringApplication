@@ -53,45 +53,36 @@ class SessionService {
             throw e
         }
     }   
-    static async checkConflict(newStart, newEnd, existingAppointment) {
-        console.log('New Start:', newStart);
-        console.log('New End:', newEnd);
-        
-        console.log('existingAppointment.dateTime:', existingAppointment.dateTime);
-
+     //CONFLICT FUNCTION
+     static async checkConflict(newStart, newEnd, existingAppointment) {
         const existingStart = new Date(existingAppointment.dateTime);
         const existingEnd = new Date(existingStart.getTime() + existingAppointment.length * 60 * 1000);
     
+        console.log('New Start:', newStart);
+        console.log('New End:', newEnd);
         console.log('Existing Start:', existingStart);
         console.log('Existing End:', existingEnd);
     
-        // Check if the appointment is being created at the same time and on the same date
-        const sameTimeAndDate = (
-            newStart.getTime() === existingStart.getTime() &&
-            newEnd.getTime() === existingEnd.getTime()
-        );
-    
-        // Check if the appointment is being created on the same date (ignoring the time)
-        const sameDate = (
+        const isSameDate = (
             newStart.getFullYear() === existingStart.getFullYear() &&
             newStart.getMonth() === existingStart.getMonth() &&
             newStart.getDate() === existingStart.getDate()
         );
     
-        // Check if the appointment is being created in between the start time and end time of an existing appointment
-        const inBetween = (
-            newStart.getTime() >= existingStart.getTime() &&
-            newStart.getTime() < existingEnd.getTime()
-        ) || (
-            newEnd.getTime() > existingStart.getTime() &&
-            newEnd.getTime() <= existingEnd.getTime()
-        );
+        console.log('Is Same Date:', isSameDate);
     
-        console.log('Same Time and Date:', sameTimeAndDate);
-        console.log('Same Date:', sameDate);
-        console.log('In Between:', inBetween);
+        // Check if it is on the same date
+        if (isSameDate) {
+            if ((newStart >= existingStart && newStart < existingEnd) ||
+                (newEnd > existingStart && newEnd <= existingEnd) ||
+                (newStart <= existingStart && newEnd >= existingEnd)) {
+                console.log('Conflict Detected: Appointment conflicts with an existing appointment.');
+                return true; // Conflict
+            }
+        }
     
-        return sameTimeAndDate || (sameDate && !inBetween);
+        console.log('No Conflict Detected: Appointment does not conflict with existing appointments.');
+        return false; // No conflict
     }
     
      // CREATE NEW APPOINTMENT
