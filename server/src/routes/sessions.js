@@ -53,9 +53,9 @@ router.get('/:user/:username', async(req, res) => {
         console.log("\n[ Session routes get all appointments ]")
         let appointments = null
         if (req.params.user === 'tutor')
-            appointments = await SessionService.getAllByUser(req.params.username, 'tutorUsername')
+            appointments = await SessionService.getAllAppointmentsByUser(req.params.username, 'tutorUsername')
         else if (req.params.user === 'student')
-            appointments = await SessionService.getAllByUser(req.params.username, 'studentUsername')
+            appointments = await SessionService.getAllAppointmentsByUser(req.params.username, 'studentUsername')
         if (appointments === null)
             res.status(400).json({message: req.params.id + ' is not a valid id'})
         else 

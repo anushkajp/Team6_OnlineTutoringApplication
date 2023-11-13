@@ -57,40 +57,29 @@ class SessionService {
         const existingStart = new Date(existingAppointment.dateTime);
         const existingEnd = new Date(existingStart.getTime() + existingAppointment.length * 60 * 1000);
     
-        return (
-            (newStart >= existingStart && newStart < existingEnd) ||
-            (newEnd > existingStart && newEnd <= existingEnd) ||
-            (newStart <= existingStart && newEnd >= existingEnd)
+        // Check if the appointment is being created at the same time and on the same date
+        const sameTimeAndDate = (
+            newStart.getTime() === existingStart.getTime() &&
+            newEnd.getTime() === existingEnd.getTime()
         );
-    }
-    static async checkAppointmentConflict(dateTime, durationHours, tutorUsername, studentUsername) {
-        try {
-            const tutorAppointments = await SessionService.getAllAppointmentsByUser(tutorUsername, 'tutorUsername');
-            const studentAppointments = await SessionService.getAllAppointmentsByUser(studentUsername, 'studentUsername');
     
-            const newAppointmentStartTime = new Date(dateTime);
-            const newAppointmentEndTime = new Date(newAppointmentStartTime.getTime() + durationHours * 60 * 60 * 1000);
-            
-            console.log('Type of tutorAppointments:', typeof tutorAppointments);
-            
-            // Check for conflicts in tutor's appointments
-            for (const appointment of tutorAppointments) {
-                if (SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, appointment)) {
-                    return true;
-                }
-            }
+        // Check if the appointment is being created on the same date (ignoring the time)
+        const sameDate = (
+            newStart.getFullYear() === existingStart.getFullYear() &&
+            newStart.getMonth() === existingStart.getMonth() &&
+            newStart.getDate() === existingStart.getDate()
+        );
     
-            // Check for conflicts in student's appointments
-            for (const appointment of studentAppointments) {
-                if (SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, appointment)) {
-                    return true;
-                }
-            }
+        // Check if the appointment is being created in between the start time and end time of an existing appointment
+        const inBetween = (
+            newStart.getTime() >= existingStart.getTime() &&
+            newStart.getTime() < existingEnd.getTime()
+        ) || (
+            newEnd.getTime() > existingStart.getTime() &&
+            newEnd.getTime() <= existingEnd.getTime()
+        );
     
-            return false;
-        } catch (e) {
-            throw e;
-        }
+        return sameTimeAndDate || (sameDate && !inBetween);
     }
      // CREATE NEW APPOINTMENT
      static async create(appData){ 
@@ -113,6 +102,12 @@ class SessionService {
             const tutoruserid = Object.keys(userTutor)[0]
             const studentuserid = Object.keys(userStudent)[0]
 
+            //const tutorAppointments = await searchItem('Appointment', 'tutorId', tutoruserid)
+            //console.log('Type of tutorAppointments:', typeof tutorAppointments);
+            const studentAppointments = await searchItem('Appointment', 'studentId', studentuserid)
+            console.log('Type of studentAppointments:', typeof studentAppointments);
+            const studentAppointmentsArray = Object.values(studentAppointments);
+
             //need to convert appointment length from minutes to hours
             const minutes = data.length
             const hours = minutes/ 60
@@ -120,11 +115,20 @@ class SessionService {
             console.log(`Equivalent time in hours: ${hours}`)
             console.log(data.dateTime)
 
-            const conflict = await SessionService.checkAppointmentConflict(data.dateTime, hours, tutorUsername, studentUsername);
+            const newAppointmentStartTime = new Date(data.dateTime);
+            const newAppointmentEndTime = new Date(newAppointmentStartTime.getTime() + hours * 60 * 60 * 1000)
 
-            if (conflict) {
-                throw new CustomError("Appointment conflict: Another appointment already exists at this time.", 400)
-            }
+             /*for (const appointment of tutorAppointments) {
+                if (SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, appointment)) {
+                    throw new CustomError("Tutor has conflict for either the time or the day, appointmnet cannot be created", 400)
+                }
+            } */
+            
+            for (const appointment of studentAppointmentsArray) {
+                if (SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, appointment)) {
+                    throw new CustomError("Student has conflict for either the time or the day, appointmnet cannot be created", 400)
+                }
+            }           
             
             //update tutor hours
             if (userTutor.hours != null) {
