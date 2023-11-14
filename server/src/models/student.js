@@ -58,7 +58,7 @@ class Student extends User {
       shortBio: null,
       pfp: null,
       favoriteTutors: null
-  };
+    };
   }
 }
 module.exports = Student;

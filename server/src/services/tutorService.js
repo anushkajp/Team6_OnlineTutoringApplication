@@ -5,8 +5,12 @@ const {searchItem} = require ('../db/db')
 const deletes=require("../db/delete")
 const USER = 'User'
 const USERNAME = 'username'
+const EMAIL = 'email'
 const CustomError = require ('../utils/customError')
 const Tutor = require ('../models/tutor')
+const Availability = require ('../models/availability')
+const bcrypt = require ("bcryptjs")
+
 class TutorService {
     // GET ALL
     static async getAll() {
@@ -41,7 +45,7 @@ class TutorService {
 
             // DETERMINE IF USER IS A TUTOR
             const tutorAdds = await read.getTutor(Object.keys(search)[0])
-            const tutorId = await read.searchItem()
+            const tutorId = await searchItem()
             console.log(Object.keys(search)[0])
             console.log(tutorAdds)
             console.log(tutorAdds.userId)
@@ -73,15 +77,26 @@ class TutorService {
             console.log("\n[ TutorService.create ]\n")
             const data = JSON.parse(tutordata)
             // SEARCH FOR USER W USERNAME
-            const search = await searchItem(USER, USERNAME, data.username)
-            console.log(await search)
-
+            const userResult = await searchItem(USER, USERNAME, data.username)
+            const emailResult = await searchItem(USER, EMAIL, data.email)
+            console.log(userResult)
+            console.log(Object.keys(userResult).length)
+            console.log(Object.keys(emailResult).length)
             // USER FOUND
-            if (Object.keys(search).length > 0)         
+            if (Object.keys(userResult).length > 0)         
                 throw new CustomError("Username already exists", 400)
+
+            // EMAIL FOUND
+            if (Object.keys(emailResult).length > 0)         
+                throw new CustomError("Email already in use", 400)
             
+            // HASH PASSWORD
+            const saltRounds = 10
+            const salt = bcrypt.genSaltSync(saltRounds)
+            const hashedPassword = await bcrypt.hash(data.password, salt)
+            data.password = hashedPassword
+
             // ADD NEW STUDENT TO DB
-            
             console.log(data)
             let tutor = new Tutor();
             const propertyMap = Tutor.toObj();
@@ -98,12 +113,20 @@ class TutorService {
                 if (tutor[key] === undefined)
                     tutor[key] = null
             }
+            // LOOP THROUGH AVAILABILITY AND SET TO NULL
+            console.log(tutor)
+            tutor.availability = new Availability()
+            for (const key in tutor.availability) {
+                if (tutor.availability[key] === undefined)
+                tutor.availability[key] = null
+            }
+            console.log(tutor)
             const tutorInfo = await add.addTutor(tutor)
             
             console.log(tutorInfo)
-            console.log("TutorService tutorInfo: " + JSON.stringify(tutorInfo) + "\n")
             // FIND THE NEW STUDENT FROM DB WITH USERID
-            return tutorInfo
+            // return tutorInfo
+            return await this.getOne(data.username)
         }catch (e) {
             throw e
         }
@@ -114,33 +137,53 @@ class TutorService {
             // FIND TUTORID
             console.log("\n[ TutorService.update ]\n")
             const data = JSON.parse(updateTutor)
-            const result = await searchItem(USER, USERNAME, username)
+            console.log(data.username)            
 
-            // TUTOR DOESNT EXIST
-            if ( Object.keys(result).length === 0)
-                throw new CustomError("Username currently used", 400)
-            console.log("updateTutor: " + updateTutor + "\n")
-            console.log("Tutor id: " + id + "\n")
+            let id = Object.keys(await searchItem(USER, USERNAME, username))
+            id = id[0]
 
-            const id = Object.keys(result)[0]
+            console.log(data)
+            console.log(id)
+
             // SEE WHAT CHANGED IN UPDATETUTOR AND CALL CORRESPONDING DB FUNCTION
-            if (updateTutor.userId != null)
-                update.updateUsername(id, updateTutor.userId)
-            if (updateTutor.major != null)
-                update.updateUserMajor(id, updateTutor.major)
-            if (updateTutor.password != null)
-                update.updateUserPassword(id, updateTutor.password)
-            if (updateTutor.email != null)
-                update.updateUserEmail(id, updateTutor.email)
-            if (updateTutor.longBio != null)
-                update.updateUserBio(id, updateTutor.longBio)
-            if (updateTutor.phone != null)
-                update.updateUserPhone(id, updateTutor.phone)
-            if (updateTutor.pfp != null)
-                update.updateUserProfilePic(id, updateTutor.pfp)
-            if (updateTutor.shortBio != null)
-                update.updateTutorBio(id, update)
-            return getTutor(id)
+            if (data.major != null)
+                update.updateUserMajor(id, data.major)
+            if (data.password != null) {
+                // HASH PASSWORD
+                const saltRounds = 10
+                const salt = bcrypt.genSaltSync(saltRounds)
+                const hashedPassword = await bcrypt.hash(data.password, salt)
+                update.updateUserPassword(id, hashedPassword)
+            }
+                
+            if (data.longBio != null)
+                update.updateUserLongBio(id, data.longBio)
+            if (data.shortBio != null)
+                update.updateUserShortBio(id, data.shortBio)
+            if (data.phone != null)
+                update.updateUserPhone(id, data.phone)
+            if (data.pfp != null)
+                update.updateUserProfilePic(id, data.pfp)
+            if (data.availability != null)
+                update.updateTutorWeeklyAvail(id, data.availability)
+            if (data.exceptions != null)
+                update.updateTutorExceptAvail(id, data.availability.exceptions)
+            if (data.username != null) {
+                const result = await searchItem(USER, USERNAME, data.username)
+                // USERNAME ALREADY USED
+                if ( Object.keys(result).length > 0)
+                    throw new CustomError("Username currently used", 400)
+                update.updateUsername(id, data.username)
+                username = data.username
+            }
+            if (data.email != null) {
+                // EMAIL ALREADY USED
+                const emailResult = await searchItem(USER, EMAIL, data.email)
+                if (Object.keys(emailResult).length > 0)         
+                    throw new CustomError("Email already in use", 400)
+                update.updateUserEmail(id, data.email)
+            }
+            return this.getOne(username)
         }catch (e) {
             throw e
         }

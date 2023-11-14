@@ -1,72 +1,62 @@
 const express = require("express");
 const router = express.Router();
-const Availability = require('../models/availability')
 const AvailabilityService = require('../services/availabilityService')
-bodyParser = require('body-parser').json();
+const bodyParser = require('body-parser').json();
+const CustomError = require('../utils/customError')
 
-// GET ALL
-router.get('/', (req, res) => {
+// GET ALL AVAILABILITY FOR A TUTOR BY USERNAME
+router.get('/:username', async (req, res) => {
     try {
-        const availability = AvailabilityService.getAll(req.body.id)
-        if (availability == nulll)
-            res.status(400).json({message: 'not a valid id'})
-        else
-            res.status(200).json(availability)
-    }catch (err){
-        res.status(500).json({ message: err.message});
-    }
-});
-// GET ONE
-router.get('/:id', async(req, res) => {
-    try {
-        //const availability = new Availability(["none",""], [])
-        const availability = await AvailabilityService.getOne(req.params.id)
-        if (availability == null)
-            res.status(401).json({message: 'Unable to create availability for tutor'})
-        else 
-            res.status(200).json(availability)
-    }catch (err){
-        res.status(500).json({ message: err.message});
-    }
-});
-// CREATE ONE
-router.post('/', bodyParser, async(req, res) => {
-    const availability = new availability({
-        week: req.params.week,
-        exceptions: req.params.exceptions
-    })
-    try {
-        const newavailability = await AvailabilityService.create(req.params.id);
-        if (tutor == null)
-            res.status(401).json({message: 'Unable to create tutor object'})
-        else 
-            res.status(201).json(newavailability)
-    }catch (err) {
-        res.status(400).json({ message: err.message});
-    }
-});
-// UPDATE ONE
-router.patch('/:id', async (req, res) => {
-    const availability = new availability({
-        week: req.params.week,
-        exceptions: req.params.exceptions
-    })
-    try {
-        const newavailability = await AvailabilityService.update(req.params.id);
-        res.status(201).json(newavailability)
-    }catch (err) {
-        res.status(400).json({ message: err.message});
-    }
-});
-// DELETE ONE
-router.delete('/:id', (req, res) => {
-    try {
-        const availability = AvailabilityService.delete(req.params.id)
-        if (availabilitiy === false)
-            res.status(404).json({ message: "Availability not found"})
+        console.log("[ Availability service get all availability ]")
+        const availability = await AvailabilityService.allAvail(req.params.username)
+        // console.log(availability)
         res.status(200).json(availability)
     }catch (err){
-        res.status(500).json({ message: err.message});
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
+    }
+});
+// GET ONE AVAILABILITY BY DAY OF WEEK
+router.get('/:username/:dayOfTheWeek', async(req, res) => {
+    try {
+        const availability = await AvailabilityService.oneAvail(req.params.username, req.params.dayOfTheWeek)
+        res.status(200).json(availability)
+    }catch (err){
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
+    }
+});
+// CREATE NEW AVAILABILITY BY DAY OF THE WEEK
+router.post('/:username/:dayOfTheWeek', bodyParser, async(req, res) => {
+    try {
+        const newavailability = await AvailabilityService.updateAvail(req.params.username, req.params.dayOfTheWeek, JSON.stringify(req.body));
+        res.status(201).json(newavailability)
+    }catch (err) {
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
+    }
+});
+// DELETE ALL TIME BLOCKS FOR DAY OF THE WEEK
+router.delete('/:username/:dayOfTheWeek', (req, res) => {
+    try {
+        AvailabilityService.deleteAvail(req.params.username, req.params.dayOfTheWeek)
+        res.status(200).json("Deleted successfully")
+    }catch (err){
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
     }
 })
+////////////////////////////////////////////////////////////////////////////////
+// EXCEPTIONS TO AVAILABILITY
+///////////////////////////////////////////////////////////////////////////////
+
+
 module.exports = router

@@ -61,6 +61,8 @@ router.post('/', bodyParser, async(req, res) => {
             res.status(401).json({message: "User with this username already exists"})
         else
             res.status(201).json(newStudent)
+        const student = await StudentService.create(JSON.stringify(req.body));
+        res.status(201).json(student)
     }catch (err) {
         res.status(400).json({ message: err.message});
     }
