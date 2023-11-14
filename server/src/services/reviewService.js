@@ -15,11 +15,51 @@ const { updateAppReview, updateRating, updateAppUserId} = require ('../db/update
 
 class ReviewService {
       // GET ALL
-      static async getAll() {
-            console.log("\n[ ReviewService.getAll ]\n");
-            const reviews = await read.getReviews();
-            return reviews;
+    //   static async getAll() {
+    //     try {          
+    //         const reviews = await getReviews()
+    //         console.log("SessionService.getAll() = " + JSON.stringify(reviews) + "\n")
+    //         return reviews
+    //     } catch (err) {
+    //         throw err
+    //     }
+    // }
+
+    static async getAll() {
+        try {          
+            const reviews = await getReviews();
+            
+            // Transform the data structure and filter unnecessary information
+            const transformedReviews = Object.entries(reviews).map(([id, review]) => {
+                const { description, rating, studentId, tutorId } = review;
+                const tutorUsername = data.tutorId
+                const studentUsername = data.studentId
+        
+                const userTutor = searchItem('User', 'username', tutorUsername)
+                const userStudent = searchItem('User', 'username', studentUsername)
+        
+                const tutoruserid = Object.keys(userTutor)[0]
+                const studentuserid = Object.keys(userStudent)[0]
+    
+                return {
+                    id,
+                    description,
+                    rating,
+                    studentId,
+                    tutorId
+                    // studentId: studentUsername,
+                    // tutorId: tutorUsername,
+                };
+            });
+    
+            console.log("ReviewService.getAll() = " + JSON.stringify(transformedReviews) + "\n");
+            return transformedReviews;
+        } catch (err) {
+            throw err;
+        }
     }
+    
+
 
     // GET ONE REVIEW BY ID 
     static async getOne(reviewId) {
@@ -123,18 +163,33 @@ class ReviewService {
 
     }
     //DELETE A REVIEW
-    static async delete(reviewId) {
+    // static async delete(reviewId) {
+    //     try {
+    //         const reviewDelete = await deleteReview(reviewId);
+    //         console.log("ReviewService.delReview() = " + JSON.stringify(reviewDelete) + "\n")
+    //             if (reviewDelete === null) {
+    //                 return null;
+    //             }else {
+    //                 return reviewDelete;
+    //             }
+    //         }catch (error) {
+    //                 throw new CustomError("Error deleting the review: ", 400)
+    //         }
+    // }
+
+    static async deleteReview(reviewId) {
         try {
-            const reviewDelete = await deleteReview(reviewId);
-            console.log("ReviewService.delReview() = " + JSON.stringify(reviewDelete) + "\n")
-                if (reviewDelete === null) {
+            const deletedReview = await deleteReview(reviewId);
+            console.log("SessionService.deleteReview() = " + JSON.stringify(deletedReview) + "\n")
+                if (deletedReview === null) {
+                    // console.log("deleted review")
                     return null;
                 }else {
-                    return reviewDelete;
+                    return deletedReview;
                 }
             }catch (error) {
-                    throw new CustomError("Error deleting the review: ", 400)
+                    throw new Error("Error deleting the review: " + error.message);
             }
-    }
+        }   
 }
 module.exports = ReviewService

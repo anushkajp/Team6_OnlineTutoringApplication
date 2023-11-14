@@ -51,13 +51,18 @@ router.patch('/:reviewId', async(req, res) => {
         res.status(400).json({ message: err.message});
     }
 });
+
 // DELETE ONE
-router.delete('/:reviewId', (req, res) => {
+router.delete('/:id', (req, res) => {
     try {
-        const review = ReviewService.delete(req.params.appointmentId)
-        res.status(200).json(review)
-    }catch (err){
-        res.status(500).json({ message: err.message});
+        const deletedReview = ReviewService.deleteReview(req.params.id)
+        if (deletedReview === null) {
+            res.status(404).json({ message: "Review not found" });
+        } else {
+            res.status(200).json(deletedReview);
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-})
+});
 module.exports = router
