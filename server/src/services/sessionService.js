@@ -53,63 +53,74 @@ class SessionService {
             throw e
         }
     }   
-// CONFLICT FUNCTION
-static async checkConflict(newStart, newEnd, existingAppointment) {
-    const existingStart = new Date(existingAppointment.dateTime);
-    const existingEnd = new Date(existingStart.getTime() + existingAppointment.length * 60 * 1000);
+    // CONFLICT FUNCTION
+    static async checkConflict(newStart, newEnd, existingAppointment) {
 
-    console.log('New Start:', newStart);
-    console.log('New End:', newEnd);
-    console.log('Existing Start:', existingStart);
-    console.log('Existing End:', existingEnd);
+        //let hasConflict = false
 
-    console.log(newStart.getTime());
-    console.log(newEnd.getTime());
-    console.log(existingStart.getTime());
-    console.log(existingEnd.getTime());
+        const existingStart = new Date(existingAppointment.datetime);
+        console.log(existingStart);
+        const existingEnd = new Date(existingStart.getTime() + existingAppointment.length * 60 * 1000);
+        console.log(existingEnd);
+        console.log("hehehe");
 
-    const isSameDate = (
-        newStart.getFullYear() === existingStart.getFullYear() &&
-        newStart.getMonth() === existingStart.getMonth() &&
-        newStart.getDate() === existingStart.getDate()
-    );
+        console.log('New Start:', newStart);
+        console.log('New End:', newEnd);
+        console.log('Existing Start:', existingStart);
+        console.log('Existing End:', existingEnd);
 
-    console.log('Is Same Date:', isSameDate);
+        console.log(newStart.getTime());
+        console.log(newEnd.getTime());
+        console.log(existingStart.getTime());
+        console.log(existingEnd.getTime());
 
-    // Check if it is on the same date
-    if (isSameDate) {
-        // Rule 1: The start and end time of the new appointment cannot be equal to the start and end time of the existing appointment
-        if (newStart.getTime() === existingStart.getTime() && newEnd.getTime() === existingEnd.getTime()) {
-            console.log('Conflict Detected: Rule 1');
-            return true; // Conflict
+        const isSameDate = (
+            newStart.getFullYear() === existingStart.getFullYear() &&
+            newStart.getMonth() === existingStart.getMonth() &&
+            newStart.getDate() === existingStart.getDate()
+        );
+
+        console.log('Is Same Date:', isSameDate);
+
+        // Check if it is on the same date
+        if (isSameDate) {
+            // Rule 1: The start and end time of the new appointment cannot be equal to the start and end time of the existing appointment
+            if (newStart.getTime() === existingStart.getTime() && newEnd.getTime() === existingEnd.getTime()) {
+                console.log('Conflict Detected: Rule 1');
+                return true; // Conflict
+            }
+
+            // Rule 2: Even if the start time of the new appt is less than the start time of the existing appointment,
+            // the end time of the new appt cannot be in between the start and end time of the existing appt
+            if (newStart.getTime() < existingStart.getTime() && newEnd.getTime() > existingStart.getTime() && newEnd.getTime() <= existingEnd.getTime()) {
+                console.log('Conflict Detected: Rule 2');
+                return true; // Conflict
+            }
+
+            // Rule 3: Even if the end time of the new appt is more than the end time of the existing appointment,
+            // the start time of the new appt cannot be in between the start and end time of the existing appt
+            if (newEnd.getTime() > existingEnd.getTime() && newStart.getTime() >= existingStart.getTime() && newStart.getTime() < existingEnd.getTime()) {
+                console.log('Conflict Detected: Rule 3');
+                return true; // Conflict
+            }
+
+            // Rule 4: The start time and end time of the new appointment cannot be in between the start and end time of the existing appointment.
+            if (newStart.getTime() >= existingStart.getTime() && newEnd.getTime() <= existingEnd.getTime()) {
+                console.log('Conflict Detected: Rule 4');
+                return true; // Conflict
+            }
+        }
+        else{
+            console.log('No Conflict Detected: Appointment does not conflict with existing appointments.');
+            return false;
         }
 
-        // Rule 2: Even if the start time of the new appt is less than the start time of the existing appointment,
-        // the end time of the new appt cannot be in between the start and end time of the existing appt
-        if (newStart.getTime() < existingStart.getTime() && newEnd.getTime() > existingStart.getTime() && newEnd.getTime() <= existingEnd.getTime()) {
-            console.log('Conflict Detected: Rule 2');
-            return true; // Conflict
-        }
-
-        // Rule 3: Even if the end time of the new appt is more than the end time of the existing appointment,
-        // the start time of the new appt cannot be in between the start and end time of the existing appt
-        if (newEnd.getTime() > existingEnd.getTime() && newStart.getTime() >= existingStart.getTime() && newStart.getTime() < existingEnd.getTime()) {
-            console.log('Conflict Detected: Rule 3');
-            return true; // Conflict
-        }
-
-        // Rule 4: The start time and end time of the new appointment cannot be in between the start and end time of the existing appointment.
-        if (newStart.getTime() >= existingStart.getTime() && newEnd.getTime() <= existingEnd.getTime()) {
-            console.log('Conflict Detected: Rule 4');
-            return true; // Conflict
-        }
+        console.log('Rule 1:', newStart.getTime() === existingStart.getTime() && newEnd.getTime() === existingEnd.getTime());
+        console.log('Rule 2:', newStart.getTime() < existingStart.getTime() && newEnd.getTime() > existingStart.getTime() && newEnd.getTime() <= existingEnd.getTime());
+        console.log('Rule 3:', newEnd.getTime() > existingEnd.getTime() && newStart.getTime() >= existingStart.getTime() && newStart.getTime() < existingEnd.getTime());
+        console.log('Rule 4:', newStart.getTime() >= existingStart.getTime() && newEnd.getTime() <= existingEnd.getTime());
+        
     }
-
-    console.log('No Conflict Detected: Appointment does not conflict with existing appointments.');
-    return false; // No conflict
-}
-
-    
      // CREATE NEW APPOINTMENT
      static async create(appData){ 
         try {
@@ -130,9 +141,12 @@ static async checkConflict(newStart, newEnd, existingAppointment) {
 
             //const tutorAppointments = await searchItem('Appointment', 'tutorId', tutoruserid)
             //console.log('Type of tutorAppointments:', typeof tutorAppointments);
-            const studentAppointments = SessionService.getAllAppointmentsByUser(studentUsername, 'studentId')
+            const studentAppointments = await searchItem('Appointment', 'studentId', studentuserid)
             console.log('Type of studentAppointments:', typeof studentAppointments);
-            const studentAppointmentsArray = Object.values(studentAppointments);
+            
+            // Extract the inner values (appointments) from the returned object
+            const studentAppointmentsArray = Object.values(studentAppointments).map(innerObj => innerObj);
+            console.log(studentAppointmentsArray);
             
             // Convert appointment length from minutes to hours
             const minutes = data.length;
@@ -167,12 +181,29 @@ static async checkConflict(newStart, newEnd, existingAppointment) {
             console.log("New Appointment End Date: " + endDate);
             console.log("New Appointment End Time: " + endTime);
             
-            // Check for conflicts with existing appointments
+            let hasConflict = false;
+
             for (const existingAppointment of studentAppointmentsArray) {
-                if (SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, existingAppointment)) {
-                    throw new CustomError("Student has a conflict for either the time or the day, appointment cannot be created", 400);
-                }
+              console.log('Checking conflict for existing appointment:', existingAppointment);
+              console.log(existingAppointment.datetime);
+            
+              const conflictResult = await SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, existingAppointment);
+            
+              console.log('Conflict Result:', conflictResult);
+            
+              if (conflictResult) {
+                hasConflict = true;
+                console.log('Conflict Detected!');
+                // No need to throw an error here, just log the conflict.
+                // You can decide what action to take after checking all appointments.
+              }
             }
+            
+            if (hasConflict) {
+              throw new CustomError("Student has a conflict for either the time or the day, appointment cannot be created", 400);
+            }
+            
+             
 
              /*for (const appointment of tutorAppointments) {
                 if (SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, appointment)) {
