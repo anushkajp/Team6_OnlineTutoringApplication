@@ -111,14 +111,14 @@ class TutorService {
             // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
             for (const key in tutor) {
                 if (tutor[key] === undefined)
-                    tutor[key] = null
+                    tutor[key] = propertyMap[key]
             }
             // LOOP THROUGH AVAILABILITY AND SET TO NULL
             console.log(tutor)
             tutor.availability = new Availability()
             for (const key in tutor.availability) {
                 if (tutor.availability[key] === undefined)
-                tutor.availability[key] = null
+                    tutor.availability[key] = false
             }
             console.log(tutor)
             const tutorInfo = await add.addTutor(tutor)
