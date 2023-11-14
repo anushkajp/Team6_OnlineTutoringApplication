@@ -3,6 +3,7 @@ const USER = 'User'
 const USERNAME = 'username'
 const CustomError = require ('../utils/customError')
 const bcrypt = require ("bcryptjs")
+const read = require ('../db/read')
 
 class LoginService {
     static async login (info) {
@@ -12,29 +13,23 @@ class LoginService {
         const obj = await searchItem(USER, USERNAME, username)
         const user = Object.values(obj)[0]
         const userId = Object.keys(obj)[0]
+        const hashedPassword = user.password
         console.log(username)
         console.log(plainPassword)
         console.log(userId)
-        if (user.username === username) {
-
-            // Generate a salt
-            const saltRounds = 10;
-            const salt = bcrypt.genSaltSync(saltRounds);
-
-            // Hash the password using the generated salt
-            const hashedPassword = bcrypt.hashSync(plainPassword, salt);
-            console.log(salt)
-            console.log(hashedPassword)
-            // PASSWORD MATCHES
-            if (hashedPassword === user.password) {
-                let type = await getTutor(userId)
-                if (Object.keys(type).length>0)
-                    return "tutor"
-                type = await getStudent(userId)
-                if (Object.keys(type).length>0)
-                    return "student"
-                throw new CustomError("User is not defined as tutor or student", 500)
-            }
+        console.log(hashedPassword)
+        // CHECK IF PASSWORD COMPARES WITH HASHED PASSWORD
+        if (bcrypt.compare(plainPassword, hashedPassword)) {
+            // GET STUDENT BASED ON USERID
+            const student = await read.getStudent(userId)
+            const tutor = await read.getTutor(userId)
+            // USER IS A STUDENT
+            if (student.userId === userId) {
+                return "student"
+            } else if (tutor.userId === userId) {
+                return "tutor"
+            } else
+                throw new CustomError("User is not a tutor or student", 500)
 
         }
         throw new CustomError("Username or password is incorrect", 400)
