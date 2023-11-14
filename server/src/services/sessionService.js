@@ -229,8 +229,6 @@ class SessionService {
                 throw new CustomError("Both student and tutor are unavailable, appointment cannot be created!!", 400);
               }
 
-
-
             //update tutor hours
             if (userTutor.hours != null) {
                 console.log(`Tutor hours: ${userTutor.hours}`)
@@ -346,6 +344,21 @@ class SessionService {
     try {
         const deletedAppt = await deleteAppointment(apptId);
         console.log("SessionService.delAppointment() = " + JSON.stringify(deletedAppt) + "\n")
+        /*
+        const minutes = deletedAppt.length;
+        const hours = minutes / 60;
+
+        const userTutor = await searchItem('User', 'userId', deletedAppt.tutorId)
+        const userStudent = await searchItem('User', 'userId', deletedAppt.studentId)       
+
+        //update tutor hours
+        const tutorHours = userTutor.hours - hours;
+        await updateUserHours(deletedAppt.tutorId, tutorHours);
+
+        //update student hours
+        const studentHours = userStudent.hours - hours
+        await updateUserHours(deletedAppt.studentId, studentHours) */     
+
             if (deletedAppt === null) {
                 return null;
             }else {
