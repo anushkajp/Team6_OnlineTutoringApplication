@@ -9,6 +9,7 @@ const EMAIL = 'email'
 const CustomError = require ('../utils/customError')
 const Tutor = require ('../models/tutor')
 const Availability = require ('../models/availability')
+const bcrypt = require ("bcryptjs")
 
 class TutorService {
     // GET ALL
@@ -89,8 +90,13 @@ class TutorService {
             if (Object.keys(emailResult).length > 0)         
                 throw new CustomError("Email already in use", 400)
             
+            // HASH PASSWORD
+            const saltRounds = 10
+            const salt = bcrypt.genSaltSync(saltRounds)
+            const hashedPassword = await bcrypt.hash(data.password, salt)
+            data.password = hashedPassword
+
             // ADD NEW STUDENT TO DB
-            
             console.log(data)
             let tutor = new Tutor();
             const propertyMap = Tutor.toObj();
@@ -142,8 +148,14 @@ class TutorService {
             // SEE WHAT CHANGED IN UPDATETUTOR AND CALL CORRESPONDING DB FUNCTION
             if (data.major != null)
                 update.updateUserMajor(id, data.major)
-            if (data.password != null)
-                update.updateUserPassword(id, data.password)
+            if (data.password != null) {
+                // HASH PASSWORD
+                const saltRounds = 10
+                const salt = bcrypt.genSaltSync(saltRounds)
+                const hashedPassword = await bcrypt.hash(data.password, salt)
+                update.updateUserPassword(id, hashedPassword)
+            }
+                
             if (data.longBio != null)
                 update.updateUserLongBio(id, data.longBio)
             if (data.shortBio != null)

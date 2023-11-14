@@ -6,6 +6,7 @@ const {searchItem} = require ('../db/db')
 const deletes = require("../db/delete")
 const Student = require ('../models/student')
 const CustomError = require ('../utils/customError')
+const bcrypt = require ("bcryptjs")
 const USER = 'User'
 const USERNAME = 'username'
 const EMAIL = 'email'
@@ -59,15 +60,26 @@ class StudentService {
         const data = JSON.parse(studentData)
         const userResult = await searchItem(USER, USERNAME, data.username)     // FIND IF ANOTHER USER HAS SAME USERNAME
         const emailResult = await searchItem(USER, EMAIL, data.email)
-        console.log("\nStudentService.create result: " + result)
+        // console.log("\nStudentService.create result: " + result)
         
         // STUDENT WITH USERNAME ALREADY EXISTS
         if ( Object.keys(userResult).length > 0)
             throw new CustomError("Username already exists", 400)
 
         // STUDENT WITH EMAIL ALREADY EXISTS
-        if ( Object.keys(emailResult).length === 1)
+        if ( Object.keys(emailResult).length > 0)
             throw new CustomError("Email already in use", 400)
+
+        // HASH PASSWORD
+        console.log("hello there?")
+        const saltRounds = 10
+        console.log(saltRounds)
+        const salt = bcrypt.genSaltSync(saltRounds)
+        const hashedPassword = await bcrypt.hash(data.password, salt)
+        data.password = hashedPassword
+
+        console.log(salt)
+        console.log(hashedPassword)
         
         let student = new Student()
         console.log(typeof student)
@@ -90,8 +102,8 @@ class StudentService {
         // ADD NEW STUDENT TO DB
         console.log(student)
         const studentInfo = await adds.addStudent(student)
-        console.log("StudentInfo " + studentInfo)
-        // return studentInfo
+        console.log(studentInfo)
+        return (await this.getOne(data.username))
     }
     // patch: UPDATE STUDENT
     static async update(username, studentData) {
@@ -116,8 +128,12 @@ class StudentService {
             console.log("Student id: " + id + "\n")
             
             // REPLACE OLD VALUES WTIH NEW FROM USERID
-            if (data.password != null)
-                await updateUserPassword(id, data.password)
+            if (data.password != null) {
+                const saltRounds = 10
+                const salt = bcrypt.genSaltSync(saltRounds)
+                const hashedPassword = await bcrypt.hash(data.password, salt)
+                updateUserPassword(id, hashedPassword)
+            }
             if (data.userName != null)
                 await updateUsername(id, data.userName)
             // if (data.courses != null)
