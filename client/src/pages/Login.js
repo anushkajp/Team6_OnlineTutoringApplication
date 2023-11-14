@@ -14,7 +14,10 @@ import User from "../models/user"
 const Login = () => {
   Cookies.set()
   const labelData = {
-    username:{"label":"Username"},
+    username:{"label":"Username",
+              "regex":"",
+              "limit":""
+            },
     password:{"label":"Password"}
   }
   const [hash, setHash] = useState("");
