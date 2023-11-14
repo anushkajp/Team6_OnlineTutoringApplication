@@ -3,15 +3,23 @@ import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs-react"
-import { fetchFromAPI } from '../services/api'
+import { uploadToAPI, fetchFromAPI } from '../services/api'
+import Cookies from 'js-cookie'
+import CreateFields from "../components/CreateFields";
+import User from "../models/user"
 // no functionality yet, just UI
 // need to add functionality with firebase auth
-// not completely responsive yet
+// not completely re sponsive yet
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  Cookies.set()
+  const labelData = {
+    email:{"label":"Email"},
+    password:{"label":"Password"}
+  }
   const [hash, setHash] = useState("");
+  const initialUser = new User();
+  const [user , setUser] = useState(initialUser)
 
   // const [data, setData] = useState({
   //   email:'',
@@ -23,8 +31,8 @@ const Login = () => {
   const navigate = useNavigate();
 
 
-  const hashPassword = async() =>{
-    const hash = await new Promise((resolve, reject)=> {
+  const hashPassword = async(password) =>{
+    const gennedHash = await new Promise((resolve, reject)=> {
       bcrypt.hash(password,10,function(error, hash){
         if(error){
           reject(error)
@@ -35,21 +43,31 @@ const Login = () => {
         
       })
     })
-    console.log("Hash generated: "+hash)
-    setHash(hash)
-
+    // console.log("Hash generated: "+gennedHash)
+    
+    return gennedHash
     // return hash
   }
 
-  const comparePassword = async()=>{
-    console.log(await bcrypt.compare(password,hash))
-  }
+  // const comparePassword = async()=>{
+  //   console.log(await bcrypt.compare(password,hash))
+  // }
 
   const handleSubmit = (e) =>{
-    console.log(password)
-    hashPassword(password)
-    console.log(hash)
-    comparePassword()
+    e.preventDefault();
+    console.log("Form data submitted:", user);
+    (async ()=>{
+      try{
+      const pwdHash = await hashPassword(user.password)
+      user.password=  pwdHash
+      const data = await uploadToAPI("login/",user)
+      console.log(data)
+      }catch(e){
+        console.log(e)
+      }
+      
+    })()
+
   }
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
@@ -92,36 +110,7 @@ const Login = () => {
             <br></br>
 
             <form className="fields-container">
-              <input
-                className="field"
-                placeholder="Enter email"
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={(e)=>{
-                  setEmail(e.target.value)
-
-                }}
-                required
-              />
-
-              <br></br>
-
-              <input
-                className="field"
-                placeholder="Enter Password"
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                onChange={(e)=>{
-                  setPassword(e.target.value)
-                  hashPassword()
-                }}
-                // onInputCapture={el =>{console.log(el)}}
-                required
-              />
+              {CreateFields(user, setUser, labelData)}
 
               <br></br>
               <br></br>
