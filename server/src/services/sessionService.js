@@ -297,6 +297,7 @@ class SessionService {
         const data = JSON.parse(apptData)
         console.log("\nData has been parsed\n")
 
+        /*
         const username = data.studentId
         const result = await searchItem(USER, USERNAME, username) 
 
@@ -304,33 +305,34 @@ class SessionService {
         throw new CustomError("The userid does not exist", 400)
 
         const patchStudentId = Object.keys(result)[0]
-        console.log("Updated Student id: " + patchStudentId + "\n")
+        console.log("Updated Student id: " + patchStudentId + "\n")*/
         
         // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM APPOINTMENTID
-        //need to check if this should be done
+        //below are not being done
+        //need notification system
+        /*
         if (data.datetime != null)
             await updateAppDateTime(id, data.datetime)
-        /*
         if (data.length != null)
             await updateAppLength(id, data.length)
-        */
-        // for the below 4 need to check if null should even be used, since 
-        //when the appt is created these can be null
         if (data.online != null)
             await updateAppMedium(id, data.online)
         if (data.location != null)
             await updateAppLocation(id, data.location)
+        */
+        //need to check logic for this
         if (data.feedback != null)
             await updateAppFeedback(id, data.feedback)
         if (data.tutorNotes != null)
             await updateAppTutorNotes(id, data.tutorNotes)
         if (data.studentNotes != null)
             await updateAppStudentNotes(id, data.studentNotes)
-        //not sure if this works properly
+        
         //not required and cannot change anymore
         /*
         if (data.studentId != null)
-            await updateAppUserId(id, patchStudentId)*/            
+            await updateAppUserId(id, patchStudentId)
+        */            
         
         // Fetch the updated appointment and return
         return await getAppointment(id)
