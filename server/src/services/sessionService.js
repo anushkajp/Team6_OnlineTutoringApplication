@@ -139,11 +139,14 @@ class SessionService {
             const tutoruserid = Object.keys(userTutor)[0]
             const studentuserid = Object.keys(userStudent)[0]
 
-            //const tutorAppointments = await searchItem('Appointment', 'tutorId', tutoruserid)
-            //console.log('Type of tutorAppointments:', typeof tutorAppointments);
-            const studentAppointments = await searchItem('Appointment', 'studentId', studentuserid)
-            console.log('Type of studentAppointments:', typeof studentAppointments);
+            const tutorAppointments = await searchItem('Appointment', 'tutorId', tutoruserid)
+            console.log('Type of tutorAppointments:', typeof tutorAppointments);
+            const tutorAppointmentsArray = Object.values(tutorAppointments).map(innerObj => innerObj);
+            console.log(tutorAppointmentsArray);
+
             
+            const studentAppointments = await searchItem('Appointment', 'studentId', studentuserid)
+            console.log('Type of studentAppointments:', typeof studentAppointments);            
             // Extract the inner values (appointments) from the returned object
             const studentAppointmentsArray = Object.values(studentAppointments).map(innerObj => innerObj);
             console.log(studentAppointmentsArray);
@@ -181,8 +184,24 @@ class SessionService {
             console.log("New Appointment End Date: " + endDate);
             console.log("New Appointment End Time: " + endTime);
             
-            let hasConflict = false;
+            let hasConflictTutor = false;
+            let hasConflictStudent = false;
 
+            for (const existingAppointment of tutorAppointmentsArray) {
+                console.log('Checking conflict for existing appointment:', existingAppointment);
+                console.log(existingAppointment.datetime);
+              
+                const conflictResult = await SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, existingAppointment);
+              
+                console.log('Conflict Result:', conflictResult);
+              
+                if (conflictResult) {
+                  hasConflictTutor = true;
+                  console.log('Conflict Detected!');
+                }
+              }
+
+            
             for (const existingAppointment of studentAppointmentsArray) {
               console.log('Checking conflict for existing appointment:', existingAppointment);
               console.log(existingAppointment.datetime);
@@ -192,26 +211,26 @@ class SessionService {
               console.log('Conflict Result:', conflictResult);
             
               if (conflictResult) {
-                hasConflict = true;
+                hasConflictStudent = true;
                 console.log('Conflict Detected!');
-                // No need to throw an error here, just log the conflict.
-                // You can decide what action to take after checking all appointments.
               }
             }
-            
-            if (hasConflict) {
-              throw new CustomError("Student has a conflict for either the time or the day, appointment cannot be created", 400);
-            }
-            
-             
 
-             /*for (const appointment of tutorAppointments) {
-                if (SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, appointment)) {
-                    throw new CustomError("Tutor has conflict for either the time or the day, appointmnet cannot be created", 400)
-                }
-            } */
-         
+            /*if (hasConflictTutor) {
+                throw new CustomError("Tutor has a conflict for either the time or the day, appointment cannot be created", 400);
+              } */
             
+            
+            if (hasConflictStudent && !hasConflictTutor) {
+                throw new CustomError("Student has a conflict for either the time or the day, appointment cannot be created", 400);
+              } else if (!hasConflictStudent && hasConflictTutor) {
+                throw new CustomError("Tutor has a conflict for either the time or the day, appointment cannot be created", 400);
+              } else if (hasConflictStudent && hasConflictTutor) {
+                throw new CustomError("Both student and tutor are unavailable, appointment cannot be created!!", 400);
+              }
+
+
+
             //update tutor hours
             if (userTutor.hours != null) {
                 console.log(`Tutor hours: ${userTutor.hours}`)
