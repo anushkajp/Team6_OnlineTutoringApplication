@@ -1,6 +1,7 @@
 const {searchItem} = require ('../db/db')
 const USER = 'User'
 const USERNAME = 'username'
+const EMAIL = 'email'
 const CustomError = require ('../utils/customError')
 const bcrypt = require ("bcryptjs")
 const read = require ('../db/read')
@@ -10,10 +11,13 @@ class LoginService {
         const data = JSON.parse(info)
         const username = data.username
         const plainPassword = data.password
+        const email = data.email
         const obj = await searchItem(USER, USERNAME, username)
+        const obj2 = await searchItem(USER, EMAIL, email)
         const user = Object.values(obj)[0]
         const userId = Object.keys(obj)[0]
         const hashedPassword = user.password
+        
         console.log(username)
         console.log(plainPassword)
         console.log(userId)

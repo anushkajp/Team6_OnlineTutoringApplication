@@ -54,31 +54,31 @@ class Tutor extends User {
     }
     static toObj() {
         return {
-            firstName: null,
-            lastName: null,
-            password: null,
-            username: null,
-            courses: null,
-            phone: null,
-            email: null,
-            major: null,
-            hours: null,
-            longBio: null,
-            shortBio: null,
-            pfp: null,
-            userId: null,
-            rating: null,
+            firstName: "",
+            lastName: "",
+            password: "",
+            username: "",
+            courses: false,
+            phone: "",
+            email: "",
+            major: "",
+            hours: 0,
+            longBio: "",
+            shortBio: "",
+            pfp: "",
+            userId: "",
+            rating: 0,
             availability: {
-                monday: null,
-                tuesday: null,
-                wednesday: null,
-                thursday: null,
-                friday: null,
-                saturday: null,
-                sunday: null,
-                exceptions: null
+                monday: [],
+                tuesday: [],
+                wednesday: [],
+                thursday: [],
+                friday: [],
+                saturday: [],
+                sunday: [],
+                exceptions: []
             },
-            bgCheck: null
+            bgCheck: false
         };
     }
 }

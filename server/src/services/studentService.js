@@ -96,7 +96,7 @@ class StudentService {
         // // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
         for (const key in student) {
             if (student[key] === undefined)
-                student[key] = null
+                student[key] = propertyMap[key]
         }
             
         // ADD NEW STUDENT TO DB
@@ -146,7 +146,6 @@ class StudentService {
                     throw new CustomError("Email already in use", 400)
                 await updateUserEmail(id, data.email)
             }
-                
             if (data.major != null)
                 await updateUserMajor(id, data.major)
             if (data.longBio != null)
