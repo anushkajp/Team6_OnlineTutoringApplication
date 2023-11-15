@@ -27,10 +27,11 @@ class LoginService {
             // GET STUDENT BASED ON USERID
             const student = await read.getStudent(userId)
             const tutor = await read.getTutor(userId)
+            console.log(Object.keys(tutor)[0])
             // USER IS A STUDENT
             if (student.userId === userId) {
                 return "student"
-            } else if (tutor.userId === userId) {
+            } else if (Object.keys(tutor).length > 0) {
                 return "tutor"
             } else
                 throw new CustomError("User is not a tutor or student", 500)
