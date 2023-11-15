@@ -15,40 +15,20 @@ const { updateAppReview, updateRating, updateAppUserId} = require ('../db/update
 
 class ReviewService {
       // GET ALL
-    //   static async getAll() {
-    //     try {          
-    //         const reviews = await getReviews()
-    //         console.log("SessionService.getAll() = " + JSON.stringify(reviews) + "\n")
-    //         return reviews
-    //     } catch (err) {
-    //         throw err
-    //     }
-    // }
-
     static async getAll() {
         try {          
             const reviews = await getReviews();
-            
             // Transform the data structure and filter unnecessary information
             const transformedReviews = Object.entries(reviews).map(([id, review]) => {
                 const { description, rating, studentId, tutorId } = review;
                 const tutorUsername = data.tutorId
                 const studentUsername = data.studentId
-        
-                const userTutor = searchItem('User', 'username', tutorUsername)
-                const userStudent = searchItem('User', 'username', studentUsername)
-        
-                const tutoruserid = Object.keys(userTutor)[0]
-                const studentuserid = Object.keys(userStudent)[0]
-    
                 return {
                     id,
-                    description,
-                    rating,
                     studentId,
-                    tutorId
-                    // studentId: studentUsername,
-                    // tutorId: tutorUsername,
+                    tutorId,
+                    rating,
+                    description
                 };
             });
     
@@ -83,6 +63,7 @@ class ReviewService {
                 rating,
                 description
             };
+            console.log(result)
             return result
         }
             // REVIEW NOT FOUND
@@ -94,88 +75,98 @@ class ReviewService {
         }
     }
 
-
-    static async create(reviewData) {
-
-        console.log("\n[ ReviewService.create ]\n")
-        const data = JSON.parse(reviewData)
-
-        const tutorUsername = data.tutorId
-        const studentUsername = data.studentId
-
-        const userTutor = await searchItem('User', 'username', tutorUsername)
-        const userStudent = await searchItem('User', 'username', studentUsername)
-
-        const tutoruserid = Object.keys(userTutor)[0]
-        const studentuserid = Object.keys(userStudent)[0]
-        
-        
-        let review = new Review()
-        review.tutorId = tutoruserid;
-        review.studentId = studentuserid;
-
-        const propertyMap = Review.toObj();
-
-        // Loop through the data object and set the corresponding properties
-        for (const key in propertyMap) {
-            console.log(key)
-            if (data.hasOwnProperty(key)) {
-               review[key] = data[key];
-            }
-        }
-        // // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
-        for (const key in review) {
-            if (review[key] === undefined)
-                review[key] = null
-        }
-            
-        // ADD NEW STUDENT TO DB
-        console.log(review)
-        const reviewInfo = await adds.addReview(review)
-        console.log("ReviewInfo " + reviewInfo)
-        return reviewInfo
-    }
-    
-    static async update(reviewID, newReviewData) {
+    static async create(reviewData){ 
         try {
-            console.log("\nReviewService.update\n")
-            const data = JSON.parse(newReviewData)
-            console.log("\nData has been parsed\n")
+            console.log("\nReviewService.create\n")
+            const data = JSON.parse(reviewData)
+          
+            //retirieving student and tutor usernames
+            const tutorUsername = data.tutorId
+            const studentUsername = data.studentId
+
+            console.log(tutorUsername)
+            console.log(studentUsername)
+           
+
+            let review = new Review()
+            review.tutorId = tutorUsername;
+            review.studentId = studentUsername ;
+ 
+
+            console.log(review.tutorId+" :::" + review.studentId)
+                        
+            const propertyMap = {
+                
+                tutorId: null,
+                studentId: null,
+                rating: null,
+                description: null
+            };
     
-            const username = data.studentId
-            const result = await searchItem(USER, USERNAME, username) 
-    
-            // USER IS FOUND, NOT NECESSARILY A STUDENT
-            if (Object.keys(result).length > 0) {
-                // GET STUDENT BASED ON USERID
-                const student = await read.getStudent(Object.keys(result)[0])
-                console.log(student.userId)
-                console.log(typeof student.userId)
-                // USER IS A TUTOR
-                if (student.userId === undefined) {
-                    throw new CustomError("User is not a student", 400)
+            // Loop through the data object and set the corresponding properties
+            for (const key in propertyMap) {
+                // Skip tutorId and studentId
+                if (key !== 'tutorId' && key !== 'studentId' && data.hasOwnProperty(key)) {
+                    review[key] = data[key];
                 }
             }
-            else{
-                throw new CustomError("User not found", 400)
-            }
+            // LOOP THROUGH OBJ, ANY UNDEFINED REPLACCE WITH NULL
+            for (const key in review) {
+                if (review[key] === undefined)
+                review[key] = null
+            }              
+                
+            // ADD NEW SESSION TO DB
+            console.log(review)
 
-
-            const patchStudentId = Object.keys(result)[0]
-            console.log("Updated Student id: " + patchStudentId + "\n")
-
-            if (data.rating != null)
-                await updateRating(reviewID, data.rating);
-            if (data.description != null)
-                await updateAppReview(reviewID, data.description);      
-            if (data.studentId != null)
-            await updateAppUserId(reviewID, patchStudentId)        
-            
-            return await getReview(reviewID);
-    
-        }catch{
-            throw new CustomError("Error updating review", 400)
+            const reviewInfo = await addReview(review)
+            console.log("ReviewInfo " + reviewInfo)
+            return reviewInfo
+        }catch (e) {
+            throw e
         }
+    } 
+    
+    static async update(reviewID, newReviewData) {
+        // try {
+        //     console.log("\nReviewService.update\n")
+        //     const data = JSON.parse(newReviewData)
+        //     console.log("\nData has been parsed\n")
+    
+        //     const username = data.studentId
+        //     const result = await searchItem(USER, USERNAME, username) 
+    
+        //     // USER IS FOUND, NOT NECESSARILY A STUDENT
+        //     if (Object.keys(result).length > 0) {
+        //         // GET STUDENT BASED ON USERID
+        //         const student = await read.getStudent(Object.keys(result)[0])
+        //         console.log(student.userId)
+        //         console.log(typeof student.userId)
+        //         // USER IS A TUTOR
+        //         if (student.userId === undefined) {
+        //             throw new CustomError("User is not a student", 400)
+        //         }
+        //     }
+        //     else{
+        //         throw new CustomError("User not found", 400)
+        //     }
+
+
+        //     const patchStudentId = Object.keys(result)[0]
+        //     console.log("Updated Student id: " + patchStudentId + "\n")
+
+        //     if (data.rating != null)
+        //         await updateRating(reviewID, data.rating);
+        //     if (data.description != null)
+        //         await updateAppReview(reviewID, data.description);      
+        //     if (data.studentId != null)
+        //     await updateAppUserId(reviewID, patchStudentId)        
+            
+        //     return await getReview(reviewID);
+    
+        // }catch{
+        //     throw new CustomError("Error updating review", 400)
+        // }
 
     }
 
