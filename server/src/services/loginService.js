@@ -30,7 +30,7 @@ class LoginService {
             // USER IS A STUDENT
             if (student.userId === userId) {
                 return "student"
-            } else if (tutor.userId === userId) {
+            } else if (Object.keys(tutor).length > 0) {
                 return "tutor"
             } else
                 throw new CustomError("User is not a tutor or student", 500)

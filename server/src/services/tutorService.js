@@ -36,26 +36,23 @@ class TutorService {
         console.log("\n[ TutorService.getone ]\n")
 
         // SEARCH FOR USER W USERNAME
-        console.log(id)
         const search = await searchItem(USER, USERNAME, id)
+        const userId = Object.keys(search)[0]
         console.log(await search)
         
         // USER FOUND
         if (Object.keys(search).length === 1) {
 
             // DETERMINE IF USER IS A TUTOR
-            const tutorAdds = await read.getTutor(Object.keys(search)[0])
-            const tutorId = await searchItem()
-            console.log(Object.keys(search)[0])
-            console.log(tutorAdds)
-            console.log(tutorAdds.userId)
+            const tutorAdds = await read.getTutor(userId)
+            
             // USER IS A STUDENT
             if (tutorAdds === undefined) {
                 throw new CustomError("User is not a tutor", 400)
             }
 
             // COMBINE TUTOR INFO AND THE TUTOR ADD ONS
-            search[Object.keys(search)[0]] = {...search[Object.keys(search)[0]], ...tutorAdds}
+            search[userId] = {...search[userId], ...tutorAdds}
             
             // POPULATE TUTOR OBJECT 
             return search
