@@ -62,22 +62,38 @@ class ReviewService {
 
 
     // GET ONE REVIEW BY ID 
-    static async getOne(reviewId) {
-        console.log("\n[ ReviewService.getone ]\n")
-
-        // SEARCH FOR REVIEW 
-        const review = await read.getReview(reviewId)
-        console.log(await search)
-
-        // REVIEW FOUND
-        if (Object.keys(search).length > 0) {
-            return search
+    static async getOne(id) {
+        try {
+            console.log("\n[ ReviewService.getOne ]\n")
+            const review = await getReview(id)
+            // REVIEW FOUND
+            if (Object.keys(review).length > 0){
+                //return review
+               // Extract only the required fields
+               const {
+                tutorId,
+                studentId,
+                rating,
+                description
+            } = review;
+            
+            const result = {
+                tutorId,
+                studentId,
+                rating,
+                description
+            };
+            return result
         }
-        // REVIEW NOT FOUND
-        else{
-            throw new CustomError("Review not found", 400)
-        }    
+            // REVIEW NOT FOUND
+            else {
+                throw new CustomError("Review not found", 400)
+            }  
+        }catch (err){
+            throw err
+        }
     }
+
 
     static async create(reviewData) {
 
@@ -162,20 +178,6 @@ class ReviewService {
         }
 
     }
-    //DELETE A REVIEW
-    // static async delete(reviewId) {
-    //     try {
-    //         const reviewDelete = await deleteReview(reviewId);
-    //         console.log("ReviewService.delReview() = " + JSON.stringify(reviewDelete) + "\n")
-    //             if (reviewDelete === null) {
-    //                 return null;
-    //             }else {
-    //                 return reviewDelete;
-    //             }
-    //         }catch (error) {
-    //                 throw new CustomError("Error deleting the review: ", 400)
-    //         }
-    // }
 
     static async deleteReview(reviewId) {
         try {

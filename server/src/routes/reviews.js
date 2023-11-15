@@ -15,14 +15,21 @@ router.get('/', async (req,res) => {
     }
 });
 // GET ONE
-router.get('/:reviewId', (req, res) => {
-    try {
-        const review = ReviewService.getOne(req.body.appointmentId)
-        res.status(200).json(review)
-    }catch (err){
-        res.status(500).json({ message: err.message});
-    }
+router.get('/:id', async(req, res) => {
+    (async () =>{
+        try {
+            const review = await ReviewService.getOne(req.params.id)
+            console.log("\nReview routes.get(/:id): Session: " + review)
+            if (review === false)
+                res.status(400).json({message: "Review does not exist"})
+            else 
+                res.status(200).json(review)
+        }catch (err){
+            res.status(500).json({ message: err.message});
+        }
+    })()
 });
+
 // CREATE ONE
 router.post('/', bodyParser, async(req, res) => {
     try {
