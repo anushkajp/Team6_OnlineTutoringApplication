@@ -91,6 +91,16 @@ module.exports = {
         return modifyItem("User",userId,"courses",newUserCourses)
     },
 
+     /**
+     * Update the student hours
+     * @param {string} studentId Database id for the user
+     * @param {number} newTotalHours New hours for the student
+     */
+    /*
+     updateStudentHours: async function updateStudentHours(studentId, newTotalHours) {
+        return modifyItem("Student",studentId,"hours", newTotalHours)
+    },*/
+
 
     /**
      * Update the tutor background check
@@ -104,12 +114,12 @@ module.exports = {
 
 
     /**
-     * Update the tutor hours
-     * @param {string} tutorId Database id for the user
-     * @param {number} newTotalHours New hours for the tutor
+     * Update the user hours
+     * @param {string} userId Database id for the user
+     * @param {number} newTotalHours New hours for the user
      */
-    updateTutorHours: async function updateTutorHours(tutorId, newTotalHours) {
-        return modifyItem("Tutor",tutorId,"totalHours", newTotalHours)
+    updateUserHours: async function updateUserHours(userId, newTotalHours) {
+        return modifyItem("User",userId,"hours", newTotalHours)
     },
 
 
@@ -197,14 +207,17 @@ module.exports = {
     },
 
 
-        /**
+    /**
      * Update the appointment length in minutes
      * @param {string} appointmentId Database id for the appointment
      * @param {number} newLength New appointment length in minutes
      */
+    //might not need to this, since length should not be updated
+    //it can cause time conflicts
+    /*
     updateAppLength: async function updateAppLength(appointmentId, newLength){
         return modifyItem("Appointment",appointmentId,"length",newLength)
-    },
+    },*/
 
 
     /**
