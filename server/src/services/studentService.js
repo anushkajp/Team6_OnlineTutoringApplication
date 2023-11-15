@@ -36,18 +36,19 @@ class StudentService {
         console.log("\n[ StudentService.getOne ]\n")
         // SEARCH FOR USER W USERNAME
         const search = await searchItem(USER, USERNAME, id)
+        const userId = Object.keys(search)[0]
 
         // USER IS FOUND, NOT NECESSARILY A STUDENT
         if (Object.keys(search).length > 0) {
 
             // GET STUDENT BASED ON USERID
-            const student = await read.getStudent(Object.keys(search)[0])
-            console.log(student.userId)
-            console.log(typeof student.userId)
+            const studentAdds = await read.getStudent(userId)
             // USER IS A TUTOR
             if (student.userId === undefined) {
                 throw new CustomError("User is not a student", 400)
             }
+            // APPEND ADD ONS TO STUDENT OBJECT
+            search[userId] = {...search[userId], ...studentAdds}
             return search
         }
         else
@@ -60,7 +61,6 @@ class StudentService {
         const data = JSON.parse(studentData)
         const userResult = await searchItem(USER, USERNAME, data.username)     // FIND IF ANOTHER USER HAS SAME USERNAME
         const emailResult = await searchItem(USER, EMAIL, data.email)
-        // console.log("\nStudentService.create result: " + result)
         
         // STUDENT WITH USERNAME ALREADY EXISTS
         if ( Object.keys(userResult).length > 0)
@@ -71,9 +71,7 @@ class StudentService {
             throw new CustomError("Email already in use", 400)
 
         // HASH PASSWORD
-        console.log("hello there?")
         const saltRounds = 10
-        console.log(saltRounds)
         const salt = bcrypt.genSaltSync(saltRounds)
         const hashedPassword = await bcrypt.hash(data.password, salt)
         data.password = hashedPassword
@@ -82,28 +80,29 @@ class StudentService {
         console.log(hashedPassword)
         
         let student = new Student()
-        console.log(typeof student)
         
         const propertyMap = Student.toObj();
 
         // Loop through the data object and set the corresponding properties
         for (const key in propertyMap) {
-            console.log(key)
             if (data.hasOwnProperty(key)) {
                 student[key] = data[key];
+            } else  {
+                // DEFAULT VALUE
+                student[key] = propertyMap[key]
             }
         }
         // // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
-        for (const key in student) {
-            if (student[key] === undefined)
-                student[key] = propertyMap[key]
-        }
+        // for (const key in student) {
+        //     if (student[key] === undefined)
+        //         student[key] = propertyMap[key]
+        // }
             
         // ADD NEW STUDENT TO DB
         console.log(student)
         const studentInfo = await adds.addStudent(student)
         console.log(studentInfo)
-        return (await this.getOne(data.username))
+        return await this.getOne(data.username)
     }
     // patch: UPDATE STUDENT
     static async update(username, studentData) {

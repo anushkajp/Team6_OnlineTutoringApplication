@@ -56,7 +56,7 @@ class Student extends User {
       longBio: "",
       shortBio: "",
       pfp: "",
-      favoriteTutors: []
+      favoriteTutors: ""
     };
   }
 }
