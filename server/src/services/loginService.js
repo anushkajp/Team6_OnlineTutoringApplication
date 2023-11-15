@@ -27,7 +27,6 @@ class LoginService {
             // GET STUDENT BASED ON USERID
             const student = await read.getStudent(userId)
             const tutor = await read.getTutor(userId)
-            console.log(Object.keys(tutor)[0])
             // USER IS A STUDENT
             if (student.userId === userId) {
                 return "student"
