@@ -91,18 +91,19 @@ router.patch('/:id', bodyParser, async (req, res) => {
     }
 });
 // DELETE ONE
-router.delete('/:id', (req, res) => {
-    try {
-        const deletedAppt = SessionService.delAppointment(req.params.id)
-        console.log("\Session routes.get(/:id): Session: " + session)
-        if (deletedAppt === null) {
-            res.status(404).json({ message: "Appointment not found" });
-        } else {
-            res.status(200).json(deletedAppt);
+router.delete('/:id', async(req, res) => {
+    (async () => {
+        try {
+            const session = await SessionService.delAppointment(req.params.id)
+            console.log("\Session routes.get(/:id): Session: " + session)
+            if (session === null) {
+                res.status(404).json({ message: "Appointment was not found" });
+            } else {
+                res.status(200).json(session);
+            }
+        } catch (err) {
+            res.status(500).json({ message: err.message });
         }
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+    })()
 });
-
 module.exports = router

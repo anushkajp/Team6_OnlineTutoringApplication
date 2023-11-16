@@ -134,7 +134,12 @@ class SessionService {
             //searching for the student and tutor via their username on the database
             const userTutor = await searchItem('User', 'username', tutorUsername)
             const userStudent = await searchItem('User', 'username', studentUsername)
-            
+
+            console.log("-----------------------")
+            console.log(userTutor)
+            console.log(userTutor.hours)
+            console.log("-----------------------")
+
             //getting student and tutor userIds
             const tutoruserid = Object.keys(userTutor)[0]
             const studentuserid = Object.keys(userStudent)[0]
@@ -230,6 +235,7 @@ class SessionService {
               }
 
             //update tutor hours
+            console.log(`Tutor hours: ${userTutor.hours}`)
             if (userTutor.hours != null) {
                 console.log(`Tutor hours: ${userTutor.hours}`)
                 const tutorHours = userTutor.hours + hours;
@@ -339,34 +345,63 @@ class SessionService {
         throw e
     }
 }
-    // DELETE AN APPOINTMENT
-    static async delAppointment(apptId) {
+// DELETE AN APPOINTMENT
+/*
+static async delAppointment(apptId) {
     try {
         const deletedAppt = await deleteAppointment(apptId);
-        console.log("SessionService.delAppointment() = " + JSON.stringify(deletedAppt) + "\n")
-        /*
-        const minutes = deletedAppt.length;
-        const hours = minutes / 60;
-
-        const userTutor = await searchItem('User', 'userId', deletedAppt.tutorId)
-        const userStudent = await searchItem('User', 'userId', deletedAppt.studentId)       
-
-        //update tutor hours
-        const tutorHours = userTutor.hours - hours;
-        await updateUserHours(deletedAppt.tutorId, tutorHours);
-
-        //update student hours
-        const studentHours = userStudent.hours - hours
-        await updateUserHours(deletedAppt.studentId, studentHours) */     
+        console.log("SessionService.delAppointment() = " + JSON.stringify(deletedAppt) + "\n")  
 
             if (deletedAppt === null) {
                 return null;
             }else {
                 return deletedAppt;
             }
-        }catch (error) {
-                throw new Error("Error deleting the review: " + error.message);
-        }
-    }    
+    }catch (error) {
+        throw new Error("Error deleting the review: " + error.message);
+    }
+} */
+
+static async delAppointment(apptId) {
+
+    console.log("\n[ SessionService.delete ]\n")
+    let deletedAppt = new Session;
+    deletedAppt = await getAppointment(apptId)
+    console.log(deletedAppt)
+
+    if(deletedAppt.length > 0){
+
+        const minutes = deletedAppt.length;
+        const hours = minutes / 60;
+
+        const userTutor = await searchItem('User', 'userId', deletedAppt.tutorId)
+        const userStudent = await searchItem('User', 'userId', deletedAppt.studentId)
+
+            //update tutor hours
+            if (userTutor.hours != null) {
+                console.log(`Tutor hours: ${userTutor.hours}`)
+                const tutorHours = userTutor.hours - hours;
+                await updateUserHours(tutoruserid, tutorHours);
+            } else {
+                throw new CustomError("Tutor hours shouldnt be empty", 400)
+            }
+
+            //update student hours
+            if (userTutor.hours != null) {
+                console.log(`Tutor hours: ${userStudent.hours}`)
+                const studentHours = userStudent.hours - hours
+                await updateUserHours(studentuserid, studentHours)
+            } else {
+                throw new CustomError("Student hours hsould not be empty", 400)
+            }
+
+        deleteAppointment(apptId)
+        console.log("Appointment was deleted, returning the appt")                
+        return deletedAppt
+    }
+    
+    throw new CustomError("Appointment was not found", 400)
+
+}
 }
 module.exports = SessionService
