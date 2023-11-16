@@ -1,5 +1,6 @@
 const Session = require("../models/session")
 const {getAppointments, getAppointment} = require('../db/read')
+const {getTutor, getStudent, getUser} = require ('../db/read')
 const {addAppointment} = require('../db/obAdd')
 const {searchItem} = require ('../db/db')
 const { updateAppDateTime, updateAppLength, updateAppMedium, updateAppLocation, updateAppFeedback, updateAppTutorNotes, updateAppStudentNotes} = require ('../db/update')
@@ -135,14 +136,16 @@ class SessionService {
             const userTutor = await searchItem('User', 'username', tutorUsername)
             const userStudent = await searchItem('User', 'username', studentUsername)
 
-            console.log("-----------------------")
-            console.log(userTutor)
-            console.log(userTutor.hours)
-            console.log("-----------------------")
 
             //getting student and tutor userIds
             const tutoruserid = Object.keys(userTutor)[0]
             const studentuserid = Object.keys(userStudent)[0]
+
+            
+            console.log("-----------------------")
+            console.log(userTutor)
+            console.log(userTutor[tutoruserid].hours)
+            console.log("-----------------------")
 
             const tutorAppointments = await searchItem('Appointment', 'tutorId', tutoruserid)
             console.log('Type of tutorAppointments:', typeof tutorAppointments);
@@ -236,18 +239,18 @@ class SessionService {
 
             //update tutor hours
             console.log(`Tutor hours: ${userTutor.hours}`)
-            if (userTutor.hours != null) {
+            if (userTutor[tutoruserid].hours != null) {
                 console.log(`Tutor hours: ${userTutor.hours}`)
-                const tutorHours = userTutor.hours + hours;
+                const tutorHours = userTutor[tutoruserid].hours + hours;
                 await updateUserHours(tutoruserid, tutorHours);
             } else {
                 await updateUserHours(tutoruserid, hours);
             }
 
             //update student hours
-            if (userTutor.hours != null) {
+            if (userStudent[studentuserid].hours != null) {
                 console.log(`Tutor hours: ${userStudent.hours}`)
-                const studentHours = userStudent.hours + hours
+                const studentHours = userStudent[studentuserid].hours + hours
                 await updateUserHours(studentuserid, studentHours)
             } else {
                 await updateUserHours(studentuserid, hours)
@@ -364,18 +367,23 @@ static async delAppointment(apptId) {
 
 static async delAppointment(apptId) {
 
-    console.log("\n[ SessionService.delete ]\n")
-    let deletedAppt = new Session;
-    deletedAppt = await getAppointment(apptId)
-    console.log(deletedAppt)
+    try{
+        console.log("\n[ SessionService.delete ]\n")
+        let deletedAppt = new Session;
+        deletedAppt = await getAppointment(apptId)
+        console.log(deletedAppt)
 
-    if(deletedAppt.length > 0){
+        if(deletedAppt.length > 0){
 
-        const minutes = deletedAppt.length;
-        const hours = minutes / 60;
+            const minutes = deletedAppt.length;
+            const hours = minutes / 60;
 
-        const userTutor = await searchItem('User', 'userId', deletedAppt.tutorId)
-        const userStudent = await searchItem('User', 'userId', deletedAppt.studentId)
+            const tutoruserid = deletedAppt.tutorId
+            const studentuserid = deletedAppt.studentId
+
+            const userTutor = await getUser(tutoruserid)
+            const userStudent = await getUser(studentuserid)
+
 
             //update tutor hours
             if (userTutor.hours != null) {
@@ -383,25 +391,26 @@ static async delAppointment(apptId) {
                 const tutorHours = userTutor.hours - hours;
                 await updateUserHours(tutoruserid, tutorHours);
             } else {
-                throw new CustomError("Tutor hours shouldnt be empty", 400)
+                await updateUserHours(tutoruserid, hours);
             }
 
             //update student hours
-            if (userTutor.hours != null) {
+            if (userStudent.hours != null) {
                 console.log(`Tutor hours: ${userStudent.hours}`)
                 const studentHours = userStudent.hours - hours
                 await updateUserHours(studentuserid, studentHours)
             } else {
-                throw new CustomError("Student hours hsould not be empty", 400)
+                await updateUserHours(studentuserid, hours)
             }
 
-        deleteAppointment(apptId)
-        console.log("Appointment was deleted, returning the appt")                
-        return deletedAppt
+            deleteAppointment(apptId)
+            console.log("Appointment was deleted, returning the appt for display")                
+            return deletedAppt
+        }        
+        throw new CustomError("Appointment was not found", 400)
+    }catch (error) {
+        throw new Error("Error deleting the review: " + error.message);
     }
-    
-    throw new CustomError("Appointment was not found", 400)
-
 }
 }
 module.exports = SessionService
