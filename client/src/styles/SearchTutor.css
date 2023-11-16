@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");
 
+.column {
+  flex: 1; 
+}
+
 .main-columns {
   flex: 1;
   height: 100vh;
@@ -23,7 +27,7 @@
   font-weight: 600;
   line-height: normal;
   letter-spacing: 0.48px;
-  margin-top: 30%;
+  margin-top: 9%;
   margin-left: 15px;
   text-align: left;
 }
@@ -145,7 +149,7 @@
   line-height: normal;
   letter-spacing: 0.46px;
   text-align: left;
-  margin-top: 8px;
+  margin-top: -40px;
   margin-left: -4px;
 }
 
@@ -159,6 +163,7 @@
   letter-spacing: 0.26px;
   text-align: left;
   margin-top: -66px;
+  margin-left: -5px;
 }
 
 .bio {
@@ -169,18 +174,17 @@
   font-weight: 500;
   line-height: normal;
   letter-spacing: 0.24px;
-  margin-top: -148px;
+  margin-top: -300px !important;
   text-align: left;
   width: 290px;
 }
 
 .heart {
   font-size: 30px;
-  margin-top: -148px;
   text-align: right;
   padding: 10px;
-  margin-right: 10px;
-  margin-top: -328px;
+  margin-right: 2px;
+  margin-top: -230px;
 }
 
 .heart.clicked {
@@ -227,8 +231,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -380px;
-  margin-left: 170px;
+  margin-top: -60px;
+  margin-left: 175px;
   box-sizing: border-box;
 }
 

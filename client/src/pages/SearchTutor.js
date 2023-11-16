@@ -117,66 +117,66 @@ function SearchTutor(props) {
         <Sidebar className="dbPageSidebar" renderType="student"></Sidebar>
 
         <div className="main-columns">
-          {/* <h2> Second column </h2>
-          <p> This is Second column of our grid system</p>
- */}
-          <p className="find-text">Find your tutor</p>
-          <div className="container-filters">
-            <div className="box-filters">
-              <div className="text-under-find">Date</div>
-              <DatePicker
-                className="base-input-style datepicker-input"
-                selected={date}
-                onChange={handleDateChange}
-              />
-            </div>
-            <div className="box-filters">
-              <div className="text-under-find">Subject</div>
-              <select
-                id="filterSelect"
-                onChange={handleSubjectChange}
-                value={subject}
-              >
-                <option value="Select Subject">Select Subject</option>
-                {allSubjects.map((subject) => (
-                  <option key={subject} value={subject}>
-                    {subject}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="box-filters">
-              <div className="text-under-find">Tutor</div>
-              <select
-                id="filterSelect"
-                onChange={handleTutorChange}
-                value={tutor}
-              >
-                <option value="Select Tutor">Select Tutor</option>
-                {tutorList.map((tutor) => (
-                  <option
-                    key={tutor.key}
-                    value={`${tutor.firstName} ${tutor.lastName}`}
-                  >
-                    {tutor.firstName} {tutor.lastName}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+          <div className="column">
+            <p className="find-text">Find your tutor</p>
 
-          <div className="tutor-container">
-            {getFilteredTutors().map((filteredTutor) => (
-              <TutorTileCard
-                key={filteredTutor.key}
-                pfp={filteredTutor.profilePic}
-                stars={`⭐ ${filteredTutor.rating}`}
-                name={`${filteredTutor.firstName} ${filteredTutor.lastName}`}
-                subjects={filteredTutor.courses.join(", ")}
-                bio={filteredTutor.shortBio}
-                cost={50}
-              />
-            ))}
+            <div className="container-filters">
+              <div className="box-filters">
+                <div className="text-under-find">Date</div>
+                <DatePicker
+                  className="base-input-style datepicker-input"
+                  selected={date}
+                  onChange={handleDateChange}
+                />
+              </div>
+              <div className="box-filters">
+                <div className="text-under-find">Subject</div>
+                <select
+                  id="filterSelect"
+                  onChange={handleSubjectChange}
+                  value={subject}
+                >
+                  <option value="Select Subject">Select Subject</option>
+                  {allSubjects.map((subject) => (
+                    <option key={subject} value={subject}>
+                      {subject}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="box-filters">
+                <div className="text-under-find">Tutor</div>
+                <select
+                  id="filterSelect"
+                  onChange={handleTutorChange}
+                  value={tutor}
+                >
+                  <option value="Select Tutor">Select Tutor</option>
+                  {tutorList.map((tutor) => (
+                    <option
+                      key={tutor.key}
+                      value={`${tutor.firstName} ${tutor.lastName}`}
+                    >
+                      {tutor.firstName} {tutor.lastName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="tutor-container">
+              {getFilteredTutors().map((filteredTutor) => (
+                <TutorTileCard
+                  key={filteredTutor.key}
+                  pfp={filteredTutor.profilePic}
+                  stars={`⭐ ${filteredTutor.rating}`}
+                  name={`${filteredTutor.firstName} ${filteredTutor.lastName}`}
+                  subjects={filteredTutor.courses.join(", ")}
+                  bio={filteredTutor.shortBio}
+                  cost={50}
+                />
+              ))}
+            </div>
           </div>
         </div>
         <div className="main-columns">

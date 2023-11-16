@@ -8,6 +8,9 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
   const [likedTutors, setLikedTutors] = useState([]); // store liked tutors in an array
   const [selectedTutorData, setSelectedTutorData] = useState({});
 
+  // Check if bio is empty or undefined
+  const hasBio = bio && bio.trim() !== "";
+
   const handleBook = () => {
     setSelectedTutorData({ pfp, stars, name, subjects, bio, cost });
   };
@@ -59,18 +62,12 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
           <p className="subjects">{subjects}</p>
         </div>
         <div class="vertical-component">
-          <p className="bio">{bio}</p>
+          {hasBio ? bio : <p className="bio">No bio available</p>}
         </div>
         <div class="vertical-component">
           <p className="heart" onClick={handleLike}>
             {like ? "♥️" : "♡"}
           </p>
-        </div>
-        <div class="vertical-component">
-          <p className="cost">${cost}</p>
-        </div>
-        <div class="vertical-component">
-          <p className="per-hour">per hour</p>
         </div>
         <div class="book-button" onClick={handleOpenModal} action={handleBook}>
           Book
