@@ -22,6 +22,7 @@ function SearchTutor(props) {
   const [error, setError] = useState(null);
   const [allSubjects, setAllSubjects] = useState([]);
   const [selectedTutor, setSelectedTutor] = useState("Select Tutor");
+  const [selectedDay, setSelectedDay] = useState("");
 
   function open() {
     setModal(!modal);
@@ -30,6 +31,19 @@ function SearchTutor(props) {
   const handleDateChange = (date) => {
     setDate(date);
     console.log(date);
+    const dayOfWeekNumber = date.getDay();
+    const daysOfWeek = [
+      "sunday",
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+    ];
+    const dayOfWeekString = daysOfWeek[dayOfWeekNumber];
+    setSelectedDay(dayOfWeekString);
+    console.log(dayOfWeekString);
   };
 
   const handleSubjectChange = (event) => {
@@ -107,6 +121,24 @@ function SearchTutor(props) {
       const matchesTutor =
         selectedTutor === "Select Tutor" ||
         `${tutorItem.firstName} ${tutorItem.lastName}` === selectedTutor;
+
+      /* const hasMondayAvailability = tutorItem.monday && tutorItem.monday.length > 0;
+      const hasTuesdayAvailability = tutorItem.tuesday && tutorItem.tuesday.length > 0;
+      const hasWednesdayAvailability = tutorItem.wednesday && tutorItem.wednesday.length > 0;
+      const hasThursdayAvailability = tutorItem.thursday && tutorItem.thursday.length > 0;
+      const hasFridayAvailability = tutorItem.friday && tutorItem.friday.length > 0;
+      const hasSaturdayAvailability = tutorItem.saturday && tutorItem.saturday.length > 0;
+      const hasSundayAvailability = tutorItem.sunday && tutorItem.sunday.length > 0;
+
+      console.log(`Availability for ${tutorItem.firstName} ${tutorItem.lastName}:`);
+      console.log(`Monday: ${hasMondayAvailability}`);
+      console.log(`Tuesday: ${hasTuesdayAvailability}`);
+      console.log(`Wednesday: ${hasWednesdayAvailability}`);
+      console.log(`Thursday: ${hasThursdayAvailability}`);
+      console.log(`Friday: ${hasFridayAvailability}`);
+      console.log(`Saturday: ${hasSaturdayAvailability}`);
+      console.log(`Sunday: ${hasSundayAvailability}`); */
+
       return matchesSubject && matchesTutor;
     });
   };

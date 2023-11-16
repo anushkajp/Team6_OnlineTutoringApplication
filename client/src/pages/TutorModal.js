@@ -31,13 +31,22 @@ export default function TutorModal(props) {
         <br></br>
 
         <p className="c-sub">📚 Choose Subject</p>
-        {/* <div className="sub-container">
-          {tutorInfo.courses.map((course, index) => (
-            <div className="box" key={index}>
-              {course}
-            </div>
-          ))}
-        </div> */}
+        <div className="sub-container">
+          {tutorData.courses && Array.isArray(tutorData.courses) ? (
+            tutorData.courses.map((course, index) => (
+              <div className="box" key={index}>
+                {course}
+              </div>
+            ))
+          ) : (
+            <p>No courses available!</p>
+          )}
+        </div>
+
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
 
         <p className="t-sub">⏰ Choose Time</p>
         {/* <div className="time-container">
