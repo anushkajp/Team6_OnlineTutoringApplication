@@ -1,6 +1,6 @@
 const express = require("express");
-const router = express.Router();
 const Session = require('../models/session')
+const router = express.Router();
 const SessionService = require('../services/sessionService')
 bodyParser = require('body-parser').json();
 const CustomError = require ('../utils/customError')
@@ -30,6 +30,7 @@ router.get('/:id', async(req, res) => {
         }
     })()
 });
+
 // GET ALL APPOINTMENTS BY USER ID
 router.get('/:user/:id', async(req, res) => {
     try {
@@ -47,23 +48,7 @@ router.get('/:user/:id', async(req, res) => {
         res.status(500).json({ message: err.message});
     }
 });
-// GET ALL APPOINTMENTS BY USER ID
-router.get('/:user/:username', async(req, res) => {
-    try {
-        console.log("\n[ Session routes get all appointments ]")
-        let appointments = null
-        if (req.params.user === 'tutor')
-            appointments = await SessionService.getAllAppointmentsByUser(req.params.username, 'tutorUsername')
-        else if (req.params.user === 'student')
-            appointments = await SessionService.getAllAppointmentsByUser(req.params.username, 'studentUsername')
-        if (appointments === null)
-            res.status(400).json({message: req.params.id + ' is not a valid id'})
-        else 
-            res.status(200).json(appointments)
-    }catch (err) {
-        res.status(500).json({ message: err.message});
-    }
-});
+
 // CREATE ONE
 router.post('/', bodyParser, async(req, res) => {
     try {
@@ -77,6 +62,7 @@ router.post('/', bodyParser, async(req, res) => {
         res.status(400).json({ message: err.message});
     }
 });
+
 // UPDATE ONE
 router.patch('/:id', bodyParser, async (req, res) => {
     try {
@@ -90,16 +76,17 @@ router.patch('/:id', bodyParser, async (req, res) => {
             res.status(500).json({ message: err.message});
     }
 });
+
 // DELETE ONE
 router.delete('/:id', async(req, res) => {
     (async () => {
         try {
-            const session = await SessionService.delAppointment(req.params.id)
-            console.log("\Session routes.get(/:id): Session: " + session)
-            if (session === null) {
+            const deletedAppt = await SessionService.delAppointment(req.params.id)
+            console.log("\Session routes.get(/:id): Session: " + deletedAppt)
+            if (deletedAppt === null) {
                 res.status(404).json({ message: "Appointment was not found" });
             } else {
-                res.status(200).json(session);
+                res.status(200).json(deletedAppt);
             }
         } catch (err) {
             res.status(500).json({ message: err.message });

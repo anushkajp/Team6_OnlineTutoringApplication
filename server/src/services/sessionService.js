@@ -1,9 +1,9 @@
 const Session = require("../models/session")
 const {getAppointments, getAppointment} = require('../db/read')
-const {getTutor, getStudent, getUser} = require ('../db/read')
+const {getUser} = require ('../db/read')
 const {addAppointment} = require('../db/obAdd')
 const {searchItem} = require ('../db/db')
-const { updateAppDateTime, updateAppLength, updateAppMedium, updateAppLocation, updateAppFeedback, updateAppTutorNotes, updateAppStudentNotes} = require ('../db/update')
+const {updateAppFeedback, updateAppTutorNotes, updateAppStudentNotes} = require ('../db/update')
 const {updateUserHours} = require ('../db/update')
 const { deleteAppointment } = require("../db/delete")
 const USER = 'User'
@@ -54,26 +54,11 @@ class SessionService {
             throw e
         }
     }   
-    // CONFLICT FUNCTION
+    // CONFLICT FUNCTION - only used for POST
     static async checkConflict(newStart, newEnd, existingAppointment) {
 
-        //let hasConflict = false
-
         const existingStart = new Date(existingAppointment.datetime);
-        console.log(existingStart);
         const existingEnd = new Date(existingStart.getTime() + existingAppointment.length * 60 * 1000);
-        console.log(existingEnd);
-        console.log("hehehe");
-
-        console.log('New Start:', newStart);
-        console.log('New End:', newEnd);
-        console.log('Existing Start:', existingStart);
-        console.log('Existing End:', existingEnd);
-
-        console.log(newStart.getTime());
-        console.log(newEnd.getTime());
-        console.log(existingStart.getTime());
-        console.log(existingEnd.getTime());
 
         const isSameDate = (
             newStart.getFullYear() === existingStart.getFullYear() &&
@@ -81,9 +66,7 @@ class SessionService {
             newStart.getDate() === existingStart.getDate()
         );
 
-        console.log('Is Same Date:', isSameDate);
-
-        // Check if it is on the same date
+        // Check if it is only on the same date
         if (isSameDate) {
             // Rule 1: The start and end time of the new appointment cannot be equal to the start and end time of the existing appointment
             if (newStart.getTime() === existingStart.getTime() && newEnd.getTime() === existingEnd.getTime()) {
@@ -116,14 +99,15 @@ class SessionService {
             return false;
         }
 
+        /*
         console.log('Rule 1:', newStart.getTime() === existingStart.getTime() && newEnd.getTime() === existingEnd.getTime());
         console.log('Rule 2:', newStart.getTime() < existingStart.getTime() && newEnd.getTime() > existingStart.getTime() && newEnd.getTime() <= existingEnd.getTime());
         console.log('Rule 3:', newEnd.getTime() > existingEnd.getTime() && newStart.getTime() >= existingStart.getTime() && newStart.getTime() < existingEnd.getTime());
         console.log('Rule 4:', newStart.getTime() >= existingStart.getTime() && newEnd.getTime() <= existingEnd.getTime());
-        
+        */
     }
-     // CREATE NEW APPOINTMENT
-     static async create(appData){ 
+    // CREATE NEW APPOINTMENT
+    static async create(appData){ 
         try {
             console.log("\nSessionService.create\n")
             const data = JSON.parse(appData)
@@ -136,69 +120,32 @@ class SessionService {
             const userTutor = await searchItem('User', 'username', tutorUsername)
             const userStudent = await searchItem('User', 'username', studentUsername)
 
-
             //getting student and tutor userIds
             const tutoruserid = Object.keys(userTutor)[0]
             const studentuserid = Object.keys(userStudent)[0]
 
-            
-            console.log("-----------------------")
-            console.log(userTutor)
-            console.log(userTutor[tutoruserid].hours)
-            console.log("-----------------------")
-
             const tutorAppointments = await searchItem('Appointment', 'tutorId', tutoruserid)
-            console.log('Type of tutorAppointments:', typeof tutorAppointments);
+            // Extract the inner values (appointments) from the returned object
             const tutorAppointmentsArray = Object.values(tutorAppointments).map(innerObj => innerObj);
-            console.log(tutorAppointmentsArray);
-
             
             const studentAppointments = await searchItem('Appointment', 'studentId', studentuserid)
-            console.log('Type of studentAppointments:', typeof studentAppointments);            
             // Extract the inner values (appointments) from the returned object
             const studentAppointmentsArray = Object.values(studentAppointments).map(innerObj => innerObj);
-            console.log(studentAppointmentsArray);
             
             // Convert appointment length from minutes to hours
             const minutes = data.length;
             const hours = minutes / 60;
-            
-            console.log(`Equivalent time in hours: ${hours}`);
-            
+                       
             const dateTimeString = data.datetime;
-            console.log(dateTimeString);
-            const dateTimeArray = dateTimeString.split("T");
-            
-            const datePart = dateTimeArray[0];
-            const timePart = dateTimeArray[1];
-            
-            console.log("Date: " + datePart);
-            console.log("Time: " + timePart);
-            
             const newAppointmentStartTime = new Date(dateTimeString);
             const newAppointmentEndTime = new Date(newAppointmentStartTime.getTime() + hours * 60 * 60 * 1000);
-            
-            console.log("New Appointment Start Time: " + newAppointmentStartTime);
-            console.log("New Appointment End Time: " + newAppointmentEndTime);
-            
-            // Extracting date, time, and formatted date
-            const startDate = newAppointmentStartTime.toISOString().split('T')[0];
-            const startTime = newAppointmentStartTime.toTimeString().split(' ')[0];
-            const endDate = newAppointmentEndTime.toISOString().split('T')[0];
-            const endTime = newAppointmentEndTime.toTimeString().split(' ')[0];
-            
-            console.log("New Appointment Start Date: " + startDate);
-            console.log("New Appointment Start Time: " + startTime);
-            console.log("New Appointment End Date: " + endDate);
-            console.log("New Appointment End Time: " + endTime);
             
             let hasConflictTutor = false;
             let hasConflictStudent = false;
 
+            //check if tutor has conflicts
             for (const existingAppointment of tutorAppointmentsArray) {
-                console.log('Checking conflict for existing appointment:', existingAppointment);
-                console.log(existingAppointment.datetime);
-              
+             
                 const conflictResult = await SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, existingAppointment);
               
                 console.log('Conflict Result:', conflictResult);
@@ -209,10 +156,8 @@ class SessionService {
                 }
               }
 
-            
+            //check if student has conflicts
             for (const existingAppointment of studentAppointmentsArray) {
-              console.log('Checking conflict for existing appointment:', existingAppointment);
-              console.log(existingAppointment.datetime);
             
               const conflictResult = await SessionService.checkConflict(newAppointmentStartTime, newAppointmentEndTime, existingAppointment);
             
@@ -224,10 +169,6 @@ class SessionService {
               }
             }
 
-            /*if (hasConflictTutor) {
-                throw new CustomError("Tutor has a conflict for either the time or the day, appointment cannot be created", 400);
-              } */
-            
             
             if (hasConflictStudent && !hasConflictTutor) {
                 throw new CustomError("Student has a conflict for either the time or the day, appointment cannot be created", 400);
@@ -238,7 +179,6 @@ class SessionService {
               }
 
             //update tutor hours
-            console.log(`Tutor hours: ${userTutor.hours}`)
             if (userTutor[tutoruserid].hours != null) {
                 console.log(`Tutor hours: ${userTutor.hours}`)
                 const tutorHours = userTutor[tutoruserid].hours + hours;
@@ -249,7 +189,7 @@ class SessionService {
 
             //update student hours
             if (userStudent[studentuserid].hours != null) {
-                console.log(`Tutor hours: ${userStudent.hours}`)
+                console.log(`Student hours: ${userStudent.hours}`)
                 const studentHours = userStudent[studentuserid].hours + hours
                 await updateUserHours(studentuserid, studentHours)
             } else {
@@ -304,113 +244,86 @@ class SessionService {
         const data = JSON.parse(apptData)
         console.log("\nData has been parsed\n")
 
-        /*
-        const username = data.studentId
-        const result = await searchItem(USER, USERNAME, username) 
-
-        if ( Object.keys(result).length === 0)
-        throw new CustomError("The userid does not exist", 400)
-
-        const patchStudentId = Object.keys(result)[0]
-        console.log("Updated Student id: " + patchStudentId + "\n")*/
-        
-        // IF NOT NULL, REPLACE OLD VALUES WTIH NEW FROM APPOINTMENTID
-        //below are not being done
-        //need notification system
-        /*
-        if (data.datetime != null)
-            await updateAppDateTime(id, data.datetime)
-        if (data.length != null)
-            await updateAppLength(id, data.length)
-        if (data.online != null)
-            await updateAppMedium(id, data.online)
-        if (data.location != null)
-            await updateAppLocation(id, data.location)
-        */
-        //need to check logic for this
+        //only these three can be updated!!
         if (data.feedback != null)
             await updateAppFeedback(id, data.feedback)
         if (data.tutorNotes != null)
             await updateAppTutorNotes(id, data.tutorNotes)
         if (data.studentNotes != null)
-            await updateAppStudentNotes(id, data.studentNotes)
-        
-        //not required and cannot change anymore
-        /*
-        if (data.studentId != null)
-            await updateAppUserId(id, patchStudentId)
-        */            
+            await updateAppStudentNotes(id, data.studentNotes)          
         
         // Fetch the updated appointment and return
         return await getAppointment(id)
 
-    }catch (e) {
-        throw e
+        }catch (e) {
+            throw e
+        }
     }
-}
-// DELETE AN APPOINTMENT
-/*
-static async delAppointment(apptId) {
-    try {
-        const deletedAppt = await deleteAppointment(apptId);
-        console.log("SessionService.delAppointment() = " + JSON.stringify(deletedAppt) + "\n")  
+    // DELETE AN APPOINTMENT
+    static async delAppointment(apptId) {
 
-            if (deletedAppt === null) {
-                return null;
-            }else {
-                return deletedAppt;
-            }
-    }catch (error) {
-        throw new Error("Error deleting the review: " + error.message);
+        try{
+            console.log("\n[ SessionService.delete ]\n")
+            let deletedAppt = new Session;
+            deletedAppt = await getAppointment(apptId)
+            console.log(deletedAppt)
+
+            //only if appt exists it can be deleted
+            if(deletedAppt.length > 0){
+
+                //converting length to hours
+                const minutes = deletedAppt.length;
+                const hours = minutes / 60;
+
+                //extracting student and tutor IDs
+                const tutoruserid = deletedAppt.tutorId
+                const studentuserid = deletedAppt.studentId
+
+                //using get to get info about student and tutor
+                const userTutor = await getUser(tutoruserid)
+                const userStudent = await getUser(studentuserid)
+
+                //update tutor hours
+                if (userTutor.hours != null) {
+                    const tutorHours = userTutor.hours - hours;
+                    await updateUserHours(tutoruserid, tutorHours);
+                } else {
+                    throw new CustomError("Tutor has no hours to begin with", 400)
+                }
+
+                //update student hours
+                if (userStudent.hours != null) {
+                    const studentHours = userStudent.hours - hours
+                    await updateUserHours(studentuserid, studentHours)
+                } else {
+                    throw new CustomError("Student has no hours to begin with", 400)
+                }
+
+                deleteAppointment(apptId)
+                console.log("Appointment was deleted, returning the appt for display")                
+                return deletedAppt
+            }        
+            throw new CustomError("Appointment was not found", 400)
+        }catch (error) {
+            throw new Error("Error deleting the review: " + error.message);
+        }
     }
-} */
+    //DELETE 2nd implementation
+    //not sure about the working of this
+    /*
+    static async delAppointment(apptId) {
+        try {
+            const deletedAppt = await deleteAppointment(apptId);
+            console.log("SessionService.delAppointment() = " + JSON.stringify(deletedAppt) + "\n")  
 
-static async delAppointment(apptId) {
-
-    try{
-        console.log("\n[ SessionService.delete ]\n")
-        let deletedAppt = new Session;
-        deletedAppt = await getAppointment(apptId)
-        console.log(deletedAppt)
-
-        if(deletedAppt.length > 0){
-
-            const minutes = deletedAppt.length;
-            const hours = minutes / 60;
-
-            const tutoruserid = deletedAppt.tutorId
-            const studentuserid = deletedAppt.studentId
-
-            const userTutor = await getUser(tutoruserid)
-            const userStudent = await getUser(studentuserid)
-
-
-            //update tutor hours
-            if (userTutor.hours != null) {
-                console.log(`Tutor hours: ${userTutor.hours}`)
-                const tutorHours = userTutor.hours - hours;
-                await updateUserHours(tutoruserid, tutorHours);
-            } else {
-                await updateUserHours(tutoruserid, hours);
-            }
-
-            //update student hours
-            if (userStudent.hours != null) {
-                console.log(`Tutor hours: ${userStudent.hours}`)
-                const studentHours = userStudent.hours - hours
-                await updateUserHours(studentuserid, studentHours)
-            } else {
-                await updateUserHours(studentuserid, hours)
-            }
-
-            deleteAppointment(apptId)
-            console.log("Appointment was deleted, returning the appt for display")                
-            return deletedAppt
-        }        
-        throw new CustomError("Appointment was not found", 400)
-    }catch (error) {
-        throw new Error("Error deleting the review: " + error.message);
-    }
-}
+                if (deletedAppt === null) {
+                    return null;
+                }else {
+                    return deletedAppt;
+                }
+        }catch (error) {
+            throw new Error("Error deleting the review: " + error.message);
+        }
+    } */
 }
 module.exports = SessionService
