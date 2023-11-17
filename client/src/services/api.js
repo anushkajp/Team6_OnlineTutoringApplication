@@ -8,7 +8,7 @@ export function postToAPI(route, data) {
     },
     body: JSON.stringify(data),
   }).then((response) => {
-    if (response.status === 200) {
+    if (response.status === 201) {
       return response.json();
     } else {
       throw new Error("Request failed with status: " + response.status);

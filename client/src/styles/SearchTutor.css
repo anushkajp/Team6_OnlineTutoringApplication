@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");
 
 .column {
-  flex: 1; 
+  flex: 1;
 }
 
 .main-columns {
@@ -99,6 +99,7 @@
 /* https://webdesign.tutsplus.com/flexbox-vs-css-grid-which-should-you-use--cms-30184a*/
 .tutor-wrapper {
   width: 505px;
+  position: relative;
   height: 270px;
   display: grid;
   grid-template-columns: 30% 70%;
@@ -120,6 +121,10 @@
 
 .left-column {
   padding: 1rem;
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  padding-left: 50px ;
 }
 
 .right-column {
@@ -137,8 +142,7 @@
   width: 122px;
   height: 122px;
   border-radius: 10.502px;
-  padding: 10px;
-  margin-top: -2px;
+  margin-bottom: 20px;
 }
 
 .name-tutor {
@@ -150,8 +154,10 @@
   line-height: normal;
   letter-spacing: 0.46px;
   text-align: left;
-  margin-top: -40px;
-  margin-left: -4px;
+  margin-top: -43px;
+  margin-left: -20px;
+  text-overflow: ellipsis; 
+  position: absolute;
 }
 
 .subjects {
@@ -181,11 +187,12 @@
 }
 
 .heart {
+  position: absolute;
   font-size: 30px;
   text-align: right;
   padding: 10px;
-  margin-right: 2px;
-  margin-top: -230px;
+  right: 5px;
+  top: -30px;
 }
 
 .heart.clicked {
@@ -241,7 +248,7 @@
   cursor: pointer;
 }
 
-.book-button:active{
+.book-button:active {
   background: white !important;
   border: 3px solid #91f3bb !important;
   color: #91f3bb !important;
@@ -255,11 +262,11 @@
   font-weight: 500;
   line-height: normal;
   letter-spacing: 0.22px;
-  align-items: center;
-  justify-content: center;
+  display: block; 
+  margin-top: 0;
+  padding: 0 20px !important; 
+  width: 100%; 
   text-align: center;
-  margin-left: 16px;
-  margin-top: -2px;
 }
 
 .react-datepicker__input-container input {
@@ -277,7 +284,7 @@
   width: 147px;
   height: 45px;
   margin-top: -0.1%;
-  
+
   padding: 10px;
   margin-right: 5px;
   border: none;
@@ -297,15 +304,14 @@
 }
 
 html .react-datepicker__day--selected {
-  background-color: #6FCF97 !important;
+  background-color: #6fcf97 !important;
 }
 
 html .react-datepicker__day--selected:hover {
-  background-color:  #407757 !important;
+  background-color: #407757 !important;
 }
 
 html .react-datepicker__day--range-start,
 html .react-datepicker__day--range-end {
-  background-color:  #a92ab7 !important;
+  background-color: #a92ab7 !important;
 }
-

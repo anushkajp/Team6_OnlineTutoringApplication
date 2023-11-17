@@ -52,7 +52,7 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
     <div className="tutor-wrapper">
       <div class="left-column">
         <img src={pfp} className="profile-pic"></img>
-        <p className="stars">{stars}</p>
+        <p className="stars">{stars} stars</p>
       </div>
       <div class="right-column">
         <div class="vertical-component">
