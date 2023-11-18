@@ -132,7 +132,17 @@ module.exports = {
             return modifyItem("Tutor",userId,"rating", newRating)
         },
 
-
+        // updateTutorRating: async function updateTutorRating(userId, newRating) {
+        //     try {
+        //         const result = await modifyItem("Tutor", userId, "rating", newRating);
+        //         console.log(`Rating updated successfully for user ${userId}.`);
+        //         return result;
+        //     } catch (error) {
+        //         console.error(`Error updating rating for user ${userId}:`, error);
+        //         throw error;
+        //     }
+        // },
+        
     /**
      * Update the tutors weekly availability
      * @param {string} tutorId Database id for the user

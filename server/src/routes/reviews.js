@@ -33,9 +33,9 @@ router.get('/:id', async(req, res) => {
 // CREATE ONE
 router.post('/', bodyParser, async(req, res) => {
     try {
-        console.log("test1")
+        //console.log("test1")
         const review = await ReviewService.create(JSON.stringify(req.body));
-        console.log("test2")
+        //console.log("test2")
         res.status(201).json(review)
     }catch (err) {
         if (err instanceof CustomError)
@@ -47,15 +47,29 @@ router.post('/', bodyParser, async(req, res) => {
 
 
 // UPDATE ONE
-router.patch('/:reviewId', async(req, res) => {
-    const review = new Review();
-    review.rating = req.body.rating;
-    review.review = req.body.review;
+// router.patch('/:reviewId', async(req, res) => {
+//     const review = new Review();
+//     review.rating = req.body.rating;
+//     review.review = req.body.review;
+//     try {
+//         const newReview = await ReviewService.update(req.params.appointmentId);
+//         res.status(201).json(newReview)
+//     }catch (err) {
+//         res.status(400).json({ message: err.message});
+//     }
+// });
+
+router.patch('/:id', bodyParser, async (req, res) => {
     try {
-        const newReview = await ReviewService.update(req.params.appointmentId);
+        console.log(req.body)
+        console.log(JSON.stringify(req.body))
+        const newReview = await ReviewService.update(req.params.id, JSON.stringify(req.body));
         res.status(201).json(newReview)
     }catch (err) {
-        res.status(400).json({ message: err.message});
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
     }
 });
 

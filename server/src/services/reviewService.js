@@ -1,17 +1,15 @@
 const express = require("express");
-const router = express.Router();
+//const router = express.Router();
 const Review = require("../models/review")
 const {getReview, getReviews} = require ('../db/read')
 const {searchItem} = require ('../db/db')
-const read = require("../db/read")
+//const read = require("../db/read")
 const {deleteReview} = require("../db/delete")
 const CustomError = require ('../utils/customError')
 const USER = 'User'
 const USERNAME = 'username'
 const {addReview} = require('../db/obAdd')
-const adds = require ('../db/obAdd')
-
-const { updateAppReview, updateRating, updateAppUserId} = require ('../db/update')
+const {updateTutorRating} = require ('../db/update')
 
 class ReviewService {
       // GET ALL
@@ -21,8 +19,6 @@ class ReviewService {
             // Transform the data structure and filter unnecessary information
             const transformedReviews = Object.entries(reviews).map(([id, review]) => {
                 const { description, rating, studentId, tutorId } = review;
-                const tutorUsername = data.tutorId
-                const studentUsername = data.studentId
                 return {
                     id,
                     studentId,
@@ -38,8 +34,6 @@ class ReviewService {
             throw err;
         }
     }
-    
-
 
     // GET ONE REVIEW BY ID 
     static async getOne(id) {
@@ -83,18 +77,27 @@ class ReviewService {
             //retirieving student and tutor usernames
             const tutorUsername = data.tutorId
             const studentUsername = data.studentId
-
-            console.log(tutorUsername)
-            console.log(studentUsername)
            
+            //searching for the student and tutor via their username on the database
+            const userTutor = await searchItem('User', 'username', tutorUsername)
+            const userStudent = await searchItem('User', 'username', studentUsername)
+
+            //getting student and tutor userIds
+            const tutoruserid = Object.keys(userTutor)[0]
+            const studentuserid = Object.keys(userStudent)[0]
+
+            const checkReviewStudent = await searchItem('Review', 'studentId', studentuserid)
+            const checkReviewTutor = await searchItem('Review', 'tutorId', tutoruserid)
+
+            if (checkReviewStudent && checkReviewTutor){
+                //console.log("dups!")
+                throw new CustomError("ERROR: Review between this student and tutor exists", 400)
+            }
 
             let review = new Review()
-            review.tutorId = tutorUsername;
-            review.studentId = studentUsername ;
- 
-
-            console.log(review.tutorId+" :::" + review.studentId)
-                        
+            review.tutorId = tutoruserid;
+            review.studentId = studentuserid ;
+           
             const propertyMap = {
                 
                 tutorId: null,
@@ -102,7 +105,17 @@ class ReviewService {
                 rating: null,
                 description: null
             };
-    
+            
+            if (data.rating !== undefined && data.rating >= 1 && data.rating <= 5) {
+                review.rating = data.rating;
+            } else {
+                throw new CustomError("ERROR: Rating must be between 1 - 5", 400)
+            }
+
+            //TO DO:
+            // get all the review of the user and average
+            // only users that are student can create reviews
+
             // Loop through the data object and set the corresponding properties
             for (const key in propertyMap) {
                 // Skip tutorId and studentId
@@ -116,7 +129,7 @@ class ReviewService {
                 review[key] = null
             }              
                 
-            // ADD NEW SESSION TO DB
+            // ADD NEW REVIEW TO DB
             console.log(review)
 
             const reviewInfo = await addReview(review)
@@ -128,54 +141,30 @@ class ReviewService {
     } 
     
     static async update(reviewID, newReviewData) {
-        // try {
-        //     console.log("\nReviewService.update\n")
-        //     const data = JSON.parse(newReviewData)
-        //     console.log("\nData has been parsed\n")
-    
-        //     const username = data.studentId
-        //     const result = await searchItem(USER, USERNAME, username) 
-    
-        //     // USER IS FOUND, NOT NECESSARILY A STUDENT
-        //     if (Object.keys(result).length > 0) {
-        //         // GET STUDENT BASED ON USERID
-        //         const student = await read.getStudent(Object.keys(result)[0])
-        //         console.log(student.userId)
-        //         console.log(typeof student.userId)
-        //         // USER IS A TUTOR
-        //         if (student.userId === undefined) {
-        //             throw new CustomError("User is not a student", 400)
-        //         }
-        //     }
-        //     else{
-        //         throw new CustomError("User not found", 400)
-        //     }
+        try {
+            console.log("\nReviewService.update\n")
+            const data = JSON.parse(newReviewData)
+            console.log("\nData has been parsed\n")
 
-
-        //     const patchStudentId = Object.keys(result)[0]
-        //     console.log("Updated Student id: " + patchStudentId + "\n")
-
-        //     if (data.rating != null)
-        //         await updateRating(reviewID, data.rating);
-        //     if (data.description != null)
-        //         await updateAppReview(reviewID, data.description);      
-        //     if (data.studentId != null)
-        //     await updateAppUserId(reviewID, patchStudentId)        
+            if (data.rating != null)
+                await updateTutorRating(reviewID, data.rating);
+            // also update description            
             
-        //     return await getReview(reviewID);
+            return await getReview(reviewID);
     
-        // }catch{
-        //     throw new CustomError("Error updating review", 400)
-        // }
+        }catch{
+            throw new CustomError("Error updating review", 400)
+        }
 
     }
+
+    
 
     static async deleteReview(reviewId) {
         try {
             const deletedReview = await deleteReview(reviewId);
             console.log("SessionService.deleteReview() = " + JSON.stringify(deletedReview) + "\n")
                 if (deletedReview === null) {
-                    // console.log("deleted review")
                     return null;
                 }else {
                     return deletedReview;
