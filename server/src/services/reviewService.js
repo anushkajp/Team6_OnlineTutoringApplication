@@ -1,14 +1,9 @@
 const express = require("express");
-//const router = express.Router();
 const Review = require("../models/review")
 const {getReview, getReviews} = require ('../db/read')
-const read = require ('../db/read')
 const {searchItem} = require ('../db/db')
-//const read = require("../db/read")
 const {deleteReview} = require("../db/delete")
 const CustomError = require ('../utils/customError')
-const USER = 'User'
-const USERNAME = 'username'
 const {addReview} = require('../db/obAdd')
 const {updateTutorRating} = require ('../db/update')
 
@@ -91,14 +86,14 @@ class ReviewService {
             //getting student and tutor userIds
             const tutoruserid = Object.keys(userTutor)[0]
             const studentuserid = Object.keys(userStudent)[0]
+            // only users that are student can create reviews
             // CHECK TO SEE IF USER IS A STUDENT
             const student = await read.getStudent(studentuserid)
             //console.log(student)
             if (student.userId === undefined){
                 throw new CustomError("ERROR: Only student users can create reviews", 400) 
             }
-
-
+            // Check for duplicate reviews
             const checkReviewStudent = await searchItem('Review', 'studentId', studentuserid)
             const checkReviewTutor = await searchItem('Review', 'tutorId', tutoruserid)
 
@@ -120,7 +115,9 @@ class ReviewService {
             };
             
             if (data.rating !== undefined && data.rating >= 1 && data.rating <= 5) {
+                // need to calculate avg to tuto rating
                 review.rating = data.rating;
+
             } else {
                 throw new CustomError("ERROR: Rating must be between 1 - 5", 400)
             }
@@ -131,7 +128,7 @@ class ReviewService {
             // Loop through the data object and set the corresponding properties
             for (const key in propertyMap) {
                 // Skip tutorId and studentId
-                if (key !== 'tutorId' && key !== 'studentId' && data.hasOwnProperty(key)) {
+                if (key !== 'tutorId' && key !== 'studentId' && key!== 'rating' && data.hasOwnProperty(key)) {
                     review[key] = data[key];
                 }
             }
@@ -140,7 +137,6 @@ class ReviewService {
                 if (review[key] === undefined)
                 review[key] = null
             }              
-                
             // ADD NEW REVIEW TO DB
             console.log(review)
 
@@ -152,24 +148,28 @@ class ReviewService {
         }
     } 
     
-    static async update(reviewID, newReviewData) {
+    static async update(id, reviewData) {
         try {
-            console.log("\nReviewService.update\n")
-            const data = JSON.parse(newReviewData)
+            console.log("\nRviewService.update\n")
+            const data = JSON.parse(reviewData)
             console.log("\nData has been parsed\n")
+            console.log(".....updating")
+            if (data.rating != null){
+                await updateTutorRating(id, data.rating) 
+                console.log(".....in the process")
+            } 
+            console.log(".....updated")
+                // I think there needs to be a updateReviewDescription() function
 
-            if (data.rating != null)
-                await updateTutorRating(reviewID, data.rating);
-            // also update description            
-            
-            return await getReview(reviewID);
-    
-        }catch{
-            throw new CustomError("Error updating review", 400)
-        }
-
-    }
-
+                // if (data.description != null){
+                //     await updateReviewDescription(id, data.rating) 
+                // }
+            // Fetch the updated appointment and return
+            return await getReview(id)
+            }catch (e) {
+                throw e
+            }
+}
     
 
     static async deleteReview(reviewId) {

@@ -4,7 +4,7 @@ const Review = require('../models/review')
 const ReviewService = require('../services/reviewService')
 const bodyParser = require('body-parser').json();
 const CustomError = require ('../utils/customError')
-
+//router.use(express.json())
 // GET ALL REVIEWS FOR TUTOR
 router.get('/', async (req,res) => {
     try {
@@ -45,26 +45,13 @@ router.post('/', bodyParser, async(req, res) => {
     }
 });
 
-
 // UPDATE ONE
-// router.patch('/:reviewId', async(req, res) => {
-//     const review = new Review();
-//     review.rating = req.body.rating;
-//     review.review = req.body.review;
-//     try {
-//         const newReview = await ReviewService.update(req.params.appointmentId);
-//         res.status(201).json(newReview)
-//     }catch (err) {
-//         res.status(400).json({ message: err.message});
-//     }
-// });
-
+router.use(express.json());
 router.patch('/:id', bodyParser, async (req, res) => {
     try {
-        console.log(req.body)
-        console.log(JSON.stringify(req.body))
-        const newReview = await ReviewService.update(req.params.id, JSON.stringify(req.body));
-        res.status(201).json(newReview)
+        console.log("Review controller patch req.body: " + JSON.stringify(req.body))
+        const updatedReview = await ReviewService.update(req.params.id, JSON.stringify(req.body));
+        res.status(201).json(updatedReview)
     }catch (err) {
         if (err instanceof CustomError)
             res.status(err.code).json({message: err.message})
