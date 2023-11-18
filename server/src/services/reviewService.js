@@ -2,6 +2,7 @@ const express = require("express");
 //const router = express.Router();
 const Review = require("../models/review")
 const {getReview, getReviews} = require ('../db/read')
+const read = require ('../db/read')
 const {searchItem} = require ('../db/db')
 //const read = require("../db/read")
 const {deleteReview} = require("../db/delete")
@@ -82,9 +83,21 @@ class ReviewService {
             const userTutor = await searchItem('User', 'username', tutorUsername)
             const userStudent = await searchItem('User', 'username', studentUsername)
 
+            // check if the studentId indeed corresponds to a student     
+            // USER DOESNT EXIST
+            if ( Object.keys(userStudent).length === 0){
+                throw new CustomError("User does not exist", 400)
+            }
             //getting student and tutor userIds
             const tutoruserid = Object.keys(userTutor)[0]
             const studentuserid = Object.keys(userStudent)[0]
+            // CHECK TO SEE IF USER IS A STUDENT
+            const student = await read.getStudent(studentuserid)
+            //console.log(student)
+            if (student.userId === undefined){
+                throw new CustomError("ERROR: Only student users can create reviews", 400) 
+            }
+
 
             const checkReviewStudent = await searchItem('Review', 'studentId', studentuserid)
             const checkReviewTutor = await searchItem('Review', 'tutorId', tutoruserid)
@@ -114,7 +127,6 @@ class ReviewService {
 
             //TO DO:
             // get all the review of the user and average
-            // only users that are student can create reviews
 
             // Loop through the data object and set the corresponding properties
             for (const key in propertyMap) {
