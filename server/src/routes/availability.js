@@ -43,10 +43,10 @@ router.post('/:username/:dayOfTheWeek', bodyParser, async(req, res) => {
     }
 });
 // DELETE ALL TIME BLOCKS FOR DAY OF THE WEEK
-router.delete('/:username/:dayOfTheWeek', (req, res) => {
+router.delete('/:username/:dayOfTheWeek', async (req, res) => {
     try {
-        AvailabilityService.deleteAvail(req.params.username, req.params.dayOfTheWeek)
-        res.status(200).json("Deleted successfully")
+        await AvailabilityService.deleteAvail(req.params.username, req.params.dayOfTheWeek)
+        res.status(200).json("Deleted Successfully")
     }catch (err){
         if (err instanceof CustomError)
             res.status(err.code).json({message: err.message})
@@ -56,7 +56,43 @@ router.delete('/:username/:dayOfTheWeek', (req, res) => {
 })
 ////////////////////////////////////////////////////////////////////////////////
 // EXCEPTIONS TO AVAILABILITY
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-
+// GET ALL EXCEPTIONS TO AVAILABILITY
+router.get('/:username/exceptions', async (req, res) => {
+    try {
+        console.log("[ Availability service get all exceptions ]")
+        const exceptions = await AvailabilityService.allExcept(req.params.username)
+        res.status(200).json(exceptions)
+    }catch (err){
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
+    }
+});
+router.post('/:username/exceptions/:date', async (req, res) => {
+    try {
+        console.log("[ Availability service get all exceptions ]")
+        await AvailabilityService.addException(req.params.username, req.params.date)
+        res.status(201).json({message: "Created"})
+    }catch (err){
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
+    }
+});
+router.delete('/:username/exceptions/:date', async (req, res) => {
+    try {
+        console.log("[ Availability service get all exceptions ]")
+        await AvailabilityService.deleteExcept(req.params.username, req.params.date)
+        res.status(200).json("Deleted Successfully")
+    }catch (err){
+        if (err instanceof CustomError)
+            res.status(err.code).json({message: err.message})
+        else
+            res.status(500).json({ message: err.message});
+    }
+});
 module.exports = router
