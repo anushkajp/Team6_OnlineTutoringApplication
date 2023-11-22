@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TutorModal from "./TutorModal";
+import { fetchFromAPI } from "../services/api";
 
 export const TutorTileCard = ({
   id,
@@ -11,12 +12,17 @@ export const TutorTileCard = ({
   cost,
   tutorList,
   openModalWithTutor,
+  username,
+  selectedDay,
 }) => {
   const [like, setLike] = useState(false);
   const [modal, setModal] = useState(false);
   const [book, setBook] = useState(false);
   const [likedTutors, setLikedTutors] = useState([]); // store liked tutors in an array
   const [selectedTutorData, setSelectedTutorData] = useState({});
+  const [availability, setAvailability] = useState(null);
+  const [allChunks, setAllChunks] = useState([]);
+  console.log("tt" + selectedDay);
 
   // Check if bio is empty or undefined
   const hasBio = bio && bio.trim() !== "";
@@ -35,6 +41,66 @@ export const TutorTileCard = ({
       openModalWithTutor(fullTutorInfo);
     }
   };
+
+  function createTimeChunks(startTime, endTime) {
+    // Create date objects in UTC
+    const start = new Date(`1970-01-01T${startTime}Z`);
+    const end = new Date(`1970-01-01T${endTime}Z`);
+    let chunks = [];
+
+    while (start < end) {
+      let currentChunkStart = formatTime12Hour(
+        start.toISOString().substring(11, 16)
+      );
+
+      // Increment by one hour
+      start.setUTCHours(start.getUTCHours() + 1);
+
+      // Check if incremented start time is past the end time
+      if (start > end) {
+        break;
+      }
+
+      // Format the incremented time
+      let currentChunkEnd = formatTime12Hour(
+        start.toISOString().substring(11, 16)
+      );
+
+      chunks.push(`${currentChunkStart} - ${currentChunkEnd}`);
+    }
+
+    return chunks;
+  }
+
+  function formatTime12Hour(time24) {
+    let [hours, minutes] = time24.split(":").map(Number);
+    let period = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12; // Convert "00" to "12"
+    return `${hours}:${minutes < 10 ? "0" + minutes : minutes} ${period}`;
+  }
+
+  // Example usage
+  /*   let startTime = "10:00";
+  let endTime = "14:00";
+  let timeChunks = createTimeChunks(startTime, endTime);
+  console.log(timeChunks); */
+
+  useEffect(() => {
+    fetchFromAPI(`availability/${username}/${selectedDay}`)
+      .then((availabilityArray) => {
+        if (availabilityArray && availabilityArray.length > 0) {
+          const computedChunks = availabilityArray.flatMap(({ start_time, end_time }) => {
+            return createTimeChunks(start_time, end_time);
+          });
+  
+          // Update state with all time chunks
+          setAllChunks(computedChunks);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching availability data:", error);
+      });
+  }, [username, selectedDay]);
 
   const close = () => {
     setModal(false); // Close the modal
@@ -105,6 +171,7 @@ export const TutorTileCard = ({
           toggle={modal}
           action={close}
           tutorData={selectedTutorData}
+          availabilityData={allChunks}
         />
       </div>
     </div>

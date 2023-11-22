@@ -3,8 +3,7 @@ import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
 
 export default function TutorModal(props) {
-  const { toggle, action, tutorData } = props;
-  console.log("TutorModal Data", tutorData);
+  const { toggle, action, tutorData, availabilityData } = props;
 
   if (!tutorData || !toggle) {
     return null;
@@ -19,7 +18,9 @@ export default function TutorModal(props) {
             alt={`${tutorData.name}'s Profile Picture`}
           />
         </div>
-        <div className="txt">{tutorData.firstName} {tutorData.lastName}</div>
+        <div className="txt">
+          {tutorData.firstName} {tutorData.lastName}
+        </div>
         <div className="stars">⭐ {tutorData.rating}</div>
         <p className="bio">{tutorData.longBio}</p>
 
@@ -50,13 +51,19 @@ export default function TutorModal(props) {
         <br></br>
 
         <p className="t-sub">⏰ Choose Time</p>
-        {/* <div className="time-container">
-          {tutorInfo.times.map((time, index) => (
-            <div className="t-box" key={index}>
-              {time}
-            </div>
-          ))}
-        </div> */}  
+        <div className="time-container">
+          {availabilityData &&
+          Array.isArray(availabilityData) &&
+          availabilityData.length > 0 ? (
+            availabilityData.map((time, index) => (
+              <div className="t-box" key={index}>
+                {time}
+              </div>
+            ))
+          ) : (
+            <p>No available times!</p>
+          )}
+        </div>
         <br></br>
         <br></br>
         <br></br>
