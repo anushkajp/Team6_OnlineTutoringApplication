@@ -1,3 +1,4 @@
+
 class Availability {
 /**
      * @param {Array<TimeBlock>} monday Monday availability
@@ -18,6 +19,18 @@ class Availability {
         this.saturday = saturday;
         this.sunday = sunday;
         this.exceptions = exceptions;
+    }
+    static toObj() {
+        return {
+            monday: null,
+            tuesday: null,
+            wednesday: null,
+            thursday: null,
+            friday: null,
+            saturday: null,
+            sunday: null,
+            exceptions: null
+        };
     }
 
 }

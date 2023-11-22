@@ -18,11 +18,11 @@ class User {
         hours, longBio, shortBio, pfp) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.password = password;
         this.userId = userId;
         this.username = username;
         this.phone = phone;
         this.email = email;
+        this.password = password;
         this.hours = hours;
         this.longBio = longBio;
         this.shortBio = shortBio;

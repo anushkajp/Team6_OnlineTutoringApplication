@@ -6,6 +6,7 @@ const {searchItem} = require ('../db/db')
 const deletes = require("../db/delete")
 const Student = require ('../models/student')
 const CustomError = require ('../utils/customError')
+const bcrypt = require ("bcryptjs")
 const USER = 'User'
 const USERNAME = 'username'
 const EMAIL = 'email'
@@ -35,18 +36,19 @@ class StudentService {
         console.log("\n[ StudentService.getOne ]\n")
         // SEARCH FOR USER W USERNAME
         const search = await searchItem(USER, USERNAME, id)
+        const userId = Object.keys(search)[0]
 
         // USER IS FOUND, NOT NECESSARILY A STUDENT
         if (Object.keys(search).length > 0) {
 
             // GET STUDENT BASED ON USERID
-            const student = await read.getStudent(Object.keys(search)[0])
-            console.log(student.userId)
-            console.log(typeof student.userId)
+            const studentAdds = await read.getStudent(userId)
             // USER IS A TUTOR
             if (student.userId === undefined) {
                 throw new CustomError("User is not a student", 400)
             }
+            // APPEND ADD ONS TO STUDENT OBJECT
+            search[userId] = {...search[userId], ...studentAdds}
             return search
         }
         else
@@ -59,39 +61,48 @@ class StudentService {
         const data = JSON.parse(studentData)
         const userResult = await searchItem(USER, USERNAME, data.username)     // FIND IF ANOTHER USER HAS SAME USERNAME
         const emailResult = await searchItem(USER, EMAIL, data.email)
-        console.log("\nStudentService.create result: " + result)
         
         // STUDENT WITH USERNAME ALREADY EXISTS
         if ( Object.keys(userResult).length > 0)
             throw new CustomError("Username already exists", 400)
 
         // STUDENT WITH EMAIL ALREADY EXISTS
-        if ( Object.keys(emailResult).length === 1)
+        if ( Object.keys(emailResult).length > 0)
             throw new CustomError("Email already in use", 400)
+
+        // HASH PASSWORD
+        const saltRounds = 10
+        const salt = bcrypt.genSaltSync(saltRounds)
+        const hashedPassword = await bcrypt.hash(data.password, salt)
+        data.password = hashedPassword
+
+        console.log(salt)
+        console.log(hashedPassword)
         
         let student = new Student()
-        console.log(typeof student)
         
         const propertyMap = Student.toObj();
 
         // Loop through the data object and set the corresponding properties
         for (const key in propertyMap) {
-            console.log(key)
             if (data.hasOwnProperty(key)) {
                 student[key] = data[key];
+            } else  {
+                // DEFAULT VALUE
+                student[key] = propertyMap[key]
             }
         }
         // // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
-        for (const key in student) {
-            if (student[key] === undefined)
-                student[key] = null
-        }
+        // for (const key in student) {
+        //     if (student[key] === undefined)
+        //         student[key] = propertyMap[key]
+        // }
             
         // ADD NEW STUDENT TO DB
         console.log(student)
         const studentInfo = await adds.addStudent(student)
-        console.log("StudentInfo " + studentInfo)
-        // return studentInfo
+        console.log(studentInfo)
+        return await this.getOne(data.username)
     }
     // patch: UPDATE STUDENT
     static async update(username, studentData) {
@@ -116,8 +127,12 @@ class StudentService {
             console.log("Student id: " + id + "\n")
             
             // REPLACE OLD VALUES WTIH NEW FROM USERID
-            if (data.password != null)
-                await updateUserPassword(id, data.password)
+            if (data.password != null) {
+                const saltRounds = 10
+                const salt = bcrypt.genSaltSync(saltRounds)
+                const hashedPassword = await bcrypt.hash(data.password, salt)
+                updateUserPassword(id, hashedPassword)
+            }
             if (data.userName != null)
                 await updateUsername(id, data.userName)
             // if (data.courses != null)
@@ -130,7 +145,6 @@ class StudentService {
                     throw new CustomError("Email already in use", 400)
                 await updateUserEmail(id, data.email)
             }
-                
             if (data.major != null)
                 await updateUserMajor(id, data.major)
             if (data.longBio != null)
