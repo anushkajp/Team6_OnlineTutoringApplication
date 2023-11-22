@@ -4,6 +4,7 @@ import pfp2 from "../assets/Profile_Pic_2.png";
 
 export default function TutorModal(props) {
   const { toggle, action, tutorData } = props;
+  console.log("TutorModal Data", tutorData);
 
   if (!tutorData || !toggle) {
     return null;
@@ -18,9 +19,9 @@ export default function TutorModal(props) {
             alt={`${tutorData.name}'s Profile Picture`}
           />
         </div>
-        <div className="txt">{tutorData.name}</div>
-        <div className="stars">{tutorData.stars}</div>
-        <p className="bio">{tutorData.bio}</p>
+        <div className="txt">{tutorData.firstName} {tutorData.lastName}</div>
+        <div className="stars">⭐ {tutorData.rating}</div>
+        <p className="bio">{tutorData.longBio}</p>
 
         <br></br>
         <br></br>
@@ -55,7 +56,7 @@ export default function TutorModal(props) {
               {time}
             </div>
           ))}
-        </div> */}
+        </div> */}  
         <br></br>
         <br></br>
         <br></br>

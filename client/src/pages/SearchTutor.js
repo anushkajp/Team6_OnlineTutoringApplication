@@ -23,10 +23,24 @@ function SearchTutor(props) {
   const [allSubjects, setAllSubjects] = useState([]);
   const [selectedTutor, setSelectedTutor] = useState("Select Tutor");
   const [selectedDay, setSelectedDay] = useState("");
+  const [selectedTutorModalData, setSelectedTutorModalData] = useState(null);
 
   function open() {
     setModal(!modal);
   }
+
+  const handleOpenTutorModal = (tutorData) => {
+    // Close the existing modal if it's open
+    if (modal) {
+      setModal(false);
+    }
+
+    // Update the selected tutor data and reopen the modal
+    setTimeout(() => {
+      setSelectedTutorModalData(tutorData);
+      setModal(true);
+    }, 300); // Adjust the timeout duration as needed
+  };
 
   const handleDateChange = (date) => {
     setDate(date);
@@ -199,13 +213,15 @@ function SearchTutor(props) {
             <div className="tutor-container">
               {getFilteredTutors().map((filteredTutor) => (
                 <TutorTileCard
-                  key={filteredTutor.key}
+                  openModalWithTutor={handleOpenTutorModal}
+                  id={filteredTutor.key}
                   pfp={filteredTutor.profilePic}
                   stars={`⭐ ${filteredTutor.rating}`}
                   name={`${filteredTutor.firstName} ${filteredTutor.lastName}`}
                   subjects={filteredTutor.courses.join(", ")}
-                  bio={filteredTutor.shortBio}
+                  bio={filteredTutor.longBio}
                   cost={50}
+                  tutorList={tutorList}
                 />
               ))}
             </div>
@@ -216,7 +232,7 @@ function SearchTutor(props) {
           <p> This is Third column of our grid system</p> */}
           <TutorModal
             toggle={modal}
-            action={open}
+            action={() => setModal(false)}
             selectedTutor={selectedTutor}
             tutorList={tutorList}
           />

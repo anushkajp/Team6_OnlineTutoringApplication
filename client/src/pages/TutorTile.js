@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 import TutorModal from "./TutorModal";
 
-export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
+export const TutorTileCard = ({
+  id,
+  pfp,
+  stars,
+  name,
+  subjects,
+  bio,
+  cost,
+  tutorList,
+  openModalWithTutor,
+}) => {
   const [like, setLike] = useState(false);
   const [modal, setModal] = useState(false);
   const [book, setBook] = useState(false);
@@ -11,12 +21,19 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
   // Check if bio is empty or undefined
   const hasBio = bio && bio.trim() !== "";
 
-  const handleBook = () => {
-    setSelectedTutorData({ pfp, stars, name, subjects, bio, cost });
-  };
+  // Check if subjects is empty or undefined
+  const hasSubj = subjects && subjects.trim() !== "";
 
-  const open = () => {
-    setModal(true); // Open the modal
+  const handleBook = () => {
+    console.log("handleBook is called");
+    console.log("Tutor ID:", id); // Log the ID
+    const fullTutorInfo = tutorList.find((tutor) => tutor.key === id);
+    if (fullTutorInfo) {
+      console.log("Booking Tutor Info:", fullTutorInfo);
+      setSelectedTutorData(fullTutorInfo); // Set the full information for modal or other uses
+      console.log("selectedTutorData set to:", fullTutorInfo);
+      openModalWithTutor(fullTutorInfo);
+    }
   };
 
   const close = () => {
@@ -24,7 +41,7 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
   };
 
   const handleOpenModal = () => {
-    setSelectedTutorData({ pfp, stars, name, subjects, bio, cost });
+    handleBook();
     setModal(true);
   };
 
@@ -54,22 +71,34 @@ export const TutorTileCard = ({ pfp, stars, name, subjects, bio, cost }) => {
         <img src={pfp} className="profile-pic"></img>
         <p className="stars">{stars} stars</p>
       </div>
-      <div class="right-column">
-        <div class="vertical-component">
+      <div className="right-column">
+        <div className="vertical-component">
           <p className="name-tutor">{name}</p>
         </div>
-        <div class="vertical-component">
-          <p className="subjects">{subjects}</p>
+
+        <div className="vertical-component">
+          {hasSubj ? (
+            <p className="subjects">{subjects}</p>
+          ) : (
+            <p className="subjects">No subjects available</p>
+          )}
         </div>
-        <div class="vertical-component">
-          {hasBio ? bio : <p className="bio">No bio available</p>}
+
+        <div className="vertical-component">
+          {hasBio ? (
+            <p className="bio">{bio}</p>
+          ) : (
+            <p className="bio">No bio available</p>
+          )}
         </div>
-        <div class="vertical-component">
+
+        <div className="vertical-component">
           <p className="heart" onClick={handleLike}>
             {like ? "♥️" : "♡"}
           </p>
         </div>
-        <div class="book-button" onClick={handleOpenModal} action={handleBook}>
+
+        <div className="book-button" onClick={handleOpenModal}>
           Book
         </div>
         <TutorModal

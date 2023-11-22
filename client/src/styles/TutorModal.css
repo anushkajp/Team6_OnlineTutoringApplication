@@ -62,7 +62,7 @@
   position: fixed;
   color: #fff;
   font-family: Montserrat;
-  font-size: 23px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -70,6 +70,8 @@
   flex-shrink: 0;
   margin-left: 135px;
   margin-top: -580px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .container-modal .stars {

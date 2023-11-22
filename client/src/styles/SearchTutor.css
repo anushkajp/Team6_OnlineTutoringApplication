@@ -134,7 +134,7 @@
 }
 
 .vertical-component {
-  padding: 1rem;
+  padding: 10px;
   align-self: start;
 }
 
@@ -169,8 +169,8 @@
   line-height: normal;
   letter-spacing: 0.26px;
   text-align: left;
-  margin-top: -66px;
-  margin-left: -5px;
+  margin-top: -50px;
+  margin-left: -18px;
 }
 
 .bio {
@@ -181,9 +181,10 @@
   font-weight: 500;
   line-height: normal;
   letter-spacing: 0.24px;
-  margin-top: -300px !important;
   text-align: left;
   width: 290px;
+  margin-left: -15px;
+  margin-top: -30px;
 }
 
 .heart {
@@ -239,8 +240,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -60px;
-  margin-left: 175px;
+  margin-top: -5.5px;
+  margin-left: 180px;
   box-sizing: border-box;
 }
 
@@ -263,7 +264,7 @@
   line-height: normal;
   letter-spacing: 0.22px;
   display: block; 
-  margin-top: 0;
+  margin-top: -10px;
   padding: 0 20px !important; 
   width: 100%; 
   text-align: center;
