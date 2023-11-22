@@ -1,46 +1,68 @@
-const express = require("express");
-const router = express.Router();
 const read = require("../db/read")
 const update = require ('../db/update')
-const add = require ('../db/add')
+const add = require ('../db/obAdd')
 const {searchItem} = require ('../db/db')
 const deletes=require("../db/delete")
-       
+const USER = 'User'
+const USERNAME = 'username'
+const EMAIL = 'email'
+const CustomError = require ('../utils/customError')
+const Tutor = require ('../models/tutor')
+const Availability = require ('../models/availability')
+const bcrypt = require ("bcryptjs")
+
 class TutorService {
     // GET ALL
     static async getAll() {
-        // IF DB CAN FIND ID RETURN TUTOR OBJECT
-        try {
-            const tutors = await read.getTutors()
-            console.log("TutorService.getTutors() = " + tutors)
-            return tutors
-        }catch (err) {
-            throw err
+        console.log("\n[ TutorService.getAll ]\n")
+        // GET ALL TUTOR USERIDS
+        const tutorIds = await read.getTutors()
+        const propertyMap = {}
+        let addOns
+        console.log("TutorIds")
+        console.log(tutorIds)
+        // POPULATE DICTIONARY WITH TUTOR INFO FROM USERIDS
+        for (const key in tutorIds) {
+            propertyMap[key] = await read.getUser(key)
+            addOns = await read.getTutor(key)
+            propertyMap[key] = {...propertyMap[key], ...addOns}
         }
+        console.log(propertyMap)
+        return propertyMap
     }
     // GET ONE
     static async getOne(id) {
-        try {
+        
+        console.log("\n[ TutorService.getone ]\n")
 
-            console.log("\n[ TutorService.getone ]\n")
-            const PATH = 'User'
-            const ATTRIBUTE = 'username'
+        // SEARCH FOR USER W USERNAME
+        const search = await searchItem(USER, USERNAME, id)
+        const userId = Object.keys(search)[0]
+        console.log(await search)
+        
+        // USER FOUND
+        if (Object.keys(search).length === 1) {
 
-            // SEARCH FOR USER W USERNAME
-            const search = await searchItem(PATH, ATTRIBUTE, id)
-            console.log(await search)
+            // DETERMINE IF USER IS A TUTOR
+            const tutorAdds = await read.getTutor(userId)
             
-            // USER FOUND
-            if (Object.keys(search).length > 0)
-                return search
+            // USER IS A STUDENT
+            if (Object.keys(tutorAdds).length === 0) {
+                throw new CustomError("User is not a tutor", 400)
+            }
 
-            // USER NOT FOUND
-            else
-                return false 
+            // COMBINE TUTOR INFO AND THE TUTOR ADD ONS
+            search[userId] = {...search[userId], ...tutorAdds}
+            
+            // POPULATE TUTOR OBJECT 
+            return search
+        }    
 
-        }catch (e) {
-            throw e
-        }
+        // USER NOT FOUND
+        else if (Object.keys(search).length === 0)
+            throw new CustomError("User not found", 400)
+        else 
+            throw new CustomError("Multiple users found with this username", 400)
         
     }
     
@@ -50,68 +72,58 @@ class TutorService {
         try {
 
             console.log("\n[ TutorService.create ]\n")
-            const PATH = 'Tutor'
-            const ATTRIBUTE = 'username'
-
-            // SEARCH FOR USER W USERNAME
-            const search = await searchItem(PATH, ATTRIBUTE, id)
-            console.log(await search)
-
-            // USER FOUND
-            if (Object.keys(search).length === 0)         
-                return false
-            
-            // ADD NEW STUDENT TO DB
             const data = JSON.parse(tutordata)
-            console.log("nTutorService student:" + JSON.stringify(data) + "\n")
-            const propertyMap = {
-                firstName: null,
-                lastName: null,
-                middleName: null,
-                password: null,
-                username: null,
-                courses: [],
-                phone: null,
-                email: null,
-                major: null,
-                hours: null,
-                longBio: null,
-                shortBio: null,
-                pfp: null,
-                userId: null,
-            };
-            const tutorInfo = await addTutor(
-                data.firstName, data.middleName,
-                data.lastName, data.password, data.userName, 
-                data.major, data.courses, data.phone, 
-                data.email, data.longBio, data.shortBio, data.availability.week,
-                data.availability.exceptions, data.pfp, data.rating, 
-                data.bkgdCheck, data.hours
-            )
-            console.log(tutorInfo)
-            console.log("TutorService tutorInfo: " + JSON.stringify(tutorInfo) + "\n")
-            // FIND THE NEW STUDENT FROM DB WITH USERID
-            return tutorInfo
-        }catch (e) {
-            throw e
-        }
-    }
-    // GET ALL APPOINTMENTS BASED ON TUTOR
-    static async createAppointment(id, appInfo) {
-        try {
-            console.log("\n[ TutorService.createAppointments ]")
-            const user = await searchItem('User', 'username', id)
-            const userid = Object.keys(user)[0]
-            console.log("Userid: " + userid)
-            if (Object.keys(user).length === 0) {
-                return false
+            // SEARCH FOR USER W USERNAME
+            const userResult = await searchItem(USER, USERNAME, data.username)
+            const emailResult = await searchItem(USER, EMAIL, data.email)
+            console.log(userResult)
+            console.log(Object.keys(userResult).length)
+            console.log(Object.keys(emailResult).length)
+            // USER FOUND
+            if (Object.keys(userResult).length > 0)         
+                throw new CustomError("Username already exists", 400)
+
+            // EMAIL FOUND
+            if (Object.keys(emailResult).length > 0)         
+                throw new CustomError("Email already in use", 400)
+            
+            // HASH PASSWORD
+            const saltRounds = 10
+            const salt = bcrypt.genSaltSync(saltRounds)
+            const hashedPassword = await bcrypt.hash(data.password, salt)
+            data.password = hashedPassword
+
+            // ADD NEW STUDENT TO DB
+            console.log(data)
+            let tutor = new Tutor();
+            const propertyMap = Tutor.toObj();
+
+            // Loop through the data object and set the corresponding properties
+            for (const key in propertyMap) {
+                if (data.hasOwnProperty(key)) {
+                    tutor[key] = data[key];
+                }
             }
-            const data = JSON.parse(appInfo)
-            const appointment = add.addAppointment(userid, data.studentId, data.dateTime,
-                data.length, data.online, data.location, data.courses,
-                data.notes, data.rating, data.feedback)
-            console.log("\nappointment: " + JSON.stringify(appointment))
-            return appointment
+
+            // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
+            for (const key in tutor) {
+                if (tutor[key] === undefined)
+                    tutor[key] = propertyMap[key]
+            }
+            // LOOP THROUGH AVAILABILITY AND SET TO NULL
+            console.log(tutor)
+            tutor.availability = new Availability()
+            for (const key in tutor.availability) {
+                if (tutor.availability[key] === undefined)
+                    tutor.availability[key] = false
+            }
+            console.log(tutor)
+            const tutorInfo = await add.addTutor(tutor)
+            
+            console.log(tutorInfo)
+            // FIND THE NEW STUDENT FROM DB WITH USERID
+            // return tutorInfo
+            return await this.getOne(data.username)
         }catch (e) {
             throw e
         }
@@ -121,36 +133,54 @@ class TutorService {
         try {
             // FIND TUTORID
             console.log("\n[ TutorService.update ]\n")
-            const PATH = 'Tutor'
-            const ATTRIBUTE = 'username'
             const data = JSON.parse(updateTutor)
-            const result = await searchItem(PATH, ATTRIBUTE, username)
+            console.log(data.username)            
 
-            // TUTOR DOESNT EXIST
-            if ( Object.keys(result).length === 0)
-                return false
-            console.log("updateTutor: " + updateTutor + "\n")
-            console.log("Tutor id: " + id + "\n")
+            let id = Object.keys(await searchItem(USER, USERNAME, username))
+            id = id[0]
 
-            const id = Object.keys(result)[0]
+            console.log(data)
+            console.log(id)
+
             // SEE WHAT CHANGED IN UPDATETUTOR AND CALL CORRESPONDING DB FUNCTION
-            if (updateTutor.userId != null)
-                update.updateUsername(id, updateTutor.userId)
-            if (updateTutor.major != null)
-                update.updateUserMajor(id, updateTutor.major)
-            if (updateTutor.password != null)
-                update.updateUserPassword(id, updateTutor.password)
-            if (updateTutor.email != null)
-                update.updateUserEmail(id, updateTutor.email)
-            if (updateTutor.longBio != null)
-                update.updateUserBio(id, updateTutor.longBio)
-            if (updateTutor.phone != null)
-                update.updateUserPhone(id, updateTutor.phone)
-            if (updateTutor.pfp != null)
-                update.updateUserProfilePic(id, updateTutor.pfp)
-            if (updateTutor.shortBio != null)
-                update.updateTutorBio(id, update)
-            return getTutor(id)
+            if (data.major != null)
+                update.updateUserMajor(id, data.major)
+            if (data.password != null) {
+                // HASH PASSWORD
+                const saltRounds = 10
+                const salt = bcrypt.genSaltSync(saltRounds)
+                const hashedPassword = await bcrypt.hash(data.password, salt)
+                update.updateUserPassword(id, hashedPassword)
+            }
+                
+            if (data.longBio != null)
+                update.updateUserLongBio(id, data.longBio)
+            if (data.shortBio != null)
+                update.updateUserShortBio(id, data.shortBio)
+            if (data.phone != null)
+                update.updateUserPhone(id, data.phone)
+            if (data.pfp != null)
+                update.updateUserProfilePic(id, data.pfp)
+            if (data.availability != null)
+                update.updateTutorWeeklyAvail(id, data.availability)
+            if (data.exceptions != null)
+                update.updateTutorExceptAvail(id, data.availability.exceptions)
+            if (data.username != null) {
+                const result = await searchItem(USER, USERNAME, data.username)
+                // USERNAME ALREADY USED
+                if ( Object.keys(result).length > 0)
+                    throw new CustomError("Username currently used", 400)
+                update.updateUsername(id, data.username)
+                username = data.username
+            }
+            if (data.email != null) {
+                // EMAIL ALREADY USED
+                const emailResult = await searchItem(USER, EMAIL, data.email)
+                if (Object.keys(emailResult).length > 0)         
+                    throw new CustomError("Email already in use", 400)
+                update.updateUserEmail(id, data.email)
+            }
+            return this.getOne(username)
         }catch (e) {
             throw e
         }
@@ -160,19 +190,15 @@ class TutorService {
         try {
 
             // FIND USERID FROM USERNAME
-            const PATH = 'Tutor'
-            const ATTRIBUTE = 'username'
             console.log("\nTutorService.delete")
-            
-            // const search = JSON.parse(await searchItem(PATH, ATTRIBUTE, id))
-            const search = await searchItem(PATH, ATTRIBUTE, id)
+            const search = await searchItem(USER, USERNAME, id)
             console.log("Username: " + Object.keys(search)[0])
             if (Object.keys(search).length > 0) {
                 deletes.deleteUser(Object.keys(search)[0])
                 return search
             }
             else
-                return false
+                throw new CustomError("User not found", 400)
         }catch (e) {
             throw e
         }

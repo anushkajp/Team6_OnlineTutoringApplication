@@ -88,15 +88,15 @@ module.exports = {
      * @param {string} email Email
      * @param {string} longBio Descriptive bio
      * @param {string} shortBio A short bio for the tutor visible to students
-     * @param {Array<Date>} weeklyAvailability Weekly availability, should be an array<Date,7> storing time ranges in a standard format, index 0 is monday
-     * @param {Array<Date>} exceptionsAvailability A list of exceptions to the weekly schedule, stored as dates of unavailability
+     * @param {Array<Date>} availability Weekly availability, should be an array<Date,7> storing time ranges in a standard format, index 0 is monday
+     * @param {Array<Date>} exceptions A list of exceptions to the weekly schedule, stored as dates of unavailability
      * @param {ImageData} profilePic 
      * @param {number} rating Float rating of the user
      * @param {boolean} backgroundCheck Defaults to false, whether a background check has passed or not
      * @param {number} totalHours Total hours completed by tutor
      * @param {number} rating The rating other users have given the tutor
      */
-    addTutor: async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, weeklyAvailability = [], exceptionsAvailability = [], profilePic = null, rating = 0.00, backgroundCheck = false, totalHours = 0) {
+    addTutor: async function addTutor(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, availability = [], exceptions = [], profilePic = null, rating = 0.00, backgroundCheck = false, totalHours = 0) {
         userKey = await this.addUser(firstName, middleName, lastName, password, username, major, courses, phone, email, longBio, shortBio, profilePic = null)
         userKey = userKey["id"]
         const postDataTutor = {
@@ -104,8 +104,8 @@ module.exports = {
             backgroundCheck: backgroundCheck,
             totalHours: totalHours,
             rating: rating,
-            weeklyAvailability: weeklyAvailability,
-            exceptionsAvailability: exceptionsAvailability
+            availability: availability,
+            exceptions: exceptions
         }
         return addItem("Tutor", postDataTutor, userKey)
     },
