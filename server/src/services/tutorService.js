@@ -9,6 +9,8 @@ const EMAIL = 'email'
 const CustomError = require ('../utils/customError')
 const Tutor = require ('../models/tutor')
 const Availability = require ('../models/availability')
+const bcrypt = require ("bcryptjs")
+
 class TutorService {
     // GET ALL
     static async getAll() {
@@ -34,26 +36,23 @@ class TutorService {
         console.log("\n[ TutorService.getone ]\n")
 
         // SEARCH FOR USER W USERNAME
-        console.log(id)
         const search = await searchItem(USER, USERNAME, id)
+        const userId = Object.keys(search)[0]
         console.log(await search)
         
         // USER FOUND
         if (Object.keys(search).length === 1) {
 
             // DETERMINE IF USER IS A TUTOR
-            const tutorAdds = await read.getTutor(Object.keys(search)[0])
-            const tutorId = await searchItem()
-            console.log(Object.keys(search)[0])
-            console.log(tutorAdds)
-            console.log(tutorAdds.userId)
+            const tutorAdds = await read.getTutor(userId)
+            
             // USER IS A STUDENT
-            if (tutorAdds === undefined) {
+            if (Object.keys(tutorAdds).length === 0) {
                 throw new CustomError("User is not a tutor", 400)
             }
 
             // COMBINE TUTOR INFO AND THE TUTOR ADD ONS
-            search[Object.keys(search)[0]] = {...search[Object.keys(search)[0]], ...tutorAdds}
+            search[userId] = {...search[userId], ...tutorAdds}
             
             // POPULATE TUTOR OBJECT 
             return search
@@ -88,8 +87,13 @@ class TutorService {
             if (Object.keys(emailResult).length > 0)         
                 throw new CustomError("Email already in use", 400)
             
+            // HASH PASSWORD
+            const saltRounds = 10
+            const salt = bcrypt.genSaltSync(saltRounds)
+            const hashedPassword = await bcrypt.hash(data.password, salt)
+            data.password = hashedPassword
+
             // ADD NEW STUDENT TO DB
-            
             console.log(data)
             let tutor = new Tutor();
             const propertyMap = Tutor.toObj();
@@ -104,14 +108,14 @@ class TutorService {
             // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
             for (const key in tutor) {
                 if (tutor[key] === undefined)
-                    tutor[key] = null
+                    tutor[key] = propertyMap[key]
             }
             // LOOP THROUGH AVAILABILITY AND SET TO NULL
             console.log(tutor)
             tutor.availability = new Availability()
             for (const key in tutor.availability) {
                 if (tutor.availability[key] === undefined)
-                tutor.availability[key] = null
+                    tutor.availability[key] = false
             }
             console.log(tutor)
             const tutorInfo = await add.addTutor(tutor)
@@ -141,8 +145,14 @@ class TutorService {
             // SEE WHAT CHANGED IN UPDATETUTOR AND CALL CORRESPONDING DB FUNCTION
             if (data.major != null)
                 update.updateUserMajor(id, data.major)
-            if (data.password != null)
-                update.updateUserPassword(id, data.password)
+            if (data.password != null) {
+                // HASH PASSWORD
+                const saltRounds = 10
+                const salt = bcrypt.genSaltSync(saltRounds)
+                const hashedPassword = await bcrypt.hash(data.password, salt)
+                update.updateUserPassword(id, hashedPassword)
+            }
+                
             if (data.longBio != null)
                 update.updateUserLongBio(id, data.longBio)
             if (data.shortBio != null)

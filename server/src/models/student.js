@@ -46,19 +46,18 @@ class Student extends User {
   }
   static toObj() {
     return {
-      firstName: null,
-      lastName: null,
-      password: null,
-      userId: null,
-      username: null,
-      phone: null,
-      email: null,
-      hours: null,
-      longBio: null,
-      shortBio: null,
-      pfp: null,
-      favoriteTutors: null
-  };
+      firstName: "",
+      lastName: "",
+      password: "",
+      username: "",
+      phone: "",
+      email: "",
+      hours: 0,
+      longBio: "",
+      shortBio: "",
+      pfp: "",
+      favoriteTutors: ""
+    };
   }
 }
 module.exports = Student;
