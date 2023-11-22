@@ -47,7 +47,7 @@ class TutorService {
             const tutorAdds = await read.getTutor(userId)
             
             // USER IS A STUDENT
-            if (tutorAdds === undefined) {
+            if (Object.keys(tutorAdds).length === 0) {
                 throw new CustomError("User is not a tutor", 400)
             }
 
