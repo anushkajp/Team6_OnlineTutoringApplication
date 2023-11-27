@@ -8,7 +8,7 @@ const SessionTile = (props) => {
           <h5 className="classNameReview"><span className="header_text">Student Name: </span>{props.student_name}</h5>
           <h5 className="classNameReview"><span className="header_text">Session Time: </span>{props.session_time}</h5>
           <h5 className="classNameReview"><span className="header_text">Comments: </span>{props.session_comments}</h5>
-          <h5 className="classNameReview"><span className="header_text">Modality: </span>{props.online} ? "online" : "in-person"</h5>
+          <h5 className="classNameReview"><span className="header_text">Modality: </span>{props.online ? "online" : "in-person"}</h5>
         </div>
     </div>
   )
