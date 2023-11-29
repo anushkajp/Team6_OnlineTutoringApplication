@@ -30,6 +30,25 @@ router.get('/:id', async(req, res) => {
     })()
 });
 
+// GET ALL APPOINTMENTS BY USER ID
+router.get('/:user/:id', async(req, res) => {
+    try {
+        //console.log("\n[ Session routes get all appointments ]")
+        let reviews = new Review()
+        if (req.params.user === 'tutor')
+            reviews = await ReviewService.getAllReviewsByTutor(req.params.id, 'tutorId')
+        // else if (req.params.user === 'student')
+        //     reviews = await ReviewService.getAllReviewsByTutor(req.params.id, 'studentId')
+        if (reviews === null)
+            res.status(400).json({message: req.params.id + ' is not a valid id'})
+        else 
+            res.status(200).json(reviews)
+    }catch (err) {
+        res.status(500).json({ message: err.message});
+    }
+});
+
+
 // CREATE ONE
 router.post('/', bodyParser, async(req, res) => {
     try {

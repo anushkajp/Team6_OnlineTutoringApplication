@@ -1,11 +1,12 @@
 const express = require("express");
 const Review = require("../models/review")
-const {getReview, getReviews, getStudent} = require ('../db/read')
+const {getReview, getReviews, getStudent, getUser} = require ('../db/read')
 const {searchItem} = require ('../db/db')
 const {deleteReview} = require("../db/delete")
 const CustomError = require ('../utils/customError')
 const {addReview} = require('../db/obAdd')
 const {updateTutorRating, updateReviewDescription} = require ('../db/update')
+
 
 class ReviewService {
       // GET ALL
@@ -15,6 +16,7 @@ class ReviewService {
             // Transform the data structure and filter unnecessary information
             const transformedReviews = Object.entries(reviews).map(([id, review]) => {
                 const { description, rating, studentId, tutorId } = review;
+                console.log(review.studentId)
                 return {
                     id,
                     studentId,
@@ -30,7 +32,7 @@ class ReviewService {
             throw err;
         }
     }
-  
+
     // GET ONE REVIEW BY ID 
     static async getOne(id) {
         try {
@@ -64,6 +66,26 @@ class ReviewService {
             throw err
         }
     }
+
+
+     //GET ALL APPOINTMENTS BY USER
+     static async getAllReviewsByTutor(id, path) {
+        try {
+            console.log("\n[ ReviewService.getAllReviewsByTutor ]")
+            const user = await searchItem('User', 'username', id)
+            console.log("\nuser: " + JSON.stringify(user))
+            const userid = Object.keys(user)[0]
+            if (Object.keys(user).length === 0) {
+                return false
+            }
+            const reviews = await searchItem('Review', path, userid)
+            console.log("\nreviews: " + JSON.stringify(reviews))
+            return reviews
+            
+        }catch (e) {
+            throw e
+        }
+    }  
 
     static async create(reviewData){ 
         try {
