@@ -1,6 +1,7 @@
 import React from 'react'
 import ReviewTile from '../components/ReviewTile'
 import Sidebar from '../components/sidebar'
+import { fetchFromAPI } from '../services/api' 
 
 const TutorReports = (props) => {
   const sampleJSON = [
