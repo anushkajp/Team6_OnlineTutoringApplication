@@ -41,14 +41,34 @@ const TutorReports = (props) => {
       />
     ));
 
-  /*const tiles = sampleJSON.map((review, index) => (
-    <ReviewTile key={index} class_name={review.class_name}
-    student_name={review.student_name}
-    session_time={review.session_time}
-    session_rating={review.session_rating}
-    session_comments={review.session_comments}>
-    </ReviewTile>
-  ));*/
+  /*
+  Came up with this first:
+  const TutorReports = (props) => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    fetchFromAPI('tutor-reviews') // Replace 'tutor-reviews' with the actual API endpoint for tutor reviews
+      .then(data => {
+        setReviews(data); // Assuming the API returns an array of reviews
+      })
+      .catch(error => {
+        console.error('Error fetching reviews:', error);
+      });
+  }, []);
+
+  const tiles = reviews.map((review, index) => (
+    <ReviewTile
+      key={index}
+      class_name={review.class_name}
+      student_name={review.student_name}
+      session_time={review.session_time}
+      session_rating={review.session_rating}
+      session_comments={review.session_comments}
+    />
+  ));
+  */
+
+  //Anushka's code
 
   /*const sampleJSON = [
     {
@@ -85,6 +105,14 @@ const TutorReports = (props) => {
     }
   ]*/
 
+    /*const tiles = sampleJSON.map((review, index) => (
+    <ReviewTile key={index} class_name={review.class_name}
+    student_name={review.student_name}
+    session_time={review.session_time}
+    session_rating={review.session_rating}
+    session_comments={review.session_comments}>
+    </ReviewTile>
+  ));*/
 
 
   // Calculate the sum of session_rating values
