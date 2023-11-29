@@ -1,11 +1,11 @@
 const express = require("express");
 const Review = require("../models/review")
-const {getReview, getReviews} = require ('../db/read')
+const {getReview, getReviews, getStudent} = require ('../db/read')
 const {searchItem} = require ('../db/db')
 const {deleteReview} = require("../db/delete")
 const CustomError = require ('../utils/customError')
 const {addReview} = require('../db/obAdd')
-const {updateTutorRating} = require ('../db/update')
+const {updateTutorRating, updateReviewDescription} = require ('../db/update')
 
 class ReviewService {
       // GET ALL
@@ -30,7 +30,7 @@ class ReviewService {
             throw err;
         }
     }
-
+  
     // GET ONE REVIEW BY ID 
     static async getOne(id) {
         try {
@@ -88,7 +88,7 @@ class ReviewService {
             const studentuserid = Object.keys(userStudent)[0]
             // only users that are student can create reviews
             // CHECK TO SEE IF USER IS A STUDENT
-            const student = await read.getStudent(studentuserid)
+            const student = await getStudent(studentuserid)
             //console.log(student)
             if (student.userId === undefined){
                 throw new CustomError("ERROR: Only student users can create reviews", 400) 
@@ -142,6 +142,10 @@ class ReviewService {
 
             const reviewInfo = await addReview(review)
             console.log("ReviewInfo " + reviewInfo)
+             // Now, modify the reviewInfo object to show usernames in Postman
+            reviewInfo.tutorId = tutorUsername;
+            reviewInfo.studentId = studentUsername;
+
             return reviewInfo
         }catch (e) {
             throw e
@@ -153,18 +157,14 @@ class ReviewService {
             console.log("\nRviewService.update\n")
             const data = JSON.parse(reviewData)
             console.log("\nData has been parsed\n")
-            console.log(".....updating")
+            
             if (data.rating != null){
                 await updateTutorRating(id, data.rating) 
-                console.log(".....in the process")
             } 
-            console.log(".....updated")
-                // I think there needs to be a updateReviewDescription() function
 
-                // if (data.description != null){
-                //     await updateReviewDescription(id, data.rating) 
-                // }
-            // Fetch the updated appointment and return
+            if (data.description != null){
+                await updateReviewDescription(id, data.description) 
+            }
             return await getReview(id)
             }catch (e) {
                 throw e
