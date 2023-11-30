@@ -37,6 +37,50 @@ class ReviewService {
         }
     }
     
+      //GET ALL REVIEWS BY USER
+      static async getAllReviewsByUser(id) {
+        try {
+            // we are sent the username
+            // we need to check if the username sent is a student or tutor
+            const user = await searchItem('User', 'username', id)
+            console.log("\nuser: " + JSON.stringify(user))
+            const userid = Object.keys(user)[0]
+            if (Object.keys(user).length === 0) { // check if the user exists
+                return false
+            }
+
+            //console.log("student or tutor")
+            let reviews = await searchItem('Review', 'studentId',userid )
+            //console.log("is student" + reviews)
+            if (reviews == false){
+                //console.log("is student" + reviews)
+                reviews = await searchItem('Review', 'tutorId', userid )
+                //console.log(reviews)
+            }
+
+            const transformedReviews = await Promise.all(Object.entries(reviews).map(async ([id, review]) => {
+                const { description, rating, studentId, tutorId } = review;
+    
+                const studentUsername = (await getUser(studentId))["username"];
+                const tutorUsername = (await getUser(tutorId))["username"];
+    
+                return {
+                    id,
+                    studentUsername,
+                    tutorUsername,
+                    rating,
+                    description
+                };
+            }));
+
+            return transformedReviews
+
+            //return reviews
+            
+        }catch (e) {
+            throw e
+        }
+    }
     
     // GET ONE REVIEW BY ID 
     static async getOne(id) {
@@ -72,31 +116,6 @@ class ReviewService {
         }
     }
 
-
-
-
-
-
-     //GET ALL REVIEWS BY USER
-     static async getAllReviewsByUser(id, path) {
-        try {
-            const user = await searchItem('User', 'username', id);
-            console.log("\nuser: " + JSON.stringify(user));
-            
-            if (Object.keys(user).length === 0) {
-                return null; // Return null if the user is not found
-            }
-    
-            const userId = Object.keys(user)[0];
-            const reviews = await searchItem('Review', path, userId);
-
-            console.log("\nreviews: " + JSON.stringify(reviews));
-            return reviews;
-    
-        } catch (e) {
-            throw e;
-        }
-    }
 
     static async create(reviewData){ 
         try {

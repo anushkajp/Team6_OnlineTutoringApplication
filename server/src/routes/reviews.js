@@ -16,16 +16,11 @@ router.get('/', async (req,res) => {
     }
 });
 
-// GET ALL REVIEWS BY USER NAME
+
+// GET ALL REVIEWS BY USER ID
 router.get('/:id', async(req, res) => {
     try {
-        //console.log("\n[ Session routes get all appointments ]")
-        let reviews = new Review()
-        if (await ReviewService.getAllReviewsByUser(req.params.id, 'tutorId') != null )
-            reviews = await ReviewService.getAllReviewsByUser(req.params.id, 'tutorId')
-        else if (await ReviewService.getAllReviewsByUser(req.params.id, 'studentId' != null)){
-            reviews = await ReviewService.getAllReviewsByUser(req.params.id, 'studentId')
-        }
+        const reviews = await ReviewService.getAllReviewsByUser(req.params.id)
         if (reviews === null)
             res.status(400).json({message: req.params.id + ' is not a valid id'})
         else 
@@ -35,21 +30,22 @@ router.get('/:id', async(req, res) => {
     }
 });
 
+
 // GET ONE
-router.get('/:id', async(req, res) => {
-    (async () =>{
-        try {
-            const review = await ReviewService.getOne(req.params.id)
-            console.log("\nReview routes.get(/:id): Session: " + review)
-            if (review === false)
-                res.status(400).json({message: "Review does not exist"})
-            else 
-                res.status(200).json(review)
-        }catch (err){
-            res.status(500).json({ message: err.message});
-        }
-    })()
-});
+// router.get('/:id', async(req, res) => {
+//     (async () =>{
+//         try {
+//             const review = await ReviewService.getOne(req.params.id)
+//             console.log("\nReview routes.get(/:id): Session: " + review)
+//             if (review === false)
+//                 res.status(400).json({message: "Review does not exist"})
+//             else 
+//                 res.status(200).json(review)
+//         }catch (err){
+//             res.status(500).json({ message: err.message});
+//         }
+//     })()
+// });
 
 // GET ONE BY STUDENT & TUTOR USERNAME 
 
@@ -57,9 +53,7 @@ router.get('/:id', async(req, res) => {
 // CREATE ONE
 router.post('/', bodyParser, async(req, res) => {
     try {
-        //console.log("test1")
         const review = await ReviewService.create(JSON.stringify(req.body));
-        //console.log("test2")
         res.status(201).json(review)
     }catch (err) {
         if (err instanceof CustomError)
