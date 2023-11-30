@@ -274,7 +274,6 @@ class SessionService {
     }
     // DELETE AN APPOINTMENT
     static async delAppointment(apptId) {
-
         try{
             console.log("\n[ SessionService.delete ]\n")
             let deletedAppt = new Session;
@@ -295,6 +294,9 @@ class SessionService {
                 //using get to get info about student and tutor
                 const userTutor = await getUser(tutoruserid)
                 const userStudent = await getUser(studentuserid)
+
+                console.log(userTutor)
+                console.log(userStudent)
 
                 //update tutor hours
                 if (userTutor.hours != null) {
@@ -321,22 +323,5 @@ class SessionService {
             throw new Error("Error deleting the review: " + error.message);
         }
     }
-    //DELETE 2nd implementation
-    //not sure about the working of this
-    /*
-    static async delAppointment(apptId) {
-        try {
-            const deletedAppt = await deleteAppointment(apptId);
-            console.log("SessionService.delAppointment() = " + JSON.stringify(deletedAppt) + "\n")  
-
-                if (deletedAppt === null) {
-                    return null;
-                }else {
-                    return deletedAppt;
-                }
-        }catch (error) {
-            throw new Error("Error deleting the review: " + error.message);
-        }
-    } */
 }
 module.exports = SessionService
