@@ -16,20 +16,35 @@ class SessionService {
     static async getAll() {
         try {
             const sessions = await getAppointments();
+            const id = null
 
-            const modifiedSessions = Object.values(sessions).map(innerObj => innerObj);
+            //to make sure only usernames are returned
+            const modifiedSessions = await Promise.all(Object.entries(sessions).map(async ([id, session]) => {
 
-            for (const appointment of modifiedSessions) {
-                const studentId = appointment.studentId;
-                const tutorId = appointment.tutorId;
-
+                const {tutorId, studentId, datetime, length, course, online, location, feedback, tutorNotes, studentNotes
+                } = session
+            
                 const studentUsername = (await getUser(studentId))["username"];
                 const tutorUsername = (await getUser(tutorId))["username"];
 
-                appointment.studentId = studentUsername;
-                appointment.tutorId = tutorUsername;           
+                // Create a new object with replaced properties
+                const modifiedSession = {
 
-            }
+                    id,
+                    tutorUsername, 
+                    studentUsername, 
+                    datetime, 
+                    length, 
+                    course, 
+                    online, 
+                    location, 
+                    feedback, 
+                    tutorNotes, 
+                    studentNotes
+                };
+
+                return modifiedSession;
+            }));
 
             console.log("Modified Sessions: " + JSON.stringify(modifiedSessions) + "\n");
             return modifiedSessions;
@@ -37,6 +52,7 @@ class SessionService {
             throw err;
         }
     }
+
     // RETURNS SPECIFIC SESSION BY SESSION ID
     static async getOne(id) {
         try {
@@ -45,9 +61,10 @@ class SessionService {
             // SESSION FOUND
             if (Object.keys(session).length > 0){
  
-                const studentUsername = (await getUser(studentId))["username"];
-                const tutorUsername = (await getUser(tutorId))["username"];
+                const studentUsername = (await getUser(session.studentId))["username"];
+                const tutorUsername = (await getUser(session.tutorId))["username"];
 
+                //to make sure only usernames are returned
                 const returnSession = session;
                 returnSession.studentId = studentUsername;
                 returnSession.tutorId = tutorUsername;
@@ -85,8 +102,37 @@ class SessionService {
 
             const appointments = await searchItem('Appointment', path, userid)
             console.log("\nappointments: " + JSON.stringify(appointments))
-            return appointments
+
+            //to make sure only usernames are returned
+            const modifiedAppointments = await Promise.all(Object.entries(appointments).map(async ([id, session]) => {
+
+                const {tutorId, studentId, datetime, length, course, online, location, feedback, tutorNotes, studentNotes
+                } = session
             
+                const studentUsername = (await getUser(studentId))["username"];
+                const tutorUsername = (await getUser(tutorId))["username"];
+
+                // Create a new object with replaced properties
+                const modifiedAppointment = {
+
+                    id,
+                    tutorUsername, 
+                    studentUsername, 
+                    datetime, 
+                    length, 
+                    course, 
+                    online, 
+                    location, 
+                    feedback, 
+                    tutorNotes, 
+                    studentNotes
+                };
+
+                return modifiedAppointment;
+            }));
+
+            console.log("Modified Sessions: " + JSON.stringify(modifiedAppointments) + "\n");
+            return modifiedAppointments;                       
         }catch (e) {
             throw e
         }
