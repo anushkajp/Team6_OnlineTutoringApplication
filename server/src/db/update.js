@@ -139,7 +139,7 @@ module.exports = {
      * @param {Array<Date>} newWeeklyAvail New rating for the user
      */
     updateTutorWeeklyAvail: async function updateTutorWeeklyAvail(tutorId, newWeeklyAvail) {
-        return modifyItem("Tutor",tutorId,"weeklyAvailability", newWeeklyAvail)
+        return modifyItem("Tutor",tutorId,"availability", newWeeklyAvail)
     },
 
 
@@ -150,6 +150,9 @@ module.exports = {
      */
     updateTutorExceptAvail: async function updateTutorExceptAvail(tutorId, newExceptionsAvailability) {
         return modifyItem("Tutor",tutorId,"exceptionsAvailability", newExceptionsAvailability)
+    },
+    updateTutorExceptions: async function updateTutorExceptions (tutorId, newExceptions) {
+        return modifyItem("Tutor", tutorId, "exceptions", newExceptions)
     },
 
 
