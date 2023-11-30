@@ -76,7 +76,6 @@ router.post('/', bodyParser, async(req, res) => {
 });
 
 // UPDATE ONE
-router.use(express.json());
 router.patch('/:id', bodyParser, async (req, res) => {
     try {
         console.log("Review controller patch req.body: " + JSON.stringify(req.body))
@@ -104,20 +103,33 @@ router.patch('/:id', bodyParser, async (req, res) => {
 //     }
 // });
 
-router.delete('/:studentUsername/:tutorUsername', (req, res) => {
-    try {
-        const { studentUsername, tutorUsername } = req.params;
-
-        const deletedReview = ReviewService.deleteReview(studentUsername, tutorUsername);
-
-        if (deletedReview === null) {
-            res.status(404).json({ message: "Review not found" });
-        } else {
-            res.status(200).json(deletedReview);
+router.get('/:studentUsername/:tutorUsername', async(req, res) => {
+    (async () =>{
+        try {
+            const review = await ReviewService.getOne(req.params.studentUsername, req.params.tutorUsername)
+            if (review === false)
+                res.status(400).json({message: "Review does not exist"})
+            else 
+                res.status(200).json(review)
+        }catch (err){
+            res.status(500).json({ message: err.message});
         }
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+    })()
+});
+
+
+router.delete('/:studentUsername/:tutorUsername', async(req, res) => {
+    (async () =>{
+        try {
+            const deletedReview = await ReviewService.deleteReview(req.params.studentUsername, req.params.tutorUsername)
+            if (deletedReview == null)
+                res.status(400).json({message: "Review does not exist"})
+            else 
+                res.status(200).json(deletedReview)
+        }catch (err){
+            res.status(500).json({ message: err.message});
+        }
+    })()
 });
 
 module.exports = router

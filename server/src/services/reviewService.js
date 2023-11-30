@@ -81,41 +81,9 @@ class ReviewService {
             throw e
         }
     }
-    // GET ONE REVIEW BY ID 
-    // static async getOne(id) {
-    //     try {
-    //         console.log("\n[ ReviewService.getOne ]\n")
-    //         const review = await getReview(id)
-    //         // REVIEW FOUND
-    //         if (Object.keys(review).length > 0){
-                
-    //            const {
-    //             tutorId,
-    //             studentId,
-    //             rating,
-    //             description
-    //         } = review;
-            
-            
-    //         const result = {
-    //             tutorId,
-    //             studentId,
-    //             rating,
-    //             description
-    //         };
-    //         console.log(result)
-    //         return result
-    //     }
-    //         // REVIEW NOT FOUND
-    //         else {
-    //             throw new CustomError("Review not found", 400)
-    //         }  
-    //     }catch (err){
-    //         throw err
-    //     }
-    // }
 
-    static async getOne(studentUsername, tutorUsername) {
+       //GET ONE BY STUDENT/TUTOR
+       static async getOne(studentUsername, tutorUsername) {
         try {
             // Retrieve user data for student and tutor
             const studentUser = await searchItem('User', 'username', studentUsername);
@@ -157,8 +125,39 @@ class ReviewService {
         }
     }
     
-
-
+    // GET ONE REVIEW BY ID 
+    // static async getOne(id) {
+    //     try {
+    //         console.log("\n[ ReviewService.getOne ]\n")
+    //         const review = await getReview(id)
+    //         // REVIEW FOUND
+    //         if (Object.keys(review).length > 0){
+                
+    //            const {
+    //             tutorId,
+    //             studentId,
+    //             rating,
+    //             description
+    //         } = review;
+            
+            
+    //         const result = {
+    //             tutorId,
+    //             studentId,
+    //             rating,
+    //             description
+    //         };
+    //         console.log(result)
+    //         return result
+    //     }
+    //         // REVIEW NOT FOUND
+    //         else {
+    //             throw new CustomError("Review not found", 400)
+    //         }  
+    //     }catch (err){
+    //         throw err
+    //     }
+    // }
 
 
     static async create(reviewData){ 
@@ -281,34 +280,49 @@ class ReviewService {
     //                 throw new Error("Error deleting the review: " + error.message);
     //         }
     //     }  
-    
-    static async deleteReview(studentUsername, tutorUsername) {
-        try {
-            
-            // need to find reviewId
-            const userTutor = await searchItem('User', 'username', tutorUsername)
-            const userStudent = await searchItem('User', 'username', studentUsername)
 
-            const checkReviewStudent = await searchItem('Review', 'studentId', userTutor)
-            const checkReviewTutor = await searchItem('Review', 'tutorId', userStudent)
 
-            // if (checkReviewStudent == checkReviewTutor){
-            //     const reviewId = che
-            // }
-            // Call your deleteReview function with the constructed reviewId
-            const deletedReview = await deleteReview(checkReviewStudent);
-    
-            console.log("SessionService.deleteReview() = " + JSON.stringify(deletedReview) + "\n");
-    
-            if (deletedReview === null) {
-                return null;
-            } else {
-                return deletedReview;
+        static async deleteReview(studentUsername, tutorUsername) {
+            try {
+                // Retrieve user data for student and tutor
+                const studentUser = await searchItem('User', 'username', studentUsername);
+                const tutorUser = await searchItem('User', 'username', tutorUsername);
+        
+                console.log("\nstudentUser: " + JSON.stringify(studentUser));
+                console.log("\ntutorUser: " + JSON.stringify(tutorUser));
+        
+                // Check if the users exist
+                if (Object.keys(studentUser).length === 0 || Object.keys(tutorUser).length === 0) {
+                    return false;
+                }
+        
+                const studentUserId = Object.keys(studentUser)[0];
+                const tutorUserId = Object.keys(tutorUser)[0];
+        
+                // Retrieve review for the given student and tutor
+                const review = await searchItem('Review', 'studentId', studentUserId, 'tutorId', tutorUserId);
+        
+                // Check if the review exists
+                if (Object.keys(review).length === 0) {
+                    throw new CustomError("Review not found", 400);
+                }
+        
+                // Delete the review
+                const reviewId = Object.keys(review)[0];
+                console.log(reviewId)
+                const deletedReview = await deleteReview(reviewId);
+        
+                console.log("SessionService.deleteReview() = " + JSON.stringify(deletedReview) + "\n");
+        
+                if (deletedReview === null) {
+                    return null;
+                } else {
+                    return deletedReview;
+                }
+            } catch (error) {
+                throw new Error("Error deleting the review: " + error.message);
             }
-        } catch (error) {
-            throw new Error("Error deleting the review: " + error.message);
         }
-    }
-    
+        
 }
 module.exports = ReviewService
