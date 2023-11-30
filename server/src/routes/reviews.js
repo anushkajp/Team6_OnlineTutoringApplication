@@ -79,7 +79,7 @@ router.post('/', bodyParser, async(req, res) => {
 router.patch('/:studentUsername/:tutorUsername', bodyParser, async (req, res) => {
     try {
         console.log("Review controller patch req.body: " + JSON.stringify(req.body))
-        const updatedReview = await ReviewService.update(req.params.studentUsername, req.params.studentUsername,JSON.stringify(req.body));
+        const updatedReview = await ReviewService.update(req.params.studentUsername, req.params.tutorUsername,JSON.stringify(req.body));
         res.status(201).json(updatedReview)
     }catch (err) {
         if (err instanceof CustomError)

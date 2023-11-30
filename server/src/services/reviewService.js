@@ -184,13 +184,23 @@ class ReviewService {
             // only users that are student can create reviews
             // CHECK TO SEE IF USER IS A STUDENT
             const student = await getStudent(studentuserid)
+            const tutor = await getTutor(tutoruserid)
             //console.log(student)
             if (student.userId === undefined){
                 throw new CustomError("ERROR: Only student users can create reviews", 400) 
             }
+            
+            // if (tutor.userId === undefined){
+            //     throw new CustomError("ERROR: Tutor does not exist", 400) 
+            // }
+             //TO DO:
+            // get all the review of the user and average
+
             // Check for duplicate reviews
             const checkReviewStudent = await searchItem('Review', 'studentId', studentuserid)
             const checkReviewTutor = await searchItem('Review', 'tutorId', tutoruserid)
+
+            console.log(checkReviewTutor)
 
             if (checkReviewStudent && checkReviewTutor){
                 //console.log("dups!")
@@ -216,9 +226,6 @@ class ReviewService {
             } else {
                 throw new CustomError("ERROR: Rating must be between 1 - 5", 400)
             }
-
-            //TO DO:
-            // get all the review of the user and average
 
             // Loop through the data object and set the corresponding properties
             for (const key in propertyMap) {
@@ -268,6 +275,10 @@ class ReviewService {
 
 static async update(studentUsername, tutorUsername, reviewData) {
     try {
+
+        console.log("studentUsername:", studentUsername);
+        console.log("tutorUsername:", tutorUsername);
+
         console.log("\nReviewService.update\n")
         const data = JSON.parse(reviewData)
         console.log("\nData has been parsed\n")
