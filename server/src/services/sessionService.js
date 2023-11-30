@@ -245,7 +245,17 @@ class SessionService {
             console.log(session)
             const sessionInfo = await addAppointment(session)
             console.log("SessionInfo " + sessionInfo)
-            return sessionInfo
+
+            
+            const returnSession = session;
+            //const returnSession = Object.assign({}, session);
+            returnSession.studentId = studentUsername;
+            returnSession.tutorId = tutorUsername;
+            console.log(session)
+            console.log("heheh")
+            console.log(returnSession)
+            
+            return returnSession
         }catch (e) {
             throw e
         }
