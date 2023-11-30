@@ -11,14 +11,30 @@ const USERNAME = 'username'
 const CustomError = require ('../utils/customError')
 
 class SessionService {
+
     // RETURNS ALL SESSIONS FROM ALL USERS
     static async getAll() {
-        try {          
-            const sessions = await getAppointments()
-            console.log("SessionService.getAll() = " + JSON.stringify(sessions) + "\n")
-            return sessions
+        try {
+            const sessions = await getAppointments();
+
+            const modifiedSessions = Object.values(sessions).map(innerObj => innerObj);
+
+            for (const appointment of modifiedSessions) {
+                const studentId = appointment.studentId;
+                const tutorId = appointment.tutorId;
+
+                const studentUsername = (await getUser(studentId))["username"];
+                const tutorUsername = (await getUser(tutorId))["username"];
+
+                appointment.studentId = studentUsername;
+                appointment.tutorId = tutorUsername;           
+
+            }
+
+            console.log("Modified Sessions: " + JSON.stringify(modifiedSessions) + "\n");
+            return modifiedSessions;
         } catch (err) {
-            throw err
+            throw err;
         }
     }
     // RETURNS SPECIFIC SESSION BY SESSION ID
@@ -27,8 +43,16 @@ class SessionService {
             console.log("\n[ SessionService.getOne ]\n")
             const session = await getAppointment(id)
             // SESSION FOUND
-            if (Object.keys(session).length > 0)
-                return session
+            if (Object.keys(session).length > 0){
+ 
+                const studentUsername = (await getUser(studentId))["username"];
+                const tutorUsername = (await getUser(tutorId))["username"];
+
+                const returnSession = session;
+                returnSession.studentId = studentUsername;
+                returnSession.tutorId = tutorUsername;
+                return returnSession
+            }
             // SESSION NOT FOUND
             else 
             throw new CustomError("Session not found", 400)
