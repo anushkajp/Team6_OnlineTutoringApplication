@@ -5,6 +5,7 @@ const ReviewService = require('../services/reviewService')
 const bodyParser = require('body-parser').json();
 const CustomError = require ('../utils/customError')
 //router.use(express.json())
+
 // GET ALL REVIEWS FOR TUTOR
 router.get('/', async (req,res) => {
     try {
@@ -14,6 +15,26 @@ router.get('/', async (req,res) => {
         res.status(500).json({ message: err.message});
     }
 });
+
+// GET ALL REVIEWS BY USER NAME
+router.get('/:id', async(req, res) => {
+    try {
+        //console.log("\n[ Session routes get all appointments ]")
+        let reviews = new Review()
+        if (await ReviewService.getAllReviewsByUser(req.params.id, 'tutorId') != null )
+            reviews = await ReviewService.getAllReviewsByUser(req.params.id, 'tutorId')
+        else if (await ReviewService.getAllReviewsByUser(req.params.id, 'studentId' != null)){
+            reviews = await ReviewService.getAllReviewsByUser(req.params.id, 'studentId')
+        }
+        if (reviews === null)
+            res.status(400).json({message: req.params.id + ' is not a valid id'})
+        else 
+            res.status(200).json(reviews)
+    }catch (err) {
+        res.status(500).json({ message: err.message});
+    }
+});
+
 // GET ONE
 router.get('/:id', async(req, res) => {
     (async () =>{
@@ -30,23 +51,7 @@ router.get('/:id', async(req, res) => {
     })()
 });
 
-// GET ALL APPOINTMENTS BY USER ID
-router.get('/:user/:id', async(req, res) => {
-    try {
-        //console.log("\n[ Session routes get all appointments ]")
-        let reviews = new Review()
-        if (req.params.user === 'tutor')
-            reviews = await ReviewService.getAllReviewsByTutor(req.params.id, 'tutorId')
-        // else if (req.params.user === 'student')
-        //     reviews = await ReviewService.getAllReviewsByTutor(req.params.id, 'studentId')
-        if (reviews === null)
-            res.status(400).json({message: req.params.id + ' is not a valid id'})
-        else 
-            res.status(200).json(reviews)
-    }catch (err) {
-        res.status(500).json({ message: err.message});
-    }
-});
+// GET ONE BY STUDENT & TUTOR USERNAME 
 
 
 // CREATE ONE
@@ -80,9 +85,25 @@ router.patch('/:id', bodyParser, async (req, res) => {
 });
 
 // DELETE ONE
-router.delete('/:id', (req, res) => {
+// router.delete('/:id', (req, res) => {
+//     try {
+//         const deletedReview = ReviewService.deleteReview(req.params.id)
+//         if (deletedReview === null) {
+//             res.status(404).json({ message: "Review not found" });
+//         } else {
+//             res.status(200).json(deletedReview);
+//         }
+//     } catch (err) {
+//         res.status(500).json({ message: err.message });
+//     }
+// });
+
+router.delete('/:studentUsername/:tutorUsername', (req, res) => {
     try {
-        const deletedReview = ReviewService.deleteReview(req.params.id)
+        const { studentUsername, tutorUsername } = req.params;
+
+        const deletedReview = ReviewService.deleteReview(studentUsername, tutorUsername);
+
         if (deletedReview === null) {
             res.status(404).json({ message: "Review not found" });
         } else {
@@ -92,4 +113,5 @@ router.delete('/:id', (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
 module.exports = router

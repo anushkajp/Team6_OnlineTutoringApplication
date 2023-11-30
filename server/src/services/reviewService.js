@@ -1,6 +1,6 @@
 const express = require("express");
 const Review = require("../models/review")
-const {getReview, getReviews, getStudent, getUser} = require ('../db/read')
+const {getReview, getReviews, getStudent, getUser, getTutor} = require ('../db/read')
 const {searchItem} = require ('../db/db')
 const {deleteReview} = require("../db/delete")
 const CustomError = require ('../utils/customError')
@@ -11,14 +11,13 @@ const {updateTutorRating, updateReviewDescription} = require ('../db/update')
 class ReviewService {
       // GET ALL
     static async getAll() {
-        try {          
+        try {
             const reviews = await getReviews();
             // Transform the data structure and filter unnecessary information
-            const transformedReviews = Object.entries(reviews).map(([id, review]) => {
+            const transformedReviews = Object.values(reviews).map((review) => {
                 const { description, rating, studentId, tutorId } = review;
-                console.log(review.studentId)
+    
                 return {
-                    id,
                     studentId,
                     tutorId,
                     rating,
@@ -40,8 +39,7 @@ class ReviewService {
             const review = await getReview(id)
             // REVIEW FOUND
             if (Object.keys(review).length > 0){
-                //return review
-               // Extract only the required fields
+                
                const {
                 tutorId,
                 studentId,
@@ -68,24 +66,25 @@ class ReviewService {
     }
 
 
-     //GET ALL APPOINTMENTS BY USER
-     static async getAllReviewsByTutor(id, path) {
+     //GET ALL REVIEWS BY USER
+     static async getAllReviewsByUser(id, path) {
         try {
-            console.log("\n[ ReviewService.getAllReviewsByTutor ]")
-            const user = await searchItem('User', 'username', id)
-            console.log("\nuser: " + JSON.stringify(user))
-            const userid = Object.keys(user)[0]
-            if (Object.keys(user).length === 0) {
-                return false
-            }
-            const reviews = await searchItem('Review', path, userid)
-            console.log("\nreviews: " + JSON.stringify(reviews))
-            return reviews
+            const user = await searchItem('User', 'username', id);
+            console.log("\nuser: " + JSON.stringify(user));
             
-        }catch (e) {
-            throw e
+            if (Object.keys(user).length === 0) {
+                return null; // Return null if the user is not found
+            }
+    
+            const userId = Object.keys(user)[0];
+            const reviews = await searchItem('Review', path, userId);
+            console.log("\nreviews: " + JSON.stringify(reviews));
+            return reviews;
+    
+        } catch (e) {
+            throw e;
         }
-    }  
+    }
 
     static async create(reviewData){ 
         try {
@@ -176,7 +175,7 @@ class ReviewService {
     
     static async update(id, reviewData) {
         try {
-            console.log("\nRviewService.update\n")
+            console.log("\nReviewService.update\n")
             const data = JSON.parse(reviewData)
             console.log("\nData has been parsed\n")
             
@@ -194,18 +193,47 @@ class ReviewService {
 }
     
 
-    static async deleteReview(reviewId) {
+    // static async deleteReview(reviewId) {
+    //     try {
+    //         const deletedReview = await deleteReview(reviewId);
+    //         console.log("SessionService.deleteReview() = " + JSON.stringify(deletedReview) + "\n")
+    //             if (deletedReview === null) {
+    //                 return null;
+    //             }else {
+    //                 return deletedReview;
+    //             }
+    //         }catch (error) {
+    //                 throw new Error("Error deleting the review: " + error.message);
+    //         }
+    //     }  
+    
+    static async deleteReview(studentUsername, tutorUsername) {
         try {
-            const deletedReview = await deleteReview(reviewId);
-            console.log("SessionService.deleteReview() = " + JSON.stringify(deletedReview) + "\n")
-                if (deletedReview === null) {
-                    return null;
-                }else {
-                    return deletedReview;
-                }
-            }catch (error) {
-                    throw new Error("Error deleting the review: " + error.message);
+            
+            // need to find reviewId
+            const userTutor = await searchItem('User', 'username', tutorUsername)
+            const userStudent = await searchItem('User', 'username', studentUsername)
+
+            const checkReviewStudent = await searchItem('Review', 'studentId', userTutor)
+            const checkReviewTutor = await searchItem('Review', 'tutorId', userStudent)
+
+            // if (checkReviewStudent == checkReviewTutor){
+            //     const reviewId = che
+            // }
+            // Call your deleteReview function with the constructed reviewId
+            const deletedReview = await deleteReview(checkReviewStudent);
+    
+            console.log("SessionService.deleteReview() = " + JSON.stringify(deletedReview) + "\n");
+    
+            if (deletedReview === null) {
+                return null;
+            } else {
+                return deletedReview;
             }
-        }   
+        } catch (error) {
+            throw new Error("Error deleting the review: " + error.message);
+        }
+    }
+    
 }
 module.exports = ReviewService
