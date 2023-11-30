@@ -1,6 +1,6 @@
 const Session = require("../models/session")
 const {getAppointments, getAppointment} = require('../db/read')
-const {getUser} = require ('../db/read')
+const {getUser, getStudent, getTutor} = require ('../db/read')
 const {addAppointment} = require('../db/obAdd')
 const {searchItem} = require ('../db/db')
 const {updateAppFeedback, updateAppTutorNotes, updateAppStudentNotes} = require ('../db/update')
@@ -42,10 +42,23 @@ class SessionService {
             console.log("\n[ SessionService.getAllAppointmentsByUser ]")
             const user = await searchItem('User', 'username', id)
             console.log("\nuser: " + JSON.stringify(user))
-            const userid = Object.keys(user)[0]
+            const userid = Object.keys(user)[0];
+
             if (Object.keys(user).length === 0) {
-                return false
+                throw new CustomError("User not found", 400);
             }
+
+            const student = await getStudent(userid)
+            const tutor = await getTutor(userid)
+            
+            if (path === "studentId" && (student.userId === undefined)) {
+                throw new CustomError("User is not a student", 400)
+            }
+
+            if (path === "tutorId" && (tutor.userId === undefined)) {
+                throw new CustomError("User is not a tutor", 400)
+            }
+
             const appointments = await searchItem('Appointment', path, userid)
             console.log("\nappointments: " + JSON.stringify(appointments))
             return appointments
