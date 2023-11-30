@@ -14,7 +14,7 @@ export default function TutorModal(props) {
       <div className="modal">
         <div className="img">
           <img
-            src={tutorData.pfp}
+            src={pfp1}
             alt={`${tutorData.name}'s Profile Picture`}
           />
         </div>

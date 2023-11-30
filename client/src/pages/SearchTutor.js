@@ -198,7 +198,7 @@ function SearchTutor(props) {
                 <TutorTileCard
                   openModalWithTutor={handleOpenTutorModal}
                   id={filteredTutor.key}
-                  pfp={filteredTutor.profilePic}
+                  pfp={pfp1}
                   stars={`⭐ ${filteredTutor.rating}`}
                   name={`${filteredTutor.firstName} ${filteredTutor.lastName}`}
                   subjects={filteredTutor.courses.join(", ")}

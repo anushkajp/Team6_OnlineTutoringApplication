@@ -117,7 +117,9 @@
 .container-modal .sub-container {
   display: flex;
   margin-top: -20px;
-  margin-left: -60px;
+  margin-left: -50px;
+  flex-wrap: wrap;
+  width: 80%;
 }
 
 .container-modal .box {
@@ -140,6 +142,7 @@
   align-items: center;
   justify-content: center;
   display: flex;
+  flex-shrink: 0; 
 }
 
 .container-modal .box:hover {
@@ -180,17 +183,24 @@
 }
 
 .container-modal .time-container {
-  display: flex;
   margin-top: -20px;
-  margin-left: -60px;
+  display: flex;
+  margin-left: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Align to the start of the container */
+  align-items: center; /* Center items vertically */
+  padding: 0 5px; /* Add padding inside the container to prevent boxes touching the edges */
 }
 
 .container-modal .t-box {
-  flex: 1;
+  width: calc(30% - 20px); /* Adjust width for 2 items per row, considering the gap */
+  height: 33px; /* Fixed height */
+  margin-bottom: 10px; /* Space at the bottom of each box */
+  flex-grow: 0; /* Prevent the box from growing */
+  flex-shrink: 0; /* Prevent the box from shrinking */
   margin: 10px;
-  width: 100px;
-  height: 33px;
-  flex-shrink: 0;
+  max-width: 100px;
+  height: 37px;
   border-radius: 10px;
   background: #fff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -205,6 +215,7 @@
   align-items: center;
   justify-content: center;
   display: flex;
+  flex-shrink: 0; 
 }
 
 .container-modal .t-box:hover {
