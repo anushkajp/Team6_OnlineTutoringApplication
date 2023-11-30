@@ -81,40 +81,84 @@ class ReviewService {
             throw e
         }
     }
-    
     // GET ONE REVIEW BY ID 
-    static async getOne(id) {
-        try {
-            console.log("\n[ ReviewService.getOne ]\n")
-            const review = await getReview(id)
-            // REVIEW FOUND
-            if (Object.keys(review).length > 0){
+    // static async getOne(id) {
+    //     try {
+    //         console.log("\n[ ReviewService.getOne ]\n")
+    //         const review = await getReview(id)
+    //         // REVIEW FOUND
+    //         if (Object.keys(review).length > 0){
                 
-               const {
-                tutorId,
-                studentId,
-                rating,
-                description
-            } = review;
+    //            const {
+    //             tutorId,
+    //             studentId,
+    //             rating,
+    //             description
+    //         } = review;
             
             
-            const result = {
-                tutorId,
-                studentId,
-                rating,
-                description
-            };
-            console.log(result)
-            return result
-        }
-            // REVIEW NOT FOUND
-            else {
-                throw new CustomError("Review not found", 400)
-            }  
-        }catch (err){
-            throw err
+    //         const result = {
+    //             tutorId,
+    //             studentId,
+    //             rating,
+    //             description
+    //         };
+    //         console.log(result)
+    //         return result
+    //     }
+    //         // REVIEW NOT FOUND
+    //         else {
+    //             throw new CustomError("Review not found", 400)
+    //         }  
+    //     }catch (err){
+    //         throw err
+    //     }
+    // }
+
+    static async getOne(studentUsername, tutorUsername) {
+        try {
+            // Retrieve user data for student and tutor
+            const studentUser = await searchItem('User', 'username', studentUsername);
+            const tutorUser = await searchItem('User', 'username', tutorUsername);
+    
+            console.log("\nstudentUser: " + JSON.stringify(studentUser));
+            console.log("\ntutorUser: " + JSON.stringify(tutorUser));
+    
+            // Check if the users exist
+            if (Object.keys(studentUser).length === 0 || Object.keys(tutorUser).length === 0) {
+                return false;
+            }
+    
+            const studentUserId = Object.keys(studentUser)[0];
+            const tutorUserId = Object.keys(tutorUser)[0];
+    
+            // Retrieve review for the given student and tutor
+            const review = await searchItem('Review', 'studentId', studentUserId, 'tutorId', tutorUserId);
+    
+            if (Object.keys(review).length > 0) {
+                const transformedReview = Object.entries(review).map(([id, reviewData]) => {
+                    const { description, rating, studentId, tutorId } = reviewData;
+    
+                    return {
+                        id,
+                        studentUsername,
+                        tutorUsername,
+                        rating,
+                        description
+                    };
+                });
+    
+                return transformedReview;
+            } else {
+                throw new CustomError("Review not found", 400);
+            }
+        } catch (e) {
+            throw e;
         }
     }
+    
+
+
 
 
     static async create(reviewData){ 

@@ -6,7 +6,7 @@ const bodyParser = require('body-parser').json();
 const CustomError = require ('../utils/customError')
 //router.use(express.json())
 
-// GET ALL REVIEWS FOR TUTOR
+// GET ALL REVIEWS 
 router.get('/', async (req,res) => {
     try {
         const review = await ReviewService.getAll()
@@ -17,7 +17,7 @@ router.get('/', async (req,res) => {
 });
 
 
-// GET ALL REVIEWS BY USER ID
+// GET ALL REVIEWS BY USERNAME
 router.get('/:id', async(req, res) => {
     try {
         const reviews = await ReviewService.getAllReviewsByUser(req.params.id)
@@ -48,7 +48,19 @@ router.get('/:id', async(req, res) => {
 // });
 
 // GET ONE BY STUDENT & TUTOR USERNAME 
-
+router.get('/:studentUsername/:tutorUsername', async(req, res) => {
+    (async () =>{
+        try {
+            const review = await ReviewService.getOne(req.params.studentUsername, req.params.tutorUsername)
+            if (review === false)
+                res.status(400).json({message: "Review does not exist"})
+            else 
+                res.status(200).json(review)
+        }catch (err){
+            res.status(500).json({ message: err.message});
+        }
+    })()
+});
 
 // CREATE ONE
 router.post('/', bodyParser, async(req, res) => {
