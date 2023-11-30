@@ -15,13 +15,14 @@ class ReviewService {
             const reviews = await getReviews();
     
             // Transform the data structure and filter unnecessary information
-            const transformedReviews = await Promise.all(Object.values(reviews).map(async (review) => {
+            const transformedReviews = await Promise.all(Object.entries(reviews).map(async ([id, review]) => {
                 const { description, rating, studentId, tutorId } = review;
     
                 const studentUsername = (await getUser(studentId))["username"];
                 const tutorUsername = (await getUser(tutorId))["username"];
     
                 return {
+                    id,
                     studentUsername,
                     tutorUsername,
                     rating,
@@ -35,6 +36,7 @@ class ReviewService {
             throw err;
         }
     }
+    
     
     // GET ONE REVIEW BY ID 
     static async getOne(id) {
