@@ -199,7 +199,13 @@ function SearchTutor(props) {
                   openModalWithTutor={handleOpenTutorModal}
                   id={filteredTutor.key}
                   pfp={pfp1}
-                  stars={`⭐ ${filteredTutor.rating}`}
+                  stars={
+                    filteredTutor.rating
+                      ? `⭐ ${filteredTutor.rating} ${
+                          filteredTutor.rating == 1 ? "star" : "stars"
+                        }`
+                      : "no reviews"
+                  }
                   name={`${filteredTutor.firstName} ${filteredTutor.lastName}`}
                   subjects={filteredTutor.courses.join(", ")}
                   bio={filteredTutor.longBio}

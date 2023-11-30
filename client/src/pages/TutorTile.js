@@ -135,7 +135,7 @@ export const TutorTileCard = ({
     <div className="tutor-wrapper">
       <div class="left-column">
         <img src={pfp} className="profile-pic"></img>
-        <p className="stars">{stars} stars</p>
+        <p className="stars">{stars}</p>
       </div>
       <div className="right-column">
         <div className="vertical-component">

@@ -142,7 +142,7 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 
 .container-modal .box:hover {
@@ -193,7 +193,9 @@
 }
 
 .container-modal .t-box {
-  width: calc(30% - 20px); /* Adjust width for 2 items per row, considering the gap */
+  width: calc(
+    30% - 20px
+  ); /* Adjust width for 2 items per row, considering the gap */
   height: 33px; /* Fixed height */
   margin-bottom: 10px; /* Space at the bottom of each box */
   flex-grow: 0; /* Prevent the box from growing */
@@ -215,7 +217,7 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 
 .container-modal .t-box:hover {
@@ -232,6 +234,29 @@
   background: #000;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   color: #fff;
+  font-family: Montserrat;
+  font-size: 14.5px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.29px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.container-modal .box:active,
+.container-modal .t-box:active {
+  background: #000 !important;
+  color: #fff !important;
+  flex: 1;
+  margin: 10px;
+  width: 100px;
+  height: 33px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   font-family: Montserrat;
   font-size: 14.5px;
   font-style: normal;
@@ -291,9 +316,8 @@
   cursor: pointer;
 }
 
-.container-modal .book:active{
+.container-modal .book:active {
   background: white !important;
   border: 3px solid #91f3bb !important;
   color: #91f3bb !important;
 }
-
