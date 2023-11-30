@@ -247,25 +247,83 @@ class ReviewService {
         }
     } 
     
-    static async update(id, reviewData) {
-        try {
-            console.log("\nReviewService.update\n")
-            const data = JSON.parse(reviewData)
-            console.log("\nData has been parsed\n")
+//     static async update(id, reviewData) {
+//         try {
+//             console.log("\nReviewService.update\n")
+//             const data = JSON.parse(reviewData)
+//             console.log("\nData has been parsed\n")
             
-            if (data.rating != null){
-                await updateTutorRating(id, data.rating) 
-            } 
+//             if (data.rating != null){
+//                 await updateTutorRating(id, data.rating) 
+//             } 
 
-            if (data.description != null){
-                await updateReviewDescription(id, data.description) 
+//             if (data.description != null){
+//                 await updateReviewDescription(id, data.description) 
+//             }
+//             return await getReview(id)
+//             }catch (e) {
+//                 throw e
+//             }
+// }
+
+static async update(studentUsername, tutorUsername, reviewData) {
+    try {
+        console.log("\nReviewService.update\n")
+        const data = JSON.parse(reviewData)
+        console.log("\nData has been parsed\n")
+        
+        const studentUser = await searchItem('User', 'username', studentUsername);
+        const tutorUser = await searchItem('User', 'username', tutorUsername);
+
+        console.log("\nstudentUser: " + JSON.stringify(studentUser));
+        console.log("\ntutorUser: " + JSON.stringify(tutorUser));
+
+        // Check if the users exist
+        if (Object.keys(studentUser).length === 0 || Object.keys(tutorUser).length === 0) {
+            return false;
+        }
+
+        const studentUserId = Object.keys(studentUser)[0];
+        const tutorUserId = Object.keys(tutorUser)[0];
+
+        const review = await searchItem('Review', 'studentId', studentUserId, 'tutorId', tutorUserId);
+        
+            // Check if the review exists
+            if (Object.keys(review).length === 0) {
+                throw new CustomError("Review not found", 400);
             }
-            return await getReview(id)
-            }catch (e) {
-                throw e
-            }
+        
+        const reviewId = Object.keys(review)[0];
+
+
+        if (data.rating != null){
+            console.log(typeof(data.rating))
+            await updateTutorRating(reviewId, data.rating) 
+        } 
+
+        if (data.description != null){
+            await updateReviewDescription(reviewId, data.description) 
+        }
+        //return await getReview(reviewId)
+         // Fetch the updated review
+         const updatedReview = await getReview(reviewId);
+
+         // Return the review with student and tutor usernames
+         return {
+             id: reviewId,
+             studentUsername,
+             tutorUsername,
+             rating: updatedReview.rating,
+             description: updatedReview.description
+         };
+
+
+    }catch (e) {
+        throw e
+    }
 }
-    
+   
+    // DELETE BY ID
 
     // static async deleteReview(reviewId) {
     //     try {
@@ -281,7 +339,7 @@ class ReviewService {
     //         }
     //     }  
 
-
+        //DELETE BY STUDENT/TUTOR
         static async deleteReview(studentUsername, tutorUsername) {
             try {
                 // Retrieve user data for student and tutor
