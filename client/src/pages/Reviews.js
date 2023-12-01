@@ -1,28 +1,29 @@
-import React,{useEffect, useState} from 'react'
-import AddReview from '../components/AddReview'
+import React, { useEffect, useState } from 'react';
+import AddReview from '../components/AddReview';
 import { fetchFromAPI } from '../services/api';
 import Sidebar from '../components/sidebar';
 import ReviewTile from '../components/ReviewTile';
 
 const Reviews = (props) => {
-  const [renderSessions, setPrevTutors] = useState([])
+  const [renderSessions, setPrevTutors] = useState([]);
+
   useEffect(() => {
-    fetchFromAPI(`appointments/${props.renderType}/${props.userName}`) 
-      .then(data => {
+    fetchFromAPI(`appointments/${props.renderType}/${props.userName}`)
+      .then((data) => {
         const render_data = Object.entries(data).map(([key, value]) => ({
           key,
-          tutorId: value.tutorId
-        }
-        ));
+          tutorId: value.tutorId,
+        }));
         setPrevTutors(render_data[0]);
       })
-      .catch(error => {
+      .catch((error) => {
         setPrevTutors({
-          "tutorId": "Loading..."
+          tutorId: "Loading...",
         });
         console.log(error);
       });
   }, [props.renderType, props.userName]);
+
   return (
     <div className="upcomingPage">
       <div className="sidebar">
@@ -30,19 +31,18 @@ const Reviews = (props) => {
       </div>
       <div className="upcomingSession">
         <div className="upcomingSessionList">
-        {
-            Array.isArray(renderSessions) ? renderSessions.map((review, index) => (
-              <AddReview key={index} class_name={review.class_name}
-                student_name={review.student_name}
-                session_time={review.session_time}
-                session_comments={review.session_comments}>
-              </AddReview>
-            )) : <h4>You have no tutors to review yet!</h4>
-        }
+          {/* AddReview component for creating reviews */}
+          <AddReview
+            username={props.userName} // Assuming you want to pass the username to AddReview
+            // profilePicUrl={/* Provide the URL for the user's profile picture */}
+          />
+
+          <h4>Past Reviews</h4>
+          {/* You can map over past reviews or display any other relevant content */}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Reviews
+export default Reviews;
