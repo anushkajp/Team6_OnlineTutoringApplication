@@ -14,6 +14,7 @@ export const TutorTileCard = ({
   openModalWithTutor,
   username,
   selectedDay,
+  date,
 }) => {
   const [like, setLike] = useState(false);
   const [modal, setModal] = useState(false);
@@ -23,6 +24,7 @@ export const TutorTileCard = ({
   const [availability, setAvailability] = useState(null);
   const [allChunks, setAllChunks] = useState([]);
   console.log("tt" + selectedDay);
+  console.log("tt" + date);
 
   // Check if bio is empty or undefined
   const hasBio = bio && bio.trim() !== "";
@@ -78,12 +80,6 @@ export const TutorTileCard = ({
     hours = hours % 12 || 12; // Convert "00" to "12"
     return `${hours}:${minutes < 10 ? "0" + minutes : minutes} ${period}`;
   }
-
-  // Example usage
-  /*   let startTime = "10:00";
-  let endTime = "14:00";
-  let timeChunks = createTimeChunks(startTime, endTime);
-  console.log(timeChunks); */
 
   useEffect(() => {
     fetchFromAPI(`availability/${username}/${selectedDay}`)

@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "jest-w": "jest --watch",
     "test:unit": "jest _tests_/unit/",
-    "test:integration": "jest  --testPathPattern=src/js/tests/integration"
+    "test:integration": "jest --testPathPattern=src/js/tests/integration"
   },
   "type": "commonjs",
   "author": "Team6",

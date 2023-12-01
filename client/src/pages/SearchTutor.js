@@ -213,6 +213,7 @@ function SearchTutor(props) {
                   cost={50}
                   tutorList={tutorList}
                   selectedDay={selectedDay}
+                  date={date}
                 />
               ))}
             </div>

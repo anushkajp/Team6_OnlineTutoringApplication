@@ -9,6 +9,8 @@ export default function TutorModal(props) {
   const [activeTimeIndex, setActiveTimeIndex] = useState(null);
   const [subject, setSubject] = useState(null);
   const [time, setTime] = useState(null);
+  const user = JSON.parse(localStorage.getItem('user'));
+  console.log(user)
 
   const handleBoxS = (index) => {
     setActiveSubjectIndex(index === activeSubjectIndex ? null : index);
@@ -32,8 +34,8 @@ export default function TutorModal(props) {
       length: 60,
       location: "www.zoom.com",
       online: true,
-      studentId: "-NiaOOoy_9GXrSO7EFD5", // Replace with actual studentId from your state or props
-      tutorId: tutorData.key, 
+      studentUsername: "-NiaOOoy_9GXrSO7EFD5", 
+      tutorUsername: tutorData.username, 
     };
 
     try {
@@ -118,7 +120,7 @@ export default function TutorModal(props) {
         <div className="close" onClick={action}>
           Cancel
         </div>
-        <div className="book">Book</div>
+        <div className="book" onClick={handleCreateAppointment}>Book</div>
       </div>
     </div>
   );
