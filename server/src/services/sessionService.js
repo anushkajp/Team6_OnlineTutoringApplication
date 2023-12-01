@@ -91,12 +91,22 @@ class SessionService {
 
             const student = await getStudent(userid)
             const tutor = await getTutor(userid)
+
+            console.log(student.userId)
+            console.log(student.userId !== undefined)
+            console.log("heheh")
+            console.log(tutor)
+            console.log(tutor.userId)
+            console.log(tutor !== undefined)
             
-            if (path === "studentId" && (student.userId === undefined)) {
+            if (path === "studentId" && !(student.userId !== undefined)) {
                 throw new CustomError("User is not a student", 400)
             }
 
-            if (path === "tutorId" && (tutor.userId === undefined)) {
+            console.log(student.userId)
+            console.log(student.userId !== undefined)
+
+            if (path === "tutorId" && (student.userId !== undefined)) {
                 throw new CustomError("User is not a tutor", 400)
             }
 
