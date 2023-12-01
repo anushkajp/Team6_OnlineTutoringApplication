@@ -91,12 +91,22 @@ class SessionService {
 
             const student = await getStudent(userid)
             const tutor = await getTutor(userid)
+
+            console.log(student.userId)
+            console.log(student.userId !== undefined)
+            console.log("heheh")
+            console.log(tutor)
+            console.log(tutor.userId)
+            console.log(tutor !== undefined)
             
-            if (path === "studentId" && (student.userId === undefined)) {
+            if (path === "studentId" && !(student.userId !== undefined)) {
                 throw new CustomError("User is not a student", 400)
             }
 
-            if (path === "tutorId" && (tutor.userId === undefined)) {
+            console.log(student.userId)
+            console.log(student.userId !== undefined)
+
+            if (path === "tutorId" && (student.userId !== undefined)) {
                 throw new CustomError("User is not a tutor", 400)
             }
 
@@ -337,17 +347,31 @@ class SessionService {
         const data = JSON.parse(apptData)
         console.log("\nData has been parsed\n")
 
-        //only these three can be updated!!
-        if (data.feedback != null)
-            await updateAppFeedback(id, data.feedback)
-        if (data.tutorNotes != null)
-            await updateAppTutorNotes(id, data.tutorNotes)
-        if (data.studentNotes != null)
-            await updateAppStudentNotes(id, data.studentNotes)          
-        
-        // Fetch the updated appointment and return
-        return await getAppointment(id)
+        const session = await getAppointment(id)
 
+        if (Object.keys(session).length > 0){
+
+            //only these three can be updated!!
+            if (data.feedback != null)
+                await updateAppFeedback(id, data.feedback)
+            if (data.tutorNotes != null)
+                await updateAppTutorNotes(id, data.tutorNotes)
+            if (data.studentNotes != null)
+                await updateAppStudentNotes(id, data.studentNotes)  
+ 
+            const studentUsername = (await getUser(session.studentId))["username"];
+            const tutorUsername = (await getUser(session.tutorId))["username"];
+
+            //to make sure only usernames are returned
+            const updatedSession = session;
+            console.log(updatedSession)
+            updatedSession.studentId = studentUsername;
+            updatedSession.tutorId = tutorUsername;
+            return updatedSession
+        } 
+        // SESSION NOT FOUND
+        else 
+            throw new CustomError("Session not found", 400)
         }catch (e) {
             throw e
         }
