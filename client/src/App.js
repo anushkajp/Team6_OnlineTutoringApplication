@@ -32,7 +32,7 @@ import Home from "./pages/Home";
 import ListUpcoming from "./pages/ListUpcoming";
 import Login from "./pages/Login";
 import ProfileSettings from "./pages/ProfileSettings";
-import SavedCoursesStudent from "./pages/SavedCoursesStudent";
+import Reviews from "./pages/Reviews";
 import SearchTutor from "./pages/SearchTutor";
 import SignUpStudent from "./pages/SignUpStudent";
 import SignUpTutor from "./pages/SignUpTutor";
@@ -79,7 +79,7 @@ function App() {
         <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/ProfileSettings" element={<ProfileSettings renderType="student" userName="deedee"/>} />
-        <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
+        <Route path="/Reviews" element={<Reviews />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />
         <Route path="/SignUpStudent" element={<SignUpStudent />} />
         <Route path="/SignUpTutor" element={<SignUpTutor />} />
