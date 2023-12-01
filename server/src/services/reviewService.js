@@ -88,38 +88,58 @@ class ReviewService {
             // Retrieve user data for student and tutor
             const studentUser = await searchItem('User', 'username', studentUsername);
             const tutorUser = await searchItem('User', 'username', tutorUsername);
-    
+
             console.log("\nstudentUser: " + JSON.stringify(studentUser));
             console.log("\ntutorUser: " + JSON.stringify(tutorUser));
-    
+
             // Check if the users exist
             if (Object.keys(studentUser).length === 0 || Object.keys(tutorUser).length === 0) {
                 return false;
             }
-    
+
+
+
             const studentUserId = Object.keys(studentUser)[0];
             const tutorUserId = Object.keys(tutorUser)[0];
-    
+
             // Retrieve review for the given student and tutor
-            const review = await searchItem('Review', 'studentId', studentUserId, 'tutorId', tutorUserId);
-    
-            if (Object.keys(review).length > 0) {
-                const transformedReview = Object.entries(review).map(([id, reviewData]) => {
-                    const { description, rating, studentId, tutorId } = reviewData;
-    
-                    return {
-                        id,
-                        studentUsername,
-                        tutorUsername,
-                        rating,
-                        description
-                    };
-                });
-    
-                return transformedReview;
-            } else {
-                throw new CustomError("Review not found", 400);
-            }
+            //const review = await searchItem('Review', 'studentId', studentUserId, 'tutorId', tutorUserId);
+
+            const studentMatch = await searchItem('Review', 'studentId', studentUserId)
+            const tutorMatch = await searchItem('Review', 'tutorId', tutorUserId)
+        
+        
+            //console.log(tutorMatch)
+            let review = {}
+
+            Object.keys(studentMatch).forEach(element => {
+                if(Object.keys(tutorMatch).indexOf(element) != -1){
+                    review[element] = studentMatch[element]
+                }
+            });
+
+            console.log(review)
+            console.log(Object.keys(review)[0])
+
+
+            // Check if the review exists
+        if (Object.keys(review).length === 0) {
+            throw new CustomError("Review not found", 400);
+        }
+        
+        const reviewId = Object.keys(review)[0];
+        console.log(reviewId)
+
+        let res = await getReview(reviewId)
+        
+        return {
+            id: reviewId,
+            studentUsername,
+            tutorUsername,
+            rating: res.rating,
+            description: res.description
+        }; 
+
         } catch (e) {
             throw e;
         }
@@ -175,9 +195,10 @@ class ReviewService {
 
             // check if the studentId indeed corresponds to a student     
             // USER DOESNT EXIST
-            if ( Object.keys(userStudent).length === 0){
+            if ( Object.keys(userStudent).length === 0 || Object.keys(userTutor).length === 0 ){
                 throw new CustomError("User does not exist", 400)
             }
+            
             //getting student and tutor userIds
             const tutoruserid = Object.keys(userTutor)[0]
             const studentuserid = Object.keys(userStudent)[0]
@@ -185,20 +206,18 @@ class ReviewService {
             // CHECK TO SEE IF USER IS A STUDENT
             const student = await getStudent(studentuserid)
             const tutor = await getTutor(tutoruserid)
-            //console.log(student)
+            
+
             if (student.userId === undefined){
                 throw new CustomError("ERROR: Only student users can create reviews", 400) 
             }
-            
-            // if (tutor.userId === undefined){
-            //     throw new CustomError("ERROR: Tutor does not exist", 400) 
-            // }
-             //TO DO:
-            // get all the review of the user and average
 
             // Check for duplicate reviews
             const checkReviewStudent = await searchItem('Review', 'studentId', studentuserid)
             const checkReviewTutor = await searchItem('Review', 'tutorId', tutoruserid)
+
+            //TO DO:
+            // get all the review of the user and average
 
             console.log(checkReviewTutor)
 
@@ -206,7 +225,7 @@ class ReviewService {
                 //console.log("dups!")
                 throw new CustomError("ERROR: Review between this student and tutor exists", 400)
             }
-
+            // create a new review 
             let review = new Review()
             review.tutorId = tutoruserid;
             review.studentId = studentuserid ;
@@ -274,7 +293,6 @@ class ReviewService {
 // }
 
 static async update(studentUsername, tutorUsername, reviewData) {
-    try {
 
         console.log("studentUsername:", studentUsername);
         console.log("tutorUsername:", tutorUsername);
@@ -295,20 +313,37 @@ static async update(studentUsername, tutorUsername, reviewData) {
         }
 
         const studentUserId = Object.keys(studentUser)[0];
+        console.log(studentUserId)
         const tutorUserId = Object.keys(tutorUser)[0];
-
-        const review = await searchItem('Review', 'studentId', studentUserId, 'tutorId', tutorUserId);
+        console.log(tutorUserId)
+       
+        const studentMatch = await searchItem('Review', 'studentId', studentUserId)
+        const tutorMatch = await searchItem('Review', 'tutorId', tutorUserId)
         
-            // Check if the review exists
-            if (Object.keys(review).length === 0) {
-                throw new CustomError("Review not found", 400);
+        
+        console.log(tutorMatch)
+        let review = {}
+
+        Object.keys(studentMatch).forEach(element => {
+            if(Object.keys(tutorMatch).indexOf(element) != -1){
+                review[element] = studentMatch[element]
             }
+        });
+
+        console.log(review)
+        console.log(Object.keys(review)[0])
+
+
+            // Check if the review exists
+        if (Object.keys(review).length === 0) {
+            throw new CustomError("Review not found", 400);
+        }
         
         const reviewId = Object.keys(review)[0];
-
+        console.log(reviewId)
 
         if (data.rating != null){
-            console.log(typeof(data.rating))
+            //console.log(typeof(data.rating))
             await updateTutorRating(reviewId, data.rating) 
         } 
 
@@ -326,12 +361,7 @@ static async update(studentUsername, tutorUsername, reviewData) {
              tutorUsername,
              rating: updatedReview.rating,
              description: updatedReview.description
-         };
-
-
-    }catch (e) {
-        throw e
-    }
+         }; 
 }
    
     // DELETE BY ID
@@ -369,14 +399,24 @@ static async update(studentUsername, tutorUsername, reviewData) {
                 const tutorUserId = Object.keys(tutorUser)[0];
         
                 // Retrieve review for the given student and tutor
-                const review = await searchItem('Review', 'studentId', studentUserId, 'tutorId', tutorUserId);
+                //const review = await searchItem('Review', 'studentId', studentUserId, 'tutorId', tutorUserId);
         
-                // Check if the review exists
+
+                const studentMatch = await searchItem('Review', 'studentId', studentUserId)
+                const tutorMatch = await searchItem('Review', 'tutorId', tutorUserId)
+                // Delete the review
+                let review = {}
+
+                Object.keys(studentMatch).forEach(element => {
+                    if(Object.keys(tutorMatch).indexOf(element) != -1){
+                        review[element] = studentMatch[element]
+                    }
+                });
+                //CHeck if the review exists
                 if (Object.keys(review).length === 0) {
                     throw new CustomError("Review not found", 400);
                 }
         
-                // Delete the review
                 const reviewId = Object.keys(review)[0];
                 console.log(reviewId)
                 const deletedReview = await deleteReview(reviewId);
