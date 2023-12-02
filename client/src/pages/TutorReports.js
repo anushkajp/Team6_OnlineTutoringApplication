@@ -2,23 +2,25 @@ import React from 'react'
 import ReviewTile from '../components/ReviewTile'
 import Sidebar from '../components/sidebar'
 import { fetchFromAPI } from '../services/api' 
+import {useEffect, useState} from 'react'
 
 const TutorReports = (props) => {
 
   const [reviews, setReviews] = useState([]); //??
 
   useEffect(() => {
-    fetchFromAPI(`${props.renderType}/${props.userName}`) 
+    fetchFromAPI(`review/jroid92/`) 
       .then(data => {
         const render_data = Object.entries(data).map(([key, value]) => ({
           key,
-          tutorId: value.tutorUsername,
-          studentId: value.studentUsername,
+          tutorUsername: value.tutorUsername,
+          studentUsername: value.studentUsername,
           rating: value.rating,
           description: value.description      
         }
         ));
-        setReviews(render_data[0]); //??
+        console.log(render_data)
+        setReviews(render_data); //??
       })
       .catch(error => {
         console.error('Error fetching reviews:', error);
@@ -112,10 +114,10 @@ const TutorReports = (props) => {
 
 
   // Calculate the sum of session_rating values
-  const totalRatings = sampleJSON.reduce((sum, session) => sum + session.session_rating, 0);
+  //const totalRatings = sampleJSON.reduce((sum, session) => sum + session.session_rating, 0);
 
   // Calculate the average rating
-  const averageRating = totalRatings / sampleJSON.length;
+  //const averageRating = totalRatings / sampleJSON.length;
 
 
   return (
@@ -125,7 +127,7 @@ const TutorReports = (props) => {
       </div>
       <div className="reviewInfo">
         <div className="averageButton">
-            <h5 className="averageRating">{averageRating} / 5</h5>
+            <h5 className="averageRating">{4} / 5</h5>
             <h6 className="overallRating">Overall rating from {tiles.length} reviews</h6>
         </div>
         <div className="reviewList">
