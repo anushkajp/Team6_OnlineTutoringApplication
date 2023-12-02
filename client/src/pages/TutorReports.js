@@ -1,9 +1,89 @@
 import React from 'react'
 import ReviewTile from '../components/ReviewTile'
 import Sidebar from '../components/sidebar'
+import { fetchFromAPI } from '../services/api' 
 
 const TutorReports = (props) => {
-  const sampleJSON = [
+
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    fetchFromAPI(`${props.renderType}`) 
+      .then(data => {
+        const render_data = Object.entries(data).map(([key, value]) => ({
+          key,
+          student_name: value.student_name,
+          session_time: value.session_time,
+          session_rating: value.session_rating,
+          session_comments: value.session_comments          
+        }
+        ));
+        setReviews(render_data[0]);
+      })
+      .catch(error => {
+        setReviews({
+          student_name: "Loading...",
+          session_time: "Loading...",
+          session_rating: "Loading...",
+          session_comments: "Loading..."
+        });
+        console.log(error);
+      });
+    }, []);
+
+    const tiles = reviews.map((review, index) => (
+      <ReviewTile
+        key={index}
+        student_name={review.student_name}
+        session_time={review.session_time}
+        session_rating={review.session_rating}
+        session_comments={review.session_comments}
+      />
+    ));
+
+  /*
+
+  useEffect(() => {
+    fetchFromAPI('tutor-reviews') // Replace 'tutor-reviews' with the actual API endpoint for tutor reviews
+      .then(data => {
+      // console log data to see how the JSON is returned and based on that you may have to do something like Object.entries or smth (check profile settings or Availibilities.js for sample on how to map JSON
+        const sample_reviews = data.map( same logic as above)
+        setReviews(sample_reviews); // Assuming the API returns an array of reviews
+      })
+      .catch(error => {
+        console.error('Error fetching reviews:', error);
+      });
+  }, []);
+  
+  Came up with this first:
+  const TutorReports = (props) => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    fetchFromAPI('tutor-reviews') // Replace 'tutor-reviews' with the actual API endpoint for tutor reviews
+      .then(data => {
+        setReviews(data); // Assuming the API returns an array of reviews
+      })
+      .catch(error => {
+        console.error('Error fetching reviews:', error);
+      });
+  }, []);
+
+  const tiles = reviews.map((review, index) => (
+    <ReviewTile
+      key={index}
+      class_name={review.class_name}
+      student_name={review.student_name}
+      session_time={review.session_time}
+      session_rating={review.session_rating}
+      session_comments={review.session_comments}
+    />
+  ));
+  */
+
+  //Anushka's code
+
+  /*const sampleJSON = [
     {
       "class_name": "AP Computer Science A",
       "student_name": "Anushka P",
@@ -36,16 +116,17 @@ const TutorReports = (props) => {
       "session_rating": 4,
       "session_comments" : "She aight"
     }
-  ]
+  ]*/
 
-  const tiles = sampleJSON.map((review, index) => (
+    /*const tiles = sampleJSON.map((review, index) => (
     <ReviewTile key={index} class_name={review.class_name}
     student_name={review.student_name}
     session_time={review.session_time}
     session_rating={review.session_rating}
     session_comments={review.session_comments}>
     </ReviewTile>
-  ));
+  ));*/
+
 
   // Calculate the sum of session_rating values
   const totalRatings = sampleJSON.reduce((sum, session) => sum + session.session_rating, 0);
