@@ -34,7 +34,6 @@ module.exports={// Only read user Ids from these tables so references to informa
         return await readPath("Student/" + userId)
     },
 
-
     // For more static non-sensitive tables, read the whole table
     getMajors: function getMajors() {
         return readPath("Major")
