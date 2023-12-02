@@ -42,6 +42,19 @@ const TutorReports = (props) => {
     ));
 
   /*
+
+  useEffect(() => {
+    fetchFromAPI('tutor-reviews') // Replace 'tutor-reviews' with the actual API endpoint for tutor reviews
+      .then(data => {
+      // console log data to see how the JSON is returned and based on that you may have to do something like Object.entries or smth (check profile settings or Availibilities.js for sample on how to map JSON
+        const sample_reviews = data.map( same logic as above)
+        setReviews(sample_reviews); // Assuming the API returns an array of reviews
+      })
+      .catch(error => {
+        console.error('Error fetching reviews:', error);
+      });
+  }, []);
+  
   Came up with this first:
   const TutorReports = (props) => {
   const [reviews, setReviews] = useState([]);
