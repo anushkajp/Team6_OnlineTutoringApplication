@@ -8,26 +8,20 @@ const TutorReports = (props) => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    fetchFromAPI(`${props.renderType}`) 
+    fetchFromAPI(`${props.renderType}/${props.userName}`) 
       .then(data => {
         const render_data = Object.entries(data).map(([key, value]) => ({
           key,
-          student_name: value.student_name,
-          session_time: value.session_time,
-          session_rating: value.session_rating,
-          session_comments: value.session_comments          
+          tutorId: value.tutorUsername,
+          studentId: value.studentUsername,
+          rating: value.rating,
+          description: value.description      
         }
         ));
         setReviews(render_data[0]);
       })
       .catch(error => {
-        setReviews({
-          student_name: "Loading...",
-          session_time: "Loading...",
-          session_rating: "Loading...",
-          session_comments: "Loading..."
-        });
-        console.log(error);
+        console.error('Error fetching reviews:', error);
       });
     }, []);
 
