@@ -5,7 +5,7 @@ import { fetchFromAPI } from '../services/api'
 
 const TutorReports = (props) => {
 
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState([]); //??
 
   useEffect(() => {
     fetchFromAPI(`${props.renderType}/${props.userName}`) 
@@ -18,37 +18,26 @@ const TutorReports = (props) => {
           description: value.description      
         }
         ));
-        setReviews(render_data[0]);
+        setReviews(render_data[0]); //??
       })
       .catch(error => {
         console.error('Error fetching reviews:', error);
       });
     }, []);
 
+    
     const tiles = reviews.map((review, index) => (
       <ReviewTile
-        key={index}
-        student_name={review.student_name}
-        session_time={review.session_time}
-        session_rating={review.session_rating}
-        session_comments={review.session_comments}
+        key={index} //??
+        tutorId = {review.tutorUsername}
+        studentId = {review.studentUsername}
+        rating = {review.rating}
+        description = {review.description}
       />
     ));
 
   /*
 
-  useEffect(() => {
-    fetchFromAPI('tutor-reviews') // Replace 'tutor-reviews' with the actual API endpoint for tutor reviews
-      .then(data => {
-      // console log data to see how the JSON is returned and based on that you may have to do something like Object.entries or smth (check profile settings or Availibilities.js for sample on how to map JSON
-        const sample_reviews = data.map( same logic as above)
-        setReviews(sample_reviews); // Assuming the API returns an array of reviews
-      })
-      .catch(error => {
-        console.error('Error fetching reviews:', error);
-      });
-  }, []);
-  
   Came up with this first:
   const TutorReports = (props) => {
   const [reviews, setReviews] = useState([]);
