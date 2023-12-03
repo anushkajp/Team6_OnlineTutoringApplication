@@ -1,38 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { fetchFromAPI,uploadToAPI } from '../services/api'
+import Student from '../models/student'
+import CreateFields from '../components/CreateFields'
+import bcrypt from "bcryptjs-react"
 
 const SignUpStudent = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    university: "",
-    profile_photo: "",
-    password: "",
-  });
+  const initialStudent = new Student();
+  const [student, setStudent] = useState(initialStudent);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const hashPassword = async(password) =>{
+    const gennedHash = await new Promise((resolve, reject)=> {
+      bcrypt.hash(password,10,function(error, hash){
+        if(error){
+          reject(error)
+        }else{
+          resolve(hash)
+        }
 
+        
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
+    
+    return gennedHash
+    // return hash
+  }
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
+    
+    
+    (async ()=>{
+      const pwdHash = await hashPassword(student.password)
+      student.password=  pwdHash
+      console.log("Form data submitted:", student);
+      const data = await uploadToAPI("student/",student)
+      console.log(data)
+    })()
+
     // Clear the form fields
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      university: "",
-      profile_photo: "",
-      password: "",
-    });
+    // setStudent(new Student());
   };
+  const labelData = {
+    firstName: { "label": "First name" },
+    lastName: { "label": "Last name" },
+    middleName: { "label": "Middle name" },
+    password: { "label": "Password" },
+    username: { "label": "Username" },
+    phone: { "label": "Phone number" },
+    email: { "label": "Email" },
+    major: { "label": "Major" },
+    pfp: { "label": "Profile Picture" }
+
+
+  }
+
+
 
   return (
     <div className="page-container">
@@ -40,7 +63,7 @@ const SignUpStudent = () => {
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="profile_photo">Upload Profile Photo</label>
               <input
                 type="file"
@@ -116,7 +139,8 @@ const SignUpStudent = () => {
                 onChange={handleChange}
                 required
               />
-            </div>
+            </div> */}
+            {CreateFields(student,setStudent,labelData)}
             <button className="create_acc_student_button" type="submit">
               Create Student Account
             </button>

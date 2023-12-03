@@ -7,7 +7,6 @@ import "./styles/global.css";
 import "./styles/signup.css";
 import "./styles/sidebar.css";
 import "./styles/upcoming.css";
-import "./styles/profile.css";
 import "./styles/dashboard_tile.css";
 import "./styles/session_tile.css";
 import "./styles/dashboard.css";
@@ -17,7 +16,7 @@ import "./styles/TwoFactor.css";
 import "./styles/Login.css";
 import "./styles/reviewtile.css";
 import "./styles/tutor_reports.css";
-import "./pages/Calendar.css";
+
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
@@ -73,7 +72,7 @@ function App() {
         <Route path="/Home" element={<Home />} />
         <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/ProfileSettings" element={<ProfileSettings renderType="tutor"/>} />
+        <Route path="/ProfileSettings" element={<ProfileSettings />} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />
         <Route path="/SignUpStudent" element={<SignUpStudent />} />

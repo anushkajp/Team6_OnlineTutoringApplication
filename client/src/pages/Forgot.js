@@ -25,6 +25,8 @@ const Forgot = () => {
     alert("Email Sent!");
   };
 
+
+
   return (
     <div className="body-background">
       <div className="image-container">
@@ -91,3 +93,4 @@ const Forgot = () => {
 };
 
 export default Forgot;
+

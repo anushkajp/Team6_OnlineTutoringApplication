@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./TwoFactor.css";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +15,7 @@ const TwoFactor = () => {
     navigate("/TutorDash");
     console.log("Validation is performed with input value:", inputValue);
   };
+
 
   return (
     <div className="with-gradient">
@@ -50,3 +52,4 @@ const TwoFactor = () => {
 };
 
 export default TwoFactor;
+

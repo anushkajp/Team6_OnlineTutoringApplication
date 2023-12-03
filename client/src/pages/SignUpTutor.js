@@ -1,38 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
+import { fetchFromAPI,uploadToAPI } from '../services/api'
+import Tutor from '../models/tutor'
+import Major from '../models/major'
+import Course from '../models/course'
+import CreateFields from '../components/CreateFields'
+import bcrypt from "bcryptjs-react"
+
+
+
 
 const SignUpTutor = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    subjects: "",
-    profile_photo: "",
-    password: "",
-  });
+  
+  const initialTutor = new Tutor();
+  const [tutor, setTutor] = useState(initialTutor);
+  
+  const hashPassword = async(password) =>{
+    const gennedHash = await new Promise((resolve, reject)=> {
+      bcrypt.hash(password,10,function(error, hash){
+        if(error){
+          reject(error)
+        }else{
+          resolve(hash)
+        }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+        
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
+    
+    return gennedHash
+    // return hash
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
+    console.log("Form data submitted:", tutor);
+    (async ()=>{
+      try{
+      const pwdHash = await hashPassword(tutor.password)
+      tutor.password=  pwdHash
+      const data = await uploadToAPI("tutor/",tutor)
+      console.log(data)
+      }catch(e){
+        console.log(e)
+      }
+      
+    })()
+
     // Clear the form fields
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      subjects: "",
-      profile_photo: "",
-      password: "",
-    });
+    // setStudent(new Student());
   };
+
+  const labelData = {
+    firstName: { "label": "First name" },
+    lastName: { "label": "Last name" },
+    middleName: { "label": "Middle name" },
+    password: { "label": "Password" },
+    username: { "label": "Username" },
+    courses: { "label": "Courses" },
+    phone: { "label": "Phone number" },
+    email: { "label": "Email" },
+    major: { "label": "Major" },
+    pfp: { "label": "Profile Picture" }
+
+
+  }
+
+
+
+ 
 
   return (
     <div className="page-container">
@@ -40,7 +76,8 @@ const SignUpTutor = () => {
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            {CreateFields(tutor,setTutor,labelData)}
+            {/* <div className="form-group">
               <label htmlFor="profile_photo">Upload Profile Photo</label>
               <input
                 type="file"
@@ -115,7 +152,7 @@ const SignUpTutor = () => {
                 value={formData.subjects}
                 onChange={handleChange}
               />
-            </div>
+            </div> */}
             <button className="create_acc_student_button" type="submit">
               Create Tutor Account
             </button>

@@ -13,6 +13,9 @@ const ReviewTile = (props) => {
     setIsModalOpen(false);
   };
 
+    
+
+
   return (
     <div className="review_tile">
         <div className="review_details">

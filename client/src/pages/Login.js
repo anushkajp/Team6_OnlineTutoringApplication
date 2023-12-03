@@ -2,17 +2,76 @@ import React, { useState } from "react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-
+import bcrypt from "bcryptjs-react"
+import { uploadToAPI, fetchFromAPI } from '../services/api'
+import Cookies from 'js-cookie'
+import CreateFields from "../components/CreateFields";
+import User from "../models/user"
 // no functionality yet, just UI
 // need to add functionality with firebase auth
-// not completely responsive yet
+// not completely re sponsive yet
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  Cookies.set()
+  const labelData = {
+    username:{"label":"Username",
+              "regex":"",
+              "limit":""
+            },
+    password:{"label":"Password"}
+  }
+  const [hash, setHash] = useState("");
+  const initialUser = new User();
+  const [user , setUser] = useState(initialUser)
+
+  // const [data, setData] = useState({
+  //   email:'',
+  //   password:''
+  // });
+  // const {email, password} =data;
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+
+  const hashPassword = async(password) =>{
+    const gennedHash = await new Promise((resolve, reject)=> {
+      bcrypt.hash(password,10,function(error, hash){
+        if(error){
+          reject(error)
+        }else{
+          resolve(hash)
+        }
+
+        
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
+    
+    return gennedHash
+    // return hash
+  }
+
+  // const comparePassword = async()=>{
+  //   console.log(await bcrypt.compare(password,hash))
+  // }
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    console.log("Form data submitted:", user);
+    (async ()=>{
+      try{
+      const pwdHash = await hashPassword(user.password)
+      user.password=  pwdHash
+      const data = await uploadToAPI("login/",user)
+      console.log(data)
+      }catch(e){
+        console.log(e)
+      }
+      
+    })()
+
+  }
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
   };
@@ -54,25 +113,7 @@ const Login = () => {
             <br></br>
 
             <form className="fields-container">
-              <input
-                className="field"
-                placeholder="Enter email"
-                type="email"
-                id="email"
-                name="email"
-                required
-              />
-
-              <br></br>
-
-              <input
-                className="field"
-                placeholder="Enter Password"
-                type="password"
-                id="password"
-                name="password"
-                required
-              />
+              {CreateFields(user, setUser, labelData)}
 
               <br></br>
               <br></br>
@@ -80,7 +121,7 @@ const Login = () => {
               <button
                 className="login-button"
                 type="submit"
-                onClick={navigateToTwoFactor}
+                onClick={handleSubmit}
               >
                 <p className="login-button-text">Log in</p>
               </button>
