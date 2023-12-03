@@ -33,10 +33,19 @@ const CreateFields = (object, setObject, labelData) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setObject({
-      ...object,
-      [name]: value
-    })
+    if (labelData[name].maxLength>=value.length){
+        setObject({
+          ...object,
+          [name]: value
+        })
+      
+    }else{
+      alert(`The input size of ${labelData[name].label.toLowerCase()} of ${value.length} is larger than the maximum size of ${labelData[name].maxLength}`)
+    
+    }
+    
+    
+
 
     // alert(object)
     console.log(object)
