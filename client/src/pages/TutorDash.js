@@ -2,12 +2,13 @@ import React from 'react'
 import Sidebar from '../components/sidebar'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
-import ReviewTile from '../components/ReviewTile'
 import LogoutButton from '../components/LogoutButton'
+import Availibilities from '../components/Availibilities'
 
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
+
 
 const TutorDash = () => {
 
@@ -145,17 +146,8 @@ const TutorDash = () => {
             </div>
           </div>
           <div className="right_div">
-              <DashboardTile title="Recent Student Reviews">
-                  {
-                    sampleJSON2.map((review, index) => (
-                      <ReviewTile key={index} class_name={review.class_name}
-                      student_name={review.student_name}
-                      session_time={review.session_time}
-                      session_rating={review.session_rating}
-                      session_comments={review.session_comments}>
-                      </ReviewTile>
-                    ))
-                  }
+              <DashboardTile title="My Availibilities">
+                  <Availibilities></Availibilities>
               </DashboardTile>
               <LogoutButton onClick={handleLogout} />
           </div>

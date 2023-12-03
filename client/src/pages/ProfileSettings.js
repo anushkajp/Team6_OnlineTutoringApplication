@@ -1,7 +1,8 @@
-import React , { useState, useEffect } from 'react'
+import React , { useState, useEffect, useContext } from 'react'
+import { UserContext } from '../UserContext'
 import Sidebar from '../components/sidebar'
 import LogoutButton from '../components/LogoutButton'
-import { fetchFromAPI } from '../services/api'
+import { fetchFromAPI, sendAPIPatchRequest } from '../services/api'
 
 function ProfileSettings(props){
   const [isEditing, setIsEditing] = useState(false);
@@ -10,10 +11,12 @@ function ProfileSettings(props){
   const [phone, setPhone] = useState(4445559999);
   const [editedPhone, setEditedPhone] = useState('');
   const [renderData, setData] = useState([])
-
+  const user = useContext(UserContext);
+  console.log(user);
   useEffect(() => {
-    fetchFromAPI(`${props.renderType}/${props.userName}`) 
+    fetchFromAPI(`tutor/diananle`) 
       .then(data => {
+        
         const render_data = Object.entries(data).map(([key, value]) => ({
           key,
           firstName: value.firstName,
@@ -30,6 +33,8 @@ function ProfileSettings(props){
           longBio: value.longBio
         }
         ));
+        setEditedEmail(render_data.email);
+        setEditedPhone(render_data.phone);
         setData(render_data[0]);
       })
       .catch(error => {
@@ -53,7 +58,7 @@ function ProfileSettings(props){
 
 
   const handleEditClick = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault(); 
     setIsEditing(true);
   };
 
@@ -61,6 +66,14 @@ function ProfileSettings(props){
     setIsEditing(false);
     setEmail(editedEmail);
     setPhone(editedPhone);
+
+    sendAPIPatchRequest(`${props.renderType}/${props.userName}`, { "email" : editedEmail, "phone" : editedPhone})
+        .then(data => {
+            console.log(data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
   };
 
   const handleInputChange = (field, event) => {

@@ -53,7 +53,6 @@ const TutorReports = (props) => {
   // Calculate the average rating
   const averageRating = totalRatings / sampleJSON.length;
 
-
   return (
     <div className="reviewPage">
       <div className="sidebar">

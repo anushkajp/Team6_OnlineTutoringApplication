@@ -1,17 +1,18 @@
-import { auth } from '../firebase';
+import { auth,app } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, set } from "firebase/database";
 import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
+import { useState,useContext } from "react";
+import { UserContext } from "../UserContext";
 
 const SignUpTutor = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [arrayValue, setArrayValue] = useState([]);
-  //const [isTutor, setTutor] = useState('');
-
-  // let isTutor = true;
-  // let isStudent = false;
+  const userContext = useContext(UserContext);
+  let navigate = useNavigate();
+  const db = getDatabase(app);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -24,7 +25,11 @@ const SignUpTutor = () => {
     accountType: "tutor"
   });
 
-  const navigate = useNavigate();
+  const addUserToRealtimeDB = (userId, formData) => {
+    set(ref(db, 'users/' + userId), formData)
+    .then(() => console.log("Data saved successfully!"))
+    .catch((error) => console.error("Failed to save data", error));
+  };
 
   const handleChange = (e) => {
     setEmail(e.target.value)
@@ -53,25 +58,14 @@ const SignUpTutor = () => {
     try {
       const { email, password } = formData;
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
-      const user = userCredential.user;
-      localStorage.setItem('token', user.accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
-      navigate("/TutorDash");
+      addUserToRealtimeDB(formData);
+      //const user = userCredential.user;
+      // localStorage.setItem('token', user.accessToken);
+      // localStorage.setItem('user', JSON.stringify(user));
+      navigate("/Login");
     } catch (error) {
       console.error(error);
     }
-    // Clear the form fields
-
-    // setFormData({
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   phone: "",
-    //   subjects: "",
-    //   profile_photo: "",
-    //   password: "",
-    // });
   };
 
   return (

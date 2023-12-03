@@ -1,33 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
+
 import { useNavigate } from "react-router-dom";
-
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword,setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { auth } from '../firebase';
+import { UserContext } from "../UserContext";
 
-// import 'dotenv/config'
 import emailjs from "emailjs-com";
-
-// no functionality yet, just UI
-// need to add functionality with firebase auth
-// not completely responsive yet
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const userContext = useContext(UserContext);
+  let navigate = useNavigate();
 
-  const navigate = useNavigate();
   // handle submit 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setPersistence(auth, browserLocalPersistence);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
-      const user = userCredential.user;
-      localStorage.setItem('token', user.accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
       navigateToTwoFactor();
     } catch (error) {
       console.error(error);

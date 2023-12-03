@@ -8,7 +8,7 @@ const CalendarEvent = (props) => {
   }
 
   const eventArray = Array.isArray(events) ? events : [events];
-
+  
   return (
     <div>
       {eventArray.map((event, index) => (
