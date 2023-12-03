@@ -1,7 +1,6 @@
-import React , { useState, useEffect } from 'react'
+import React , {useState} from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from '../components/LogoutButton'
-import { fetchFromAPI } from '../services/api'
 
 const ProfileSettings = (props) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -9,33 +8,16 @@ const ProfileSettings = (props) => {
   const [editedEmail, setEditedEmail] = useState('');
   const [phone, setPhone] = useState(4445559999);
   const [editedPhone, setEditedPhone] = useState('');
+  const [preferredMethod, setPreferredMethod] = useState('email');
   const [editedMethod, setEditedMethod] = useState('');
-  const [renderData, setData] = useState({
+
+  const renderData = {
     userName:'Sad Cat',
     schoolName: 'Erik Jonsson School of CS',
     subject_expertise: ['Math', 'English'],
     member_since: 'August 2023',
     skills: ['ASL', 'Project Management'],
-  })
-
-  useEffect(() => {
-    fetchFromAPI(`${props.renderType}/${props.studentName}`) 
-      .then(data => {
-        setData(data);
-        console.log(data)
-      })
-      .catch(error => {
-        setData({
-          userName:'Sad Cat',
-          schoolName: 'Erik Jonsson School of CS',
-          subject_expertise: ['Math', 'English'],
-          member_since: 'August 2023',
-          skills: ['ASL', 'Project Management'],
-        });
-        console.log(error);
-      });
-  }, []);
-
+  };
 
   const handleEditClick = (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
@@ -46,6 +28,7 @@ const ProfileSettings = (props) => {
     setIsEditing(false);
     setEmail(editedEmail);
     setPhone(editedPhone);
+    setPreferredMethod(editedMethod);
   };
 
   const handleInputChange = (field, event) => {

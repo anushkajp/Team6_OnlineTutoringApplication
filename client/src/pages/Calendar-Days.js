@@ -2,6 +2,8 @@ import React from "react";
 import "./Calendar.css";
 import CalendarEvent from "./CalendarEvent";
 
+// CREDIT: https://derrickotte.medium.com/how-to-create-a-calendar-from-scratch-in-react-1f2db197454d
+
 function CalendarDays(props) {
   let firstDayOfMonth = new Date(
     props.day.getFullYear(),
