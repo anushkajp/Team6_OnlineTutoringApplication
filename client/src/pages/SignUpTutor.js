@@ -1,40 +1,17 @@
-import { auth,app } from '../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { getDatabase, ref, set } from "firebase/database";
-import { useNavigate } from 'react-router-dom';
-import { useState,useContext } from "react";
-import { UserContext } from "../UserContext";
+import React, { useState } from "react";
 
 const SignUpTutor = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [inputValue, setInputValue] = useState('');
-  const [arrayValue, setArrayValue] = useState([]);
-  const userContext = useContext(UserContext);
-  let navigate = useNavigate();
-  const db = getDatabase(app);
-
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
-    subjects: [],
+    subjects: "",
     profile_photo: "",
     password: "",
-    accountType: "tutor"
   });
 
-  const addUserToRealtimeDB = (userId, formData) => {
-    set(ref(db, 'users/' + userId), formData)
-    .then(() => console.log("Data saved successfully!"))
-    .catch((error) => console.error("Failed to save data", error));
-  };
-
   const handleChange = (e) => {
-    setEmail(e.target.value)
-    setPassword(e.target.value)
-
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -42,30 +19,19 @@ const SignUpTutor = () => {
     });
   };
 
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
-  const convertToArray = () => {
-    const values = inputValue.split(',').map((item) => item.trim());
-    setArrayValue(values);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    convertToArray();
     console.log("Form data submitted:", formData);
-    try {
-      const { email, password } = formData;
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      addUserToRealtimeDB(formData);
-      //const user = userCredential.user;
-      // localStorage.setItem('token', user.accessToken);
-      // localStorage.setItem('user', JSON.stringify(user));
-      navigate("/Login");
-    } catch (error) {
-      console.error(error);
-    }
+    // Clear the form fields
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      subjects: "",
+      profile_photo: "",
+      password: "",
+    });
   };
 
   return (
@@ -141,12 +107,13 @@ const SignUpTutor = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="subjects">Subjects (list separated by commas)</label>
+              <label htmlFor="subjects">Subjects</label>
               <input
                 type="text"
-                value={inputValue}
-                onChange={handleInputChange}
-                placeholder="Enter comma-separated values"
+                id="Subjects"
+                name="Subjects"
+                value={formData.subjects}
+                onChange={handleChange}
               />
             </div>
             <button className="create_acc_student_button" type="submit">

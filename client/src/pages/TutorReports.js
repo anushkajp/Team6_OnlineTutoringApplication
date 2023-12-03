@@ -39,7 +39,7 @@ const TutorReports = (props) => {
   ]
 
   const tiles = sampleJSON.map((review, index) => (
-    <ReviewTile key={index} class_name={review.class_name}
+    <ReviewTile class_name={review.class_name}
     student_name={review.student_name}
     session_time={review.session_time}
     session_rating={review.session_rating}
@@ -52,6 +52,7 @@ const TutorReports = (props) => {
 
   // Calculate the average rating
   const averageRating = totalRatings / sampleJSON.length;
+
 
   return (
     <div className="reviewPage">

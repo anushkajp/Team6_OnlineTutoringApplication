@@ -1,83 +1,28 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
-
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword,setPersistence, browserLocalPersistence } from 'firebase/auth';
-import { auth } from '../firebase';
-import { UserContext } from "../UserContext";
 
-import emailjs from "emailjs-com";
+// no functionality yet, just UI
+// need to add functionality with firebase auth
+// not completely responsive yet
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const userContext = useContext(UserContext);
-  let navigate = useNavigate();
 
-  // handle submit 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setPersistence(auth, browserLocalPersistence);
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      navigateToTwoFactor();
-    } catch (error) {
-      console.error(error);
-    }
-    }
-
+  const navigate = useNavigate();
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
-    
+  };
+
+  const navigateToTwoFactor = () => {
+    navigate("/TwoFactor");
   };
 
   const navigateToForgot = () => {
     navigate("/Forgot");
-  };
-
-  const navigateToTwoFactor = () => {
-    const code = generateVerificationCode();
-    navigate("/TwoFactor", { state: { verificationCode: code } });
-    sendVerificationEmail(code, email);
-  };
-
-  const generateVerificationCode = () => {
-    return Math.floor(100000 + Math.random() * 900000);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const sendVerificationEmail = (code, email) => {
-    const serviceId = "service_dz0xhzf";
-    const templateId = "template_xs9buif";
-    const userId = "cWti8bd46sTP6-Sgr";
-
-    const templateParams = {
-      verification_code: code,
-      to_email: email,
-    };
-
-    console.log("email: ", email);
-
-    emailjs
-      .send(
-        serviceId,
-        templateId,
-        templateParams,
-        userId
-      )
-      .then(
-        (response) => {
-          console.log("Email sent:", response);
-        },
-        (error) => {
-          console.error("Email could not be sent:", error);
-        }
-      );
   };
 
   return (
@@ -108,16 +53,14 @@ const Login = () => {
 
             <br></br>
 
-            <form onSubmit= {handleSubmit} className="fields-container">
+            <form className="fields-container">
               <input
                 className="field"
                 placeholder="Enter email"
-                required
-                value={email}
                 type="email"
                 id="email"
                 name="email"
-                onChange={handleEmailChange}
+                required
               />
 
               <br></br>
@@ -125,14 +68,10 @@ const Login = () => {
               <input
                 className="field"
                 placeholder="Enter Password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                
                 type="password"
                 id="password"
                 name="password"
-               
+                required
               />
 
               <br></br>
@@ -141,9 +80,9 @@ const Login = () => {
               <button
                 className="login-button"
                 type="submit"
-                onSubmit={navigateToTwoFactor}
+                onClick={navigateToTwoFactor}
               >
-                <p type = "submit" className="login-button-text">Log in</p>
+                <p className="login-button-text">Log in</p>
               </button>
             </form>
             <br></br>

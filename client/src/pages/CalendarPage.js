@@ -1,8 +1,9 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import Sidebar from "../components/sidebar";
 import SessionTile from "../components/SessionTile";
 import CalendarDays from "./Calendar-Days";
 import CalendarEvent from "./CalendarEvent";
+import "./Calendar.css";
 
 // CREDIT: https://derrickotte.medium.com/how-to-create-a-calendar-from-scratch-in-react-1f2db197454d
 

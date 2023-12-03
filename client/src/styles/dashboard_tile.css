@@ -19,6 +19,7 @@
     float: right;
     display: flex;
     width: 100%;
+    padding-right: 100px;
 }
 
 .top{

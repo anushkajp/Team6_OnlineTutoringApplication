@@ -1,64 +1,26 @@
-import React , { useState, useEffect, useContext } from 'react'
-import { UserContext } from '../UserContext'
+import React , {useState} from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from '../components/LogoutButton'
-import { fetchFromAPI, sendAPIPatchRequest } from '../services/api'
 
-function ProfileSettings(props){
+const ProfileSettings = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [email, setEmail] = useState('sampleemail@gmail.com');
   const [editedEmail, setEditedEmail] = useState('');
   const [phone, setPhone] = useState(4445559999);
   const [editedPhone, setEditedPhone] = useState('');
-  const [renderData, setData] = useState([])
-  const user = useContext(UserContext);
-  console.log(user);
-  useEffect(() => {
-    fetchFromAPI(`tutor/diananle`) 
-      .then(data => {
-        
-        const render_data = Object.entries(data).map(([key, value]) => ({
-          key,
-          firstName: value.firstName,
-          lastName: value.lastName,
-          middleName: value.middleName,
-          password: value.password,
-          userId: value.userId,
-          userName: value.userName,
-          courses: value.courses,
-          phone: value.phone,
-          email: value.email,
-          major: value.major,
-          hours: value.hours,
-          longBio: value.longBio
-        }
-        ));
-        setEditedEmail(render_data.email);
-        setEditedPhone(render_data.phone);
-        setData(render_data[0]);
-      })
-      .catch(error => {
-        setData({
-          "firstName": "Loading...",
-          "lastName": "Loading...",
-          "middleName": null,
-          "password": "Loading...",
-          "userId": "Loading...",
-          "userName": "Loading...",
-          "courses": [],
-          "phone": "Loading...",
-          "email": "Loading...",
-          "major": "Loading...",
-          "hours": null,
-          "longBio": null
-        });
-        console.log(error);
-      });
-  }, []);
+  const [preferredMethod, setPreferredMethod] = useState('email');
+  const [editedMethod, setEditedMethod] = useState('');
 
+  const renderData = {
+    userName:'Sad Cat',
+    schoolName: 'Erik Jonsson School of CS',
+    subject_expertise: ['Math', 'English'],
+    member_since: 'August 2023',
+    skills: ['ASL', 'Project Management'],
+  };
 
   const handleEditClick = (e) => {
-    e.preventDefault(); 
+    e.preventDefault(); // Prevent the default form submission behavior
     setIsEditing(true);
   };
 
@@ -66,14 +28,7 @@ function ProfileSettings(props){
     setIsEditing(false);
     setEmail(editedEmail);
     setPhone(editedPhone);
-
-    sendAPIPatchRequest(`${props.renderType}/${props.userName}`, { "email" : editedEmail, "phone" : editedPhone})
-        .then(data => {
-            console.log(data)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+    setPreferredMethod(editedMethod);
   };
 
   const handleInputChange = (field, event) => {
@@ -84,12 +39,13 @@ function ProfileSettings(props){
       case 'editedPhone':
         setEditedPhone(event.target.value);
         break;
+      case 'editedMethod':
+        setEditedMethod(event.target.value);
+        break;
       default:
         break;
     }
   };
-
-  const excludedFields = ["password", "userId", "firstName", "middleName", "lastName", "key"];
 
   return (
       <div>
@@ -106,13 +62,11 @@ function ProfileSettings(props){
                     <img src="https://picsum.photos/400/400" alt="Profile" />
                   </div>
                   <div className="profile_details"> 
-                    <h3>{renderData.firstName + " "  + renderData.lastName}</h3>
-                      {Object.entries(renderData).map(([field, value]) => (
-                        !excludedFields.includes(field) && value != null && (
-                          <div key={field}>
-                            <h4 className="bio_h4"><span className="header_text">{field}: </span>{Array.isArray(value) ? value.join(', ') : value}</h4>
-                          </div>
-                        )))}
+                    <h3>{renderData.userName}</h3>
+                    <h5><span class="header_text">School Name:</span> {renderData.schoolName}</h5>
+                    <h5><span class="header_text">Subject Expertise:</span> {renderData.subject_expertise.join(', ')}</h5>
+                    <h5><span class="header_text">Member Since:</span> {renderData.member_since}</h5>
+                    <h5><span class="header_text">Skills:</span> {renderData.skills.join(', ')}</h5>
                   </div>
               </div>
               <div className="editFields">
@@ -126,7 +80,7 @@ function ProfileSettings(props){
                   onChange={(e) => handleInputChange('editedEmail', e)}
                 />
               ) : (
-                <span className="readOnly" id="emailDisplay">{renderData.email}</span>
+                <span className="readOnly" id="emailDisplay">{email}</span>
               )}
 
               <label htmlFor="phone">Phone:</label>
@@ -138,7 +92,7 @@ function ProfileSettings(props){
                   onChange={(e) => handleInputChange('editedPhone', e)}
                 />
               ) : (
-                <span className="readOnly" id="phoneDisplay">{renderData.phone}</span>
+                <span className="readOnly" id="phoneDisplay">{phone}</span>
               )}
 
               {isEditing ? (

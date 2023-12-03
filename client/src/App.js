@@ -2,9 +2,6 @@ import "./App.css";
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
-// wrapping our application in userprovider
-import { UserProvider } from './UserContext';
-
 // import styles
 import "./styles/global.css";
 import "./styles/signup.css";
@@ -20,11 +17,7 @@ import "./styles/TwoFactor.css";
 import "./styles/Login.css";
 import "./styles/reviewtile.css";
 import "./styles/tutor_reports.css";
-import "./styles/Calendar.css";
-import "./styles/Home.css";
-import "./styles/AddTutorSession.css"
-import "./styles/availibilities.css"
-
+import "./pages/Calendar.css";
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
@@ -46,31 +39,52 @@ import TwoFactor from "./pages/TwoFactor";
 
 function App() {
   return (
-    <UserProvider>
-      <div className="App">
-        <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/AddTutorSession" element={<AddTutorSession />} />
-          <Route path="/CalendarPage" element={<CalendarPage />} />
-          <Route path="/Contact" element={<Contact />} />
-          <Route path="/Forgot" element={<Forgot />} />
-          <Route path="/Home" element={<Home />} />
-          <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" userName="bibi4eva"/>} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/ProfileSettings" element={<ProfileSettings renderType="student" userName="thecutest"/>} />
-          <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
-          <Route path="/SearchTutor" element={<SearchTutor />} />
-          <Route path="/SignUpStudent" element={<SignUpStudent />} />
-          <Route path="/SignUpTutor" element={<SignUpTutor />} />
-          <Route path="/StudentDash" element={<StudentDash />} />
-          <Route path="/TutorDash" element={<TutorDash />} />
-          <Route path="/TutorReports" element={<TutorReports />} />
-          <Route path="/TwoFactor" element={<TwoFactor />} />
-        </Routes>
-      </BrowserRouter>
-      </div>
-    </UserProvider>
+    <div className="App">
+      
+      {/* <nav>
+        <ul>
+          <li><a href="/AddTutorSession">AddTutorSession</a></li>
+          <li><a href="/CalendarPage">CalendarPage</a></li>
+          <li><a href="/Contact">Contact</a></li>
+          <li><a href="/Forgot">Forgot</a></li>
+          <li><a href="/Home">Home</a></li>
+          <li><a href="/ListUpcoming">ListUpcoming</a></li>
+          <li><a href="/Login">Login</a></li>
+          <li><a href="/ProfileSettings">ProfileSettings</a></li>
+          <li><a href="/SavedCoursesStudent">SavedCoursesStudent</a></li>
+          <li><a href="/SearchTutor">SearchTutor</a></li>
+          <li><a href="/SignUpStudent">SignUpStudent</a></li>
+          <li><a href="/SignUpTutor">SignUpTutor</a></li>
+          <li><a href="/StudentDash">StudentDash</a></li>
+          <li><a href="/TutorDash">TutorDash</a></li>
+          <li><a href="/TutorReports">TutorReports</a></li>
+          <li><a href="/TwoFactor">TwoFactor</a></li>
+        </ul>
+      </nav> */}
+
+
+      <BrowserRouter>
+      <Routes>
+      <Route path="/" element={<Navigate to="/Home" />} />
+        <Route path="/AddTutorSession" element={<AddTutorSession />} />
+        <Route path="/CalendarPage" element={<CalendarPage />} />
+        <Route path="/Contact" element={<Contact />} />
+        <Route path="/Forgot" element={<Forgot />} />
+        <Route path="/Home" element={<Home />} />
+        <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/ProfileSettings" element={<ProfileSettings renderType="tutor"/>} />
+        <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
+        <Route path="/SearchTutor" element={<SearchTutor />} />
+        <Route path="/SignUpStudent" element={<SignUpStudent />} />
+        <Route path="/SignUpTutor" element={<SignUpTutor />} />
+        <Route path="/StudentDash" element={<StudentDash />} />
+        <Route path="/TutorDash" element={<TutorDash />} />
+        <Route path="/TutorReports" element={<TutorReports />} />
+        <Route path="/TwoFactor" element={<TwoFactor />} />
+      </Routes>
+    </BrowserRouter>
+    </div>
   );
 }
 
