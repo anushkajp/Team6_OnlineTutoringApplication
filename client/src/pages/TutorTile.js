@@ -24,8 +24,7 @@ export const TutorTileCard = ({
   const [availability, setAvailability] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [allChunks, setAllChunks] = useState([]);
-  //console.log("tt" + selectedDay);
-  //console.log("tt" + date);
+  const [splitAppointments, setSplitAppointments] = useState([]);
 
   // Check if bio is empty or undefined
   const hasBio = bio && bio.trim() !== "";
@@ -45,35 +44,48 @@ export const TutorTileCard = ({
     }
   };
 
-  function createTimeChunks(startTime, endTime) {
-    // Create date objects in UTC
+  // Function to convert date string to YYYY-MM-DD format
+  const formatDate = (date) => {
+    const dateNew = new Date(date);
+
+    // Extracting the year, month, and day components
+    const year = dateNew.getFullYear();
+    const month = (dateNew.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed in JavaScript
+    const day = dateNew.getDate().toString().padStart(2, '0');
+
+    // Formatting the date in YYYY-MM-DD format
+    return `${year}-${month}-${day}`;
+  };
+
+  const chosenDate = formatDate(date)
+
+  function createTimeChunks(startTime, endTime, updatedAppointments) {
     const start = new Date(`1970-01-01T${startTime}Z`);
     const end = new Date(`1970-01-01T${endTime}Z`);
     let chunks = [];
-
+  
     while (start < end) {
-      let currentChunkStart = formatTime12Hour(
-        start.toISOString().substring(11, 16)
-      );
-
+      let currentChunkStart = formatTime12Hour(start.toISOString().substring(11, 16));
+  
+      // Check if this time chunk overlaps with any appointments in updatedAppointments
+      const isTimeTaken = updatedAppointments.some(appointment => {
+        const appointmentStartTime = formatTime12Hour(appointment.time);
+        return appointmentStartTime === currentChunkStart;
+      });
+  
       // Increment by one hour
       start.setUTCHours(start.getUTCHours() + 1);
-
-      // Check if incremented start time is past the end time
-      if (start > end) {
-        break;
+  
+      if (!isTimeTaken) {
+        // If the time slot is not taken, then add the chunk
+        let currentChunkEnd = formatTime12Hour(start.toISOString().substring(11, 16));
+        chunks.push(`${currentChunkStart} - ${currentChunkEnd}`);
       }
-
-      // Format the incremented time
-      let currentChunkEnd = formatTime12Hour(
-        start.toISOString().substring(11, 16)
-      );
-
-      chunks.push(`${currentChunkStart} - ${currentChunkEnd}`);
     }
-
+  
     return chunks;
   }
+  
 
   function formatTime12Hour(time24) {
     let [hours, minutes] = time24.split(":").map(Number);
@@ -87,41 +99,45 @@ export const TutorTileCard = ({
       .then((availabilityArray) => {
         if (availabilityArray && availabilityArray.length > 0) {
           const computedChunks = availabilityArray.flatMap(({ start_time, end_time }) => {
-            return createTimeChunks(start_time, end_time);
+            return createTimeChunks(start_time, end_time, splitAppointments);
           });
   
-          // Update state with all time chunks
           setAllChunks(computedChunks);
         }
       })
       .catch((error) => {
         console.error("Error fetching availability data:", error);
       });
-  }, [username, selectedDay]);
+  }, [username, selectedDay, splitAppointments]);  
 
   useEffect(() => {
-    fetchFromAPI(`appointments/tutor/${username}/${selectedDay}`)
+    fetchFromAPI(`appointments/tutor/${username}`)
       .then(data => {
         const appointments = Object.entries(data).map(([key, appointment]) => ({
           key,
-            id: appointment.id,
-            tutorUsername: appointment.tutorUsername,
-            studentUsername: appointment.studentUsername,
             datetime: appointment.datetime,
             length: appointment.length,
-            online: appointment.online,
-            location: appointment.location,
-            tutorNotes: appointment.tutorNotes,
-            studentNotes: appointment.studentNotes
           }));
   
         setAppointments(appointments);
-        console.log(appointments)
+        //console.log(appointments)
       })
       .catch(error => {
         console.error("Error fetching appointment data:", error);
       });
   }, [username, selectedDay]);
+
+  useEffect(() => {
+    const updatedAppointments = appointments
+      .map(appointment => {
+        const [date, time] = appointment.datetime.split('T');
+        return { ...appointment, date, time };
+      })
+      .filter(appointment => appointment.date == formatDate(date));
+  
+    setSplitAppointments(updatedAppointments);
+    console.log(updatedAppointments)
+  }, [appointments, chosenDate]);  
 
   const close = () => {
     setModal(false); // Close the modal
