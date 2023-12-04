@@ -209,6 +209,7 @@ export const TutorTileCard = ({
           action={close}
           tutorData={selectedTutorData}
           availabilityData={allChunks}
+          date={chosenDate}
         />
       </div>
     </div>

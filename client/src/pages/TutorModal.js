@@ -1,27 +1,52 @@
 import React, { useEffect, useState } from "react";
 import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
-import { postToAPI } from "../services/api";
+import { uploadToAPI } from "../services/api";
 
 export default function TutorModal(props) {
-  const { toggle, action, tutorData, availabilityData } = props;
+  const { toggle, action, tutorData, availabilityData, date } = props;
   const [activeSubjectIndex, setActiveSubjectIndex] = useState(null);
   const [activeTimeIndex, setActiveTimeIndex] = useState(null);
   const [subject, setSubject] = useState(null);
   const [time, setTime] = useState(null);
+  const [convertedTime, setConvertedTime] = useState(null);
   const user = JSON.parse(localStorage.getItem('user'));
-  //console.log(user)
+  console.log(user.email)
+
+  function convertTo24HourFormat(timeString) {
+    // Split the string to get the start time and AM/PM part
+    const [timePart, amPmPart] = timeString.split('-')[0].trim().split(' ');
+    
+    // Extract hours and minutes from the time part
+    let [hours, minutes] = timePart.split(':').map(Number);
+
+    // Convert to 24-hour format
+    if (amPmPart === 'PM' && hours < 12) {
+      hours += 12;
+    } else if (amPmPart === 'AM' && hours === 12) {
+      hours = 0;
+    }
+
+    // Format the hours and minutes correctly
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+
+    console.log(`${formattedHours}:${formattedMinutes}:00`);
+    return `${formattedHours}:${formattedMinutes}:00`;
+}
+
 
   const handleBoxS = (index) => {
     setActiveSubjectIndex(index === activeSubjectIndex ? null : index);
     setSubject(tutorData.courses[index]);
-    //console.log(tutorData.courses[index]);
+    console.log(tutorData.courses[index]);
   };
 
   const handleBoxT = (index) => {
     setActiveTimeIndex(index === activeTimeIndex ? null : index);
     setTime(availabilityData[index]);
-   // console.log(availabilityData[index]);
+    const newConvertedTime = convertTo24HourFormat(availabilityData[index]);
+    setConvertedTime(newConvertedTime);
   };
 
   if (!tutorData || !toggle) {
@@ -29,19 +54,27 @@ export default function TutorModal(props) {
   }
 
   const handleCreateAppointment = async () => {
+    if (!subject || !time) {
+      alert("Please select a subject and time before booking!");
+      return;
+    }
+
+    const appointmentDateTime = `${date}T${convertedTime}`;
+    
     const appointmentData = {
-      datetime: "2016-03-25T12:00:00",
+      datetime: appointmentDateTime,
       length: 60,
+      course: subject,
       location: "www.zoom.com",
       online: true,
-      studentUsername: "-NiaOOoy_9GXrSO7EFD5", 
+      studentUsername: user.email, 
       tutorUsername: tutorData.username, 
     };
 
     try {
-      const response = await postToAPI("appointments", appointmentData);
-      //console.log("Appointment created:", response);
-      // Additional logic after successful appointment creation
+      const response = await uploadToAPI("appointments", appointmentData);
+      console.log("Appointment created:", response);
+      alert("Booked!");
     } catch (error) {
       console.error("Error creating appointment:", error);
     }
