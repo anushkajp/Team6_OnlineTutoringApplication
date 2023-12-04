@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CustomModal from './Modal';
+import { fetchFromAPI, sendAPIPatchRequest } from '../services/api';
 
 const UpdateReviews = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,35 +15,56 @@ const UpdateReviews = (props) => {
     setIsModalOpen(false);
   };
 
-  const handleUpdate = () => {
-    // You can perform the update logic here, e.g., make an API call
-    console.log('Updated Rating:', updatedRating);
-    console.log('Updated Description:', updatedDescription);
-
-    // Close the modal after handling the update
-    closeModal();
+  const handleUpdate = (data) => {
+    // Make a POST request to the specified path
+    fetchFromAPI(`/review/${props.userName}/${data.tutorUsername})`, {
+      // fetchFromAPI(`/review`), {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+        body: JSON.stringify({
+        rating: data.rating,
+        description: data.reviewText,
+      }),
+    })
+      .then((response) => {
+        // Handle the response as needed
+        console.log(response);
+        // Close the modal after submitting the review
+        closeModal();
+      })
+      .catch((error) => {
+        console.error('Error submitting review:', error);
+      });
   };
 
   return (
     <div>
       <div className='update_review_tile  '>
-        <h5>
-          <span>Tutor: </span>{props.tutorUsername}
-        </h5>
-        <h5>
-          <span>Rating: </span>{props.rating}/5
-        </h5>
-        <h5>
-          <span>Description: </span>{props.description}
-        </h5>
-        <button className = 'butto_right' onClick={openModal}>Update</button>
+        <div className='left_column'>
+           <h4>
+            {props.tutorUsername}
+          </h4>
+          <div className='rating'>
+            {/* <h1>{props.rating}</h1> */}
+            <h1>3.0</h1>
+          </div>
+          
+        </div>
+        <div className='right_column'>
+          <h4>
+            <span>Description: </span>{props.description}
+          </h4> 
+        </div>
+        <button className = 'button_right' onClick={openModal}>Update</button>
       </div>
       
 
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
         <h4>{props.class_name}</h4>
         <h5>
-          <span>Tutor: </span>{props.tutorUsername}
+          {props.tutorUsername}
         </h5>
 
         {/* Rating dropdown for updating */}
