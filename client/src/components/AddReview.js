@@ -22,14 +22,14 @@ const AddReview = (props) => {
 
   const handleReviewSubmit = () => {
     // Make a POST request to the specified path
-    fetchFromAPI(`/review/${props.username}/${props.tutorUsername}`, {
+    fetchFromAPI(`/review/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         rating: rating,
-        reviewText: reviewText,
+        description: reviewText,
       }),
     })
       .then((response) => {
@@ -44,26 +44,28 @@ const AddReview = (props) => {
   };
 
   return (
-    <div className="add_review">
-      <div className="review_details">
+    <div className='add_review_tile'>
+      <div>
         {/* Circular image of the user's profile picture */}
-        <img src={profilePicUrl} alt="Profile" className="profile-pic" />
+        <div className='pfp'>
+          <img src="https://picsum.photos/400/400" alt="Profile" />
+        </div>
+        
 
         {/* User's name */}
-        <h4 className="user-name">{props.username}</h4>
+        <h4>{props.username}</h4>
+      
+        {/* Button to open the modal */}
+        <button className = 'button_center' onClick={openModal}>
+          Add Review
+        </button>
       </div>
-
-      {/* Button to open the modal */}
-      <button onClick={openModal} className="create_review">
-        Add Review
-      </button>
-
       {/* Modal for creating a review */}
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
         {/* Dropdown for selecting the rating */}
         <h4>{props.username}</h4>
-        <label className="review_details">
-          <span className="header_text">Rating</span>
+        <label>
+          <span>Rating</span>
           <select
             value={rating}
             onChange={(e) => setRating(parseInt(e.target.value))}
@@ -77,17 +79,16 @@ const AddReview = (props) => {
         </label>
 
         {/* Textarea for entering the review */}
-        <label className="review_details">
-          <span className="header_text">Review</span>
+        <label>
+          <span>Review</span>
           <textarea
-            className="review-textarea"
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
           ></textarea>
         </label>
 
         {/* Button to submit the review */}
-        <button className="add_review" onClick={handleReviewSubmit}>
+        <button className = 'button' onClick={handleReviewSubmit}>
           Submit
         </button>
       </CustomModal>
