@@ -42,20 +42,22 @@ module.exports = {
      * @param {Student} studentObject First name
      */
     //TODO : student variable filter, get rid of reliance on old functions
-    addStudent: async function addStudent(studentObject) {
-        student={}
-        user={}
+    addStudent: async function addStudent(data) {
+        const studentObject={}
+        const user={}
 
-        Object.keys(studentObject).forEach((key) => {
-                    if(!(key in new User()) || key === "userId"){
-                        student[key] =studentObject[key]
-                    }else{
-                        user[key]=studentObject[key]
-                    }
-            })
+        Object.keys(data).forEach((key) => {
+            console.log(key)
+            if(!(key in new User()) || key === "userId"){
+                studentObject[key] =data[key]
+            }else{
+                user[key]=data[key]
+            }
+        })
         userKey = await this.addUser(user)
         userKey = userKey['id']
-        return addItem("Student", student, userKey)
+        studentObject.userId = userKey;
+        return addItem("Student", studentObject, userKey)
     },
     /**
      * Adds a new Tutor to the database 
