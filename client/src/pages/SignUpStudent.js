@@ -39,11 +39,11 @@ const SignUpStudent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
+    //console.log("Form data submitted:", formData);
     try {
       const { email, password } = formData;
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
+      //console.log(userCredential);
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));

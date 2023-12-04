@@ -44,7 +44,7 @@ function SearchTutor(props) {
 
   const handleDateChange = (date) => {
     setDate(date);
-    console.log(date);
+    //console.log(date);
     const dayOfWeekNumber = date.getDay();
     const daysOfWeek = [
       "sunday",
@@ -57,7 +57,7 @@ function SearchTutor(props) {
     ];
     const dayOfWeekString = daysOfWeek[dayOfWeekNumber];
     setSelectedDay(dayOfWeekString);
-    console.log(dayOfWeekString);
+    //console.log(dayOfWeekString);
   };
 
   const handleSubjectChange = (event) => {
@@ -66,7 +66,7 @@ function SearchTutor(props) {
 
   const handleTutorChange = (event) => {
     setSelectedTutor(event.target.value);
-    console.log("Selected Tutor:", event.target.value);
+    //console.log("Selected Tutor:", event.target.value);
   };
 
   useEffect(() => {
@@ -114,11 +114,11 @@ function SearchTutor(props) {
         });
 
         setAllSubjects(Array.from(subjects));
-        console.log(subjects);
+        //console.log(subjects);
 
         const uniqueSubjects = Array.from(subjects);
         setAllSubjects(uniqueSubjects);
-        console.log("Unique subjects:", uniqueSubjects);
+        //console.log("Unique subjects:", uniqueSubjects);
       })
       .catch((error) => {
         setError(error);

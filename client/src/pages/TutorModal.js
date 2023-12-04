@@ -10,18 +10,18 @@ export default function TutorModal(props) {
   const [subject, setSubject] = useState(null);
   const [time, setTime] = useState(null);
   const user = JSON.parse(localStorage.getItem('user'));
-  console.log(user)
+  //console.log(user)
 
   const handleBoxS = (index) => {
     setActiveSubjectIndex(index === activeSubjectIndex ? null : index);
     setSubject(tutorData.courses[index]);
-    console.log(tutorData.courses[index]);
+    //console.log(tutorData.courses[index]);
   };
 
   const handleBoxT = (index) => {
     setActiveTimeIndex(index === activeTimeIndex ? null : index);
     setTime(availabilityData[index]);
-    console.log(availabilityData[index]);
+   // console.log(availabilityData[index]);
   };
 
   if (!tutorData || !toggle) {
@@ -40,7 +40,7 @@ export default function TutorModal(props) {
 
     try {
       const response = await postToAPI("appointments", appointmentData);
-      console.log("Appointment created:", response);
+      //console.log("Appointment created:", response);
       // Additional logic after successful appointment creation
     } catch (error) {
       console.error("Error creating appointment:", error);

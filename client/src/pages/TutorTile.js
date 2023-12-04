@@ -22,9 +22,10 @@ export const TutorTileCard = ({
   const [likedTutors, setLikedTutors] = useState([]); // store liked tutors in an array
   const [selectedTutorData, setSelectedTutorData] = useState({});
   const [availability, setAvailability] = useState(null);
+  const [appointments, setAppointments] = useState([]);
   const [allChunks, setAllChunks] = useState([]);
-  console.log("tt" + selectedDay);
-  console.log("tt" + date);
+  //console.log("tt" + selectedDay);
+  //console.log("tt" + date);
 
   // Check if bio is empty or undefined
   const hasBio = bio && bio.trim() !== "";
@@ -33,13 +34,13 @@ export const TutorTileCard = ({
   const hasSubj = subjects && subjects.trim() !== "";
 
   const handleBook = () => {
-    console.log("handleBook is called");
-    console.log("Tutor ID:", id); // Log the ID
+   // console.log("handleBook is called");
+    //console.log("Tutor ID:", id); // Log the ID
     const fullTutorInfo = tutorList.find((tutor) => tutor.key === id);
     if (fullTutorInfo) {
-      console.log("Booking Tutor Info:", fullTutorInfo);
+      //console.log("Booking Tutor Info:", fullTutorInfo);
       setSelectedTutorData(fullTutorInfo); // Set the full information for modal or other uses
-      console.log("selectedTutorData set to:", fullTutorInfo);
+      //console.log("selectedTutorData set to:", fullTutorInfo);
       openModalWithTutor(fullTutorInfo);
     }
   };
@@ -98,6 +99,30 @@ export const TutorTileCard = ({
       });
   }, [username, selectedDay]);
 
+  useEffect(() => {
+    fetchFromAPI(`appointments/tutor/${username}/${selectedDay}`)
+      .then(data => {
+        const appointments = Object.entries(data).map(([key, appointment]) => ({
+          key,
+            id: appointment.id,
+            tutorUsername: appointment.tutorUsername,
+            studentUsername: appointment.studentUsername,
+            datetime: appointment.datetime,
+            length: appointment.length,
+            online: appointment.online,
+            location: appointment.location,
+            tutorNotes: appointment.tutorNotes,
+            studentNotes: appointment.studentNotes
+          }));
+  
+        setAppointments(appointments);
+        console.log(appointments)
+      })
+      .catch(error => {
+        console.error("Error fetching appointment data:", error);
+      });
+  }, [username, selectedDay]);
+
   const close = () => {
     setModal(false); // Close the modal
   };
@@ -124,7 +149,7 @@ export const TutorTileCard = ({
     }
 
     // Log the list of liked tutors
-    console.log("Liked Tutors:", likedTutors);
+    //console.log("Liked Tutors:", likedTutors);
   };
 
   return (
