@@ -37,12 +37,14 @@ class StudentService {
         // SEARCH FOR USER W USERNAME
         const search = await searchItem(USER, USERNAME, id)
         const userId = Object.keys(search)[0]
-
+        console.log(search)
+        console.log(userId)
         // USER IS FOUND, NOT NECESSARILY A STUDENT
         if (Object.keys(search).length > 0) {
 
             // GET STUDENT BASED ON USERID
             const studentAdds = await read.getStudent(userId)
+            console.log(studentAdds)
             // USER IS A TUTOR
             if (student.userId === undefined) {
                 throw new CustomError("User is not a student", 400)
