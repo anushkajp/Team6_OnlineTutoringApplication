@@ -1,28 +1,28 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { fetchFromAPI, uploadToAPI } from '../services/api'
-import {Tutor} from '../comp_models/tutor'
+import { Tutor } from '../comp_models/tutor'
 import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
 const SignUpTutor = () => {
-  
+
   const initialTutor = new Tutor();
-  const [tutor, setTutor] = useState({initialTutor});
-  
-  const hashPassword = async(password) =>{
-    const gennedHash = await new Promise((resolve, reject)=> {
-      bcrypt.hash(password,10,function(error, hash){
-        if(error){
+  const [tutor, setTutor] = useState({ initialTutor });
+
+  const hashPassword = async (password) => {
+    const gennedHash = await new Promise((resolve, reject) => {
+      bcrypt.hash(password, 10, function (error, hash) {
+        if (error) {
           reject(error)
-        }else{
+        } else {
           resolve(hash)
         }
       })
     })
     // console.log("Hash generated: "+gennedHash)
-    
+
     return gennedHash
     // return hash
   }
@@ -32,27 +32,30 @@ const SignUpTutor = () => {
     console.log("Form data submitted:", tutor);
     // Regex matching
     var alertString = ""
-    for (const [field, value] of Object.entries(tutor)){
-      if (field in labelData && "regex" in labelData[field] && !labelData[field].regex.test(value)){
-        alertString+="Field "+labelData[field].label.toLowerCase()+" does not match input requirements\n"
+    for (const [field, value] of Object.entries(tutor)) {
+      if (field in labelData && "regex" in labelData[field] && !labelData[field].regex.test(value)) {
+        alertString += "Field " + labelData[field].label.toLowerCase() + " does not match input requirements\n"
       }
-      console.log(field+" : "+value)
+      // console.log(field+" : "+value)
     }
     alert(alertString)
-    // (async ()=>{
-    //   try{
-    //   const pwdHash = await hashPassword(tutor.password)
-    //   tutor.password=  pwdHash
-    //   const data = await uploadToAPI("tutor/",tutor)
-    //   console.log(data)
-    //   }catch(e){
-    //     console.log(e)
-    //   }
-      
-    // })()
+    if (alertString === "") {
+      (async () => {
+        try {
+          const pwdHash = await hashPassword(tutor.password)
+          tutor.password = pwdHash
+          const data = await uploadToAPI("tutor/", tutor)
+          console.log(data)
+        } catch (e) {
+          console.log(e)
+        }
 
-    // Clear the form fields
-    // setStudent(new Student());
+      })()
+
+      // Clear the form fields
+      setStudent(new Student());
+    }
+
   };
 
   const labelData = {
@@ -72,7 +75,7 @@ const SignUpTutor = () => {
 
 
 
- 
+
 
   return (
     <div className="page-container">
@@ -80,7 +83,7 @@ const SignUpTutor = () => {
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">
           <form onSubmit={handleSubmit}>
-            {CreateFields(tutor,setTutor,labelData)}
+            {CreateFields(tutor, setTutor, labelData)}
             {/* <div className="form-group">
               <label htmlFor="profile_photo">Upload Profile Photo</label>
               <input
