@@ -58,16 +58,51 @@ const SignUpStudent = () => {
   };
 
   const labelData = {
-    firstName: { label: "First name" },
-    lastName: { label: "Last name" },
-    middleName: { label: "Middle name" },
-    password: { label: "Password" },
-    username: { label: "Username" },
-    phone: { label: "Phone number" },
-    email: { label: "Email" },
-    major: { label: "Major" },
-    pfp: { label: "Profile Picture" }
-  }
+    firstName: {
+      label: "First name",
+      regex: /^[A-Za-z]{2,}$/,
+      maxLength: 20
+    },
+    lastName: {
+      label: "Last name",
+      regex: /^[A-Za-z]{2,}$/,
+      maxLength: 30
+    },
+    middleName: {
+      label: "Middle name",
+      regex: /^[A-Za-z]{2,}$/,
+      maxLength: 30
+    },
+    password: {
+      label: "Password",
+      regex: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      maxLength: 30
+    },
+    username: {
+      label: "Username",
+      regex: /^[A-Za-z0-9]+$/,
+      maxLength: 11
+    },
+    phone: {
+      label: "Phone number",
+      regex: /^[0-9]{8,13}$/,
+      maxLength: 13
+    },
+    email: {
+      label: "Email",
+      regex: /^[A-Za-z0-9]+@[A-Za-z0-9.]+[.][A-Za-z]{3}$/,
+      maxLength: 50
+    },
+    major: {
+      label: "Major"
+    },
+    courses:{
+      label:"Courses"
+    },
+    pfp: {
+      label: "Profile Picture"
+    }
+  };
 
   return (
     <div className="page-container">
