@@ -1,141 +1,151 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { ArrowLeft } from "lucide-react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
+
 import { useNavigate } from "react-router-dom";
-import bcrypt from "bcryptjs-react"
-import { uploadToAPI, fetchFromAPI } from '../services/api'
-import Cookies from 'js-cookie'
-import CreateFields from "../components/CreateFields";
-import User from "../models/user"
-// no functionality yet, just UI
-// need to add functionality with firebase auth
-// not completely re sponsive yet
+import { signInWithEmailAndPassword,setPersistence, browserLocalPersistence } from 'firebase/auth';
+import { auth, fetchUserType } from '../firebase';
+import { UserContext } from "../UserContext";
+
+import emailjs from "emailjs-com";
 
 const Login = () => {
-  Cookies.set()
-  const labelData = {
-    username:{"label":"Username",
-              "regex":"",
-              "limit":""
-            },
-    password:{"label":"Password"}
-  }
-  const [hash, setHash] = useState("");
-  const initialUser = new User();
-  const [user , setUser] = useState(initialUser)
-
-  // const [data, setData] = useState({
-  //   email:'',
-  //   password:''
-  // });
-  // const {email, password} =data;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { updateUser } = useContext(UserContext);
+  let navigate = useNavigate();
 
-  const navigate = useNavigate();
-
-
-  const hashPassword = async(password) =>{
-    const gennedHash = await new Promise((resolve, reject)=> {
-      bcrypt.hash(password,10,function(error, hash){
-        if(error){
-          reject(error)
-        }else{
-          resolve(hash)
-        }
-
-        
-      })
-    })
-    // console.log("Hash generated: "+gennedHash)
-    
-    return gennedHash
-    // return hash
-  }
-
-  // const comparePassword = async()=>{
-  //   console.log(await bcrypt.compare(password,hash))
-  // }
-
-  const handleSubmit = (e) =>{
+  // handle submit 
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", user);
-    (async ()=>{
-      try{
-      const pwdHash = await hashPassword(user.password)
-      user.password=  pwdHash
-      const data = await uploadToAPI("login/",user)
-      console.log(data)
-      }catch(e){
-        console.log(e)
-      }
-      
-    })()
-
+    try {
+      setPersistence(auth, browserLocalPersistence);
+      signInWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential)=> {
+        const user = userCredential.user;
+        const accountInfo = await fetchUserType(user.uid);
+        updateUser({ uid: user.uid, email: user.email, accountType: accountInfo.accountType, key: accountInfo.userKey });
+        });
+      navigateToTwoFactor();
+    } catch (error) {
+      console.error(error);
+    }
   }
+
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
+    
   };
-
-  const navigateToTwoFactor = () => {
-    navigate("/TwoFactor");
-  };
-
   const navigateToForgot = () => {
     navigate("/Forgot");
   };
-
+  const navigateToTwoFactor = () => {
+    const code = generateVerificationCode();
+    navigate("/TwoFactor", { state: { verificationCode: code}});
+    sendVerificationEmail(code, email);
+  };
+  const generateVerificationCode = () => {
+    return Math.floor(100000 + Math.random() * 900000);
+  };
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+  const sendVerificationEmail = (code, email) => {
+    const serviceId = "service_dz0xhzf";
+    const templateId = "template_xs9buif";
+    const userId = "cWti8bd46sTP6-Sgr";
+    const templateParams = {
+      verification_code: code,
+      to_email: email,
+    };
+    console.log("email: ", email);
+    emailjs
+      .send(
+        serviceId,
+        templateId,
+        templateParams,
+        userId
+      )
+      .then(
+        (response) => {
+          console.log("Email sent:", response);
+        },
+        (error) => {
+          console.error("Email could not be sent:", error);
+        }
+      );
+  };
   return (
     <div className="body-background">
       <div className="image-container">
         <img src={glass} />
       </div>
-
       {/* image container */}
       <div className="overlay-div">
         <div className="logo-container">
           <img className="logo" src={logo} />
         </div>
       </div>
-
       {/* login container */}
       <div className="second-overlay-div">
         <div className="login-container">
           <div className="login-box">
-            <p className="dont-acc">
-              Don't have an account?&#160;
-              <a className="sign-up" onClick={navigateToSignUp}>
-                Sign up today!
-              </a>
-            </p>
+            <div className="back-button-container">
+              <div className="back-button" onClick={() => {navigate(-1)}}>
+                <ArrowLeft size={20} color={`var(--background-color)`} strokeWidth={2} />Back
+              </div>
+            </div>
             <p className="header">Hello Again!</p>
             <p className="header2">Sign in to start learning</p>
-
             <br></br>
-
-            <form className="fields-container">
-              {CreateFields(user, setUser, labelData)}
-
+            <form onSubmit= {handleSubmit} className="fields-container">
+              <input
+                className="field"
+                placeholder="Enter email"
+                required
+                value={email}
+                type="email"
+                id="email"
+                name="email"
+                onChange={handleEmailChange}
+              />
               <br></br>
+              <input
+                className="field"
+                placeholder="Enter Password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                
+                type="password"
+                id="password"
+                name="password"
+               
+              />
               <br></br>
-
               <button
                 className="login-button"
                 type="submit"
-                onClick={handleSubmit}
+                onSubmit={navigateToTwoFactor}
               >
-                <p className="login-button-text">Log in</p>
+                Log in
               </button>
             </form>
-            <br></br>
-
-            <a className="sign-up" onClick={navigateToForgot}>
-              forgot password?
-            </a>
+            <span>
+              <a className="sign-up" onClick={navigateToForgot}>
+                forgot password?
+              </a>
+              {" | "}
+              <a className="sign-up" onClick={navigateToSignUp}>
+                sign up
+              </a>
+            </span>
           </div>
         </div>
       </div>
     </div>
   );
 };
-
 export default Login;

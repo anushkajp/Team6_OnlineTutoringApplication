@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchFromAPI } from '../services/api'
-import Major from '../models/major'
-import Course from '../models/course'
+import { Major } from '../comp_models/major'
+import { Course } from '../comp_models/course'
 
 // NOTE: Change student to general object
 // NOTE: there are new changes here to be applied to sign up student
@@ -52,8 +52,6 @@ const CreateFields = (object, setObject, labelData) => {
     // alert(object)
     console.log(object)
   }
-
-
 
   useEffect(() => {
     if ("major" in labelData) {
@@ -219,4 +217,4 @@ const CreateFields = (object, setObject, labelData) => {
   )
 }
 
-export default CreateFields
+export default CreateFields;

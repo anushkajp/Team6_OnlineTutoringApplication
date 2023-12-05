@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { fetchFromAPI,uploadToAPI } from '../services/api'
-import Student from '../models/student'
+import { Student } from '../comp_models/student'
 import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
+import { ref, set } from 'firebase/database';
+import { database, auth } from '../firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUpStudent = () => {
   const initialStudent = new Student();
@@ -17,7 +20,6 @@ const SignUpStudent = () => {
           resolve(hash)
         }
 
-        
       })
     })
     // console.log("Hash generated: "+gennedHash)
@@ -26,21 +28,26 @@ const SignUpStudent = () => {
     // return hash
   }
  
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    
-    (async ()=>{
-      const pwdHash = await hashPassword(student.password)
-      student.password=  pwdHash
-      console.log("Form data submitted:", student);
-      const data = await uploadToAPI("student/",student)
-      console.log(data)
-    })()
-
-    // Clear the form fields
-    // setStudent(new Student());
+  
+    try {
+      const pwdHash = await hashPassword(student.password);
+      student.favoriteTutors = "";
+      student.longBio = student.shortBio = ""
+      student.hours = 0;
+      
+      // Create user in Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, student.email, student.password);
+      student.userId = userCredential.user.uid;
+      student.password = pwdHash;
+      console.log(student)
+      const data = await uploadToAPI("student/",student).then(() => console.log("Student data saved successfully!")).catch((error) => console.log(error))
+    } catch (error) {
+      console.error("Error in user registration: ", error);
+    }
   };
+  
   const labelData = {
     firstName: { label: "First name"},
     lastName: { label: "Last name"},
@@ -51,11 +58,7 @@ const SignUpStudent = () => {
     email: { label: "Email"},
     major: { label: "Major" },
     pfp: { label: "Profile Picture" }
-
-
   }
-
-
 
   return (
     <div className="page-container">
