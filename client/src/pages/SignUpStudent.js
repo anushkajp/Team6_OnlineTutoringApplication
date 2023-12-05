@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchFromAPI,uploadToAPI } from '../services/api'
+import { fetchFromAPI, uploadToAPI } from '../services/api'
 import { Student } from '../comp_models/student'
 import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
@@ -11,51 +11,60 @@ const SignUpStudent = () => {
   const initialStudent = new Student();
   const [student, setStudent] = useState(initialStudent);
 
-  const hashPassword = async(password) =>{
-    const gennedHash = await new Promise((resolve, reject)=> {
-      bcrypt.hash(password,10,function(error, hash){
-        if(error){
+  const hashPassword = async (password) => {
+    const gennedHash = await new Promise((resolve, reject) => {
+      bcrypt.hash(password, 10, function (error, hash) {
+        if (error) {
           reject(error)
-        }else{
+        } else {
           resolve(hash)
         }
 
       })
     })
     // console.log("Hash generated: "+gennedHash)
-    
+
     return gennedHash
     // return hash
   }
- 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    try {
-      const pwdHash = await hashPassword(student.password);
-      student.favoriteTutors = "";
-      student.longBio = student.shortBio = ""
-      student.hours = 0;
-      
-      // Create user in Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, student.email, student.password);
-      student.userId = userCredential.user.uid;
-      student.password = pwdHash;
-      console.log(student)
-      const data = await uploadToAPI("student/",student).then(() => console.log("Student data saved successfully!")).catch((error) => console.log(error))
-    } catch (error) {
-      console.error("Error in user registration: ", error);
+    var alertString = ""
+    for (const [field, value] of Object.entries(tutor)) {
+      if (field in labelData && "regex" in labelData[field] && !labelData[field].regex.test(value)) {
+        alertString += "Field " + labelData[field].label.toLowerCase() + " does not match input requirements\n"
+      }
+      // console.log(field+" : "+value)
+    }
+    alert(alertString)
+    if (alertString === "") {
+      try {
+        const pwdHash = await hashPassword(student.password);
+        student.favoriteTutors = "";
+        student.longBio = student.shortBio = ""
+        student.hours = 0;
+
+        // Create user in Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, student.email, student.password);
+        student.userId = userCredential.user.uid;
+        student.password = pwdHash;
+        console.log(student)
+        const data = await uploadToAPI("student/", student).then(() => console.log("Student data saved successfully!")).catch((error) => console.log(error))
+      } catch (error) {
+        console.error("Error in user registration: ", error);
+      }
     }
   };
-  
+
   const labelData = {
-    firstName: { label: "First name"},
-    lastName: { label: "Last name"},
-    middleName: { label: "Middle name"},
-    password: { label: "Password"},
-    username: { label: "Username"},
-    phone: { label: "Phone number"},
-    email: { label: "Email"},
+    firstName: { label: "First name" },
+    lastName: { label: "Last name" },
+    middleName: { label: "Middle name" },
+    password: { label: "Password" },
+    username: { label: "Username" },
+    phone: { label: "Phone number" },
+    email: { label: "Email" },
     major: { label: "Major" },
     pfp: { label: "Profile Picture" }
   }
@@ -143,7 +152,7 @@ const SignUpStudent = () => {
                 required
               />
             </div> */}
-            {CreateFields(student,setStudent,labelData)}
+            {CreateFields(student, setStudent, labelData)}
             <button className="create_acc_student_button" type="submit">
               Create Student Account
             </button>
