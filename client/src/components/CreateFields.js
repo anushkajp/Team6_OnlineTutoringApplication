@@ -8,19 +8,20 @@ import Course from '../models/course'
 
 // Requires a object, setObject use state initialised on an empty object
 // Requires a label dictionary with format shown below, any fields not specified will be excluded from appearing
-//   const labelData = {
-//     firstName: { "label": "First name" },
-//     lastName: { "label": "Last name" },
-//     middleName: { "label": "Middle name" },
-//     password: { "label": "Password" },
-//     username: { "label": "Username" },
-//     courses: { "label": "Courses" },
-//     phone: { "label": "Phone number" },
-//     email: { "label": "Email" },
-//     major: { "label": "Major" },
-//     pfp: { "label": "Profile Picture" }
-//   }
+// const labelData = {
+//   firstName: { label: "First name"},
+//   lastName: { label: "Last name"},
+//   middleName: { label: "Middle name"},
+//   password: { label: "Password"},
+//   username: { label: "Username"},
+//   phone: { label: "Phone number"},
+//   email: { label: "Email"},
+//   major: { label: "Major" },
+//   pfp: { label: "Profile Picture" }
+// }
+
 const CreateFields = (object, setObject, labelData) => {
+
 
   const [majors, setMajors] = useState([]);
   const [courses, setCourses] = useState([]);
@@ -38,6 +39,7 @@ const CreateFields = (object, setObject, labelData) => {
           ...object,
           [name]: value
         })
+        console.log(labelData[name].regex.test(value))
       
     }else{
       alert(`The input size of ${labelData[name].label.toLowerCase()} of ${value.length} is larger than the maximum size of ${labelData[name].maxLength}`)
@@ -104,6 +106,7 @@ const CreateFields = (object, setObject, labelData) => {
 
   return (
     <div className="form-group">
+      {/* make sure object fields are the ones used to generate fields, avoiding non relevant data */}
       {Object.keys(object).map((fields, index) => {
         // console.log(labelData)
         if (labelData[fields] === undefined) {
