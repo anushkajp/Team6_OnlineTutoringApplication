@@ -49,8 +49,9 @@ class Tutor extends User {
         const availability = new Availability(monday, tuesday, wednesday, thursday, friday, saturday, sunday, exceptions);
         this.availability = availability;
         this.bgCheck = bgCheck;
-        this.courses = courses;
         this.major = major;
+        this.courses = courses;
+        
     }
     static toObj() {
         return {
