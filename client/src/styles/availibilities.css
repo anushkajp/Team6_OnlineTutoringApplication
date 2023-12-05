@@ -1,0 +1,47 @@
+/* Hide the checkboxes */
+input[type="checkbox"] {
+    display: none;
+}
+  
+/* Style the label to look more like a clickable item */
+label {
+    cursor: pointer;  /* Add additional styling as needed */
+}
+  
+/* Initially hide the details */
+.avail_times {
+    display: none;
+}
+
+.avail_times_m {
+    display: none;
+}
+  
+/* Show the details when the checkbox is checked */
+input[type="checkbox"]:checked + label + .avail_times {
+    display: block;
+}
+
+input[type="checkbox"]:checked + label + .avail_times_m {
+    display: block;
+}
+  
+ul{
+    list-style-type: none;
+}
+
+li{
+    align-self:first baseline;
+}
+
+.collapse{
+    align-items:start;
+    padding: 6px;
+    color: #5B5B5B
+}
+
+.collapse_m{
+    align-items:start;
+    padding: 6px;
+    color: #5B5B5B
+}

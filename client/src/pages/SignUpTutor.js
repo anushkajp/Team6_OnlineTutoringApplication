@@ -1,78 +1,74 @@
-import { auth } from '../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
+import React, { useState, useEffect} from "react";
+import { fetchFromAPI,uploadToAPI } from '../services/api'
+import Tutor from '../models/tutor'
+import Major from '../models/major'
+import Course from '../models/course'
+import CreateFields from '../components/CreateFields'
+import bcrypt from "bcryptjs-react"
+
+
+
 
 const SignUpTutor = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [inputValue, setInputValue] = useState('');
-  const [arrayValue, setArrayValue] = useState([]);
-  //const [isTutor, setTutor] = useState('');
+  
+  const initialTutor = new Tutor();
+  const [tutor, setTutor] = useState(initialTutor);
+  
+  const hashPassword = async(password) =>{
+    const gennedHash = await new Promise((resolve, reject)=> {
+      bcrypt.hash(password,10,function(error, hash){
+        if(error){
+          reject(error)
+        }else{
+          resolve(hash)
+        }
 
-  // let isTutor = true;
-  // let isStudent = false;
+        
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
+    
+    return gennedHash
+    // return hash
+  }
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    subjects: [],
-    profile_photo: "",
-    password: "",
-    accountType: "tutor"
-  });
-
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setEmail(e.target.value)
-    setPassword(e.target.value)
-
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
-  const convertToArray = () => {
-    const values = inputValue.split(',').map((item) => item.trim());
-    setArrayValue(values);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    convertToArray();
-    console.log("Form data submitted:", formData);
-    try {
-      const { email, password } = formData;
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
-      const user = userCredential.user;
-      localStorage.setItem('token', user.accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
-      navigate("/TutorDash");
-    } catch (error) {
-      console.error(error);
-    }
-    // Clear the form fields
+    console.log("Form data submitted:", tutor);
+    (async ()=>{
+      try{
+      const pwdHash = await hashPassword(tutor.password)
+      tutor.password=  pwdHash
+      const data = await uploadToAPI("tutor/",tutor)
+      console.log(data)
+      }catch(e){
+        console.log(e)
+      }
+      
+    })()
 
-    // setFormData({
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   phone: "",
-    //   subjects: "",
-    //   profile_photo: "",
-    //   password: "",
-    // });
+    // Clear the form fields
+    // setStudent(new Student());
   };
+
+  const labelData = {
+    firstName: { "label": "First name" },
+    lastName: { "label": "Last name" },
+    middleName: { "label": "Middle name" },
+    password: { "label": "Password" },
+    username: { "label": "Username" },
+    courses: { "label": "Courses" },
+    phone: { "label": "Phone number" },
+    email: { "label": "Email" },
+    major: { "label": "Major" },
+    pfp: { "label": "Profile Picture" }
+
+
+  }
+
+
+
+ 
 
   return (
     <div className="page-container">
@@ -80,7 +76,8 @@ const SignUpTutor = () => {
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            {CreateFields(tutor,setTutor,labelData)}
+            {/* <div className="form-group">
               <label htmlFor="profile_photo">Upload Profile Photo</label>
               <input
                 type="file"
@@ -147,14 +144,15 @@ const SignUpTutor = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="subjects">Subjects (list separated by commas)</label>
+              <label htmlFor="subjects">Subjects</label>
               <input
                 type="text"
-                value={inputValue}
-                onChange={handleInputChange}
-                placeholder="Enter comma-separated values"
+                id="Subjects"
+                name="Subjects"
+                value={formData.subjects}
+                onChange={handleChange}
               />
-            </div>
+            </div> */}
             <button className="create_acc_student_button" type="submit">
               Create Tutor Account
             </button>

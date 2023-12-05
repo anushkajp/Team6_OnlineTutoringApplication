@@ -27,11 +27,7 @@ h4, h5{
     text-align: left;
 }
 
-h3{
-    margin: 0px;
-}
-
-.classNameTile h4{
+h4{
     color: #5B5B5B;
     font-family: Montserrat;
     font-size: 23px;

@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
+import "./AddTutorSession.css"
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
+import Availability from "../models/availability"
 function AddTutorSession() {
 
+  const initialAvailability = new Availability()
   const timeBlocks = [
     { label: "30 Min blocks", data: 30 },
     { label: "45 Min blocks", data: 45 },
@@ -101,13 +104,6 @@ function AddTutorSession() {
         {/* </div> */}
         <div className="right-column">
 
-          {/* <div > */}
-          <label className="subtitle-text justify-left">Enter a timeblock name </label>
-          {/* <div> */}
-          <input className="timeblock" defaultValue="enter a course name or number (e.g - CS 4485, Computer Architecture)" />
-          {/* </div> */}
-
-          {/* </div> */}
 
           <label className="subtitle-text justify-left">Which days would you like to tutor?
           </label>
@@ -125,12 +121,7 @@ function AddTutorSession() {
 
           <label className="subtitle-text justify-left">What modality do you prefer for your tutoring session?</label>
           {ModalityButtons()}
-          <div >
-            <label className="subtitle-text justify-left">Add more details about your tutoring timeblock (optional)</label>
-            <div>
-              <textarea id="outlined-multiline-flexible" className='text-area justify-left'></textarea>
-            </div>
-          </div>
+
         </div>
       </div>
 

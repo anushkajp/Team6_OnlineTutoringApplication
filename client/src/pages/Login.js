@@ -2,88 +2,86 @@ import React, { useState } from "react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
-
-// import 'dotenv/config'
-import emailjs from "emailjs-com";
-
+import bcrypt from "bcryptjs-react"
+import { uploadToAPI, fetchFromAPI } from '../services/api'
+import Cookies from 'js-cookie'
+import CreateFields from "../components/CreateFields";
+import User from "../models/user"
 // no functionality yet, just UI
 // need to add functionality with firebase auth
-// not completely responsive yet
+// not completely re sponsive yet
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  Cookies.set()
+  const labelData = {
+    username:{"label":"Username",
+              "regex":"",
+              "limit":""
+            },
+    password:{"label":"Password"}
+  }
+  const [hash, setHash] = useState("");
+  const initialUser = new User();
+  const [user , setUser] = useState(initialUser)
+
+  // const [data, setData] = useState({
+  //   email:'',
+  //   password:''
+  // });
+  // const {email, password} =data;
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  // handle submit 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
-      const user = userCredential.user;
-      localStorage.setItem('token', user.accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
-      navigateToTwoFactor();
-    } catch (error) {
-      console.error(error);
-    }
-    }
 
+
+  const hashPassword = async(password) =>{
+    const gennedHash = await new Promise((resolve, reject)=> {
+      bcrypt.hash(password,10,function(error, hash){
+        if(error){
+          reject(error)
+        }else{
+          resolve(hash)
+        }
+
+        
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
+    
+    return gennedHash
+    // return hash
+  }
+
+  // const comparePassword = async()=>{
+  //   console.log(await bcrypt.compare(password,hash))
+  // }
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    console.log("Form data submitted:", user);
+    (async ()=>{
+      try{
+      const pwdHash = await hashPassword(user.password)
+      user.password=  pwdHash
+      const data = await uploadToAPI("login/",user)
+      console.log(data)
+      }catch(e){
+        console.log(e)
+      }
+      
+    })()
+
+  }
   const navigateToSignUp = () => {
     navigate("/SignUpTutor");
-    
+  };
+
+  const navigateToTwoFactor = () => {
+    navigate("/TwoFactor");
   };
 
   const navigateToForgot = () => {
     navigate("/Forgot");
-  };
-
-  const navigateToTwoFactor = () => {
-    const code = generateVerificationCode();
-    navigate("/TwoFactor", { state: { verificationCode: code } });
-    sendVerificationEmail(code, email);
-  };
-
-  const generateVerificationCode = () => {
-    return Math.floor(100000 + Math.random() * 900000);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const sendVerificationEmail = (code, email) => {
-    const serviceId = "service_dz0xhzf";
-    const templateId = "template_xs9buif";
-    const userId = "cWti8bd46sTP6-Sgr";
-
-    const templateParams = {
-      verification_code: code,
-      to_email: email,
-    };
-
-    console.log("email: ", email);
-
-    emailjs
-      .send(
-        serviceId,
-        templateId,
-        templateParams,
-        userId
-      )
-      .then(
-        (response) => {
-          console.log("Email sent:", response);
-        },
-        (error) => {
-          console.error("Email could not be sent:", error);
-        }
-      );
   };
 
   return (
@@ -114,32 +112,8 @@ const Login = () => {
 
             <br></br>
 
-            <form onSubmit= {handleSubmit} className="fields-container">
-              <input
-                className="field"
-                placeholder="Enter email"
-                required
-                value={email}
-                type="email"
-                id="email"
-                name="email"
-                onChange={handleEmailChange}
-              />
-
-              <br></br>
-
-              <input
-                className="field"
-                placeholder="Enter Password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                
-                type="password"
-                id="password"
-                name="password"
-               
-              />
+            <form className="fields-container">
+              {CreateFields(user, setUser, labelData)}
 
               <br></br>
               <br></br>
@@ -147,9 +121,9 @@ const Login = () => {
               <button
                 className="login-button"
                 type="submit"
-                onSubmit={navigateToTwoFactor}
+                onClick={handleSubmit}
               >
-                <p type = "submit" className="login-button-text">Log in</p>
+                <p className="login-button-text">Log in</p>
               </button>
             </form>
             <br></br>
