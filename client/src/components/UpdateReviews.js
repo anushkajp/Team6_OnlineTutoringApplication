@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CustomModal from './Modal';
-import { fetchFromAPI, sendAPIPatchRequest } from '../services/api';
+import { sendAPIPatchRequest } from '../services/api';
 
 const UpdateReviews = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,16 +17,9 @@ const UpdateReviews = (props) => {
 
   const handleUpdate = (data) => {
     // Make a POST request to the specified path
-    fetchFromAPI(`/review/${props.userName}/${data.tutorUsername})`, {
-      // fetchFromAPI(`/review`), {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-        body: JSON.stringify({
+    sendAPIPatchRequest(`/review/${props.studentUsername}/${data.tutorUsername})`, {
         rating: data.rating,
         description: data.reviewText,
-      }),
     })
       .then((response) => {
         // Handle the response as needed
@@ -48,52 +41,51 @@ const UpdateReviews = (props) => {
           </h4>
           <div className='rating'>
             {/* <h1>{props.rating}</h1> */}
-            <h1>3.0</h1>
+            <h1>{props.rating}</h1>
           </div>
           
         </div>
         <div className='right_column'>
-          <h4>
-            <span>Description: </span>{props.description}
-          </h4> 
+          <p>
+            {props.description}
+          </p> 
         </div>
         <button className = 'button_right' onClick={openModal}>Update</button>
       </div>
-      
-
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
-        <h4>{props.class_name}</h4>
-        <h5>
-          {props.tutorUsername}
-        </h5>
-
-        {/* Rating dropdown for updating */}
-        <label>
-          <span>Rating: </span>
-          <select
-            value={updatedRating}
-            onChange={(e) => setUpdatedRating(e.target.value)}
-          >
-            {/* Your rating options here */}
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
-        </label>
-
-        {/* Textarea for updating description */}
-        <label>
-          <span>Description: </span>
-          <textarea
-            value={updatedDescription}
-            onChange={(e) => setUpdatedDescription(e.target.value)}
-          ></textarea>
-        </label>
-
-        {/* Button to submit the update */}
+        <div className='modal_container'>
+          <div className='left_column'>
+            {/* Rating dropdown for updating */}
+            <h4>{props.tutorUsername}</h4>
+            <label>
+              <span>Rating: </span>
+              <select
+                value={updatedRating}
+                onChange={(e) => setUpdatedRating(e.target.value)}
+              >
+                {/* Your rating options here */}
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </label>
+          </div>
+          <div className='right_column'>
+            {/* Textarea for updating description */}
+            <label>
+              <h5>Description</h5>
+              <textarea
+                value={updatedDescription}
+                onChange={(e) => setUpdatedDescription(e.target.value)}
+              ></textarea>
+            </label>
+            {/* Button to submit the update */}
         <button className = 'button_right' onClick={handleUpdate}>Submit Update</button>
+          </div>
+          
+        </div>
       </CustomModal>
     </div>
   );

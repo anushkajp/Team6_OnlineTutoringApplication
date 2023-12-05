@@ -21,13 +21,11 @@ const Forgot = () => {
     navigate("/Login");
   };
 
-  const handleForgot = async (e) => {
-  };
-
   const handleButtonClick = () => {
-    handleForgot()
     alert("Email Sent!");
   };
+
+
 
   return (
     <div className="body-background">
@@ -95,3 +93,4 @@ const Forgot = () => {
 };
 
 export default Forgot;
+

@@ -90,7 +90,7 @@ function Availibilities(props) {
           ]
         }]);
       });
-  }, [props.renderType, props.userName, renderAvailibilty]);
+  }, [props.renderType, props.userName]);
 
   return (
     <div>

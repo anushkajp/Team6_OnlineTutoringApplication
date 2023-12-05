@@ -1,70 +1,61 @@
-import React, { useState } from "react";
-import { auth } from '../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useState, useEffect } from "react";
+import { fetchFromAPI,uploadToAPI } from '../services/api'
+import Student from '../models/student'
+import CreateFields from '../components/CreateFields'
+import bcrypt from "bcryptjs-react"
 
 const SignUpStudent = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
-  // let isTutor = false;
-  // let isStudent = true;
-  // console.log(isStudent)
-  // console.log(isTutor)
+  const initialStudent = new Student();
+  const [student, setStudent] = useState(initialStudent);
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    university: "",
-    profile_photo: "",
-    password: "",
-    accountType: "student"
-  });
+  const hashPassword = async(password) =>{
+    const gennedHash = await new Promise((resolve, reject)=> {
+      bcrypt.hash(password,10,function(error, hash){
+        if(error){
+          reject(error)
+        }else{
+          resolve(hash)
+        }
 
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setEmail(e.target.value)
-    setPassword(e.target.value)
-
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
+        
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
+    
+    return gennedHash
+    // return hash
+  }
+ 
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
-    try {
-      const { email, password } = formData;
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
-      const user = userCredential.user;
-      localStorage.setItem('token', user.accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
-      navigate("/StudentDash");
-    } catch (error) {
-      console.error(error);
-    }
-    // console.log("Form data submitted:", formData);
+    
+    
+    (async ()=>{
+      const pwdHash = await hashPassword(student.password)
+      student.password=  pwdHash
+      console.log("Form data submitted:", student);
+      const data = await uploadToAPI("student/",student)
+      console.log(data)
+    })()
 
     // Clear the form fields
-    // setFormData({
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   phone: "",
-    //   university: "",
-    //   profile_photo: "",
-    //   password: "",
-    // });
-
+    // setStudent(new Student());
   };
+  const labelData = {
+    firstName: { "label": "First name" },
+    lastName: { "label": "Last name" },
+    middleName: { "label": "Middle name" },
+    password: { "label": "Password" },
+    username: { "label": "Username" },
+    phone: { "label": "Phone number" },
+    email: { "label": "Email" },
+    major: { "label": "Major" },
+    pfp: { "label": "Profile Picture" }
+
+
+  }
+
+
 
   return (
     <div className="page-container">
@@ -72,7 +63,7 @@ const SignUpStudent = () => {
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="profile_photo">Upload Profile Photo</label>
               <input
                 type="file"
@@ -148,7 +139,8 @@ const SignUpStudent = () => {
                 onChange={handleChange}
                 required
               />
-            </div>
+            </div> */}
+            {CreateFields(student,setStudent,labelData)}
             <button className="create_acc_student_button" type="submit">
               Create Student Account
             </button>

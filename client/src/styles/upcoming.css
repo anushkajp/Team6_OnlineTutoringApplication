@@ -3,6 +3,15 @@
     justify-content: space-between;
 }
 
+.sidebar{
+    float: left;
+    width: 500px;
+}
+
+.sidebar .navbar{
+    width: -webkit-fill-available;
+}
+
 .upcomingSession{
     float:right;
     width: 70%;

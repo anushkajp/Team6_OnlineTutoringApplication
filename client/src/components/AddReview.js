@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { fetchFromAPI, sendAPIPatchRequest } from '../services/api';
+import { uploadToAPI } from '../services/api';
 import CustomModal from './Modal';
 
 const AddReview = (props) => {
@@ -21,16 +21,12 @@ const AddReview = (props) => {
   const profilePicUrl = props.profilePicUrl;
 
   const handleReviewSubmit = () => {
-    // Make a POST request to the specified path
-    fetchFromAPI(`/review/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        rating: rating,
-        description: reviewText,
-      }),
+    // Make a POST request to the specified path using uploadToAPI
+    uploadToAPI(`/review/`, {
+      rating: rating,
+      description: reviewText,
+      tutorId: props.tutorUsername,
+      studentId: props.studentUsername
     })
       .then((response) => {
         // Handle the response as needed
@@ -42,55 +38,40 @@ const AddReview = (props) => {
         console.error('Error submitting review:', error);
       });
   };
+  
 
   return (
     <div className='add_review_tile'>
       <div>
-        {/* Circular image of the user's profile picture */}
         <div className='pfp'>
           <img src="https://picsum.photos/400/400" alt="Profile" />
         </div>
-        
-
-        {/* User's name */}
-        <h4>{props.username}</h4>
-      
-        {/* Button to open the modal */}
-        <button className = 'button_center' onClick={openModal}>
-          Add Review
-        </button>
+        <h4>{props.tutorUsername}</h4>
+        <button className = 'button_center' onClick={openModal}>Add Review</button>
       </div>
-      {/* Modal for creating a review */}
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
-        {/* Dropdown for selecting the rating */}
-        <h4>{props.username}</h4>
-        <label>
-          <span>Rating</span>
-          <select
-            value={rating}
-            onChange={(e) => setRating(parseInt(e.target.value))}
-          >
-            {numberRange.map((number) => (
-              <option key={number} value={number}>
-                {number}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        {/* Textarea for entering the review */}
-        <label>
-          <span>Review</span>
-          <textarea
-            value={reviewText}
-            onChange={(e) => setReviewText(e.target.value)}
-          ></textarea>
-        </label>
-
-        {/* Button to submit the review */}
-        <button className = 'button' onClick={handleReviewSubmit}>
-          Submit
-        </button>
+        <div className='modal_container'>
+          <h4>{props.tutorUsername}</h4>
+          {/* Dropdown for selecting the rating */}
+          <div className='right_column'>
+            <label><span>Rating</span>
+              <select value={rating} onChange={(e) => setRating(parseInt(e.target.value))}>
+                {numberRange.map((number) => (
+                  <option key={number} value={number}>
+                    {number}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className='left_column'>
+            <label>
+              <span>Review</span>
+              <textarea value={reviewText} onChange={(e) => setReviewText(e.target.value)}></textarea>
+            </label>
+          </div>
+          <button className = 'button_right' onClick={handleReviewSubmit}>Submit</button>
+        </div>
       </CustomModal>
     </div>
   );

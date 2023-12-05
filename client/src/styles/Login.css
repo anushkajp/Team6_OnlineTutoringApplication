@@ -21,7 +21,6 @@ body {
   letter-spacing: 0.4px;
   margin-right: 4%;
   margin-top: -30px;
-  cursor: pointer;
 }
 
 .sign-up {
@@ -33,7 +32,6 @@ body {
   line-height: normal;
   letter-spacing: 0.4px;
   text-decoration-line: underline;
-  cursor: pointer;
 }
 
 .body-background {
@@ -117,20 +115,6 @@ body {
   font-weight: 400;
   line-height: normal;
   letter-spacing: 1.5px;
-  margin-top: 35px;
-}
-
-.header-forgot {
-  color: #3f485a;
-  text-align: center;
-  font-family: Modak;
-  font-size: 60px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 1.5px;
-  margin-top: 55px;
-  padding-bottom: 15px;
 }
 
 .header2 {
@@ -142,22 +126,6 @@ body {
   font-weight: 400;
   line-height: normal;
   margin-top: -12%;
-}
-
-.header2-forgot {
-  color: var(--928F8F, #928f8f);
-  text-align: center;
-  font-family: Montserrat;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin-top: -12%;
-  text-align: center;
-  display: flex;
-  width: 550px;
-  margin-left: 5%;
-  margin-right: 5%;
 }
 
 .fields-container {
