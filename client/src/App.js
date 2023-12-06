@@ -1,12 +1,14 @@
 import "./App.css";
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { UserProvider } from "./UserContext"
 
 // import styles
 import "./styles/global.css";
 import "./styles/signup.css";
 import "./styles/sidebar.css";
 import "./styles/upcoming.css";
+import "./styles/profile.css";
 import "./styles/dashboard_tile.css";
 import "./styles/session_tile.css";
 import "./styles/dashboard.css";
@@ -39,12 +41,11 @@ import StudentDash from "./pages/StudentDash";
 import TutorDash from "./pages/TutorDash";
 import TutorReports from "./pages/TutorReports";
 import TwoFactor from "./pages/TwoFactor";
+import { User } from "./comp_models/user";
 
 function App() {
-  return (
-    <div className="App">
-      
-      {/* <nav>
+  return (  
+      /* <nav>
         <ul>
           <li><a href="/AddTutorSession">AddTutorSession</a></li>
           <li><a href="/CalendarPage">CalendarPage</a></li>
@@ -63,9 +64,11 @@ function App() {
           <li><a href="/TutorReports">TutorReports</a></li>
           <li><a href="/TwoFactor">TwoFactor</a></li>
         </ul>
-      </nav> */}
+      </nav> */
 
-
+      <UserProvider>
+        {
+        <div className="App">
       <BrowserRouter>
       <Routes>
       <Route path="/" element={<Navigate to="/Home" />} />
@@ -88,6 +91,9 @@ function App() {
       </Routes>
     </BrowserRouter>
     </div>
+    }
+    </UserProvider>
+    
   );
 }
 

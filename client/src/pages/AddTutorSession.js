@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import "./AddTutorSession.css"
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
-import Availability from "../models/availability"
+import { Availability } from "../comp_models/availability"
+
 function AddTutorSession() {
 
   const initialAvailability = new Availability()

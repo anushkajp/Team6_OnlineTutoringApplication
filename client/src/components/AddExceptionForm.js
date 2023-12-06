@@ -37,12 +37,12 @@ const AddExceptionForm = ({ data, setAvailibility }) => {
           }, {});
 
         sendAPIPatchRequest(`tutor/diananle`, { "availability": {...transformArrayforJSON} })
-            .then(data => {
-                console.log(data)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        .then(data => {
+            console.log(data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
     };
 
     return (
