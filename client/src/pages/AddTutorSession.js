@@ -2,16 +2,33 @@ import React, { useState } from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
 import  Availability  from "../models/availability"
+import TimeBlock from '../models/timeBlock'
 
 function AddTutorSession() {
-
-  const { user } = useContext(UserContext);
+  const weekDays = [
+    { label: 'Su', expanded_label: 'Sunday' },
+    { label: 'M', expanded_label: 'Monday' },
+    { label: 'Tu', expanded_label: 'Tuesday' },
+    { label: 'W', expanded_label: 'Wednesday' },
+    { label: 'Th', expanded_label: 'Thursday' },
+    { label: 'Fr', expanded_label: 'Friday' },
+    { label: 'Sa', expanded_label: 'Saturday' }
+  ]
+  const types = ['online', 'in-person']
   const timeBlocks = [
     { label: "30 Min blocks", data: 30 },
     { label: "45 Min blocks", data: 45 },
     { label: "1 Hour blocks", data: 60 },
     { label: "1 Hour 15 Min blocks", data: 90 }
   ]
+
+  const initialAvailability = new Availability()
+  const [dowSelection, setDowSelection] = useState([])
+  const [timeBlockSize, setTimeBlockSize] = useState(timeBlocks[0])
+  const [modality, setModality] = useState(types[0])
+  const [boundedTime, setBoundedTime] = useState({timeLower:"10:00",timeUpper:"12:00"})
+
+
 
   const initialAvailability = new Availability()
   const [dowSelection, setDowSelection] = useState([])
@@ -29,6 +46,7 @@ function AddTutorSession() {
     return (
       // <div>
       <select
+        value={timeBlockSize}
         value={timeBlockSize}
         onChange={e => choiceHandler(e.target.value)}
         className="selection justify-center"
