@@ -1,21 +1,10 @@
 import React, { useState, useContext } from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
-import  {Availability}  from "../comp_models/availability"
-// import TimeBlock from '../comp_models/timeBlock'
+import { Availability } from "../comp_models/availability"
 import { UserContext } from "../UserContext"
 
 function AddTutorSession() {
-  const weekDays = [
-    { label: 'Su', expanded_label: 'Sunday' },
-    { label: 'M', expanded_label: 'Monday' },
-    { label: 'Tu', expanded_label: 'Tuesday' },
-    { label: 'W', expanded_label: 'Wednesday' },
-    { label: 'Th', expanded_label: 'Thursday' },
-    { label: 'Fr', expanded_label: 'Friday' },
-    { label: 'Sa', expanded_label: 'Saturday' }
-  ]
-  const types = ['online', 'in-person']
 
   const { user } = useContext(UserContext);
   const timeBlocks = [
@@ -130,7 +119,7 @@ function AddTutorSession() {
       <div className="main-columns">
 
         {/* <div className="left-column"> */}
-        <Sidebar renderType={UserContext.accountType} />
+        <Sidebar renderType={user.accountType} />
         {/* </div> */}
         <div className="right-column">
 
