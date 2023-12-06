@@ -27,7 +27,7 @@ class TutorService {
             addOns = await read.getTutor(key)
             propertyMap[key] = {...propertyMap[key], ...addOns}
         }
-        console.log("StudentService.getAll() = " + JSON.stringify(propertyMap) + "\n")
+        console.log(propertyMap)
         return propertyMap
     }
     // GET ONE
