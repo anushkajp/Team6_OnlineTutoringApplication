@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchFromAPI, uploadToAPI } from '../services/api'
-import { Tutor } from '../models/tutor'
+import  Tutor  from '../models/tutor'
 import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
 import { createUserWithEmailAndPassword } from 'firebase/auth';
