@@ -41,7 +41,7 @@ import StudentDash from "./pages/StudentDash";
 import TutorDash from "./pages/TutorDash";
 import TutorReports from "./pages/TutorReports";
 import TwoFactor from "./pages/TwoFactor";
-import { User } from "./comp_models/user";
+// import { User } from "./models/user";
 
 function App() {
   return (  

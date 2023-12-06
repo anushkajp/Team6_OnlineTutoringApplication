@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
-import { Availability } from "../comp_models/availability"
+import { Availability } from "../models/availability"
 
 function AddTutorSession() {
 
