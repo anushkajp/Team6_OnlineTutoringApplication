@@ -41,9 +41,68 @@ import StudentDash from "./pages/StudentDash";
 import TutorDash from "./pages/TutorDash";
 import TutorReports from "./pages/TutorReports";
 import TwoFactor from "./pages/TwoFactor";
-// import { User } from "./models/user";
 
 function App() {
+  const { user } = useContext(UserContext);
+
+  return (
+    <div className="App">
+      <UserProvider>
+        {
+          <BrowserRouter>
+            <Routes>
+
+              <Route path="/" element={<Navigate to="/Home" />} />
+              <Route path="/Login" element={<Login />} />
+              <Route path="/SignUpStudent" element={<SignUpStudent />} />
+              <Route path="/SignUpTutor" element={<SignUpTutor />} />
+              <Route path="/Contact" element={<Contact />} />
+              <Route path="/Forgot" element={<Forgot />} />
+              <Route path="/Home" element={<Home />} />
+
+              <Route
+                path="/AddTutorSession"
+                element={user ? <AddTutorSession /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/CalendarPage"
+                element={user ? <CalendarPage /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/ListUpcoming"
+                element={user ? <ListUpcoming/> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/ProfileSettings"
+                element={user ? <ProfileSettings/> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/Reviews"
+                element={user ? <Reviews /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/SearchTutor"
+                element={user ? <SearchTutor /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/StudentDash"
+                element={user ? <StudentDash /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/TutorDash"
+                element={user ? <TutorDash /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/TutorReports"
+                element={user ? <TutorReports /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/TwoFactor"
+                element={user ? <TwoFactor /> : <Navigate to="/Login" replace />}
+              />
+            </Routes>
+          </BrowserRouter>
+        }
   const { user } = useContext(UserContext);
 
   return (
