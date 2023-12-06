@@ -5,7 +5,7 @@ import logo from "../assets/logo.png";
 
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword,setPersistence, browserLocalPersistence } from 'firebase/auth';
-import { auth, fetchUserType } from '../firebase';
+import { auth, fetchUserType, findStudentByKey } from '../firebase';
 import { UserContext } from "../UserContext";
 
 import emailjs from "emailjs-com";
@@ -26,7 +26,8 @@ const Login = () => {
       .then(async (userCredential)=> {
         const user = userCredential.user;
         const accountInfo = await fetchUserType(user.uid);
-        updateUser({ uid: user.uid, email: user.email, accountType: accountInfo.accountType, key: accountInfo.userKey });
+        const data = await findStudentByKey(accountInfo.userKey);
+        updateUser({ uid: user.uid, email: user.email, accountType: accountInfo.accountType, key: accountInfo.userKey, ...data });
         });
       navigateToTwoFactor();
     } catch (error) {
@@ -60,7 +61,6 @@ const Login = () => {
       verification_code: code,
       to_email: email,
     };
-    console.log("email: ", email);
     emailjs
       .send(
         serviceId,

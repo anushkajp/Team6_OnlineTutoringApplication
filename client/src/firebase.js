@@ -20,10 +20,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // Initialize Database
-const database = getDatabase(app);
+const db = getDatabase(app);
 
 export async function fetchUserType(uid) {
-  const db = getDatabase();
   const baseRef = ref(db, '/test/Student/'); 
   const userQuery = query(baseRef, orderByChild('userId'), equalTo(uid));
 
@@ -56,4 +55,22 @@ export async function fetchUserType(uid) {
   }
 }
 
-export { auth,app, database };
+export const findStudentByKey = async (value) => {
+  const nodeRef = ref(db, `/test/User/${value}`);
+  try {
+    const snapshot = await get(nodeRef);
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      return data; 
+    } else {
+      console.log('No data found with this key');
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return null;
+  }
+};
+
+
+export { auth,app, db };

@@ -31,7 +31,7 @@ const SignUpStudent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     var alertString = ""
-    for (const [field, value] of Object.entries(tutor)) {
+    for (const [field, value] of Object.entries(student)) {
       if (field in labelData && "regex" in labelData[field] && !labelData[field].regex.test(value)) {
         alertString += "Field " + labelData[field].label.toLowerCase() + " does not match input requirements\n"
       }

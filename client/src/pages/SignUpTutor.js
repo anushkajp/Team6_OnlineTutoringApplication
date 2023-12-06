@@ -53,7 +53,7 @@ const SignUpTutor = () => {
       })()
 
       // Clear the form fields
-      setStudent(new Student());
+      setTutor(new Tutor());
     }
 
   };

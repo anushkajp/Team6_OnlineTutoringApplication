@@ -3,6 +3,8 @@ import { UserContext } from '../UserContext'
 import Sidebar from '../components/sidebar'
 import LogoutButton from '../components/LogoutButton'
 import { fetchFromAPI, sendAPIPatchRequest } from '../services/api'
+import { findStudentByKey } from '../firebase'
+import { User } from 'lucide-react'
 
 function ProfileSettings(props){
   const [isEditing, setIsEditing] = useState(false);
@@ -10,12 +12,11 @@ function ProfileSettings(props){
   const [editedEmail, setEditedEmail] = useState('');
   const [phone, setPhone] = useState(4445559999);
   const [editedPhone, setEditedPhone] = useState('');
-  const [renderData, setData] = useState([])
+  const [renderData, setData] = useState([]);
   const { user } = useContext(UserContext);
-  console.log(user);
 
   useEffect(() => {
-    fetchFromAPI(`${user.accountType}/${user.key}`) 
+    fetchFromAPI(`${user.accountType}/${user.username}`) 
       .then(data => {
         const render_data = Object.entries(data).map(([key, value]) => ({
           key,
@@ -98,7 +99,7 @@ function ProfileSettings(props){
         </div>
         <div className="profile_page">
           <div className="sidebar">
-            <Sidebar renderType={props.renderType}></Sidebar>
+            <Sidebar renderType={user.accountType}></Sidebar>
           </div>
           <div className="profile_settings">
               <div className="profile_info">

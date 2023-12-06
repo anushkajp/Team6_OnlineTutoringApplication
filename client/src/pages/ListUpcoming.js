@@ -1,8 +1,11 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Sidebar from '../components/sidebar'
 import SessionTile from '../components/SessionTile'
+import { UserContext } from '../UserContext'
 
 const ListUpcoming = (props) => {
+  const { user } = useContext(UserContext);
+  
   return (
     <div className="upcomingPage">
       <div className="sidebar">

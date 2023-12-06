@@ -1,0 +1,171 @@
+openapi: 3.0.0
+servers:
+  - description: StuddySync API Auto Mocking
+    url: https://virtserver.swaggerhub.com/DIANALE201490/StudySyncAPI/1.0.0
+  - description: Stand in URL until host is created
+    url: https://randomurl.com
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: StudySync API
+tags:
+  - name: Appointments
+    description: Modify appointments
+  - name: Profile
+    description: Modify user profiles
+paths:
+  /appointments/{appointmentId}:
+    get:
+      tags:
+        - Appointments
+      summary: Gets a an appointment by ID
+      operationId: searchAppointment
+      description: |
+        By passing in a valid ID, you can search for
+        available appointment in the system
+      parameters:
+        - in: path
+          name: appointmentId
+          description: Appointment ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        '400':
+          description: bad input parameter
+    put:
+      tags:
+        - Appointments
+      summary: Update an appointment by ID
+      description: |
+        Update the appointment by time, date, location, online, etc
+      parameters:
+        - in: path
+          name: appointmentId
+          description: Appointment ID
+          required: true
+          schema: 
+            type: integer
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        '400':
+          description: bad input parameter
+    delete:
+      tags:
+        - Appointments
+      summary: Delete an appointment by ID
+      description: |
+        Delete the appointment
+      parameters:
+        - in: path
+          name: appointmentId
+          description: Appointment ID
+          required: true
+          schema: 
+            type: integer
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        '400':
+          description: bad input parameter
+  /appointments:
+    post:
+      tags:
+        - Appointments
+      summary: adds a new appointment
+      operationId: addAppointment
+      description: Adds an appointment to the system
+      responses:
+        '201':
+          description: appointment created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing appointment with this ID already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+        description: Appointment item to add
+components:
+  schemas:
+    Appointment:
+      type: object
+      properties:
+        userID:
+          type: string
+          example: A123456
+        tutorId:
+          type: string
+          example: T123456
+        date-time:
+          type: string
+          format: date-time
+        length:
+          type: integer
+        online:
+          type: integer
+          nullable: true
+        location:
+          type: string
+        notes:
+          type: string
+          
+    InventoryItem:
+      type: object
+      required:
+        - id
+        - name
+        - manufacturer
+        - releaseDate
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Widget Adapter
+        releaseDate:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+    Manufacturer:
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: ACME Corporation
+        homePage:
+          type: string
+          format: url
+          example: 'https://www.acme-corp.com'
+        phone:
+          type: string
+          example: 408-867-5309
+      type: object
