@@ -2,26 +2,42 @@ import React, { useState } from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
 import  Availability  from "../models/availability"
+import TimeBlock from '../models/timeBlock'
 
 function AddTutorSession() {
-
-  const initialAvailability = new Availability()
+  const weekDays = [
+    { label: 'Su', expanded_label: 'Sunday' },
+    { label: 'M', expanded_label: 'Monday' },
+    { label: 'Tu', expanded_label: 'Tuesday' },
+    { label: 'W', expanded_label: 'Wednesday' },
+    { label: 'Th', expanded_label: 'Thursday' },
+    { label: 'Fr', expanded_label: 'Friday' },
+    { label: 'Sa', expanded_label: 'Saturday' }
+  ]
+  const types = ['online', 'in-person']
   const timeBlocks = [
     { label: "30 Min blocks", data: 30 },
     { label: "45 Min blocks", data: 45 },
     { label: "1 Hour blocks", data: 60 },
     { label: "1 Hour 15 Min blocks", data: 90 }
   ]
+
+  const initialAvailability = new Availability()
+  const [dowSelection, setDowSelection] = useState([])
+  const [timeBlockSize, setTimeBlockSize] = useState(timeBlocks[0])
+  const [modality, setModality] = useState(types[0])
+  const [boundedTime, setBoundedTime] = useState({timeLower:"10:00",timeUpper:"12:00"})
+
+
   function TimeBlockOptions() {
-    const [active, setActive] = useState(timeBlocks[0])
     function choiceHandler(value) {
-      setActive(value)
+      setTimeBlockSize(value)
       console.log(value)
     }
     return (
       // <div>
       <select
-        value={active}
+        value={timeBlockSize}
         onChange={e => choiceHandler(e.target.value)}
         className="selection justify-center"
       >
@@ -36,26 +52,17 @@ function AddTutorSession() {
       // </div>
     )
   }
-  const weekDays = [
-    { label: 'Su', expanded_label: 'Sunday' },
-    { label: 'M', expanded_label: 'Monday' },
-    { label: 'Tu', expanded_label: 'Tuesday' },
-    { label: 'W', expanded_label: 'Wednesday' },
-    { label: 'Th', expanded_label: 'Thursday' },
-    { label: 'Fr', expanded_label: 'Friday' },
-    { label: 'Sa', expanded_label: 'Saturday' }
-  ]
+
 
   function DayButtons() {
-    const [active, setActive] = useState([])
     const toggleButton = (index) => {
       // console.log(index)
-      if (active.includes(index)) {
-        setActive(active.filter((activeIndex) => activeIndex !== index))
+      if (dowSelection.includes(index)) {
+        setDowSelection(dowSelection.filter((activeIndex) => activeIndex !== index))
       } else {
-        setActive([...active, index])
+        setDowSelection([...dowSelection, index])
       }
-      console.log(active)
+      console.log(dowSelection)
     }
     return (
       <div className="justify-left">
@@ -63,18 +70,17 @@ function AddTutorSession() {
           <button
             key={index}
             className="round-button"
-            style={{ backgroundColor: active.includes(index) ? "#A92AB7" : "#D9D9D9" }}
+            style={{ backgroundColor: dowSelection.includes(index) ? "#A92AB7" : "#D9D9D9" }}
             onClick={() => toggleButton(index)}>{button.label}</button>
         ))}
       </div>
     )
   }
-  const types = ['online', 'in-person']
+  
 
   function ModalityButtons() {
-    const [active, setActive] = useState(types[0])
     const toggleButton = (type) => {
-      setActive(type)
+      setModality(type)
       console.log(type)
     }
     return (
@@ -82,11 +88,26 @@ function AddTutorSession() {
         {types.map((type) => (
           <button
             key={type}
-            className={active === type ? "modality-button" : "modality-button-inactive"}
+            className={modality === type ? "modality-button" : "modality-button-inactive"}
             onClick={() => toggleButton(type)}>{type}</button>
         ))}
       </div>
     )
+  }
+  const handleTime = (time) =>{
+    
+    const setUpperBound = parseInt(boundedTime.timeUpper.split(":")[0])
+    const setLowerBound = parseInt(boundedTime.timeLower.split(":")[0])
+    if (time.target.id==="timeLower"){
+      const newLowerBound = parseInt(time.target.value.split(":")[0])
+      console.log("Lower bound of time is : "+time.target.value)
+
+      setBoundedTime({...boundedTime,[time.target.id]:time.target.value})
+
+
+    }else{
+      setBoundedTime({...boundedTime,[time.target.id]:time.target.value})
+    }
   }
   return (
     <div >
@@ -111,9 +132,9 @@ function AddTutorSession() {
           {DayButtons()}
 
           <div className="justify-left">
-            <input className="date-input" defaultValue="10:00 AM (CST)" />
+            <input className="date-input justify-center" id="timeLower" type="time" defaultValue={boundedTime[0]} onChange={(e)=>handleTime(e)} />
             <label className="subtitle-text">to</label>
-            <input className="date-input" defaultValue="12:00 AM (CST)" />
+            <input className="date-input justify-center" id="timeUpper" type ="time" defaultValue={boundedTime[1]} />
             <label className="subtitle-text">for</label>
             {TimeBlockOptions()}
 
