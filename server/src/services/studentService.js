@@ -145,9 +145,9 @@ class StudentService {
             if (data.major != null)
                 await updateUserMajor(id, data.major)
             if (data.longBio != null)
-                await updateUserBio(id, data.longBio)
+                await updateUserLongBio(id, data.longBio)
             if (data.shortBio != null)
-                await updateshortBio(id, data.shortBio)
+                await updateUserShortBio(id, data.shortBio)
             if (data.pfp != null)
                 await updateUserProfilePic(id, data.pfp)
             
