@@ -3,8 +3,6 @@ import { UserContext } from '../UserContext'
 import Sidebar from '../components/sidebar'
 import LogoutButton from '../components/LogoutButton'
 import { fetchFromAPI, sendAPIPatchRequest } from '../services/api'
-import { findStudentByKey } from '../firebase'
-import { User } from 'lucide-react'
 
 function ProfileSettings(props){
   const [isEditing, setIsEditing] = useState(false);
