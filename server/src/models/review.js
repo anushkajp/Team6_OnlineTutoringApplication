@@ -12,5 +12,15 @@ class Review {
         this.rating = rating;
         this.description = description;
     }
+
+
+    static toObj() {
+        return {
+            tutorId: null,
+            studentId: null,
+            rating: null,
+            description: null
+        };
+      }
 }
 module.exports = Review
