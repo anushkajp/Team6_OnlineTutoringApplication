@@ -49,32 +49,62 @@ function App() {
     <div className="App">
       <UserProvider>
         {
-        <div className="App">
-      <BrowserRouter>
-      <Routes>
-      <Route path="/" element={<Navigate to="/Home" />} />
-        <Route path="/AddTutorSession" element={<AddTutorSession />} />
-        <Route path="/CalendarPage" element={<CalendarPage />} />
-        <Route path="/Contact" element={<Contact />} />
-        <Route path="/Forgot" element={<Forgot />} />
-        <Route path="/Home" element={<Home />} />
-        <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/ProfileSettings" element={<ProfileSettings renderType="student" userName="deedee"/>} /> 
-        <Route path="/Reviews" element={<Reviews />} />
-        <Route path="/SearchTutor" element={<SearchTutor />} />
-        <Route path="/SignUpStudent" element={<SignUpStudent />} />
-        <Route path="/SignUpTutor" element={<SignUpTutor />} />
-        <Route path="/StudentDash" element={<StudentDash />} />
-        <Route path="/TutorDash" element={<TutorDash />} />
-        <Route path="/TutorReports" element={<TutorReports />} />
-        <Route path="/TwoFactor" element={<TwoFactor />} />
-      </Routes>
-    </BrowserRouter>
+          <BrowserRouter>
+            <Routes>
+
+              <Route path="/" element={<Navigate to="/Home" />} />
+              <Route path="/Login" element={<Login />} />
+              <Route path="/SignUpStudent" element={<SignUpStudent />} />
+              <Route path="/SignUpTutor" element={<SignUpTutor />} />
+              <Route path="/Contact" element={<Contact />} />
+              <Route path="/Forgot" element={<Forgot />} />
+              <Route path="/Home" element={<Home />} />
+
+              <Route
+                path="/AddTutorSession"
+                element={user ? <AddTutorSession /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/CalendarPage"
+                element={user ? <CalendarPage /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/ListUpcoming"
+                element={user ? <ListUpcoming/> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/ProfileSettings"
+                element={user ? <ProfileSettings/> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/Reviews"
+                element={user ? <Reviews /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/SearchTutor"
+                element={user ? <SearchTutor /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/StudentDash"
+                element={user ? <StudentDash /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/TutorDash"
+                element={user ? <TutorDash /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/TutorReports"
+                element={user ? <TutorReports /> : <Navigate to="/Login" replace />}
+              />
+              <Route
+                path="/TwoFactor"
+                element={user ? <TwoFactor /> : <Navigate to="/Login" replace />}
+              />
+            </Routes>
+          </BrowserRouter>
+        }
+      </UserProvider>
     </div>
-    }
-    </UserProvider>
-    
   );
 }
 
