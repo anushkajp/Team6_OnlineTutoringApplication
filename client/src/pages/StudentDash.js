@@ -163,47 +163,56 @@ const StudentDash = () => {
 
 
   return (
-    <Layout>
-      <div className="leftContent">
-        <div className="statsTiles">
-          <DashboardTile margin="1rem" border="2rem" width="30vh" height="20vh" backgroundColor="#B9CCF3" cln="hoursTutored">
-            <h1>{user.hours}</h1>
-            <h6>hours tutored</h6>
-          </DashboardTile>
-          <DashboardTile margin="1rem" border="2rem" width="30vh" height="20vh" backgroundColor="#F9C8C8" cln="hoursTutored">
-            <h1>{sampleAppts.length}</h1>
-            <h6>sessions booked</h6>
-          </DashboardTile>
-        </div>
-
-        <DashboardTile title="Upcoming Sessions" margin="0rem" border="0rem" width="72vh" height="60vh" cln="upcomingSessions">
-          {
-            sampleAppts.length > 0 ? sampleAppts.map((session, index) => (
-              <SessionTile
-                datetime={session.datetime}
-                length={session.length}
-                location={session.location}
-                online={session.online}
-                studentId={session.studentId}
-                tutorId={session.tutorId}
-              ></SessionTile>)) : <h6>No upcoming sessions yet!</h6>
-          }
-        </DashboardTile>
-      </div>
-
-      <div className="rightContent">
-        <DashboardTile height="84vh" title="My Favorite Tutors" cln="favorite_tutors">
-        {
-            favorite_tutors.map((tutor, index) => (
-              <FavoriteTile
-                key={index}
-                username={tutor.username}
-                courses={tutor.courses}
-                profilePic={tutor.profilePic}
-              />
-            ))
-          }
-        </DashboardTile>
+    <div className="dashboardPage">
+      <Sidebar className="dbPageSidebar" renderType="student"></Sidebar>
+      <div className="tile_contents">
+          <div className="left_div">
+            <div className="top_div">
+                <div className="container">
+                <div className="left">
+                    <DashboardTile width="300px" height="300px" backgroundColor="white" title="My Student Stats">
+                        
+                    </DashboardTile>
+                </div>  
+                <div className="right">
+                    <div className="top">
+                      <DashboardTile width="140px" height="140px" backgroundColor="#B9CCF3">
+                        <h1>15</h1>
+                        <h6>hours tutored</h6>
+                      </DashboardTile>
+                    </div>
+                    <div className='bottom'>
+                      <DashboardTile width="140px" height="140px" backgroundColor="#F2B9F3">
+                        <h1>15</h1>
+                        <h6>subjects learned</h6>
+                      </DashboardTile>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div className="bottom_div">
+              <DashboardTile cln="sessiontiles" title="Upcoming Sessions">
+                  <SessionTile></SessionTile>
+                  <SessionTile></SessionTile>
+                  <SessionTile></SessionTile>
+                  <SessionTile></SessionTile>
+              </DashboardTile>
+            </div>
+          </div>
+          <div className="right_div">
+              <DashboardTile title="My Favorite Tutors">
+                  {
+                    favoriteTutorInfo.map((tutor, index) => (
+                      <FavoriteTile
+                        key={index} 
+                        username = {tutor.tutorUsername}
+                        courses = {tutor.courses}
+                        profilePic = {tutor.profilePic}
+                      />
+                    ))
+                  }
+              </DashboardTile>
+          </div>
       </div>
     </Layout>
   )
