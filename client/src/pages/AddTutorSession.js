@@ -16,6 +16,8 @@ function AddTutorSession() {
     { label: 'Sa', expanded_label: 'Saturday' }
   ]
   const types = ['online', 'in-person']
+
+  const { user } = useContext(UserContext);
   const timeBlocks = [
     { label: "30 Min blocks", data: 30 },
     { label: "45 Min blocks", data: 45 },
