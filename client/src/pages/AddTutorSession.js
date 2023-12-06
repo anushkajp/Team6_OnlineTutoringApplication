@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
 import  Availability  from "../models/availability"
+import TimeBlock from '../models/timeBlock'
 import { UserContext } from "../UserContext"
 import TimeBlock from '../models/timeBlock'
 
