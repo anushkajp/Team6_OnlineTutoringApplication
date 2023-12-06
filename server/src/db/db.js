@@ -130,10 +130,10 @@ async function searchItem(entity, child, matchValue, test = true) {
     // },{onlyOnce:true})
     try {
         const snapshot = await get(query(ref(db, path), orderByChild(child), equalTo(matchValue)))
-
+        //console.log(snapshot);
         if (snapshot.exists()) {
             const data = snapshot.val();
-            // console.log(data);
+            //console.log(data);
             return data
         } else {
             console.log('No matching data found for path: ' + path + child + ', ' + matchValue);
