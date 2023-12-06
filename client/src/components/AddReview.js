@@ -17,9 +17,6 @@ const AddReview = (props) => {
 
   const numberRange = [1, 2, 3, 4, 5];
 
-  // Assuming you have a prop for the user's profile picture URL
-  const profilePicUrl = props.profilePicUrl;
-
   const handleReviewSubmit = () => {
     // Make a POST request to the specified path using uploadToAPI
     uploadToAPI(`/review/`, {

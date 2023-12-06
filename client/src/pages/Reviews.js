@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import AddReview from '../components/AddReview';
 import { fetchFromAPI } from '../services/api';
 import Sidebar from '../components/sidebar';
 import UpdateReviews from '../components/UpdateReviews';
+import { UserContext } from '../UserContext'
 
 const Reviews = (props) => {
   const [uniqueUsernames, setUniqueUsernames] = useState(new Set());
   const [renderReview, setPrevReviews] = useState([]);
+  const { user } = useContext(UserContext);
   
   // GET ALL PAST REVIEWS FROM STUDENT
   useEffect(() => {

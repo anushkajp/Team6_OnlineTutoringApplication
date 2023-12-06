@@ -82,7 +82,7 @@ const UpdateReviews = (props) => {
               ></textarea>
             </label>
             {/* Button to submit the update */}
-        <button className = 'button_right' onClick={handleUpdate}>Submit Update</button>
+            <button className = 'button_right' onClick={handleUpdate}>Submit Update</button>
           </div>
           
         </div>

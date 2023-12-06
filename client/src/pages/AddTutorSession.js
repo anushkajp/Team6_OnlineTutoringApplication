@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
 import { Availability } from "../comp_models/availability"
+import { UserContext } from "../UserContext"
 
 function AddTutorSession() {
 
+  const { user } = useContext(UserContext);
   const initialAvailability = new Availability()
   const timeBlocks = [
     { label: "30 Min blocks", data: 30 },
@@ -14,10 +16,12 @@ function AddTutorSession() {
   ]
   function TimeBlockOptions() {
     const [active, setActive] = useState(timeBlocks[0])
+
     function choiceHandler(value) {
       setActive(value)
       console.log(value)
     }
+
     return (
       // <div>
       <select
@@ -100,7 +104,7 @@ function AddTutorSession() {
       <div className="main-columns">
 
         {/* <div className="left-column"> */}
-        <Sidebar renderType="tutor" />
+        <Sidebar renderType={user.accountType} />
         {/* </div> */}
         <div className="right-column">
 

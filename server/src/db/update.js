@@ -121,6 +121,15 @@ module.exports = {
     updateUserHours: async function updateUserHours(userId, newTotalHours) {
         return modifyItem("User",userId,"hours", newTotalHours)
     },
+    
+    /**
+     * Update the user hours
+     * @param {string} userId Database id for the user
+     * @param {Array} newFavoriteTutors New hours for the user
+     */
+    updateFavoriteTutors: async function updateFavoriteTutors(userId, newFavoriteTutors) {
+        return modifyItem("Student",userId,"favoriteTutors", newFavoriteTutors)
+    },
 
 
         /**
