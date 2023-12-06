@@ -9,6 +9,8 @@ function ProfileSettings(props){
   const [email, setEmail] = useState('sampleemail@gmail.com');
   const [editedEmail, setEditedEmail] = useState('');
   const [phone, setPhone] = useState(4445559999);
+  const [bio, setBio] = useState("")
+  const [editedBio, setEditedBio] = useState("")
   const [editedPhone, setEditedPhone] = useState('');
   const [renderData, setData] = useState([]);
   const { user } = useContext(UserContext);
@@ -34,6 +36,7 @@ function ProfileSettings(props){
         ));
         setEditedEmail(render_data.email);
         setEditedPhone(render_data.phone);
+        setEditedBio(renderData.longBio);
         setData(render_data[0]);
       })
       .catch(error => {
@@ -65,8 +68,9 @@ function ProfileSettings(props){
     setIsEditing(false);
     setEmail(editedEmail);
     setPhone(editedPhone);
+    setBio(editedBio);
 
-    sendAPIPatchRequest(`${props.renderType}/${props.userName}`, { "email" : editedEmail, "phone" : editedPhone})
+    sendAPIPatchRequest(`${user.accountType}/${user.username}`, { "email" : editedEmail, "phone" : editedPhone, "longBio": editedBio })
         .then(data => {
             console.log(data)
         })
@@ -83,6 +87,9 @@ function ProfileSettings(props){
       case 'editedPhone':
         setEditedPhone(event.target.value);
         break;
+      case 'editedBio':
+          setEditedBio(event.target.value);
+          break;
       default:
         break;
     }
@@ -140,13 +147,26 @@ function ProfileSettings(props){
                 <span className="readOnly" id="phoneDisplay">{renderData.phone}</span>
               )}
 
+              <label htmlFor="bio">Bio:</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  id="bioInput"
+                  value={editedBio}
+                  onChange={(e) => handleInputChange('editedBio', e)}
+                />
+              ) : (
+                <span className="readOnly" id="bioDisplay">{renderData.longBio}</span>
+              )}  
+
               {isEditing ? (
                 <button className="settingsButton" onClick={handleSaveClick}>Save</button>
               ) : (
                 <button className="settingsButton" onClick={handleEditClick}>Edit</button>
               )}
+
             </form>
-              </div>
+            </div>
           </div>
         </div>
       </div>

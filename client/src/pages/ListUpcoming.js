@@ -20,20 +20,22 @@ const ListUpcoming = (props) => {
           tutorId: value.tutorId
         }
         ));
+        console.log(render_data);
+        setData(render_data)
       })
       .catch(error => {
-        setData({
+        setData([{
           datetime: "Loading...",
           length: "Loading...",
           location: "Loading...",
           online: "Loading...",
           studentId: "Loading...",
           tutorId: "Loading..."
-        });
+        }]);
         console.log(error);
       });
   }, []);
-  
+
   return (
     <div className="upcomingPage">
       <div className="sidebar">
@@ -65,5 +67,4 @@ const ListUpcoming = (props) => {
     </div>
   )
 }
-
 export default ListUpcoming
