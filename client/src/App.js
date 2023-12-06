@@ -43,7 +43,6 @@ import StudentDash from "./pages/StudentDash";
 import TutorDash from "./pages/TutorDash";
 import TutorReports from "./pages/TutorReports";
 import TwoFactor from "./pages/TwoFactor";
-// import { User } from "./models/user";
 
 function App() {
   const { user } = useContext(UserContext);
@@ -62,7 +61,6 @@ function App() {
               <Route path="/Contact" element={<Contact />} />
               <Route path="/Forgot" element={<Forgot />} />
               <Route path="/Home" element={<Home />} />
-              <Route path="/Availibilities" element={<Availibilities />} />
 
               <Route
                 path="/AddTutorSession"
