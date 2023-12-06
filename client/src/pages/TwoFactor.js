@@ -1,21 +1,30 @@
-import React, { useState } from "react";
-import "./TwoFactor.css";
+import React, { useState, useContext } from "react";
 import logo from "../assets/logo.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { UserContext } from '../UserContext'
 
 const TwoFactor = () => {
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  const { state } = useLocation();
+
+  const accountType = user.accountType;
+  console.log(accountType);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
   const handleValidation = () => {
-    navigate("/TutorDash");
-    console.log("Validation is performed with input value:", inputValue);
+    if(accountType == 'student'){
+      navigate("/StudentDash");
+      console.log("Validation is performed with input value:", inputValue);
+    } else {
+      navigate("/TutorDash");
+      console.log("Validation is performed with input value:", inputValue);
+    }
   };
-
 
   return (
     <div className="with-gradient">

@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { fetchFromAPI } from '../services/api'
-import Major from '../models/major'
-import Course from '../models/course'
+import { Major } from '../comp_models/major'
+import { Course } from '../comp_models/course'
 
 // NOTE: Change student to general object
 // NOTE: there are new changes here to be applied to sign up student
 
 // Requires a object, setObject use state initialised on an empty object
 // Requires a label dictionary with format shown below, any fields not specified will be excluded from appearing
-//   const labelData = {
-//     firstName: { "label": "First name" },
-//     lastName: { "label": "Last name" },
-//     middleName: { "label": "Middle name" },
-//     password: { "label": "Password" },
-//     username: { "label": "Username" },
-//     courses: { "label": "Courses" },
-//     phone: { "label": "Phone number" },
-//     email: { "label": "Email" },
-//     major: { "label": "Major" },
-//     pfp: { "label": "Profile Picture" }
-//   }
+// const labelData = {
+//   firstName: { label: "First name"},
+//   lastName: { label: "Last name"},
+//   middleName: { label: "Middle name"},
+//   password: { label: "Password"},
+//   username: { label: "Username"},
+//   phone: { label: "Phone number"},
+//   email: { label: "Email"},
+//   major: { label: "Major" },
+//   pfp: { label: "Profile Picture" }
+// }
+
 const CreateFields = (object, setObject, labelData) => {
+
 
   const [majors, setMajors] = useState([]);
   const [courses, setCourses] = useState([]);
@@ -33,16 +34,24 @@ const CreateFields = (object, setObject, labelData) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setObject({
-      ...object,
-      [name]: value
-    })
+    if (labelData[name].maxLength>=value.length){
+        setObject({
+          ...object,
+          [name]: value
+        })
+        console.log(labelData[name].regex.test(value))
+      
+    }else{
+      alert(`The input size of ${labelData[name].label.toLowerCase()} of ${value.length} is larger than the maximum size of ${labelData[name].maxLength}`)
+    
+    }
+    
+    
+
 
     // alert(object)
     console.log(object)
   }
-
-
 
   useEffect(() => {
     if ("major" in labelData) {
@@ -95,6 +104,7 @@ const CreateFields = (object, setObject, labelData) => {
 
   return (
     <div className="form-group">
+      {/* make sure object fields are the ones used to generate fields, avoiding non relevant data */}
       {Object.keys(object).map((fields, index) => {
         // console.log(labelData)
         if (labelData[fields] === undefined) {
@@ -207,4 +217,4 @@ const CreateFields = (object, setObject, labelData) => {
   )
 }
 
-export default CreateFields
+export default CreateFields;

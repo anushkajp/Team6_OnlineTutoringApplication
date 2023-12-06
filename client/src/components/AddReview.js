@@ -70,7 +70,6 @@ const AddReview = (props) => {
               <textarea value={reviewText} onChange={(e) => setReviewText(e.target.value)}></textarea>
             </label>
           </div>
-          <button className = 'button_right' onClick={handleReviewSubmit}>Submit</button>
         </div>
       </CustomModal>
     </div>
