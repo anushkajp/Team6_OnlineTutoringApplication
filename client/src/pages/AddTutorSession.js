@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react'
-import { Availability } from "../comp_models/availability"
-import { UserContext } from "../UserContext"
-import Layout from '../components/Layout'
+import React, { useState } from 'react'
+import Sidebar from '../components/sidebar'
+import LogoutButton from "../components/LogoutButton"
+import { Availability } from "../models/availability"
 
 function AddTutorSession() {
 
