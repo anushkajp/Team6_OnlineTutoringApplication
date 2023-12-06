@@ -103,7 +103,7 @@ const StudentDash = () => {
                     favoriteTutorInfo.map((tutor, index) => (
                       <FavoriteTile
                         key={index} 
-                        tutorId = {tutor.tutorUsername}
+                        username = {tutor.tutorUsername}
                         courses = {tutor.courses}
                         profilePic = {tutor.profilePic}
                       />
