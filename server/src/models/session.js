@@ -5,7 +5,6 @@ class Session {
      * @param {string} studentId Student username
      * @param {Date} dateTime Date and time the appointment starts
      * @param {number} length The duration of the appointment, in minutes
-     * @param {string} course The specific course the session will be about
      * @param {boolean} online Whether the appointment is online or in person
      * @param {string} location If in person, the address of the appointment, if online, a meeting URL
      * @param {string} feedback Feedback for the appointment
