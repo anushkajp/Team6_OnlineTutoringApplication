@@ -1,6 +1,7 @@
-const User = require('./user');
-const Availability = require('./availability');
-class Tutor extends User {
+import { User } from './user'
+import { Availability } from './availability';
+
+export class Tutor extends User {
     /**
      * Adds a new Tutor to the database 
      * @param {string} firstName First name
@@ -49,11 +50,10 @@ class Tutor extends User {
         const availability = new Availability(monday, tuesday, wednesday, thursday, friday, saturday, sunday, exceptions);
         this.availability = availability;
         this.bgCheck = bgCheck;
-        this.major = major;
         this.courses = courses;
-        
+        this.major = major;
     }
-    static toObj() {
+    toObj() {
         return {
             firstName: "",
             lastName: "",
@@ -83,4 +83,3 @@ class Tutor extends User {
         };
     }
 }
-module.exports = Tutor

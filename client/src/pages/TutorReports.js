@@ -4,13 +4,16 @@ import Sidebar from '../components/sidebar'
 import { fetchFromAPI } from '../services/api' 
 import {useEffect, useState} from 'react'
 import { UserContext } from '../UserContext'
+import {useContext} from 'react' 
 
 const TutorReports = (props) => {
+
+  const { user } = useContext(UserContext);
 
   const [reviews, setReviews] = useState([]); 
 
   useEffect(() => {
-    fetchFromAPI(`review/jroid92/`) 
+    fetchFromAPI(`review/${user.username}`) 
       .then(data => {
         const render_data = Object.entries(data).map(([key, value]) => ({
           key,

@@ -6,6 +6,7 @@ const Session = require("../models/session")
 const Student = require("../models/student")
 const Tutor = require("../models/tutor")
 const User = require("../models/user")
+const Major = require("../models/major")
 module.exports = {
     loadJSONFile: async function loadJSONFile(fileName,majorId){
         var json=require(fileName)
@@ -17,7 +18,8 @@ module.exports = {
             if (!courseNumbers.includes(currCourse.course_number) && !isNaN(parseFloat(currCourse.course_number[1]))){
                 courseNumbers.push(currCourse.course_number)
                 // console.log(majorId,currCourse.title,currCourse.course_number,currCourse.course_number[1])
-                output.push( await this.addCourse(majorId,currCourse.title,currCourse.course_number,parseInt(currCourse.course_number[1])))
+                course = new Course(currCourse.title,currCourse.course_number,majorId,parseInt(currCourse.course_number[1]))
+                output.push( await this.addCourse(course))
             }
             
             
@@ -40,26 +42,22 @@ module.exports = {
      * @param {Student} studentObject First name
      */
     //TODO : student variable filter, get rid of reliance on old functions
-    addStudent: async function addStudent(studentObject) {
-        student={}
-        user={}
-        
-        Object.keys(studentObject).forEach((key) => {
-            
-                    if(!(key in new User()) || key === "userId"){
-                        console.log(key)
-                        student[key] =studentObject[key]
-                    }else{
-                        console.log("user: "+key)
-                        user[key]=studentObject[key]
-                    }
-            })
+    addStudent: async function addStudent(data) {
+        const studentObject={}
+        const user={}
+
+        Object.keys(data).forEach((key) => {
+            console.log(key)
+            if(!(key in new User()) || key === "userId"){
+                studentObject[key] =data[key]
+            }else{
+                user[key]=data[key]
+            }
+        })
         userKey = await this.addUser(user)
-        console.log("userKey")
-        console.log(userKey)    
-        student["userId"] = userKey['id']
-        console.log(student["userId"])
-        return addItem("Student", student, student["userId"])
+        userKey = userKey['id']
+        studentObject.userId = userKey;
+        return addItem("Student", studentObject, userKey)
     },
     /**
      * Adds a new Tutor to the database 
@@ -71,7 +69,6 @@ module.exports = {
         let user = {}
         Object.keys(tutorObject).forEach((key) => {
             if(key !== "userId"){
-                console.log(key)
                 if(!(key in new User())){
                     tutor[key] =tutorObject[key]
                 }else{
@@ -81,7 +78,6 @@ module.exports = {
         })
         userKey = await this.addUser(user)
         userKey = userKey["id"]
-        console.log(userKey)
         return addItem("Tutor", tutor, userKey)
     },
     /**

@@ -16,7 +16,7 @@ const ModifyTimeblockForm = ({ data, setData }) => {
             return week;
         });
 
-        console.log(data)
+        console.log(data);
         console.log(updatedArray);
         setData(updatedArray);
         patchData(updatedArray);
@@ -36,7 +36,7 @@ const ModifyTimeblockForm = ({ data, setData }) => {
             })
             .catch(error => {
                 console.log(error)
-            })
+        })
     };
 
     return (

@@ -1,69 +1,107 @@
-import React, { useState } from "react";
-import { auth } from '../firebase';
+import React, { useState, useEffect } from "react";
+import { fetchFromAPI, uploadToAPI } from '../services/api'
+import { Student } from '../comp_models/student'
+import CreateFields from '../components/CreateFields'
+import bcrypt from "bcryptjs-react"
+import { ref, set } from 'firebase/database';
+import { database, auth } from '../firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-
 
 const SignUpStudent = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
-  // let isTutor = false;
-  // let isStudent = true;
-  // console.log(isStudent)
-  // console.log(isTutor)
+  const initialStudent = new Student();
+  const [student, setStudent] = useState(initialStudent);
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    university: "",
-    profile_photo: "",
-    password: "",
-    accountType: "student"
-  });
+  const hashPassword = async (password) => {
+    const gennedHash = await new Promise((resolve, reject) => {
+      bcrypt.hash(password, 10, function (error, hash) {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(hash)
+        }
 
-  const navigate = useNavigate();
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
 
-  const handleChange = (e) => {
-    setEmail(e.target.value)
-    setPassword(e.target.value)
-
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+    return gennedHash
+    // return hash
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
-    try {
-      const { email, password } = formData;
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
-      const user = userCredential.user;
-      localStorage.setItem('token', user.accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
-      navigate("/StudentDash");
-    } catch (error) {
-      console.error(error);
+    var alertString = ""
+    for (const [field, value] of Object.entries(student)) {
+      if (field in labelData && "regex" in labelData[field] && !labelData[field].regex.test(value)) {
+        alertString += "Field " + labelData[field].label.toLowerCase() + " does not match input requirements\n"
+      }
+      // console.log(field+" : "+value)
     }
-    // console.log("Form data submitted:", formData);
+    alert(alertString)
+    if (alertString === "") {
+      try {
+        const pwdHash = await hashPassword(student.password);
+        student.favoriteTutors = "";
+        student.longBio = student.shortBio = ""
+        student.hours = 0;
 
-    // Clear the form fields
-    // setFormData({
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   phone: "",
-    //   university: "",
-    //   profile_photo: "",
-    //   password: "",
-    // });
+        // Create user in Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, student.email, student.password);
+        student.userId = userCredential.user.uid;
+        student.password = pwdHash;
+        console.log(student)
+        const data = await uploadToAPI("student/", student).then(() => console.log("Student data saved successfully!")).catch((error) => console.log(error))
+      } catch (error) {
+        console.error("Error in user registration: ", error);
+      }
+    }
+  };
 
+  const labelData = {
+    firstName: {
+      label: "First name",
+      regex: /^[A-Za-z]{2,}$/,
+      maxLength: 20
+    },
+    lastName: {
+      label: "Last name",
+      regex: /^[A-Za-z]{2,}$/,
+      maxLength: 30
+    },
+    middleName: {
+      label: "Middle name",
+      regex: /^[A-Za-z]{2,}$/,
+      maxLength: 30
+    },
+    password: {
+      label: "Password",
+      regex: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      maxLength: 30
+    },
+    username: {
+      label: "Username",
+      regex: /^[A-Za-z0-9]+$/,
+      maxLength: 11
+    },
+    phone: {
+      label: "Phone number",
+      regex: /^[0-9]{8,13}$/,
+      maxLength: 13
+    },
+    email: {
+      label: "Email",
+      regex: /^[A-Za-z0-9]+@[A-Za-z0-9.]+[.][A-Za-z]{3}$/,
+      maxLength: 50
+    },
+    major: {
+      label: "Major"
+    },
+    courses:{
+      label:"Courses"
+    },
+    pfp: {
+      label: "Profile Picture"
+    }
   };
 
   return (
@@ -72,7 +110,7 @@ const SignUpStudent = () => {
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="profile_photo">Upload Profile Photo</label>
               <input
                 type="file"
@@ -148,7 +186,8 @@ const SignUpStudent = () => {
                 onChange={handleChange}
                 required
               />
-            </div>
+            </div> */}
+            {CreateFields(student, setStudent, labelData)}
             <button className="create_acc_student_button" type="submit">
               Create Student Account
             </button>

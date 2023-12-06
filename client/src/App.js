@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-
+import { UserProvider } from "./UserContext"
 
 // import styles
 import "./styles/global.css";
@@ -19,9 +19,8 @@ import "./styles/Login.css";
 import "./styles/reviewtile.css";
 import "./styles/tutor_reports.css";
 import "./styles/Calendar.css";
-import "./styles/Home.css";
 import "./styles/AddTutorSession.css"
-
+import "./styles/Home.css"
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
@@ -40,12 +39,11 @@ import StudentDash from "./pages/StudentDash";
 import TutorDash from "./pages/TutorDash";
 import TutorReports from "./pages/TutorReports";
 import TwoFactor from "./pages/TwoFactor";
+import { User } from "./comp_models/user";
 
 function App() {
-  return (
-    <div className="App">
-      
-      {/* <nav>
+  return (  
+      /* <nav>
         <ul>
           <li><a href="/AddTutorSession">AddTutorSession</a></li>
           <li><a href="/CalendarPage">CalendarPage</a></li>
@@ -64,12 +62,13 @@ function App() {
           <li><a href="/TutorReports">TutorReports</a></li>
           <li><a href="/TwoFactor">TwoFactor</a></li>
         </ul>
-      </nav> */}
+      </nav> */
 
-
+      <UserProvider>
+        {
+        <div className="App">
       <BrowserRouter>
       <Routes>
-      <Route path="/" element={<Navigate to="/Home" />} />
       <Route path="/" element={<Navigate to="/Home" />} />
         <Route path="/AddTutorSession" element={<AddTutorSession />} />
         <Route path="/CalendarPage" element={<CalendarPage />} />
@@ -78,7 +77,7 @@ function App() {
         <Route path="/Home" element={<Home />} />
         <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/ProfileSettings" element={<ProfileSettings renderType="student" userName="deedee"/>} />
+        <Route path="/ProfileSettings" element={<ProfileSettings renderType="tutor"/>} />
         <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />
         <Route path="/SignUpStudent" element={<SignUpStudent />} />
@@ -90,6 +89,9 @@ function App() {
       </Routes>
     </BrowserRouter>
     </div>
+    }
+    </UserProvider>
+    
   );
 }
 

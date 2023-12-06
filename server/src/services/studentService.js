@@ -37,14 +37,16 @@ class StudentService {
         // SEARCH FOR USER W USERNAME
         const search = await searchItem(USER, USERNAME, id)
         const userId = Object.keys(search)[0]
-
+        console.log(search)
+        console.log(userId)
         // USER IS FOUND, NOT NECESSARILY A STUDENT
         if (Object.keys(search).length > 0) {
 
             // GET STUDENT BASED ON USERID
             const studentAdds = await read.getStudent(userId)
+            console.log(studentAdds)
             // USER IS A TUTOR
-            if (student.userId === undefined) {
+            if (studentAdds.userId === undefined) {
                 throw new CustomError("User is not a student", 400)
             }
             // APPEND ADD ONS TO STUDENT OBJECT
@@ -92,11 +94,6 @@ class StudentService {
                 student[key] = propertyMap[key]
             }
         }
-        // // LOOP THROUGH OBJ, ANY UNDEFINED REPLACE WITH NULL
-        // for (const key in student) {
-        //     if (student[key] === undefined)
-        //         student[key] = propertyMap[key]
-        // }
             
         // ADD NEW STUDENT TO DB
         console.log(student)

@@ -271,4 +271,3 @@ app.use('/student', studentRouter)
 app.use('/appointments', sessionRouter)
 app.use('/review', reviewRouter)
 app.use('/tutor/availability', availabilityRouter)
-

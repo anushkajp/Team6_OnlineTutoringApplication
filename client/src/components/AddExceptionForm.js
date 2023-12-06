@@ -11,20 +11,16 @@ const AddExceptionForm = ({ data, setAvailibility }) => {
 
     const addDate = () => {
         if (selectedDate) {
-            // Find the item with the "exceptions" key
             const exceptionsObject = data.find(item => "exceptions" in item);
           
             if (exceptionsObject) {
-              // Update the existing exceptions array
               exceptionsObject.exceptions = exceptionsObject.exceptions ? [...exceptionsObject.exceptions, selectedDate] : [selectedDate];
             } else {
-              // If exceptionsObject is not found, create a new object with the "exceptions" key
               const newExceptionsObject = { exceptions: [selectedDate] };
               data.push(newExceptionsObject);
             }
-          
-            // Update the parent array
-            setAvailibility([...data]);  // Creating a new array to trigger a state update
+            console.log(data)
+            setAvailibility([...data]);  
             patchData([...data]);
           } else {
             alert('Please provide a valid date.');
@@ -41,14 +37,13 @@ const AddExceptionForm = ({ data, setAvailibility }) => {
           }, {});
 
         sendAPIPatchRequest(`tutor/diananle`, { "availability": {...transformArrayforJSON} })
-            .then(data => {
-                console.log(data)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        .then(data => {
+            console.log(data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
     };
-
 
     return (
         <div>

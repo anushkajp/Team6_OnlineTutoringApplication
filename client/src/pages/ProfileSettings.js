@@ -1,7 +1,10 @@
-import React , { useState, useEffect } from 'react'
+import React , { useState, useEffect, useContext } from 'react'
+import { UserContext } from '../UserContext'
 import Sidebar from '../components/sidebar'
 import LogoutButton from '../components/LogoutButton'
-import { fetchFromAPI } from '../services/api'
+import { fetchFromAPI, sendAPIPatchRequest } from '../services/api'
+import { findStudentByKey } from '../firebase'
+import { User } from 'lucide-react'
 
 function ProfileSettings(props){
   const [isEditing, setIsEditing] = useState(false);
@@ -9,10 +12,11 @@ function ProfileSettings(props){
   const [editedEmail, setEditedEmail] = useState('');
   const [phone, setPhone] = useState(4445559999);
   const [editedPhone, setEditedPhone] = useState('');
-  const [renderData, setData] = useState([])
+  const [renderData, setData] = useState([]);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    fetchFromAPI(`${props.renderType}/${props.userName}`) 
+    fetchFromAPI(`${user.accountType}/${user.username}`) 
       .then(data => {
         const render_data = Object.entries(data).map(([key, value]) => ({
           key,
@@ -30,6 +34,8 @@ function ProfileSettings(props){
           longBio: value.longBio
         }
         ));
+        setEditedEmail(render_data.email);
+        setEditedPhone(render_data.phone);
         setData(render_data[0]);
       })
       .catch(error => {
@@ -53,7 +59,7 @@ function ProfileSettings(props){
 
 
   const handleEditClick = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault(); 
     setIsEditing(true);
   };
 
@@ -61,6 +67,14 @@ function ProfileSettings(props){
     setIsEditing(false);
     setEmail(editedEmail);
     setPhone(editedPhone);
+
+    sendAPIPatchRequest(`${props.renderType}/${props.userName}`, { "email" : editedEmail, "phone" : editedPhone})
+        .then(data => {
+            console.log(data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
   };
 
   const handleInputChange = (field, event) => {
@@ -85,7 +99,7 @@ function ProfileSettings(props){
         </div>
         <div className="profile_page">
           <div className="sidebar">
-            <Sidebar renderType={props.renderType}></Sidebar>
+            <Sidebar renderType={user.accountType}></Sidebar>
           </div>
           <div className="profile_settings">
               <div className="profile_info">
