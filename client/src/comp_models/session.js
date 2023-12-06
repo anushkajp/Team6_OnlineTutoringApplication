@@ -1,4 +1,4 @@
-class Session {
+export class Session {
     /**
      * Adds a new Appointment to the database, should be tied to a tutor and a user
      * @param {string} tutorId Tutor username
@@ -26,4 +26,3 @@ class Session {
         this.studentNotes = studentNotes;
     }
 }
-module.exports = Session

@@ -18,7 +18,7 @@ const Sidebar = (props) => {
               <li className={isNavItemSelected('/StudentDash') ? 'selected-nav-item' : ''}><a href="/StudentDash">Home</a></li>
               <li className={isNavItemSelected('/SearchTutor') ? 'selected-nav-item' : ''}><a href="/SearchTutor">Search Sessions</a></li>
               <li className={isNavItemSelected('/ListUpcoming') ? 'selected-nav-item' : ''}><a href="/ListUpcoming">Upcoming Sessions</a></li>
-              <li className={isNavItemSelected('/Reviews') ? 'selected-nav-item' : ''}><a href="/Reviews">Reviews</a></li>
+              <li className={isNavItemSelected('/SavedCoursesStudent') ? 'selected-nav-item' : ''}><a href="/SavedCoursesStudent">My Saved Courses</a></li>
               <li className={isNavItemSelected('/ProfileSettings') ? 'selected-nav-item' : ''}><a href="/ProfileSettings">Profile Settings</a></li>
             </ul>
           </nav>
