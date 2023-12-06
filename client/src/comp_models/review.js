@@ -1,4 +1,4 @@
-class Review {
+export class Review {
     /**
      * Adds a new Review to the database, should be tied to an appointment
      * @param {string} tutorId Tutor username
@@ -13,4 +13,3 @@ class Review {
         this.description = description;
     }
 }
-module.exports = Review

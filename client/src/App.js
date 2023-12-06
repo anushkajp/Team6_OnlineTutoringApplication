@@ -19,10 +19,8 @@ import "./styles/Login.css";
 import "./styles/reviewtile.css";
 import "./styles/tutor_reports.css";
 import "./styles/Calendar.css";
-import "./styles/Home.css";
 import "./styles/AddTutorSession.css"
-import "./styles/Reviews.css"
-
+import "./styles/Home.css"
 
 // import pages
 import AddTutorSession from "./pages/AddTutorSession";
@@ -33,7 +31,7 @@ import Home from "./pages/Home";
 import ListUpcoming from "./pages/ListUpcoming";
 import Login from "./pages/Login";
 import ProfileSettings from "./pages/ProfileSettings";
-import Reviews from "./pages/Reviews";
+import SavedCoursesStudent from "./pages/SavedCoursesStudent";
 import SearchTutor from "./pages/SearchTutor";
 import SignUpStudent from "./pages/SignUpStudent";
 import SignUpTutor from "./pages/SignUpTutor";
@@ -79,8 +77,8 @@ function App() {
         <Route path="/Home" element={<Home />} />
         <Route path="/ListUpcoming" element={<ListUpcoming renderType="student" />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/ProfileSettings" element={<ProfileSettings renderType="student" userName="deedee"/>} /> 
-        <Route path="/Reviews" element={<Reviews />} />
+        <Route path="/ProfileSettings" element={<ProfileSettings renderType="tutor"/>} />
+        <Route path="/SavedCoursesStudent" element={<SavedCoursesStudent />} />
         <Route path="/SearchTutor" element={<SearchTutor />} />
         <Route path="/SignUpStudent" element={<SignUpStudent />} />
         <Route path="/SignUpTutor" element={<SignUpTutor />} />

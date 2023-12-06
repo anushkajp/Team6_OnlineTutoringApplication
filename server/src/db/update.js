@@ -91,16 +91,6 @@ module.exports = {
         return modifyItem("User",userId,"courses",newUserCourses)
     },
 
-     /**
-     * Update the student hours
-     * @param {string} studentId Database id for the user
-     * @param {number} newTotalHours New hours for the student
-     */
-    /*
-     updateStudentHours: async function updateStudentHours(studentId, newTotalHours) {
-        return modifyItem("Student",studentId,"hours", newTotalHours)
-    },*/
-
 
     /**
      * Update the tutor background check
@@ -114,12 +104,12 @@ module.exports = {
 
 
     /**
-     * Update the user hours
-     * @param {string} userId Database id for the user
-     * @param {number} newTotalHours New hours for the user
+     * Update the tutor hours
+     * @param {string} tutorId Database id for the user
+     * @param {number} newTotalHours New hours for the tutor
      */
-    updateUserHours: async function updateUserHours(userId, newTotalHours) {
-        return modifyItem("User",userId,"hours", newTotalHours)
+    updateTutorHours: async function updateTutorHours(tutorId, newTotalHours) {
+        return modifyItem("Tutor",tutorId,"totalHours", newTotalHours)
     },
 
 
@@ -129,17 +119,10 @@ module.exports = {
      * @param {number} newRating New rating for the user
      */
         updateTutorRating: async function updateTutorRating(userId, newRating) {
-            return modifyItem("Review",userId,"rating", newRating)
+            return modifyItem("Tutor",userId,"rating", newRating)
         },
-   /**
-     * Update the user rating
-     * @param {string} userId Database id for the user
-     * @param {number} newDescription New rating for the user
-     */
-        updateReviewDescription: async function updateReviewDescription(userId, newDescription) {
-            return modifyItem("Review",userId,"description", newDescription)
-        },
-        
+
+
     /**
      * Update the tutors weekly availability
      * @param {string} tutorId Database id for the user
@@ -217,17 +200,14 @@ module.exports = {
     },
 
 
-    /**
+        /**
      * Update the appointment length in minutes
      * @param {string} appointmentId Database id for the appointment
      * @param {number} newLength New appointment length in minutes
      */
-    //might not need to this, since length should not be updated
-    //it can cause time conflicts
-    /*
     updateAppLength: async function updateAppLength(appointmentId, newLength){
         return modifyItem("Appointment",appointmentId,"length",newLength)
-    },*/
+    },
 
 
     /**
@@ -249,42 +229,44 @@ module.exports = {
         return modifyItem("Appointment",appointmentId,"location",newLocation)
     },
 
+
+    /**
+     * Update the appointment notes
+     * @param {string} appointmentId Database id for the appointment
+     * @param {string} newNotes New appointment notes
+     */
+    updateAppNotes: async function updateAppNotes(appointmentId, newNotes){
+        return modifyItem("Appointment",appointmentId,"notes",newNotes)
+    },
+
+
+    /**
+     * Update the appointment notes
+     * @param {string} appointmentId Database id for the appointment
+     * @param {number} newRating New appointment rating
+     */
+    updateAppRating: async function updateRating(appointmentId, newRating){
+        return modifyItem("Appointment",appointmentId,"rating",newRating)
+    },
+
+
     /**
      * Update the appointment notes
      * @param {string} appointmentId Database id for the appointment
      * @param {string} newFeedback New appointment feedback
      */
-    updateAppFeedback: async function updateAppReview(appointmentId, newFeedback){
+    updateAppReview: async function updateAppReview(appointmentId, newFeedback){
         return modifyItem("Appointment",appointmentId,"feedback",newFeedback)
     },
 
-    //not required anymore
+
     /**
      * Update the appointment notes
      * @param {string} appointmentId Database id for the appointment
      * @param {string} newUserId Updates the user id for the appointment
      */
-    /*
     updateAppUserId: async function updateAppUserId(appointmentId, newUserId) {
-        return modifyItem("Appointment",appointmentId,"studentId",newUserId)
-    },*/
-
-    /**
-     * Update the appointment student notes
-     * @param {string} appointmentId Database id for the appointment
-     * @param {string} newNotes New appointment notes
-     */
-    updateAppTutorNotes: async function updateAppNotes(appointmentId, newNotes){
-        return modifyItem("Appointment",appointmentId,"tutorNotes",newNotes)
-    },
-
-    /**
-     * Update the appointment student notes
-     * @param {string} appointmentId Database id for the appointment
-     * @param {string} newNotes New appointment notes
-     */
-    updateAppStudentNotes: async function updateAppNotes(appointmentId, newNotes){
-        return modifyItem("Appointment",appointmentId,"studentNotes",newNotes)
+        return modifyItem("Appointment",appointmentId,"userId",newUserId)
     }
 
     //TODO: update Review attributes
