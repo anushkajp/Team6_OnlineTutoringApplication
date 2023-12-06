@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
 import  Availability  from "../models/availability"
+import { UserContext } from "../UserContext"
 import TimeBlock from '../models/timeBlock'
 
 function AddTutorSession() {
@@ -125,9 +126,20 @@ function AddTutorSession() {
     }
   }
   return (
-    <Layout>
-      <div className="right-column">
-        <h3>Add New Session</h3>
+    <div >
+      <div className='title-logout-wrapper'>
+        <div className="title-logout">
+          <label className="title-text">Add a New Tutor Session</label>
+          <LogoutButton id="logout-button"></LogoutButton>
+
+        </div>
+      </div>
+      <div className="main-columns">
+
+        {/* <div className="left-column"> */}
+        <Sidebar renderType={user.accountType} />
+        {/* </div> */}
+        <div className="right-column">
 
           <label className="subtitle-text justify-left">Which days would you like to tutor?</label>
 

@@ -46,13 +46,11 @@ const UpdateReviews = (props) => {
           
         </div>
         <div className='right_column'>
-        <p>
+          <p>
             {props.description}
-          </p>
-          <button className = 'button_right' onClick={openModal}>Update</button>
-          
+          </p> 
         </div>
-        
+        <button className = 'button_right' onClick={openModal}>Update</button>
       </div>
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
         <div className='modal_container'>

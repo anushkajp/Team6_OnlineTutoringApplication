@@ -42,11 +42,11 @@ const AddReview = (props) => {
 
   return (
     <div className='add_review_tile'>
-      <div className='center_content'>
+      <div>
         <div className='pfp'>
           <img src="https://picsum.photos/400/400" alt="Profile" />
         </div>
-        <h5>{props.tutorUsername}</h5>
+        <h4>{props.tutorUsername}</h4>
         <button className = 'button_center' onClick={openModal}>Add Review</button>
       </div>
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
