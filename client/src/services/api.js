@@ -5,7 +5,7 @@ export function uploadToAPI(route, data){
   data =JSON.stringify(data)
   return fetch(`http://localhost:8000/${route}`, {method:"POST",headers:{"content-type":"application/json"},body:data})
   .then(response=>{
-    if (response.status === 201){
+    if (response.status === 200){
       return response.json();
     }else{
       throw new Error('Request failed with status: ' + response.status)

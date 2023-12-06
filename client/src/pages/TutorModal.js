@@ -72,7 +72,7 @@ export default function TutorModal(props) {
     };
 
     try {
-      const response = await uploadToAPI("appointments", appointmentData);
+      const response = await uploadToAPI(`appointments/`, appointmentData);
       console.log("Appointment created:", response);
       alert("Booked!");
     } catch (error) {
