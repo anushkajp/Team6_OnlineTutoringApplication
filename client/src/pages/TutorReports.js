@@ -2,15 +2,13 @@ import React from 'react'
 import ReviewTile from '../components/ReviewTile'
 import Sidebar from '../components/sidebar'
 import { fetchFromAPI } from '../services/api' 
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useContext} from 'react'
 import { UserContext } from '../UserContext'
-import {useContext} from 'react' 
 
 const TutorReports = (props) => {
 
-  const { user } = useContext(UserContext);
-
   const [reviews, setReviews] = useState([]); 
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     fetchFromAPI(`review/${user.username}`) 
@@ -34,7 +32,7 @@ const TutorReports = (props) => {
     
     const tiles = reviews.map((review, index) => (
       <ReviewTile
-        key={index} //??
+        key={index}
         tutorId = {review.tutorUsername}
         studentId = {review.studentUsername}
         rating = {review.rating}
@@ -70,4 +68,4 @@ const TutorReports = (props) => {
   )
 }
 
-export default TutorReports
+export default TutorReports;

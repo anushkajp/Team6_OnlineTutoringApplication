@@ -1,16 +1,15 @@
-import React from 'react'
+import React from 'react';
 
-const SessionTile = () => {
+const SessionTile = (props) => {
   return (
     <div className="session_tile">
-        <div className="class_logo">CS</div>
-        <div className="tutor_info">
-            <h4>AP Computer Science</h4>
-            <h6>with Anushka Pimple</h6>
-        </div>
-        <div className="time_info">
-            <h4>Mon, Sep 7</h4>
-            <h6>12:30 PM CST (1 hr)</h6>
+        <div className="session_details">
+          <h4 className="classNameSession"><span className="header_text">Date and Time: </span>{new Date(props.datetime).toLocaleString()}</h4>
+          <h5 className="classNameSession"><span className="header_text">Length: </span>{props.length} minutes</h5>
+          <h5 className="classNameSession"><span className="header_text">Location: </span>{props.location}</h5>
+          <h5 className="classNameSession"><span className="header_text">Student Name: </span>{props.studentId}</h5>
+          <h5 className="classNameSession"><span className="header_text">Tutor Rating: </span>{props.tutorId}/5</h5>
+          <h5 className="classNameSession"><span className="header_text">Modality: </span>{props.online ? "Online" : "In-person"}</h5>
         </div>
     </div>
   )

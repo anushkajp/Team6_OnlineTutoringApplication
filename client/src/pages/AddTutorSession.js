@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
 import  Availability  from "../models/availability"
+import { UserContext } from "../UserContext"
 import TimeBlock from '../models/timeBlock'
 
 function AddTutorSession() {
@@ -34,6 +35,7 @@ function AddTutorSession() {
       setTimeBlockSize(value)
       console.log(value)
     }
+
     return (
       // <div>
       <select
@@ -121,7 +123,7 @@ function AddTutorSession() {
       <div className="main-columns">
 
         {/* <div className="left-column"> */}
-        <Sidebar renderType="tutor" />
+        <Sidebar renderType={user.accountType} />
         {/* </div> */}
         <div className="right-column">
 
