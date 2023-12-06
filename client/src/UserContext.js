@@ -16,9 +16,12 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   const updateUser = useCallback((newUserData) => {
-    setUser(prevUser => ({ ...prevUser, ...newUserData }));
-    localStorage.setItem('user', JSON.stringify({ ...user, ...newUserData }));
-  }, [user]);
+    setUser(prevUser => {
+      const updatedUser = { ...prevUser, ...newUserData };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      return updatedUser;
+    });
+  }, []);
 
 
   return (
