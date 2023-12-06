@@ -9,7 +9,7 @@ import { auth } from '../firebase';
 const SignUpTutor = () => {
 
   const initialTutor = new Tutor();
-  const [tutor, setTutor] = useState({ initialTutor });
+  const [tutor, setTutor] = useState(initialTutor);
 
   const hashPassword = async (password) => {
     const gennedHash = await new Promise((resolve, reject) => {
