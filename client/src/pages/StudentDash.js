@@ -42,7 +42,18 @@ const StudentDash = () => {
             </div>
           </div>
           <div className="right_div">
-              <DashboardTile title="My favorite tutors">Loading...</DashboardTile>
+              <DashboardTile title="My Favorite Tutors">
+                  {
+                    favoriteTutorInfo.map((tutor, index) => (
+                      <FavoriteTile
+                        key={index} 
+                        username = {tutor.tutorUsername}
+                        courses = {tutor.courses}
+                        profilePic = {tutor.profilePic}
+                      />
+                    ))
+                  }
+              </DashboardTile>
           </div>
       </div>
     </div>
