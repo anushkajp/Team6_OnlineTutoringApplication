@@ -3,6 +3,27 @@ import Sidebar from '../components/sidebar'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
 
+import { fetchFromAPI } from '../services/api';
+
+
+const StudentDashboard = ({ userName }) => {
+  const [studentData, setStudentData] = useState(null);
+
+  useEffect(() => {
+    fetchStudentData();
+  }, [userName]);
+
+  const fetchStudentData = async () => {
+    try {
+      
+      const data = await fetchFromAPI(`students/${userName}`);
+      setStudentData(data);
+    } catch (error) {
+      console.error('Error fetching student data:', error);
+    }
+  };
+
+
 const StudentDash = () => {
   return (
     <div className="dashboardPage">
@@ -47,6 +68,6 @@ const StudentDash = () => {
       </div>
     </div>
   )
+  }
 }
-
-export default StudentDash
+export default StudentDash;
