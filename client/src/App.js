@@ -41,13 +41,13 @@ import StudentDash from "./pages/StudentDash";
 import TutorDash from "./pages/TutorDash";
 import TutorReports from "./pages/TutorReports";
 import TwoFactor from "./pages/TwoFactor";
-// import { User } from "./models/user";
 
 function App() {
   const { user } = useContext(UserContext);
 
   return (
     <div className="App">
+      <UserProvider>
         {
           <BrowserRouter>
             <Routes>
@@ -103,6 +103,7 @@ function App() {
             </Routes>
           </BrowserRouter>
         }
+      </UserProvider>
     </div>
   );
 }
