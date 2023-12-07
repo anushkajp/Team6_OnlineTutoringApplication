@@ -3,6 +3,7 @@ import logo from "../assets/TT_Logo_Design.png";
 import laptop from "../assets/laptop.png";
 import { useNavigate } from "react-router-dom";
 import { LibraryBig, GraduationCap } from "lucide-react";
+import Header from '../components/Header'
 
 const Home = () => {
   const navigate = useNavigate();
@@ -32,14 +33,7 @@ const Home = () => {
 
   return (
     <div style={pageStyle}>
-      <div className="flex-container">
-        <img className="logo-top" src={logo} onClick={navigateToHome} />
-        <div className="link-row">
-          <a onClick={navigateToLogin}>
-            Log in
-          </a>
-        </div>
-      </div>
+      <Header></Header>
       <div className="flex-row">
         <div className="flex-container-left">
           <img className="img-laptop" src={laptop}></img>

@@ -1,15 +1,20 @@
-import React from 'react'
-import { useNavigate, navigate } from 'react-router';
+import React, {useContext} from 'react'
+import { useNavigate } from 'react-router';
+import { UserContext } from '../UserContext'
 
 const LogoutButton = () => {
+   const { logoutUser } = useContext(UserContext);
+
     const navigate = useNavigate();
 
     const handleLogout = () => {
-      navigate('/Home');
+      logoutUser(() => navigate("/Home")); 
     };
   
     return (
-      <button className="logout" onClick={handleLogout}>Log Out</button>
+      <button onClick={handleLogout}>
+            Log Out
+      </button>
     );
 }
 
