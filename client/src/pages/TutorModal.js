@@ -12,7 +12,7 @@ export default function TutorModal(props) {
   const [time, setTime] = useState(null);
   const [convertedTime, setConvertedTime] = useState(null);
   const { user } = useContext(UserContext);
-  console.log(user.username)
+  console.log(user)
 
   function convertTo24HourFormat(timeString) {
     // Split the string to get the start time and AM/PM part

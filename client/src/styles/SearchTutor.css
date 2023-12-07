@@ -316,3 +316,28 @@ html .react-datepicker__day--range-start,
 html .react-datepicker__day--range-end {
   background-color: #a92ab7 !important;
 }
+
+.react-datepicker__input-container input {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  background: #fff;
+  width: 123px;
+  height: 25px;
+  padding: 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.react-datepicker__input-container input:focus {
+  border: 1px solid #6fcf97; /* Change the color to match the other boxes */
+}
