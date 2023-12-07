@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React , { useState, useEffect, useContext } from 'react'
 import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
 import { uploadToAPI } from "../services/api";
+import { UserContext } from '../UserContext'
 
 export default function TutorModal(props) {
   const { toggle, action, tutorData, availabilityData, date } = props;
@@ -10,8 +11,8 @@ export default function TutorModal(props) {
   const [subject, setSubject] = useState(null);
   const [time, setTime] = useState(null);
   const [convertedTime, setConvertedTime] = useState(null);
-  const user = JSON.parse(localStorage.getItem('user'));
-  console.log(user.email)
+  const { user } = useContext(UserContext);
+  console.log(user.username)
 
   function convertTo24HourFormat(timeString) {
     // Split the string to get the start time and AM/PM part
@@ -67,7 +68,7 @@ export default function TutorModal(props) {
       course: subject,
       location: "www.zoom.com",
       online: true,
-      studentUsername: user.email, 
+      studentUsername: user.username, 
       tutorUsername: tutorData.username, 
     };
 
