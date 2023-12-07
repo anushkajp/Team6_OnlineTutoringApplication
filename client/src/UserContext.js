@@ -15,6 +15,12 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
+  const logoutUser = (callback) => {
+    setUser(null);
+    localStorage.removeItem('user'); 
+    if (callback) callback();
+  };
+
   const updateUser = useCallback((newUserData) => {
     setUser(prevUser => {
       const updatedUser = { ...prevUser, ...newUserData };
@@ -25,7 +31,7 @@ export const UserProvider = ({ children }) => {
 
 
   return (
-    <UserContext.Provider value={{ user, updateUser }}>
+    <UserContext.Provider value={{ user, updateUser, logoutUser }}>
       {children}
     </UserContext.Provider>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import Sidebar from '../components/sidebar'
+import Header from '../components/Header'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
 import FavoriteTile from '../components/FavoriteTile'
@@ -72,7 +73,9 @@ const StudentDash = () => {
   console.log(appts);
 
   return (
+    
     <div className="dashboardPage">
+      <Header></Header>
       <Sidebar className="dbPageSidebar" renderType="tutor"></Sidebar>
       <div className="tile_contents">
           <div className="left_div">

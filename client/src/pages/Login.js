@@ -17,21 +17,27 @@ const Login = () => {
   const { updateUser } = useContext(UserContext);
   let navigate = useNavigate();
 
-  // handle submit 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setPersistence(auth, browserLocalPersistence);
-      signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential)=> {
-        const user = userCredential.user;
-        const accountInfo = await fetchUserType(user.uid);
-        const data = await findStudentByKey(accountInfo.userKey);
-        updateUser({ uid: user.uid, email: user.email, accountType: accountInfo.accountType, key: accountInfo.userKey, ...data });
-        });
+      await setPersistence(auth, browserLocalPersistence);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      const accountInfo = await fetchUserType(user.uid);
+      const data = await findStudentByKey(accountInfo.userKey);
+  
+      updateUser({ 
+        uid: user.uid, 
+        email: user.email, 
+        accountType: accountInfo.accountType, 
+        key: accountInfo.userKey, 
+        ...data 
+      });
+  
       navigateToTwoFactor();
     } catch (error) {
       console.error(error);
+      setError(error.message); // Set error in state to display error message to user
     }
   }
 
