@@ -1,10 +1,9 @@
 import React, { useState, useContext } from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
-import  Availability  from "../models/availability"
-import TimeBlock from '../models/timeBlock'
+import  {Availability}  from "../comp_models/availability"
+// import TimeBlock from '../comp_models/timeBlock'
 import { UserContext } from "../UserContext"
-import TimeBlock from '../models/timeBlock'
 
 function AddTutorSession() {
   const weekDays = [
@@ -101,15 +100,21 @@ function AddTutorSession() {
     
     const setUpperBound = parseInt(boundedTime.timeUpper.split(":")[0])
     const setLowerBound = parseInt(boundedTime.timeLower.split(":")[0])
+    const comparisonBound = parseInt(time.target.value.split(":")[0])
     if (time.target.id==="timeLower"){
       const newLowerBound = parseInt(time.target.value.split(":")[0])
       console.log("Lower bound of time is : "+time.target.value)
-
-      setBoundedTime({...boundedTime,[time.target.id]:time.target.value})
-
-
+      if (comparisonBound<=setUpperBound){
+        setBoundedTime({...boundedTime,[time.target.id]:time.target.value})
+      }else{
+        alert("The start time you chose is after the end time!")
+      }
     }else{
-      setBoundedTime({...boundedTime,[time.target.id]:time.target.value})
+      if (comparisonBound<=setLowerBound){
+        setBoundedTime({...boundedTime,[time.target.id]:time.target.value})
+      }else{
+        alert("The end time you chose is before the start time!")
+      }
     }
   }
   return (
@@ -124,7 +129,7 @@ function AddTutorSession() {
       <div className="main-columns">
 
         {/* <div className="left-column"> */}
-        <Sidebar renderType={user.accountType} />
+        <Sidebar renderType={UserContext.accountType} />
         {/* </div> */}
         <div className="right-column">
 

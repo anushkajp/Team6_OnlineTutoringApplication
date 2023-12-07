@@ -27,7 +27,7 @@ const SignUpTutor = () => {
     // return hash
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form data submitted:", tutor);
     // Regex matching
@@ -40,17 +40,17 @@ const SignUpTutor = () => {
     }
     alert(alertString)
     if (alertString === "") {
-      (async () => {
         try {
           const pwdHash = await hashPassword(tutor.password)
+          
+          const userCredential = await createUserWithEmailAndPassword(auth, tutor.email, tutor.password);
+          tutor.userId = userCredential.user.uid;
           tutor.password = pwdHash
-          const data = await uploadToAPI("tutor/", tutor)
-          console.log(data)
-        } catch (e) {
+          const data = await uploadToAPI("tutor/", tutor).then(() => console.log("Tutor data saved successfully!")).catch((error) => console.log(error))
+        } catch (error) {
           console.log(e)
         }
 
-      })()
 
       // Clear the form fields
       setTutor(new Tutor());

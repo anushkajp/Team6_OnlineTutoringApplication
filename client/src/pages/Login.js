@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
-
+import bcrypt from "bcryptjs-react"
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword,setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { auth, fetchUserType, findStudentByKey } from '../firebase';
@@ -16,20 +16,38 @@ const Login = () => {
   const [error, setError] = useState("");
   const { updateUser } = useContext(UserContext);
   let navigate = useNavigate();
+  const hashPassword = async (password) => {
+    const gennedHash = await new Promise((resolve, reject) => {
+      bcrypt.hash(password, 10, function (error, hash) {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(hash)
+        }
 
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
+
+    return gennedHash
+    // return hash
+  }
   // handle submit 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      
       setPersistence(auth, browserLocalPersistence);
-      signInWithEmailAndPassword(auth, email, password)
+      await signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential)=> {
+
         const user = userCredential.user;
         const accountInfo = await fetchUserType(user.uid);
         const data = await findStudentByKey(accountInfo.userKey);
         updateUser({ uid: user.uid, email: user.email, accountType: accountInfo.accountType, key: accountInfo.userKey, ...data });
         });
       navigateToTwoFactor();
+    
     } catch (error) {
       console.error(error);
     }

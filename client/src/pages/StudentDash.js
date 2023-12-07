@@ -2,7 +2,9 @@ import React from 'react'
 import Sidebar from '../components/sidebar'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
+import FavoriteTile from '../components/FavoriteTile'
 
+const favoriteTutorInfo = []
 const StudentDash = () => {
   return (
     <div className="dashboardPage">
