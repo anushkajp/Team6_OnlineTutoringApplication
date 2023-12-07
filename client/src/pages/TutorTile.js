@@ -79,7 +79,7 @@ export const TutorTileCard = ({
       if (!isTimeTaken) {
         // If the time slot is not taken, then add the chunk
         let currentChunkEnd = formatTime12Hour(start.toISOString().substring(11, 16));
-        chunks.push(`${currentChunkStart} - ${currentChunkEnd}`);
+        chunks.push(`${currentChunkStart} ${currentChunkEnd}`);
       }
     }
   
@@ -183,7 +183,7 @@ export const TutorTileCard = ({
           {hasSubj ? (
             <p className="subjects">{subjects}</p>
           ) : (
-            <p className="subjects">No subjects available</p>
+            <p className="subjects">no subjects available</p>
           )}
         </div>
 
@@ -191,7 +191,7 @@ export const TutorTileCard = ({
           {hasBio ? (
             <p className="bio">{bio}</p>
           ) : (
-            <p className="bio">No bio available</p>
+            <p className="bio">Hey, I'm on Tutortopia!</p>
           )}
         </div>
 

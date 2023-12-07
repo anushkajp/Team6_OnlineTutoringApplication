@@ -204,7 +204,7 @@ function SearchTutor(props) {
                       ? `⭐ ${filteredTutor.rating} ${
                           filteredTutor.rating == 1 ? "star" : "stars"
                         }`
-                      : "no reviews"
+                      : "⭐ no reviews"
                   }
                   name={`${filteredTutor.firstName} ${filteredTutor.lastName}`}
                   subjects={filteredTutor.courses.join(", ")}

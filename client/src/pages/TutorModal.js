@@ -1,8 +1,8 @@
-import React , { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from "react";
 import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
 import { uploadToAPI } from "../services/api";
-import { UserContext } from '../UserContext'
+import { UserContext } from "../UserContext";
 
 export default function TutorModal(props) {
   const { toggle, action, tutorData, availabilityData, date } = props;
@@ -12,30 +12,29 @@ export default function TutorModal(props) {
   const [time, setTime] = useState(null);
   const [convertedTime, setConvertedTime] = useState(null);
   const { user } = useContext(UserContext);
-  console.log(user.username)
+  console.log(user.username);
 
   function convertTo24HourFormat(timeString) {
     // Split the string to get the start time and AM/PM part
-    const [timePart, amPmPart] = timeString.split('-')[0].trim().split(' ');
-    
+    const [timePart, amPmPart] = timeString.split("-")[0].trim().split(" ");
+
     // Extract hours and minutes from the time part
-    let [hours, minutes] = timePart.split(':').map(Number);
+    let [hours, minutes] = timePart.split(":").map(Number);
 
     // Convert to 24-hour format
-    if (amPmPart === 'PM' && hours < 12) {
+    if (amPmPart === "PM" && hours < 12) {
       hours += 12;
-    } else if (amPmPart === 'AM' && hours === 12) {
+    } else if (amPmPart === "AM" && hours === 12) {
       hours = 0;
     }
 
     // Format the hours and minutes correctly
-    const formattedHours = hours.toString().padStart(2, '0');
-    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
 
     console.log(`${formattedHours}:${formattedMinutes}:00`);
     return `${formattedHours}:${formattedMinutes}:00`;
-}
-
+  }
 
   const handleBoxS = (index) => {
     setActiveSubjectIndex(index === activeSubjectIndex ? null : index);
@@ -63,15 +62,15 @@ export default function TutorModal(props) {
     const appointmentDateTime = `${date}T${convertedTime}`;
     const appointmentLength = 60;
     const isOnline = true;
-    
+
     const appointmentData = {
       datetime: appointmentDateTime,
       length: appointmentLength,
       course: subject,
       location: "www.zoom.com",
       online: isOnline,
-      studentId: user.username, 
-      tutorId: tutorData.username, 
+      studentId: user.username,
+      tutorId: tutorData.username,
     };
 
     try {
@@ -92,16 +91,15 @@ export default function TutorModal(props) {
         <div className="txt">
           {tutorData.firstName} {tutorData.lastName}
         </div>
-        <div className="stars">⭐ {tutorData.rating}</div>
-        <p className="bio">{tutorData.longBio}</p>
-
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
+        <div className="stars">
+          {" "}
+          {tutorData.rating ? (
+            `⭐ ${tutorData.rating}`
+          ) : (
+            <span style={{ marginLeft: "50px" }}>⭐ no reviews</span>
+          )}
+        </div>
+        {/* <p className="bio">{tutorData.longBio}</p> */}
 
         <p className="c-sub">📚 Choose Subject</p>
         <div className="sub-container">
@@ -111,14 +109,14 @@ export default function TutorModal(props) {
                 key={index}
                 className={`box ${
                   activeSubjectIndex === index ? "active" : ""
-                }`}
+                } ${activeSubjectIndex === index ? "clicked" : ""}`}
                 onClick={() => handleBoxS(index)}
               >
                 {course}
               </div>
             ))
           ) : (
-            <p>No courses available!</p>
+            <p>no courses available</p>
           )}
         </div>
 
@@ -135,7 +133,9 @@ export default function TutorModal(props) {
             availabilityData.map((time, index) => (
               <div
                 key={index}
-                className={`t-box ${activeTimeIndex === index ? "active" : ""}`}
+                className={`t-box ${
+                  activeTimeIndex === index ? "active" : ""
+                } ${activeTimeIndex === index ? "clicked" : ""}`}
                 onClick={() => handleBoxT(index)}
               >
                 {time}
@@ -156,7 +156,9 @@ export default function TutorModal(props) {
         <div className="close" onClick={action}>
           Cancel
         </div>
-        <div className="book" onClick={handleCreateAppointment}>Book</div>
+        <div className="book" onClick={handleCreateAppointment}>
+          Book
+        </div>
       </div>
     </div>
   );

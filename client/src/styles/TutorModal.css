@@ -62,14 +62,14 @@
   position: fixed;
   color: #fff;
   font-family: Montserrat;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   letter-spacing: 0.46px;
   flex-shrink: 0;
   margin-left: 135px;
-  margin-top: -580px;
+  margin-top: -575px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -84,7 +84,7 @@
   line-height: normal;
   letter-spacing: 0.22px;
   margin-left: -4px;
-  margin-top: -520px;
+  margin-top: -530px;
   padding: 10px;
 }
 
@@ -110,8 +110,7 @@
   line-height: normal;
   letter-spacing: 0.32px;
   margin-left: -135px;
-  padding-top: 10px;
-  margin-top: -100px;
+  margin-top: 90px;
 }
 
 .container-modal .sub-container {
@@ -187,28 +186,23 @@
   display: flex;
   margin-left: 5px;
   flex-wrap: wrap;
-  justify-content: flex-start; /* Align to the start of the container */
-  align-items: center; /* Center items vertically */
-  padding: 0 5px; /* Add padding inside the container to prevent boxes touching the edges */
+  justify-content: flex-start; 
+  align-items: center; 
+  padding: 0 5px; 
 }
 
 .container-modal .t-box {
-  width: calc(
-    30% - 20px
-  ); /* Adjust width for 2 items per row, considering the gap */
-  height: 33px; /* Fixed height */
-  margin-bottom: 10px; /* Space at the bottom of each box */
-  flex-grow: 0; /* Prevent the box from growing */
-  flex-shrink: 0; /* Prevent the box from shrinking */
+  flex: 1;
   margin: 10px;
-  max-width: 100px;
-  height: 37px;
+  width: 150px !important;
+  height: 33px;
+  flex-shrink: 0;
   border-radius: 10px;
   background: #fff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   color: #000;
   font-family: Montserrat;
-  font-size: 14.5px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -217,25 +211,78 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  flex-shrink: 0;
+  transition: background 0.3s ease, flex 0.3s ease;
 }
 
 .container-modal .t-box:hover {
   cursor: pointer;
 }
 
-.container-modal .t-box:hover {
+.container-modal .t-box:active,
+.container-modal .t-box.clicked {
+  background: #000 !important;
+  color: #fff !important;
   flex: 1;
+  flex-shrink: 0 !important;
   margin: 10px;
-  width: 100px;
+  width: 150px !important;
   height: 33px;
   flex-shrink: 0;
   border-radius: 10px;
-  background: #000;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  color: #fff;
   font-family: Montserrat;
-  font-size: 14.5px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.29px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.container-modal .t-box:active:hover,
+.container-modal .t-box.clicked:hover {
+  cursor: pointer;
+}
+
+.container-modal .t-box:active {
+  background: #000 !important;
+  color: #fff !important;
+  flex: 1;
+  flex-shrink: 0 !important;
+  margin: 10px;
+  width: 100px !important;
+  height: 33px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  font-family: Montserrat;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.29px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.container-modal .t-box.clicked {
+  background: #000 !important;
+  color: #fff !important;
+  flex: 1;
+  flex-shrink: 0 !important;
+  margin: 10px;
+  width: 100px !important;
+  height: 33px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  font-family: Montserrat;
+  font-size: 11px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -247,12 +294,13 @@
 }
 
 .container-modal .box:active,
-.container-modal .t-box:active {
+.container-modal .box.clicked {
   background: #000 !important;
   color: #fff !important;
   flex: 1;
+  flex-shrink: 0 !important;
   margin: 10px;
-  width: 100px;
+  width: 100px !important;
   height: 33px;
   flex-shrink: 0;
   border-radius: 10px;
@@ -295,7 +343,7 @@
 .container-modal .book {
   width: 147px;
   height: 45px;
-  margin-bottom: -110px;
+  margin-bottom: -550px;
   margin-right: -150px;
   border-radius: 10px;
   background: #91f3bb;
@@ -310,6 +358,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  position: fixed;
 }
 
 .container-modal .book:hover {
