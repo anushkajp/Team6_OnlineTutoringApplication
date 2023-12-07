@@ -1,18 +1,19 @@
 import React from 'react';
-import Modal from 'react-modal';
+import "../styles/modal.css";
+import { XCircle } from "lucide-react";
 
 const CustomModal = ({ isOpen, onRequestClose, children }) => {
+  const modalClass = isOpen ? "modal-overlay" : "modal-overlay modal-hidden";
+
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      contentLabel="Modal"
-    >
-      <div>
-        <button onClick={onRequestClose}>Close Modal</button>
+    <div className={modalClass}>
+      <div className="custom_modal">
+      <button onClick={onRequestClose} className="modal-close-button">
+          <XCircle /> 
+        </button>
         {children}
       </div>
-    </Modal>
+    </div>
   );
 };
 

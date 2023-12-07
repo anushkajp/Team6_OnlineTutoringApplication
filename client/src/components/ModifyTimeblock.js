@@ -1,5 +1,7 @@
 import React from 'react';
 import { sendAPIPatchRequest } from '../services/api';
+import "../styles/button_modal.css"
+import { Delete } from "lucide-react";
 
 const ModifyTimeblockForm = ({ data, setData }) => {
     const handleRemoveItem = (weekIndex, day, detailIndex) => {
@@ -41,6 +43,7 @@ const ModifyTimeblockForm = ({ data, setData }) => {
 
     return (
         <div>
+            <h3>Remove a timeblock/exception</h3>
             {
                 data.map((week, weekIndex) => (
                     <div key={weekIndex} className="week">
@@ -55,7 +58,7 @@ const ModifyTimeblockForm = ({ data, setData }) => {
                                 </label>
                                 {details === false ? (
                                     <section className="avail_times_m">
-                                        <h3>None</h3>
+                                        <h6>None</h6>
                                     </section>
                                 ) : (
                                     details && (
@@ -64,25 +67,25 @@ const ModifyTimeblockForm = ({ data, setData }) => {
                                                 {details.map((detail, detailIndex) => (
                                                     <li key={detailIndex}>
                                                         {day === "exceptions" ? (
-                                                            <>
+                                                            <h6>
                                                                 {detail}
                                                                 {detail.length > 0 && (
-                                                                    <button onClick={() => handleRemoveItem(weekIndex, day, detailIndex)}>
-                                                                        Remove
+                                                                    <button className="delete_timeblock" onClick={() => handleRemoveItem(weekIndex, day, detailIndex)}>
+                                                                       <Delete />
                                                                     </button>
                                                                 )}
-                                                            </>
+                                                            </h6>
                                                         ) : (
-                                                            <>
+                                                            <h6>
                                                                 {new Date(detail.start).toLocaleString()} to{' '}
                                                                 {new Date(detail.end).toLocaleString()} <br />
                                                                 Online: {detail.online ? 'Yes' : 'No'}
                                                                 {detail && (
-                                                                    <button onClick={() => handleRemoveItem(weekIndex, day, detailIndex)}>
-                                                                        Remove
+                                                                    <button className="delete_timeblock" onClick={() => handleRemoveItem(weekIndex, day, detailIndex)}>
+                                                                        <Delete />
                                                                     </button>
                                                                 )}
-                                                            </>
+                                                            </h6>
                                                         )}
                                                     </li>
                                                 ))}

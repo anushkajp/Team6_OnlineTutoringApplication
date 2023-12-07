@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Header from './Header';
 import Sidebar from './sidebar';
-import MainContent from './MainContent';
+import "../styles/layout.css";
 import { UserContext } from '../UserContext'
 
 function Layout({ children }) {
@@ -9,10 +9,12 @@ function Layout({ children }) {
 
     return (
         <div className="container">
-            <Header />
+            <div className="header">
+                <Header />
+            </div>
             <div className="content-area">
-                <aside><Sidebar renderType={user.accountType}/></aside>
-                <MainContent>{children}</MainContent>
+                {user && <aside><Sidebar renderType={user.accountType}/></aside>}
+                <div className="MainContent">{children}</div>
             </div>
         </div>
     );

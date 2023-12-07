@@ -1,13 +1,12 @@
-.tile_contents{
+.leftContent{
+    float: left;
+}
+
+.rightContent{
     float: right;
-    display: flex;
+    width: 75vh;
 }
 
-.dbPageSidebar .navbar{
-    float:left;
-    display: flex;
-}
-
-.dashboardPage{
+.statsTiles{
     display: flex;
 }

@@ -2,9 +2,8 @@
     background-color: white;
     border-radius: 10px;
     display: flex;
-    margin-bottom: 14px;
+    margin-bottom: 2vh;
     width: inherit;
-    justify-content:safe;
 }
 
 .tutor_info{
@@ -52,4 +51,23 @@
 
 .sessiontiles{
     width: -webkit-fill-available;
+}
+
+.session_details > h4 {
+    font-size: 1.2rem;
+    margin:0.6rem;
+}
+
+.session_details > h5 {
+    font-size: 0.8rem;
+    margin-left:0.7rem;
+    margin-bottom: 0.3rem;
+}
+
+.classNameSession h4, h5{ 
+    color: gray;
+}
+
+.header_text{
+    color: black;
 }

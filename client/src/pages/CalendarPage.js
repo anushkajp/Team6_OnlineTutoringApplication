@@ -26,6 +26,8 @@ class CalendarPage extends Component {
       "December",
     ];
 
+    
+    
     this.state = {
       currentDay: new Date(),
       sessions: {
