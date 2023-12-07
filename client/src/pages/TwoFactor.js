@@ -1,30 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import logo from "../assets/logo.png";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { UserContext } from '../UserContext'
 
 const TwoFactor = () => {
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
-  const verificationCode = location.state.verificationCode;
+  const { user } = useContext(UserContext);
+  const { state } = useLocation();
+
+  const accountType = user.accountType;
+  console.log(accountType);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
-    console.log("Input Value: ", e.target.value);
-    console.log("Code: ", verificationCode);
   };
 
   const handleValidation = () => {
-    if (inputValue == verificationCode) {
-      alert("Correct Code!");
-       navigate("/TutorDash");
+    if(accountType == 'student'){
+      navigate("/StudentDash");
       console.log("Validation is performed with input value:", inputValue);
-      //
     } else {
-      console.log("Verification code does not match.");
-      alert("Invalid Code!");
-      navigate("/Login");
+      navigate("/TutorDash");
+      console.log("Validation is performed with input value:", inputValue);
     }
   };
 
@@ -63,3 +61,4 @@ const TwoFactor = () => {
 };
 
 export default TwoFactor;
+

@@ -1,78 +1,113 @@
-import { auth } from '../firebase';
+import React, { useState, useEffect } from "react";
+import { fetchFromAPI, uploadToAPI } from '../services/api'
+import { Tutor } from '../comp_models/tutor'
+import CreateFields from '../components/CreateFields'
+import bcrypt from "bcryptjs-react"
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
+import { auth } from '../firebase';
 
 const SignUpTutor = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [inputValue, setInputValue] = useState('');
-  const [arrayValue, setArrayValue] = useState([]);
-  //const [isTutor, setTutor] = useState('');
 
-  // let isTutor = true;
-  // let isStudent = false;
+  const initialTutor = new Tutor();
+  const [tutor, setTutor] = useState(initialTutor);
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    subjects: [],
-    profile_photo: "",
-    password: "",
-    accountType: "tutor"
-  });
+  const hashPassword = async (password) => {
+    const gennedHash = await new Promise((resolve, reject) => {
+      bcrypt.hash(password, 10, function (error, hash) {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(hash)
+        }
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
 
-  const navigate = useNavigate();
+    return gennedHash
+    // return hash
+  }
 
-  const handleChange = (e) => {
-    setEmail(e.target.value)
-    setPassword(e.target.value)
-
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
-  const convertToArray = () => {
-    const values = inputValue.split(',').map((item) => item.trim());
-    setArrayValue(values);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    convertToArray();
-    console.log("Form data submitted:", formData);
-    try {
-      const { email, password } = formData;
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
-      const user = userCredential.user;
-      localStorage.setItem('token', user.accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
-      navigate("/TutorDash");
-    } catch (error) {
-      console.error(error);
+    console.log("Form data submitted:", tutor);
+    // Regex matching
+    var alertString = ""
+    for (const [field, value] of Object.entries(tutor)) {
+      if (field in labelData && "regex" in labelData[field] && !labelData[field].regex.test(value)) {
+        alertString += "Field " + labelData[field].label.toLowerCase() + " does not match input requirements\n"
+      }
+      // console.log(field+" : "+value)
     }
-    // Clear the form fields
+    alert(alertString)
+    if (alertString === "") {
+      (async () => {
+        try {
+          const pwdHash = await hashPassword(tutor.password)
+          tutor.password = pwdHash
+          const data = await uploadToAPI("tutor/", tutor)
+          console.log(data)
+        } catch (e) {
+          console.log(e)
+        }
 
-    // setFormData({
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   phone: "",
-    //   subjects: "",
-    //   profile_photo: "",
-    //   password: "",
-    // });
+      })()
+
+      // Clear the form fields
+      setTutor(new Tutor());
+    }
+
   };
+
+  const labelData = {
+    firstName: {
+      label: "First name",
+      regex: /^[A-Za-z]{2,}$/,
+      maxLength: 20
+    },
+    lastName: {
+      label: "Last name",
+      regex: /^[A-Za-z]{2,}$/,
+      maxLength: 30
+    },
+    middleName: {
+      label: "Middle name",
+      regex: /^[A-Za-z]{2,}$/,
+      maxLength: 30
+    },
+    password: {
+      label: "Password",
+      regex: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      maxLength: 30
+    },
+    username: {
+      label: "Username",
+      regex: /^[A-Za-z0-9]+$/,
+      maxLength: 11
+    },
+    phone: {
+      label: "Phone number",
+      regex: /^[0-9]{8,13}$/,
+      maxLength: 13
+    },
+    email: {
+      label: "Email",
+      regex: /^[A-Za-z0-9]+@[A-Za-z0-9.]+[.][A-Za-z]{3}$/,
+      maxLength: 50
+    },
+    major: {
+      label: "Major"
+    },
+    courses:{
+      label:"Courses"
+    },
+    pfp: {
+      label: "Profile Picture"
+    }
+  };
+
+
+
+
 
   return (
     <div className="page-container">
@@ -80,7 +115,8 @@ const SignUpTutor = () => {
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            {CreateFields(tutor, setTutor, labelData)}
+            {/* <div className="form-group">
               <label htmlFor="profile_photo">Upload Profile Photo</label>
               <input
                 type="file"
@@ -147,14 +183,15 @@ const SignUpTutor = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="subjects">Subjects (list separated by commas)</label>
+              <label htmlFor="subjects">Subjects</label>
               <input
                 type="text"
-                value={inputValue}
-                onChange={handleInputChange}
-                placeholder="Enter comma-separated values"
+                id="Subjects"
+                name="Subjects"
+                value={formData.subjects}
+                onChange={handleChange}
               />
-            </div>
+            </div> */}
             <button className="create_acc_student_button" type="submit">
               Create Tutor Account
             </button>

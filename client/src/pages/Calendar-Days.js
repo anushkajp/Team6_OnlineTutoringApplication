@@ -1,3 +1,4 @@
+import React from "react";
 import CalendarEvent from "./CalendarEvent";
 
 // CREDIT: https://derrickotte.medium.com/how-to-create-a-calendar-from-scratch-in-react-1f2db197454d

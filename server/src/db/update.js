@@ -129,10 +129,17 @@ module.exports = {
      * @param {number} newRating New rating for the user
      */
         updateTutorRating: async function updateTutorRating(userId, newRating) {
-            return modifyItem("Tutor",userId,"rating", newRating)
+            return modifyItem("Review",userId,"rating", newRating)
         },
-
-
+   /**
+     * Update the user rating
+     * @param {string} userId Database id for the user
+     * @param {number} newDescription New rating for the user
+     */
+        updateReviewDescription: async function updateReviewDescription(userId, newDescription) {
+            return modifyItem("Review",userId,"description", newDescription)
+        },
+        
     /**
      * Update the tutors weekly availability
      * @param {string} tutorId Database id for the user

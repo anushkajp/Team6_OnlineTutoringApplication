@@ -1,106 +1,64 @@
-import React from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Sidebar from '../components/sidebar'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
 import ReviewTile from '../components/ReviewTile'
-import LogoutButton from '../components/LogoutButton'
-
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
-import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../UserContext'
+import { fetchFromAPI } from '../services/api'
 
 const TutorDash = () => {
 
-  const user = JSON.parse(localStorage.getItem('user'));
-  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  const [appts, setData] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  
+  useEffect(() => {
+    fetchFromAPI(`appointments/${user.accountType}/${user.username}`) 
+      .then(data => {
+        const render_data = Object.entries(data).map(([key, value]) => ({
+          key,
+          datetime: value.datetime,
+          length: value.length,
+          location: value.location,
+          online: value.online,
+          studentId: value.studentId,
+          tutorId: value.tutorId
+        }
+        ));
+        setData(render_data)
+      })
+      .catch(error => {
+        setData({
+          datetime: "Loading...",
+          length: "Loading...",
+          location: "Loading...",
+          online: "Loading...",
+          studentId: "Loading...",
+          tutorId: "Loading..."
+        });
+        console.log(error);
+      });
+  }, []);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      navigate("/Home");
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const favoriteTutors = [
-    "Diana Le",
-    "Anushka Pimple",
-    "Ryan Lahlou",
-    "Tommy Cheung"
-  ]
-
-  const sampleJSON = [
-    {
-      "class_name": "AP Computer Science A",
-      "student_name": "Anushka P",
-      "session_time": "3:00 PM Tuesday",
-      "session_rating": 4,
-      "session_comments": "TutorTopia rules"
-    },
-    {
-      "class_name": "Physics 101",
-      "student_name": "John D",
-      "session_time": "10:30 AM Wednesday",
-      "session_comments": "comment1"
-    },
-    {
-      "class_name": "Biology Lab",
-      "student_name": "Samantha L",
-      "session_time": "2:15 PM Monday",
-      "session_comments": "comment2"
-    },
-    {
-      "class_name": "Mathematics Advanced",
-      "student_name": "David S",
-      "session_time": "11:00 AM Thursday",
-      "session_comments": "comment3"
-    },
-    {
-      "class_name": "History of Art",
-      "student_name": "Emily B",
-      "session_time": "4:45 PM Friday",
-      "session_rating": 4,
-      "session_comments": "comment4"
-    }
-  ]
-
-  const sampleJSON2 = [
-    {
-      "class_name": "AP Computer Science A",
-      "student_name": "Anushka P",
-      "session_time": "3:00 PM Tuesday",
-      "session_rating": 4,
-      "session_comments": "TutorTopia rules"
-    },
-    {
-      "class_name": "Physics 101",
-      "student_name": "John D",
-      "session_time": "10:30 AM Wednesday",
-      "session_rating": 3
-    },
-    {
-      "class_name": "Biology Lab",
-      "student_name": "Samantha L",
-      "session_time": "2:15 PM Monday",
-      "session_rating": 4
-    },
-    {
-      "class_name": "Mathematics Advanced",
-      "student_name": "David S",
-      "session_time": "11:00 AM Thursday",
-      "session_rating": 4
-    },
-    {
-      "class_name": "History of Art",
-      "student_name": "Emily B",
-      "session_time": "4:45 PM Friday",
-      "session_rating": 4,
-      "session_comments" : "She aight"
-    }
-  ]
+  useEffect(() => {
+    fetchFromAPI(`review/${user.username}`) 
+      .then(data => {
+        const render_data = Object.entries(data).map(([key, value]) => ({
+          key,
+          tutorUsername: value.tutorUsername,
+          studentUsername: value.studentUsername,
+          rating: parseFloat(value.rating), // Parse rating as a float
+          description: value.description      
+        }
+        ));
+        console.log(render_data)
+        setReviews(render_data); 
+      })
+      .catch(error => {
+        console.error('Error fetching reviews:', error);
+        setReviews([])
+      });
+    }, []);
 
   return (
     <div className="dashboardPage">
@@ -108,56 +66,47 @@ const TutorDash = () => {
       <div className="tile_contents">
           <div className="left_div">
             <div className="top_div">
-                <div className="container">
-                <div className="left">
-                    <DashboardTile width="300px" height="300px" backgroundColor="white" title="My Tutor Stats">
-                        
-                    </DashboardTile>
-                </div>  
-                <div className="right">
-                    <div className="top">
-                      <DashboardTile width="140px" height="140px" backgroundColor="#B9CCF3">
-                        <h1>15</h1>
+                <div className="container"> 
+                <div className="top">
+                    <div className="left">
+                      <DashboardTile width="35vh" height="35vh" backgroundColor="#B9CCF3">
+                        <h1>{user.hours}</h1>
                         <h6>hours tutored</h6>
-                      </DashboardTile>
-                    </div>
-                    <div className='bottom'>
-                      <DashboardTile width="140px" height="140px" backgroundColor="#F2B9F3">
-                        <h1>15</h1>
-                        <h6>subjects learned</h6>
                       </DashboardTile>
                     </div>
                 </div>
                 </div>
             </div>
             <div className="bottom_div">
-              <DashboardTile cln="sessiontiles" title="Upcoming Sessions">
-              {
-                    sampleJSON.slice(0,4).map((review, index) => (
-                      <SessionTile key={index} class_name={review.class_name}
-                      student_name={review.student_name}
-                      session_time={review.session_time}
-                      session_comments={review.session_comments}>
-                      </SessionTile>
-                    ))
-              }
+              <DashboardTile width="70vh" className="sessiontiles" title="Upcoming Sessions">
+                  {
+                    appts.length > 0 ? appts.map((session, index) => (
+                      <SessionTile 
+                        datetime={session.session_time}
+                        length={session.session_length}  
+                        location={session.session_location}  
+                        online={session.session_online}  
+                        studentId={session.student_name}
+                        tutorId={session.session_rating}
+                      ></SessionTile>)) : <h6>No upcoming sessions yet!</h6>
+                  }
               </DashboardTile>
             </div>
           </div>
           <div className="right_div">
               <DashboardTile title="Recent Student Reviews">
                   {
-                    sampleJSON2.map((review, index) => (
-                      <ReviewTile key={index} class_name={review.class_name}
-                      student_name={review.student_name}
-                      session_time={review.session_time}
-                      session_rating={review.session_rating}
-                      session_comments={review.session_comments}>
-                      </ReviewTile>
+                    reviews.map((review, index) => (
+                      <ReviewTile
+                        key={index} 
+                        tutorId = {review.tutorUsername}
+                        studentId = {review.studentUsername}
+                        rating = {review.rating}
+                        description = {review.description}
+                      />
                     ))
                   }
               </DashboardTile>
-              <LogoutButton onClick={handleLogout} />
           </div>
       </div>
     </div>

@@ -1,39 +1,40 @@
-import React,{useEffect, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import Sidebar from '../components/sidebar'
 import SessionTile from '../components/SessionTile'
+import { UserContext } from '../UserContext'
 import { fetchFromAPI } from '../services/api'
-
-function ListUpcoming(props){
-
-  const [renderSessions, setSessions] = useState([])
+const ListUpcoming = (props) => {
+  const { user } = useContext(UserContext);
+  const [ data, setData] = useState([])
 
   useEffect(() => {
-    fetchFromAPI(`appointments/${props.renderType}/${props.userName}`) 
+    fetchFromAPI(`appointments/${user.accountType}/${user.username}`) 
       .then(data => {
-          const render_data = Object.entries(data).map(([key, value]) => ({
+        const render_data = Object.entries(data).map(([key, value]) => ({
           key,
-          class_name: value.course,
-          student_name: props.userName,
-          session_time: value.dateTime,
-          session_rating: value.rating,
-          session_comments: value.notes,
-          modality: value.online
-        }));
-        setSessions(render_data);
+          datetime: value.datetime,
+          length: value.length,
+          location: value.location,
+          online: value.online,
+          studentId: value.studentId,
+          tutorId: value.tutorId
+        }
+        ));
+        console.log(render_data);
+        setData(render_data)
       })
       .catch(error => {
-        setSessions({
-          "key": "Loading...",
-          "class_name": "Loading...",
-          "student_name": "Loading...",
-          "session_time": "Loading...",
-          "session_rating": 0,
-          "session_comments": "Loading...",
-          "modality": "Loading..."
-        });
+        setData([{
+          datetime: "Loading...",
+          length: "Loading...",
+          location: "Loading...",
+          online: "Loading...",
+          studentId: "Loading...",
+          tutorId: "Loading..."
+        }]);
         console.log(error);
       });
-  }, [props.renderType, props.userName]);
+  }, []);
 
   return (
     <div className="upcomingPage">
@@ -48,19 +49,22 @@ function ListUpcoming(props){
           </nav>
         </div>
         <div className="upcomingSessionList">
-        {
-            Array.isArray(renderSessions) ? renderSessions.map((review, index) => (
-              <SessionTile key={index} class_name={review.class_name}
-                student_name={review.student_name}
-                session_time={review.session_time}
-                session_comments={review.session_comments}>
-              </SessionTile>
-            )) : <h4>You have no upcoming sessions just yet!</h4>
-        }
+            {
+              data.map((session, index) => (
+                <SessionTile 
+                  datetime={session.session_time}
+                  length={session.session_length}  
+                  location={session.session_location}  
+                  online={session.session_online}  
+                  studentId={session.student_name}
+                  tutorId={session.session_rating}
+                >
+                </SessionTile>
+              ))
+            }
         </div>
       </div>
     </div>
   )
 }
-
 export default ListUpcoming

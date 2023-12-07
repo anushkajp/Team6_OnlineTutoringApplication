@@ -4,16 +4,23 @@ const { searchItem } = require("./src/db/db");
 
 const reads = require("./src/db/read")
 const updates = require("./src/db/update")
-const adds = require("./src/db/add")
-const obAdds = require("./src/db/obAdd")
+// const adds = require("./src/db/add")
+const adds = require("./src/db/obAdd")
 const deletes = require("./src/db/delete")
-const User = require("./src/models/user")
+const Availability = require("../server/src/models/availability")
+const Review = require("../server/src/models/review")
+const Course = require("../server/src/models/course")
+const Session = require("../server/src/models/session")
+const Student = require("../server/src/models/student")
+const Tutor = require("../server/src/models/tutor")
+const User = require("../server/src/models/user")
+const Major = require("../server/src/models/major")
 
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
 const app = express();
 const PORT = 8000;
-const cors = require('cors'); 
+const cors = require('cors');
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -34,7 +41,7 @@ app.get("/testInfo", (req, res) => {
         const major = await reads.getMajors()
         const course = await reads.getCourses()
         const review = await reads.getReviews()
-        const search = await searchItem("User","username","bibilivesagain")
+        const search = await searchItem("User", "username", "bibilivesagain")
         // console.log(await search())
         // for (i in searchItem("Tutor","courses", courseId)){
         //     console.log(i)
@@ -48,7 +55,7 @@ app.get("/testInfo", (req, res) => {
                 appointment: appointment,
                 major: major,
                 course: course,
-                review:review,
+                review: review,
                 searchs: search
 
             }
@@ -67,9 +74,10 @@ app.get("/testPost", (req, res) => {
     (async () => {
 
         // updates.updateUsername("-NgePx3To2rYbOgfYW_g", null)
-        const major = await adds.addMajor("Computer Science")
+        // newMajor = new Major("Computer Science",null)
+        const major = await adds.addMajor({majorName:"Computer Science"})
         const majorId = await major["id"]
-        // const course = await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
+        const course = await adds.loadJSONFile("./2023_CS_Courses.json",majorId)
         const availability =
         {
             "monday": [
@@ -224,12 +232,12 @@ app.get("/testDelete", (req, res) => {
         for (i in await reads.getAppointments()) {
             deletes.deleteAppointment(i)
         }
-        // for (i in await reads.getMajors()) {
-        //     deletes.deleteMajor(i)
-        // }
-        // for (i in await reads.getCourses()) {
-        //     deletes.deleteCourse(i)
-        // }
+        for (i in await reads.getMajors()) {
+            deletes.deleteMajor(i)
+        }
+        for (i in await reads.getCourses()) {
+            deletes.deleteCourse(i)
+        }
         // for(i in await searchItem("User","username","deedee")){
         //     deletes.deleteUser(i)
         // }
@@ -266,9 +274,13 @@ const sessionRouter = require('./src/routes/sessions')
 const reviewRouter = require('./src/routes/reviews')
 const availabilityRouter = require('./src/routes/availability')
 const loginRouter = require ('./src/routes/login')
+const majorRouter = require('./src/routes/major')
+const courseRouter = require('./src/routes/courses')
 app.use('/tutor', tutorRouter)
 app.use('/student', studentRouter)
 app.use('/appointments', sessionRouter)
-app.use('/session/review', reviewRouter)
+app.use('/review', reviewRouter)
 app.use('/availability', availabilityRouter)
 app.use('/login', loginRouter)
+app.use('/major',majorRouter)
+app.use('/course', courseRouter)

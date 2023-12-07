@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import Sidebar from "../components/sidebar";
 import SessionTile from "../components/SessionTile";
 import CalendarDays from "./Calendar-Days";
