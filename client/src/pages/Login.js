@@ -16,7 +16,23 @@ const Login = () => {
   const [error, setError] = useState("");
   const { updateUser } = useContext(UserContext);
   let navigate = useNavigate();
+  const hashPassword = async (password) => {
+    const gennedHash = await new Promise((resolve, reject) => {
+      bcrypt.hash(password, 10, function (error, hash) {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(hash)
+        }
 
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
+
+    return gennedHash
+    // return hash
+  }
+  // handle submit 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
