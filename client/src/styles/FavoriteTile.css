@@ -1,0 +1,14 @@
+.favorite_container {
+    display: flex;
+    float: right;
+    flex-direction: row;
+}
+.tutor_info {
+    flex-direction: column;
+}
+.pic {
+    width: 15vh;
+    height: 15vh;
+    background-color:#b9ccf3 ;
+    border-radius: 5vh;
+}
