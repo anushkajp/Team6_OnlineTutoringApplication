@@ -38,7 +38,7 @@ const Login = () => {
     try {
       
       setPersistence(auth, browserLocalPersistence);
-      await signInWithEmailAndPassword(auth, email, password)
+      signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential)=> {
 
         const user = userCredential.user;

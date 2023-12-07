@@ -102,7 +102,6 @@ function AddTutorSession() {
     const setLowerBound = parseInt(boundedTime.timeLower.split(":")[0])
     const comparisonBound = parseInt(time.target.value.split(":")[0])
     if (time.target.id==="timeLower"){
-      const newLowerBound = parseInt(time.target.value.split(":")[0])
       console.log("Lower bound of time is : "+time.target.value)
       if (comparisonBound<=setUpperBound){
         setBoundedTime({...boundedTime,[time.target.id]:time.target.value})

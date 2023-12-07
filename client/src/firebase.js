@@ -33,6 +33,7 @@ export async function fetchUserType(uid) {
 
     if (snapshot.exists()) {
       data = snapshot.val();
+      
       key = Object.keys(data)[0]; 
       return { accountType: "student", userKey: key}; 
     } else {
@@ -40,6 +41,7 @@ export async function fetchUserType(uid) {
       const tutorQuery = query(tutorRef, orderByChild('userId'), equalTo(uid));
       const tutorSnapshot = await get(tutorQuery); 
       data = tutorSnapshot.val();
+      console.log(data)
       key = Object.keys(data)[0];
     
       if (tutorSnapshot.exists()) {

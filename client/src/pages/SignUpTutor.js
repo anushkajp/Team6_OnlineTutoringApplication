@@ -38,11 +38,16 @@ const SignUpTutor = () => {
       }
       // console.log(field+" : "+value)
     }
-    alert(alertString)
+    
     if (alertString === "") {
         try {
-          const pwdHash = await hashPassword(tutor.password)
-          
+          const pwdHash = await hashPassword(tutor.password) 
+          for (const [field, value] of Object.entries(tutor)) {
+            if(value === null || value ===undefined){
+              tutor[field] = ""
+            }
+            // console.log(field+" : "+value)
+          }
           const userCredential = await createUserWithEmailAndPassword(auth, tutor.email, tutor.password);
           tutor.userId = userCredential.user.uid;
           tutor.password = pwdHash
@@ -54,6 +59,8 @@ const SignUpTutor = () => {
 
       // Clear the form fields
       setTutor(new Tutor());
+    }else{
+      alert(alertString)
     }
 
   };

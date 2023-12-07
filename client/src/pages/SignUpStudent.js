@@ -37,13 +37,20 @@ const SignUpStudent = () => {
       }
       // console.log(field+" : "+value)
     }
-    alert(alertString)
+    
     if (alertString === "") {
       try {
         const pwdHash = await hashPassword(student.password);
         student.favoriteTutors = "";
         student.longBio = student.shortBio = ""
         student.hours = 0;
+        for (const [field, value] of Object.entries(student)) {
+          if(value === null || value ===undefined){
+            student[field] = ""
+          }
+          // console.log(field+" : "+value)
+        }
+
 
         // Create user in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(auth, student.email, student.password);
@@ -54,6 +61,8 @@ const SignUpStudent = () => {
       } catch (error) {
         console.error("Error in user registration: ", error);
       }
+    }else {
+      alert(alertString)
     }
   };
 
