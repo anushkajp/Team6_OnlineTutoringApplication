@@ -1,47 +1,3 @@
-.left{
-    padding-right: 16px;
-}
-
-.bottom_div{
-    margin: 0;
-    display: flex;
-}
-
-.left_div{
-    float: left;   
-    display: flex;
-    position: left;
-    flex-direction: column;
-    margin-right: 20px;
-}
-
-.right_div{
-    float: right;
-    position: right;
-    display: flex;
-    width: 100%;
-    background-color: white;
-    padding-right: 100px;
-}
-
-.top{
-    position: relative;
-}
-
-.right{
-    float: right;
-    border-radius: 3px;
-}
-
-.top_div{
-    border-radius: 3px;
-    width: inherit;
-}
-
-.container{
-    display: flex;
-}
-
 h1{
     font-size: 75px;
     font-style: normal;
@@ -65,4 +21,39 @@ h6{
 .tile_title > h4{
     font-size: 20px;
     align-self: flex-start;
+}
+
+.hoursTutored{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.upcomingSessions{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 1rem;
+}
+
+.upcomingSessions::-webkit-scrollbar, .favorite_tutors::-webkit-scrollbar {
+    display: none;
+}
+
+.favorite_tutors{
+    margin:0px;
+    align-items: flex-start;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.tile_sub > h6{
+    text-align: center;
+}
+
+.availibilities{
+    overflow-y: scroll;
+}
+
+.availibilities::-webkit-scrollbar{
+    display: none;
 }

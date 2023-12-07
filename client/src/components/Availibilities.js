@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { fetchFromAPI, sendAPIPatchRequest } from '../services/api'
 import ButtonModal from './ButtonModal';
 import AddExceptionForm from './AddExceptionForm';
 import ModifyTimeblockForm from './ModifyTimeblock';
+import { UserContext } from '../UserContext'
+import "../styles/availibilities.css"
 
 function Availibilities(props) {
+  const { user } = useContext(UserContext)
   const [renderAvailibilty, setAvailibility] = useState([])
 
   useEffect(() => {
@@ -93,9 +96,11 @@ function Availibilities(props) {
   }, [props.renderType, props.userName]);
 
   return (
-    <div>
-      <ButtonModal buttonText="Add New Exceptions" modalContent={<AddExceptionForm data={renderAvailibilty} setAvailibility={setAvailibility} />} />
-      <ButtonModal buttonText="Remove Timeblocks" modalContent={<ModifyTimeblockForm data={renderAvailibilty} setData={setAvailibility} />} />
+    <div className="availSide">
+      <div className="avail_buttons">
+        <ButtonModal buttonText="Add New Exceptions" modalContent={<AddExceptionForm data={renderAvailibilty} setAvailibility={setAvailibility} />} />
+        <ButtonModal buttonText="Remove Timeblocks" modalContent={<ModifyTimeblockForm data={renderAvailibilty} setData={setAvailibility} />} />
+      </div>
 
       <div>
         {
@@ -112,24 +117,24 @@ function Availibilities(props) {
                   </label>
                   {details === false ? (
                     <section className="avail_times">
-                        <h3>None</h3>
+                        <h6>None</h6>
                     </section>
                   ) : (
                     details && (
                       <section className="avail_times">
                         <ul>
                           {details.map((detail, detailIndex) => (
-                            <li key={detailIndex}>
+                            <li className="avail_item" key={detailIndex}>
                               {day === "exceptions" ? (
-                                <>
+                                <h6>
                                   {detail}
-                                </>
+                                </h6>
                               ) : (
-                                <>
-                                  {new Date(detail.start).toLocaleString()} to{' '}
-                                  {new Date(detail.end).toLocaleString()} <br />
+                                <h6>
+                                  {detail.start_time} to{' '}
+                                  {detail.end_time} <br />
                                   Online: {detail.online ? 'Yes' : 'No'}
-                                </>
+                                </h6>
                               )}
                             </li>
                           ))}

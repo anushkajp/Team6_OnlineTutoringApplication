@@ -5,12 +5,13 @@ const DashboardTile = (props) => {
     width: props.width, 
     height: props.height,
     backgroundColor: props.backgroundColor,
-    borderRadius: "30px"
+    borderRadius: props.border,
+    margin: props.margin
 };
 
   return (
     <div className={props.cln} style={style}>
-        <h4 className="tile_title">{props.title}</h4>
+        {props.title ? <h4 className="tile_title">{props.title}</h4> : <></>}
         {props.children}
     </div>
   )

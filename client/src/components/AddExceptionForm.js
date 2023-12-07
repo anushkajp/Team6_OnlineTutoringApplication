@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { sendAPIPatchRequest } from '../services/api'
+import "../styles/button_modal.css"
+import { UserContext } from "../UserContext"
 
 const AddExceptionForm = ({ data, setAvailibility }) => {
     const [selectedDate, setSelectedDate] = useState('');
+    const { user } = useContext(UserContext)
 
     const handleDateChange = (e) => {
         setSelectedDate(e.target.value);
@@ -36,7 +39,7 @@ const AddExceptionForm = ({ data, setAvailibility }) => {
             return acc;
           }, {});
 
-        sendAPIPatchRequest(`tutor/diananle`, { "availability": {...transformArrayforJSON} })
+        sendAPIPatchRequest(`tutor/${user.username}`, { "availability": {...transformArrayforJSON} })
         .then(data => {
             console.log(data)
         })
@@ -46,13 +49,12 @@ const AddExceptionForm = ({ data, setAvailibility }) => {
     };
 
     return (
-        <div>
-            <label>
-                Date:
+        <div className="date_picker_modal">
+            <h2>Add an exception date</h2>
+            <label className="datepicker">
                 <input type="date" value={selectedDate} onChange={handleDateChange} />
             </label>
-
-            <button onClick={addDate}>Add Date to Exceptions</button>
+            <button className="bm_button" onClick={addDate}>Add Date to Exceptions</button>
         </div>
     );
 };

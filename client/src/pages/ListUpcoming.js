@@ -36,6 +36,32 @@ const ListUpcoming = (props) => {
       });
   }, []);
 
+  const sampleAppts = [
+    {
+      "datetime": "2015-09-26T13:00:00",
+      "length": 60,
+      "location": "www.zoom.com",
+      "online": true,
+      "studentId": "lryanlesgf",
+      "tutorId": "bib123"
+    },
+    {
+      "datetime": "2015-09-26T13:00:00",
+      "length": 60,
+      "location": "www.zoom.com",
+      "online": true,
+      "studentId": "lryanlesgf",
+      "tutorId": "bib123"
+    }, {
+      "datetime": "2015-09-26T13:00:00",
+      "length": 60,
+      "location": "www.zoom.com",
+      "online": true,
+      "studentId": "lryanlesgf",
+      "tutorId": "bib123"
+    }
+  ]
+
   return (
     <div className="upcomingPage">
       <div className="sidebar">
@@ -50,8 +76,8 @@ const ListUpcoming = (props) => {
         </div>
         <div className="upcomingSessionList">
             {
-              data.map((session, index) => (
-                <SessionTile 
+              sampleAppts.map((session, index) => (
+                <div className="listSessions"
                   datetime={session.session_time}
                   length={session.session_length}  
                   location={session.session_location}  
@@ -59,7 +85,7 @@ const ListUpcoming = (props) => {
                   studentId={session.student_name}
                   tutorId={session.session_rating}
                 >
-                </SessionTile>
+                </div>
               ))
             }
         </div>

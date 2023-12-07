@@ -3,6 +3,8 @@ import Sidebar from '../components/sidebar'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
 import ReviewTile from '../components/ReviewTile'
+import Availibilities from '../components/Availibilities'
+import Layout from '../components/Layout'
 import { UserContext } from '../UserContext'
 import { fetchFromAPI } from '../services/api'
 
@@ -60,57 +62,42 @@ const TutorDash = () => {
       });
     }, []);
 
-  return (
-    <div className="dashboardPage">
-      <Sidebar className="dbPageSidebar" renderType="tutor"></Sidebar>
-      <div className="tile_contents">
-          <div className="left_div">
-            <div className="top_div">
-                <div className="container"> 
-                <div className="top">
-                    <div className="left">
-                      <DashboardTile width="35vh" height="35vh" backgroundColor="#B9CCF3">
-                        <h1>{user.hours}</h1>
-                        <h6>hours tutored</h6>
-                      </DashboardTile>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <div className="bottom_div">
-              <DashboardTile width="70vh" className="sessiontiles" title="Upcoming Sessions">
-                  {
-                    appts.length > 0 ? appts.map((session, index) => (
-                      <SessionTile 
-                        datetime={session.session_time}
-                        length={session.session_length}  
-                        location={session.session_location}  
-                        online={session.session_online}  
-                        studentId={session.student_name}
-                        tutorId={session.session_rating}
-                      ></SessionTile>)) : <h6>No upcoming sessions yet!</h6>
-                  }
-              </DashboardTile>
-            </div>
+    return (
+      <Layout>
+        <div className="leftContent">
+          <div className="statsTiles">
+            <DashboardTile margin="1rem" border="2rem" width="30vh" height="20vh" backgroundColor="#B9CCF3" cln="hoursTutored">
+              <h1>{user.hours ? user.hours : 0}</h1>
+              <h6>hours tutored</h6>
+            </DashboardTile>
+            <DashboardTile margin="1rem" border="2rem" width="30vh" height="20vh" backgroundColor="#F9C8C8" cln="hoursTutored">
+              <h1>{appts.length}</h1>
+              <h6>sessions booked</h6>
+            </DashboardTile>
           </div>
-          <div className="right_div">
-              <DashboardTile title="Recent Student Reviews">
-                  {
-                    reviews.map((review, index) => (
-                      <ReviewTile
-                        key={index} 
-                        tutorId = {review.tutorUsername}
-                        studentId = {review.studentUsername}
-                        rating = {review.rating}
-                        description = {review.description}
-                      />
-                    ))
-                  }
-              </DashboardTile>
-          </div>
-      </div>
-    </div>
-  )
+  
+          <DashboardTile title="Upcoming Sessions" margin="0rem" border="0rem" width="72vh" height="60vh" cln="upcomingSessions">
+            {
+              appts.length > 0 ? appts.map((session, index) => (
+                <SessionTile
+                  datetime={session.datetime}
+                  length={session.length}
+                  location={session.location}
+                  online={session.online}
+                  studentId={session.studentId}
+                  tutorId={session.tutorId}
+                ></SessionTile>)) : <h6>No upcoming sessions yet!</h6>
+            }
+          </DashboardTile>
+        </div>
+  
+        <div className="rightContent">
+          <DashboardTile height="84vh" title="My Availibilities" cln="availibilities">
+                <Availibilities/>
+          </DashboardTile>
+        </div>
+      </Layout>
+    )
 }
 
 export default TutorDash

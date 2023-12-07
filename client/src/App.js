@@ -25,6 +25,7 @@ import "./styles/Reviews.css";
 
 
 // import pages
+import Availibilities from "./components/Availibilities";
 import AddTutorSession from "./pages/AddTutorSession";
 import CalendarPage from "./pages/CalendarPage";
 import Contact from "./pages/Contact";
@@ -58,6 +59,7 @@ function App() {
               <Route path="/Contact" element={<Contact />} />
               <Route path="/Forgot" element={<Forgot />} />
               <Route path="/Home" element={<Home />} />
+              <Route path="/Availibilities" element={<Availibilities />} />
 
               <Route
                 path="/AddTutorSession"

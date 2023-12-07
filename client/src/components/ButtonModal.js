@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
+import "../styles/button_modal.css"
 
 const ButtonModal = ({ buttonText, modalContent }) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -14,9 +15,9 @@ const ButtonModal = ({ buttonText, modalContent }) => {
 
   return (
     <div>
-      <button onClick={openModal}>{buttonText}</button>
+      <button className="bm_button" onClick={openModal}>{buttonText}</button>
       <Modal isOpen={isModalOpen} onRequestClose={closeModal}>
-          { modalContent }    
+         <div className="bm_content">{ modalContent }</div> 
       </Modal>
     </div>
   );
