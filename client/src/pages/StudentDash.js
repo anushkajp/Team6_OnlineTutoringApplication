@@ -4,7 +4,9 @@ import Header from '../components/Header'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'
 import FavoriteTile from '../components/FavoriteTile'
-
+import { UserContext } from '../UserContext'
+import { useState, useEffect, useContext } from 'react'
+import { fetchFromAPI } from '../services/api'
 const favoriteTutorInfo = []
 const StudentDash = () => {
 
