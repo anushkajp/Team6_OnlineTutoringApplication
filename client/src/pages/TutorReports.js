@@ -59,11 +59,13 @@ const TutorReports = (props) => {
       </div>
       <div className="reviewInfo">
         <div className="averageButton">
-            <h5 className="averageRating">{averageRating} / 5</h5>
-            <h6 className="overallRating">Overall rating from {tiles.length} reviews</h6>
+          <h5 className="averageRating">{averageRating} / 5</h5>
+          <h6 className="overallRating">Overall rating from {tiles.length} reviews</h6>
         </div>
-        <div className="reviewList">
-          {tiles}
+        <div className="reviewListContainer">
+          <div className="reviewList">
+            {tiles}
+          </div>
         </div>
       </div>
     </div>
