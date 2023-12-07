@@ -16,40 +16,29 @@ const Login = () => {
   const [error, setError] = useState("");
   const { updateUser } = useContext(UserContext);
   let navigate = useNavigate();
-  const hashPassword = async (password) => {
-    const gennedHash = await new Promise((resolve, reject) => {
-      bcrypt.hash(password, 10, function (error, hash) {
-        if (error) {
-          reject(error)
-        } else {
-          resolve(hash)
-        }
 
-      })
-    })
-    // console.log("Hash generated: "+gennedHash)
-
-    return gennedHash
-    // return hash
-  }
-  // handle submit 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      
-      setPersistence(auth, browserLocalPersistence);
-      signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential)=> {
-
-        const user = userCredential.user;
-        const accountInfo = await fetchUserType(user.uid);
-        const data = await findStudentByKey(accountInfo.userKey);
-        updateUser({ uid: user.uid, email: user.email, accountType: accountInfo.accountType, key: accountInfo.userKey, ...data });
-        });
+      await setPersistence(auth, browserLocalPersistence);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      const accountInfo = await fetchUserType(user.uid);
+      const data = await findStudentByKey(accountInfo.userKey);
+  
+      updateUser({ 
+        uid: user.uid, 
+        email: user.email, 
+        accountType: accountInfo.accountType, 
+        key: accountInfo.userKey, 
+        ...data 
+      });
+  
       navigateToTwoFactor();
     
     } catch (error) {
       console.error(error);
+      setError(error.message); // Set error in state to display error message to user
     }
   }
 
