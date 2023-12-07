@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react'
-import Sidebar from '../components/sidebar'
-import LogoutButton from "../components/LogoutButton"
 import { Availability } from "../comp_models/availability"
 import { UserContext } from "../UserContext"
+import Layout from '../components/Layout'
 
 function AddTutorSession() {
 
@@ -108,24 +107,11 @@ function AddTutorSession() {
     }
   }
   return (
-    <div >
-      <div className='title-logout-wrapper'>
-        <div className="title-logout">
-          <label className="title-text">Add a New Tutor Session</label>
-          <LogoutButton id="logout-button"></LogoutButton>
+    <Layout>
+      <div className="right-column">
+        <h3>Add New Session</h3>
 
-        </div>
-      </div>
-      <div className="main-columns">
-
-        {/* <div className="left-column"> */}
-        <Sidebar renderType={user.accountType} />
-        {/* </div> */}
-        <div className="right-column">
-
-
-          <label className="subtitle-text justify-left">Which days would you like to tutor?
-          </label>
+          <label className="subtitle-text justify-left">Which days would you like to tutor?</label>
 
           {DayButtons()}
 
@@ -142,9 +128,8 @@ function AddTutorSession() {
           {ModalityButtons()}
 
         </div>
-      </div>
-
-    </div>
+    </Layout>
+    
   )
 }
 
