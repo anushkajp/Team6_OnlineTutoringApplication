@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react'
 import Sidebar from '../components/sidebar'
 import LogoutButton from "../components/LogoutButton"
-import  Availability  from "../models/availability"
+import  {Availability}  from "../comp_models/availability"
+// import TimeBlock from '../comp_models/timeBlock'
 import { UserContext } from "../UserContext"
-import TimeBlock from '../models/timeBlock'
 
 function AddTutorSession() {
   const weekDays = [
@@ -23,11 +23,6 @@ function AddTutorSession() {
     { label: "1 Hour 15 Min blocks", data: 90 }
   ]
 
-  const initialAvailability = new Availability()
-  const [dowSelection, setDowSelection] = useState([])
-  const [timeBlockSize, setTimeBlockSize] = useState(timeBlocks[0])
-  const [modality, setModality] = useState(types[0])
-  const [boundedTime, setBoundedTime] = useState({timeLower:"10:00",timeUpper:"12:00"})
 
 
 
@@ -137,7 +132,7 @@ function AddTutorSession() {
       <div className="main-columns">
 
         {/* <div className="left-column"> */}
-        <Sidebar renderType={user.accountType} />
+        <Sidebar renderType={UserContext.accountType} />
         {/* </div> */}
         <div className="right-column">
 
