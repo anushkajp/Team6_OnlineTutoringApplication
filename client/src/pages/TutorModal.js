@@ -12,7 +12,7 @@ export default function TutorModal(props) {
   const [time, setTime] = useState(null);
   const [convertedTime, setConvertedTime] = useState(null);
   const { user } = useContext(UserContext);
-  console.log(user)
+  console.log(user.username)
 
   function convertTo24HourFormat(timeString) {
     // Split the string to get the start time and AM/PM part
@@ -61,15 +61,17 @@ export default function TutorModal(props) {
     }
 
     const appointmentDateTime = `${date}T${convertedTime}`;
+    const appointmentLength = 60;
+    const isOnline = true;
     
     const appointmentData = {
       datetime: appointmentDateTime,
-      length: 60,
+      length: appointmentLength,
       course: subject,
       location: "www.zoom.com",
-      online: true,
-      studentUsername: user.username, 
-      tutorUsername: tutorData.username, 
+      online: isOnline,
+      studentId: user.username, 
+      tutorId: tutorData.username, 
     };
 
     try {
