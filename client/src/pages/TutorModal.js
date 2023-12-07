@@ -12,7 +12,6 @@ export default function TutorModal(props) {
   const [time, setTime] = useState(null);
   const [convertedTime, setConvertedTime] = useState(null);
   const { user } = useContext(UserContext);
-  console.log(user.username);
 
   function convertTo24HourFormat(timeString) {
     // Split the string to get the start time and AM/PM part
@@ -103,7 +102,9 @@ export default function TutorModal(props) {
 
         <p className="c-sub">📚 Choose Subject</p>
         <div className="sub-container">
-          {tutorData.courses && Array.isArray(tutorData.courses) ? (
+          {tutorData.courses &&
+          Array.isArray(tutorData.courses) &&
+          tutorData.courses.length > 0 ? (
             tutorData.courses.map((course, index) => (
               <div
                 key={index}
@@ -116,7 +117,9 @@ export default function TutorModal(props) {
               </div>
             ))
           ) : (
-            <p>no courses available</p>
+            <div className="centered-message">
+              <p>no courses available (◕︵◕)</p>
+            </div>
           )}
         </div>
 
@@ -142,9 +145,10 @@ export default function TutorModal(props) {
               </div>
             ))
           ) : (
-            <p>No available times!</p>
+            <p>no available times (◕︵◕)</p>
           )}
         </div>
+
         <br></br>
         <br></br>
         <br></br>

@@ -191,6 +191,14 @@
   padding: 0 5px; 
 }
 
+.centered-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-left:19%;
+}
+
 .container-modal .t-box {
   flex: 1;
   margin: 10px;
