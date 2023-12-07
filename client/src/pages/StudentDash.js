@@ -6,6 +6,70 @@ import FavoriteTile from '../components/FavoriteTile'
 
 const favoriteTutorInfo = []
 const StudentDash = () => {
+
+  const { user } = useContext(UserContext);
+  const [appts, setData] = useState([]);
+  const [favoriteTutorInfo, setFavoriteTutorInfo] = useState([]);
+  
+  useEffect(() => {
+    fetchFromAPI(`appointments/${user.accountType}/${user.username}`) 
+      .then(data => {
+        
+        const render_data = Object.entries(data).map(([key, value]) => ({
+          key,
+          datetime: value.datetime,
+          length: value.length,
+          location: value.location,
+          online: value.online,
+          studentId: value.studentId,
+          tutorId: value.tutorId
+        }
+        ));
+        setData(render_data)
+      })
+      .catch(error => {
+        setData([{
+          datetime: "Loading...",
+          length: "Loading...",
+          location: "Loading...",
+          online: "Loading...",
+          studentId: "Loading...",
+          tutorId: "Loading..."
+        }]);
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    
+    Promise.all(
+      user.favoriteTutors ? user.favoriteTutors.map((tutorUsername) =>
+        fetchFromAPI(`tutor/${tutorUsername}`)
+      ) : []
+    )
+    .then((favorTutorDataArray) =>{
+      const updateFavoriteTutorInfo = user.favoriteTutors.map (
+        (tutorUsername, index) => {
+          const tutorProfile = favorTutorDataArray[index];
+          return {
+            tutorUsername,
+            profilePic: tutorProfile.pfp,
+            hours: tutorProfile.hours,
+            coursesTaught: tutorProfile.courses
+          };
+        }
+      );
+      setFavoriteTutorInfo(updateFavoriteTutorInfo);
+    })
+    .catch((error) => {
+      console.error('Error fetching favorite tutor profiles: ', error)
+      setFavoriteTutorInfo([]);
+    });
+  }, [user.favoriteTutors]);
+
+  console.log(favoriteTutorInfo);
+  console.log(appts);
+
   return (
     <div className="dashboardPage">
       <Sidebar className="dbPageSidebar" renderType="student"></Sidebar>
@@ -46,14 +110,14 @@ const StudentDash = () => {
           <div className="right_div">
               <DashboardTile title="My Favorite Tutors">
                   {
-                    favoriteTutorInfo.map((tutor, index) => (
+                    favoriteTutorInfo.length > 0 ? favoriteTutorInfo.map((tutor, index) => (
                       <FavoriteTile
                         key={index} 
                         username = {tutor.tutorUsername}
                         courses = {tutor.courses}
                         profilePic = {tutor.profilePic}
                       />
-                    ))
+                    )) : <h6>No favorite tutors yet!</h6>
                   }
               </DashboardTile>
           </div>
