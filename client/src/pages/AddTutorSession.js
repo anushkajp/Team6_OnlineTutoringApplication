@@ -4,6 +4,7 @@ import LogoutButton from "../components/LogoutButton"
 import  {Availability}  from "../comp_models/availability"
 // import TimeBlock from '../comp_models/timeBlock'
 import { UserContext } from "../UserContext"
+import { Layout } from 'lucide-react'
 
 function AddTutorSession() {
   const weekDays = [
@@ -42,7 +43,6 @@ function AddTutorSession() {
     return (
       // <div>
       <select
-        value={timeBlockSize}
         value={timeBlockSize}
         onChange={e => choiceHandler(e.target.value)}
         className="selection justify-center"
@@ -122,6 +122,7 @@ function AddTutorSession() {
   }
   return (
     <div >
+      <Layout>
       <div className='title-logout-wrapper'>
         <div className="title-logout">
           <label className="title-text">Add a New Tutor Session</label>
@@ -153,7 +154,9 @@ function AddTutorSession() {
           {ModalityButtons()}
 
         </div>
+        </div>
     </Layout>
+    </div>
     
   )
 }

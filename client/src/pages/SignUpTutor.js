@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { uploadToAPI } from '../services/api'
 import { Tutor } from '../comp_models/tutor'
 import { fetchFromAPI, uploadToAPI } from '../services/api'
-import  Tutor  from '../models/tutor'
 import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
+import { database, auth } from '../firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUpTutor = () => {
 

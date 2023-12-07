@@ -27,7 +27,6 @@ const ListUpcoming = (props) => {
       })
       .catch(error => {
         setData([{
-        setData([{
           datetime: "Loading...",
           length: "Loading...",
           location: "Loading...",
@@ -35,10 +34,35 @@ const ListUpcoming = (props) => {
           studentId: "Loading...",
           tutorId: "Loading..."
         }]);
-        }]);
         console.log(error);
       });
   }, []);
+
+  const sampleAppts = [
+    {
+      "datetime": "2015-09-26T13:00:00",
+      "length": 60,
+      "location": "www.zoom.com",
+      "online": true,
+      "studentId": "lryanlesgf",
+      "tutorId": "bib123"
+    },
+    {
+      "datetime": "2015-09-26T13:00:00",
+      "length": 60,
+      "location": "www.zoom.com",
+      "online": true,
+      "studentId": "lryanlesgf",
+      "tutorId": "bib123"
+    }, {
+      "datetime": "2015-09-26T13:00:00",
+      "length": 60,
+      "location": "www.zoom.com",
+      "online": true,
+      "studentId": "lryanlesgf",
+      "tutorId": "bib123"
+    }
+  ]
 
   return (
     <div className="upcomingPage">

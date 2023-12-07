@@ -7,6 +7,7 @@ import FavoriteTile from '../components/FavoriteTile'
 import { UserContext } from '../UserContext'
 import { useState, useEffect, useContext } from 'react'
 import { fetchFromAPI } from '../services/api'
+import { Layout } from 'lucide-react'
 const favoriteTutorInfo = []
 const StudentDash = () => {
 
@@ -74,7 +75,7 @@ const StudentDash = () => {
   console.log(appts);
 
   return (
-    
+    <Layout>
     <div className="dashboardPage">
       <Header></Header>
       <Sidebar className="dbPageSidebar" renderType="tutor"></Sidebar>
@@ -126,6 +127,7 @@ const StudentDash = () => {
                   }
               </DashboardTile>
           </div>
+      </div>
       </div>
     </Layout>
   )

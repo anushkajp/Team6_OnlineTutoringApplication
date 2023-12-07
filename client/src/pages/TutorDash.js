@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react'
-import React, { useState, useContext, useEffect } from 'react'
 import Sidebar from '../components/sidebar'
 import DashboardTile from '../components/DashboardTile'
 import SessionTile from '../components/SessionTile'

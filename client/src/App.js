@@ -35,7 +35,6 @@ import ListUpcoming from "./pages/ListUpcoming";
 import Login from "./pages/Login";
 import ProfileSettings from "./pages/ProfileSettings";
 import Reviews from "./pages/Reviews";
-import Reviews from "./pages/Reviews";
 import SearchTutor from "./pages/SearchTutor";
 import SignUpStudent from "./pages/SignUpStudent";
 import SignUpTutor from "./pages/SignUpTutor";
