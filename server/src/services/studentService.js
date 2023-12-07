@@ -1,6 +1,6 @@
 const read = require ('../db/read')
 const {updateUsername, updateUserMajor, updateUserPhone, updateUserEmail, updateUserBio,
-        updateUserPassword, updateUserProfilePic} = require ('../db/update')
+        updateUserPassword, updateUserProfilePic, updateFavoriteTutors} = require ('../db/update')
 const adds = require ('../db/obAdd')
 const {searchItem} = require ('../db/db')
 const deletes = require("../db/delete")
@@ -150,8 +150,10 @@ class StudentService {
                 await updateUserShortBio(id, data.shortBio)
             if (data.pfp != null)
                 await updateUserProfilePic(id, data.pfp)
+            if (data.favoriteTutors != null)
+                await updateFavoriteTutors(id, data.favoriteTutors)
             
-            return await read.getUser(id)
+            return await this.getOne(username)
         } catch (e) {
             throw e;
         }
