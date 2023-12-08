@@ -1,78 +1,154 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import pfp1 from "../assets/Profile_Pic_1.png";
 import pfp2 from "../assets/Profile_Pic_2.png";
+import { uploadToAPI } from "../services/api";
+import { UserContext } from "../UserContext";
 
 export default function TutorModal(props) {
-  const { toggle, action, name, subjects } = props;
+  const { toggle, action, tutorData, availabilityData, date } = props;
+  const [activeSubjectIndex, setActiveSubjectIndex] = useState(null);
+  const [activeTimeIndex, setActiveTimeIndex] = useState(null);
+  const [subject, setSubject] = useState(null);
+  const [time, setTime] = useState(null);
+  const [convertedTime, setConvertedTime] = useState(null);
+  const { user } = useContext(UserContext);
 
-  // define tutor-specific info
-  const tutors = {
-    "Tasnim Mahi": {
-      name: "Tasnim Mahi",
-      stars: "⭐ ⭐ ⭐ ⭐ ⭐ (489)",
-      bio: "Experienced tutor passionate about empowering students to excel in math, English language arts, and computer science through personalized guidance and innovative teaching.",
-      subjects: ["CS 1336", "CS 2336"],
-      times: ["11 AM", "12 PM"],
-    },
-    "Diana Le": {
-      name: "Diana Le",
-      stars: "⭐ ⭐ ⭐ ⭐ ⭐ (20)",
-      bio: "Experienced tutor passionate about empowering students to excel in math and computer science through personalized guidance and innovative teaching.",
-      subjects: ["CS 3345", "CS 4348"],
-      times: ["10 AM", "1 PM"],
-    },
+  function convertTo24HourFormat(timeString) {
+    // Split the string to get the start time and AM/PM part
+    const [timePart, amPmPart] = timeString.split("-")[0].trim().split(" ");
+
+    // Extract hours and minutes from the time part
+    let [hours, minutes] = timePart.split(":").map(Number);
+
+    // Convert to 24-hour format
+    if (amPmPart === "PM" && hours < 12) {
+      hours += 12;
+    } else if (amPmPart === "AM" && hours === 12) {
+      hours = 0;
+    }
+
+    // Format the hours and minutes correctly
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+
+    console.log(`${formattedHours}:${formattedMinutes}:00`);
+    return `${formattedHours}:${formattedMinutes}:00`;
+  }
+
+  const handleBoxS = (index) => {
+    setActiveSubjectIndex(index === activeSubjectIndex ? null : index);
+    setSubject(tutorData.courses[index]);
+    console.log(tutorData.courses[index]);
   };
 
-  const tutorInfo = tutors[name];
+  const handleBoxT = (index) => {
+    setActiveTimeIndex(index === activeTimeIndex ? null : index);
+    setTime(availabilityData[index]);
+    const newConvertedTime = convertTo24HourFormat(availabilityData[index]);
+    setConvertedTime(newConvertedTime);
+  };
 
-  if (!tutorInfo) {
-    // handle the case where name is not found in tutors
-    return <div></div>;
+  if (!tutorData || !toggle) {
+    return null;
   }
 
-  if (!toggle) {
-    return null; // don't render the modal if toggle is false
-  }
+  const handleCreateAppointment = async () => {
+    if (!subject || !time) {
+      alert("Please select a subject and time before booking!");
+      return;
+    }
+
+    const appointmentDateTime = `${date}T${convertedTime}`;
+    const appointmentLength = 60;
+    const isOnline = true;
+
+    const appointmentData = {
+      datetime: appointmentDateTime,
+      length: appointmentLength,
+      course: subject,
+      location: "www.zoom.com",
+      online: isOnline,
+      studentId: user.username,
+      tutorId: tutorData.username,
+    };
+
+    try {
+      const response = await uploadToAPI(`appointments/`, appointmentData);
+      console.log("Appointment created:", response);
+      alert("Booked!");
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+    }
+  };
 
   return (
     <div className={`container-modal ${toggle ? "active" : ""}`}>
       <div className="modal">
         <div className="img">
-          {name === "Tasnim Mahi" ? (
-            <img src={pfp1} alt="Tutor's Profile Picture" />
+          <img src={pfp1} alt={`${tutorData.name}'s Profile Picture`} />
+        </div>
+        <div className="txt">
+          {tutorData.firstName} {tutorData.lastName}
+        </div>
+        <div className="stars">
+          {" "}
+          {tutorData.rating ? (
+            `⭐ ${tutorData.rating}`
           ) : (
-            <img src={pfp2} alt="Tutor's Profile Picture" />
+            <span style={{ marginLeft: "50px" }}>⭐ no reviews</span>
           )}
         </div>
-        <div className="txt">{tutorInfo.name}</div>
-        <div className="stars">{tutorInfo.stars}</div>
-        <p className="bio">{tutorInfo.bio}</p>
-
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
+        {/* <p className="bio">{tutorData.longBio}</p> */}
 
         <p className="c-sub">📚 Choose Subject</p>
         <div className="sub-container">
-          {tutorInfo.subjects.map((subject, index) => (
-            <div className="box" key={index}>
-              {subject}
+          {tutorData.courses &&
+          Array.isArray(tutorData.courses) &&
+          tutorData.courses.length > 0 ? (
+            tutorData.courses.map((course, index) => (
+              <div
+                key={index}
+                className={`box ${
+                  activeSubjectIndex === index ? "active" : ""
+                } ${activeSubjectIndex === index ? "clicked" : ""}`}
+                onClick={() => handleBoxS(index)}
+              >
+                {course}
+              </div>
+            ))
+          ) : (
+            <div className="centered-message">
+              <p>no courses available (◕︵◕)</p>
             </div>
-          ))}
+          )}
         </div>
+
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
 
         <p className="t-sub">⏰ Choose Time</p>
         <div className="time-container">
-          {tutorInfo.times.map((time, index) => (
-            <div className="t-box" key={index}>
-              {time}
-            </div>
-          ))}
+          {availabilityData &&
+          Array.isArray(availabilityData) &&
+          availabilityData.length > 0 ? (
+            availabilityData.map((time, index) => (
+              <div
+                key={index}
+                className={`t-box ${
+                  activeTimeIndex === index ? "active" : ""
+                } ${activeTimeIndex === index ? "clicked" : ""}`}
+                onClick={() => handleBoxT(index)}
+              >
+                {time}
+              </div>
+            ))
+          ) : (
+            <p>no available times (◕︵◕)</p>
+          )}
         </div>
+
         <br></br>
         <br></br>
         <br></br>
@@ -84,7 +160,9 @@ export default function TutorModal(props) {
         <div className="close" onClick={action}>
           Cancel
         </div>
-        <div className="book">Book</div>
+        <div className="book" onClick={handleCreateAppointment}>
+          Book
+        </div>
       </div>
     </div>
   );
