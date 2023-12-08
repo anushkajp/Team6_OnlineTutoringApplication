@@ -216,6 +216,7 @@ import { uploadToAPI } from '../services/api'
 import { Tutor } from '../comp_models/tutor'
 import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
+import Header from "../components/Header";
 
 const SignUpTutor = () => {
 
@@ -316,12 +317,9 @@ const SignUpTutor = () => {
     }
   };
 
-
-
-
-
   return (
     <div className="page-container">
+      <Header></Header>
       <div className="signup-container">
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">

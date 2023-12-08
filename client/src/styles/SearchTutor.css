@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");
 
+.column {
+  flex: 1;
+}
+
 .main-columns {
   flex: 1;
   height: 100vh;
@@ -23,7 +27,7 @@
   font-weight: 600;
   line-height: normal;
   letter-spacing: 0.48px;
-  margin-top: 30%;
+  margin-top: 9%;
   margin-left: 15px;
   text-align: left;
 }
@@ -95,6 +99,7 @@
 /* https://webdesign.tutsplus.com/flexbox-vs-css-grid-which-should-you-use--cms-30184a*/
 .tutor-wrapper {
   width: 505px;
+  position: relative;
   height: 270px;
   display: grid;
   grid-template-columns: 30% 70%;
@@ -116,6 +121,10 @@
 
 .left-column {
   padding: 1rem;
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  padding-left: 50px ;
 }
 
 .right-column {
@@ -125,7 +134,7 @@
 }
 
 .vertical-component {
-  padding: 1rem;
+  padding: 10px;
   align-self: start;
 }
 
@@ -133,7 +142,7 @@
   width: 122px;
   height: 122px;
   border-radius: 10.502px;
-  padding: 10px;
+  margin-bottom: 20px;
 }
 
 .name-tutor {
@@ -145,8 +154,10 @@
   line-height: normal;
   letter-spacing: 0.46px;
   text-align: left;
-  margin-top: 8px;
-  margin-left: -4px;
+  margin-top: -43px;
+  margin-left: -20px;
+  text-overflow: ellipsis; 
+  position: absolute;
 }
 
 .subjects {
@@ -158,7 +169,9 @@
   line-height: normal;
   letter-spacing: 0.26px;
   text-align: left;
-  margin-top: -66px;
+  margin-top: -50px;
+  margin-left: -18px;
+  width: 300px;
 }
 
 .bio {
@@ -169,18 +182,20 @@
   font-weight: 500;
   line-height: normal;
   letter-spacing: 0.24px;
-  margin-top: -148px;
   text-align: left;
   width: 290px;
+  margin-left: -17px;
+  margin-top: -20px;
+  position: absolute;
 }
 
 .heart {
+  position: absolute;
   font-size: 30px;
-  margin-top: -148px;
   text-align: right;
   padding: 10px;
-  margin-right: 10px;
-  margin-top: -328px;
+  right: 5px;
+  top: -30px;
 }
 
 .heart.clicked {
@@ -227,8 +242,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -380px;
-  margin-left: 170px;
+  margin-top: -5.5px;
+  margin-left: 180px;
   box-sizing: border-box;
 }
 
@@ -236,7 +251,7 @@
   cursor: pointer;
 }
 
-.book-button:active{
+.book-button:active {
   background: white !important;
   border: 3px solid #91f3bb !important;
   color: #91f3bb !important;
@@ -250,9 +265,81 @@
   font-weight: 500;
   line-height: normal;
   letter-spacing: 0.22px;
-  align-items: center;
-  justify-content: center;
+  display: block; 
+  margin-top: -10px;
+  padding: 0 20px !important; 
+  width: 120%; 
   text-align: center;
-  margin-left: 16px;
-  margin-top: -2px;
+}
+
+.react-datepicker__input-container input {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  margin-left: 2px;
+  margin-bottom: 7px;
+  background: #fff;
+  width: 147px;
+  height: 45px;
+  margin-top: -0.1%;
+
+  padding: 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 10px;
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+html .react-datepicker__day--selected {
+  background-color: #6fcf97 !important;
+}
+
+html .react-datepicker__day--selected:hover {
+  background-color: #407757 !important;
+}
+
+html .react-datepicker__day--range-start,
+html .react-datepicker__day--range-end {
+  background-color: #a92ab7 !important;
+}
+
+.react-datepicker__input-container input {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  background: #fff;
+  width: 123px;
+  height: 25px;
+  padding: 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.react-datepicker__input-container input:focus {
+  border: 1px solid #6fcf97; /* Change the color to match the other boxes */
 }

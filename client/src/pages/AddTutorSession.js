@@ -143,8 +143,8 @@ function AddTutorSession() {
   };
   return (
     <Layout>
-      <div className="right-column">
-        <h3>Add New Session</h3>
+      <div className="main-columns">
+        <div className="right-column">
 
         <label className="subtitle-text justify-left"><h4>Which days would you like to tutor?</h4></label>
 
@@ -164,8 +164,7 @@ function AddTutorSession() {
       </div>
       <button className = 'button_right' onClick={handleSubmit}>Add Session</button>
     </Layout>
-    
   )
 }
 
-export default AddTutorSession
+export default AddTutorSession;
