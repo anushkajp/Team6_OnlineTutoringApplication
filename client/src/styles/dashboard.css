@@ -1,0 +1,12 @@
+.leftContent{
+    float: left;
+}
+
+.rightContent{
+    float: right;
+    width: 75vh;
+}
+
+.statsTiles{
+    display: flex;
+}

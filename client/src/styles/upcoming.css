@@ -1,0 +1,45 @@
+.upcomingPage{
+    display: flex;
+    justify-content: space-between;
+    width: -webkit-fill-available;
+}
+
+.sidebar{
+    float: left;
+    width: 500px;
+}
+
+.sidebar .navbar{
+    width: -webkit-fill-available;
+}
+
+.upcomingSession{
+    float:right;
+    width: -webkit-fill-available;
+    padding-right: 3%;
+    height: 84vh;
+    overflow-y: scroll;
+}
+
+.switchView{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+
+}
+
+a:active{
+    color: var(--primary-color); /* Change the link color when clicked */
+    text-decoration: none;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+  }

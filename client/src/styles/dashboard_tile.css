@@ -1,0 +1,59 @@
+h1{
+    font-size: 75px;
+    font-style: normal;
+    font-weight: 400;
+    justify-content: center;
+    color: white;
+    padding-top: 14px;
+    padding-bottom: 0px;
+    margin: 0px;
+}
+
+h6{
+    padding-top: 0px;
+    color: #5B5B5B;   
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0px;
+}
+
+.tile_title > h4{
+    font-size: 20px;
+    align-self: flex-start;
+}
+
+.hoursTutored{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.upcomingSessions{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 1rem;
+}
+
+.upcomingSessions::-webkit-scrollbar, .favorite_tutors::-webkit-scrollbar {
+    display: none;
+}
+
+.favorite_tutors{
+    margin:0px;
+    align-items: flex-start;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.tile_sub > h6{
+    text-align: center;
+}
+
+.availibilities{
+    overflow-y: scroll;
+}
+
+.availibilities::-webkit-scrollbar{
+    display: none;
+}

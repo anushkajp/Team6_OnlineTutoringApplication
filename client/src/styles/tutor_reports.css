@@ -1,0 +1,39 @@
+    .reviewPage {
+        display: flex;
+    }
+
+    .reviewInfo {
+        float: right;
+        flex: 1;
+        max-height: 400px; /* Set a specific height for the container */
+        width: -webkit-fill-available;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+    }
+
+    .averageButton {
+        width: 35%;
+        align-self: center;
+        border-radius: 20px;
+        background: #EFFF8E;
+        margin-bottom: 20px;
+    }
+
+    .averageRating {
+        text-align: center;
+        font-size: 40px;
+        margin: 10px;
+    }
+
+    .overallRating {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .reviewListContainer {
+        height: 400px; 
+        overflow-y: auto; 
+        /*border: 1px solid #ccc;*/ 
+    }

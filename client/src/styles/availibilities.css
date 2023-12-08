@@ -1,0 +1,86 @@
+input[type="checkbox"] {
+    display: none;
+}
+  
+label {
+    cursor: pointer; 
+}
+
+.avail_times {
+    display: none;
+}
+
+.avail_times_m {
+    display: none;
+}
+
+label{
+    color: #1C2321;
+    font-weight: 525;
+}
+
+.avail_times h6{
+    font-size: 0.9rem;
+    align-self: flex-start;
+    text-align: left;
+    margin-bottom: 0.3rem;
+    color: #5B5B5B;
+    padding-top: 0.3rem;
+    margin-left: 1rem;
+}
+
+.avail_item li {
+    align-content: flex-start;
+}
+  
+input[type="checkbox"]:checked + label + .avail_times {
+    display: block;
+}
+
+input[type="checkbox"]:checked + label + .avail_times_m {
+    display: block;
+}
+
+.avail_buttons{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 5rem;
+    margin-right: 5rem;
+    margin-bottom: 1rem;
+}
+  
+ul{
+    list-style-type: none;
+    padding: 0;
+    margin:0;
+}
+
+.collapse{
+    color: #5B5B5B;
+    margin-bottom: 0.5rem;
+    font-weight: 100;
+    padding: 0.4rem;
+}
+
+.week{
+    box-shadow: 0px 2px 2px #b9f3c98f;
+    background-color: rgba(255, 255, 255, 0.442);
+    border-radius: 0.9rem;
+    border: 0.1rem solid;
+    border-color: #B9F3C9;
+    margin-bottom: 0.5rem;
+}
+
+.collapse_m{
+    align-items:start;
+    color: #5B5B5B
+}
+
+.availSide{
+    margin-right: 2rem;
+    overflow-y: scroll;
+}
+
+.availSide::-webkit-scrollbar{
+    display: none;
+}

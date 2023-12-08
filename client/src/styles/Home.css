@@ -1,0 +1,229 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .5rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.logo-top {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.link-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.link-row button {
+  border: 2px solid var(--primary-color);
+  text-decoration: none;
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: Montserrat;
+  padding: 0.25rem 1.5rem;
+  border-radius: 1.5rem;
+}
+
+.link-row button:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+  transition: all 0.15s ease-in-out;
+}
+
+.flex-row {
+  transform: translateY(-57px);
+  display: flex;
+  height: calc(100vh - 57px);
+  justify-content: space-around;
+  align-items: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.flex-container-left {
+  width: 30vw;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.flex-container-right {
+  width: 50vw;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.flex-container-right:first-child {
+  text-align: left;
+}
+
+.flex-container-right:nth-child(2) {
+  text-align: center;
+}
+
+.img-laptop {
+  justify-content: end;
+  width: 30vw;
+  margin: 0;
+  padding: 0;
+}
+
+.flex-container-right > .header-text-home {
+  color: var(--primary-color);
+  font-family: Montserrat;
+  font-size: 44px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  flex-shrink: 0;
+  text-align: left;
+  margin: 0;
+}
+
+.flex-container-right > .header-text-des {
+  color: var(--text-color);
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-align: left;
+}
+
+.flex-container-right > .header-text-des-contact {
+  color: var(--text-color);
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-align: left;
+}
+
+.home-button-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.home-button-container > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: 1rem 1.5rem;
+  border-radius: 1.5rem;
+  color: var(--background-color);
+  background: var(--primary-color);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.home-button-container > div:hover {
+  opacity: 0.9;
+}
+
+.input input {
+  width: 100%;
+  height: 50px;
+  flex-shrink: 0;
+  color: var(--primary-color);
+  text-align: left;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: none;
+  padding: 5px;
+  margin-left: -35%;
+  border-radius: 30px;
+}
+
+.flex-container-right > .input {
+  width: 500px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid var(--primary-color);
+  border-radius: 30px;
+}
+
+.input > .input-txt {
+  width: 461px;
+  height: 50px;
+  flex-shrink: 0;
+  color: var(--primary-color);
+  text-align: left;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding-left: 20px;
+}
+
+.input > .textbox {
+  width: 461px;
+  height: 200px;
+  flex-shrink: 0;
+  color: var(--primary-color);
+  text-align: left;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding-left: 20px;
+  border-radius: 30px;
+  border: none;
+  padding-top: 15px;
+  margin-left: -35%;
+}
+
+.input > .submit-button {
+  width: 150px !important;
+  height: 71px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 262px;
+  height: 35px;
+  flex-shrink: 0;
+  color: var(--background-color);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: none;
+  margin-left: -80px;
+
+}

@@ -1,0 +1,66 @@
+.left_div{
+    float: left;
+}
+
+.right_div{
+    float: right;
+}
+
+.bio{
+    display: flex;
+}
+
+.bio_photo{
+    width: 50%;
+    float: left;
+}
+
+.bio_photo img{
+    width: 50%;
+}
+
+.bio_info{
+    width: 50%;
+    float: right;
+}
+
+.page{
+    display: flex;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-around;
+    align-items: stretch; 
+
+    margin: 10rem 0;
+    height: -webkit-fill-available;
+}
+
+.profile-image-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    flex-grow: 1;
+    
+    gap: 1rem;
+}
+
+.profile-image-container > img {
+    border-radius: 16rem;
+}
+
+.profile-name {
+    font-weight: bold;
+}
+
+.profile-settings-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 1.5rem;
+    flex-grow: 4;
+}
