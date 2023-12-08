@@ -7,18 +7,9 @@
   line-height: normal;
 }
 
-/* .subtitle-text {
-  color: #000;
-  font-family: Montserrat;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  letter-spacing: 0.4px;
-  padding-bottom:12px;
-  padding-right: 10px;
-  padding-left: 10px;
-} */
+.subtitle-text {
+  padding: 10px;
+}
 
 .selection {
   border-radius: 10px;

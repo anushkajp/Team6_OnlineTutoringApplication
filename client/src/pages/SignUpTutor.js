@@ -212,11 +212,13 @@
 
 // export default SignUpTutor;
 import React, { useState, useEffect } from "react";
-import { uploadToAPI } from '../services/api'
 import { Tutor } from '../comp_models/tutor'
+import { fetchFromAPI, uploadToAPI } from '../services/api'
 import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
 import Header from "../components/Header";
+import { database, auth } from '../firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUpTutor = () => {
 
@@ -239,7 +241,7 @@ const SignUpTutor = () => {
     // return hash
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form data submitted:", tutor);
     // Regex matching
@@ -250,22 +252,29 @@ const SignUpTutor = () => {
       }
       // console.log(field+" : "+value)
     }
-    alert(alertString)
+    
     if (alertString === "") {
-      (async () => {
         try {
-          const pwdHash = await hashPassword(tutor.password)
+          const pwdHash = await hashPassword(tutor.password) 
+          for (const [field, value] of Object.entries(tutor)) {
+            if(value === null || value ===undefined){
+              tutor[field] = ""
+            }
+            // console.log(field+" : "+value)
+          }
+          const userCredential = await createUserWithEmailAndPassword(auth, tutor.email, tutor.password);
+          tutor.userId = userCredential.user.uid;
           tutor.password = pwdHash
-          const data = await uploadToAPI("tutor/", tutor)
-          console.log(data)
-        } catch (e) {
+          const data = await uploadToAPI("tutor/", tutor).then(() => console.log("Tutor data saved successfully!")).catch((error) => console.log(error))
+        } catch (error) {
           console.log(e)
         }
 
-      })()
 
       // Clear the form fields
       setTutor(new Tutor());
+    }else{
+      alert(alertString)
     }
 
   };

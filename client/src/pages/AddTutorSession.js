@@ -71,7 +71,7 @@ function AddTutorSession() {
       console.log(dowSelection)
     }
     return (
-      <div className="justify-left">
+      <div className="subtitle-text justify-left">
         {weekDays.map((button, index) => (
           <button
             key={index}
@@ -143,14 +143,14 @@ function AddTutorSession() {
   };
   return (
     <Layout>
-      <div className="main-columns">
-        <div className="right-column">
+      <div className="right-column">
+        <h3>Add New Session</h3>
 
-        <label className="subtitle-text justify-left"><h4>Which days would you like to tutor?</h4></label>
+        <label className="subtitle-text justify-left"><h4 className='justify-left'>Which days would you like to tutor?</h4></label>
 
         {DayButtons()}
 
-        <div className="justify-left">
+        <div className="subtitle-text  justify-left">
           <input className="date-input justify-center" id="timeLower" type="time" defaultValue={boundedTime[0]} onChange={(e)=>handleTime(e)} />
           <label className="subtitle-text">to</label>
           <input className="date-input justify-center" id="timeUpper" type ="time" defaultValue={boundedTime[1]} />
@@ -159,7 +159,7 @@ function AddTutorSession() {
 
         </div>
 
-        <label className="subtitle-text justify-left"><h4>What modality do you prefer for your tutoring session?</h4></label>
+        <label className="subtitle-text justify-left"><h4 className='justify-left'>What modality do you prefer for your tutoring session?</h4></label>
         {ModalityButtons()}
       </div>
       <button className = 'button_right' onClick={handleSubmit}>Add Session</button>
@@ -167,4 +167,4 @@ function AddTutorSession() {
   )
 }
 
-export default AddTutorSession;
+export default AddTutorSession
