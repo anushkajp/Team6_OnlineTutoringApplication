@@ -70,96 +70,74 @@ const StudentDash = () => {
 
   const sampleAppts = [
     {
-      "datetime": "2015-09-26T13:00:00",
-      "length": 60,
-      "location": "www.zoom.com",
-      "online": true,
-      "studentId": "lryanlesgf",
-      "tutorId": "bib123"
+      datetime: "2023-12-05T10:00:00",
+      length: 60,
+      location: "www.zoom.com",
+      online: true,
+      studentId: "student001",
+      tutorId: "tutorA"
     },
     {
-      "datetime": "2015-09-26T13:00:00",
-      "length": 60,
-      "location": "www.zoom.com",
-      "online": true,
-      "studentId": "lryanlesgf",
-      "tutorId": "bib123"
-    }, {
-      "datetime": "2015-09-26T13:00:00",
-      "length": 60,
-      "location": "www.zoom.com",
-      "online": true,
-      "studentId": "lryanlesgf",
-      "tutorId": "bib123"
+      datetime: "2023-12-06T11:30:00",
+      length: 60,
+      location: "www.skype.com",
+      online: true,
+      studentId: "student002",
+      tutorId: "tutorB"
     },
     {
-      "datetime": "2015-09-26T13:00:00",
-      "length": 60,
-      "location": "www.zoom.com",
-      "online": true,
-      "studentId": "lryanlesgf",
-      "tutorId": "bib123"
+      datetime: "2023-12-07T09:15:00",
+      length: 60,
+      location: "www.googlemeet.com",
+      online: true,
+      studentId: "student003",
+      tutorId: "tutorC"
     },
     {
-      "datetime": "2015-09-26T13:00:00",
-      "length": 60,
-      "location": "www.zoom.com",
-      "online": true,
-      "studentId": "lryanlesgf",
-      "tutorId": "bib123"
-    }, {
-      "datetime": "2015-09-26T13:00:00",
-      "length": 60,
-      "location": "www.zoom.com",
-      "online": true,
-      "studentId": "lryanlesgf",
-      "tutorId": "bib123"
+      datetime: "2023-12-08T14:00:00",
+      length: 60,
+      location: "www.zoom.com",
+      online: true,
+      studentId: "student004",
+      tutorId: "tutorD"
+    },
+    {
+      datetime: "2023-12-09T16:45:00",
+      length: 60,
+      location: "www.teams.com",
+      online: true,
+      studentId: "student005",
+      tutorId: "tutorE"
     }
-  ]
-
+  ];
+  
   const favorite_tutors = [
     {
-      username: "tommycheung",
-      courses: ["agile development", "computer science"],
+      username: "TommyCheung",
+      courses: ["Software Engineering", "Discrete Math 1"],
       hours: 10
     },
     {
-      username: "tommycheung",
-      courses: ["agile development", "computer science"],
-      hours: 10
+      username: "JessicaWong",
+      courses: ["Software Architecture"],
+      hours: 15
     },
     {
-      username: "tommycheung",
-      courses: ["agile development", "computer science"],
-      hours: 10
+      username: "MohamedAli",
+      courses: ["Automata Theory", "Computer Graphics"],
+      hours: 12
     },
     {
-      username: "tommycheung",
-      courses: ["agile development", "computer science"],
-      hours: 10
+      username: "SarahJohnson",
+      courses: ["Discrete Math 1"],
+      hours: 8
     },
     {
-      username: "tommycheung",
-      courses: ["agile development", "computer science"],
-      hours: 10
-    },
-    {
-      username: "tommycheung",
-      courses: ["agile development", "computer science"],
-      hours: 10
-    },
-    {
-      username: "tommycheung",
-      courses: ["agile development", "computer science"],
-      hours: 10
-    },
-    {
-      username: "tommycheung",
-      courses: ["agile development", "computer science"],
-      hours: 10
-    },
-  ]
-
+      username: "AnitaPatel",
+      courses: ["Software Engineering"],
+      hours: 20
+    }
+  ];  
 
   return (
     <Layout>
@@ -198,6 +176,7 @@ const StudentDash = () => {
                 key={index}
                 username={tutor.username}
                 courses={tutor.courses}
+                hours={tutor.hours}
                 profilePic={tutor.profilePic}
               />
             ))

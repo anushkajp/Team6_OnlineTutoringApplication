@@ -59,7 +59,6 @@ function App() {
               <Route path="/Contact" element={<Contact />} />
               <Route path="/Forgot" element={<Forgot />} />
               <Route path="/Home" element={<Home />} />
-              <Route path="/Availibilities" element={<Availibilities />} />
 
               <Route
                 path="/AddTutorSession"

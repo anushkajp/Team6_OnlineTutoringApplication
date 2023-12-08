@@ -216,7 +216,7 @@ import { Tutor } from '../comp_models/tutor'
 import { fetchFromAPI, uploadToAPI } from '../services/api'
 import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import { database, auth } from '../firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
@@ -318,6 +318,9 @@ const SignUpTutor = () => {
     major: {
       label: "Major"
     },
+    bgCheck: {
+      label: "Background Check"
+    },
     courses:{
       label:"Courses"
     },
@@ -327,8 +330,8 @@ const SignUpTutor = () => {
   };
 
   return (
-    <div className="page-container">
-      <Header></Header>
+    <Layout>
+        <div className="page-container">
       <div className="signup-container">
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">
@@ -420,6 +423,7 @@ const SignUpTutor = () => {
         <img src="tutortopialogo.png" alt="logo" />
       </div>
     </div>
+    </Layout>
   );
 };
 

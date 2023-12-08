@@ -5,7 +5,7 @@ import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
 import { database, auth } from '../firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 
 const SignUpStudent = () => {
   const initialStudent = new Student();
@@ -114,8 +114,8 @@ const SignUpStudent = () => {
   };
 
   return (
-    <div className="page-container">
-      <Header></Header>
+    <Layout>
+      <div className="page-container">
       <div className="signup-container">
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">
@@ -208,6 +208,7 @@ const SignUpStudent = () => {
         <img src="tutortopialogo.png" alt="logo" />
       </div>
     </div>
+    </Layout>
   );
 };
 

@@ -32,18 +32,36 @@ class CalendarPage extends Component {
     this.state = {
       currentDay: new Date(),
       sessions: {
-        "10/7/2023": {
-          time: "12:30",
-          coursename: "Data Structures",
-          student: "Best Student 22",
-          tutor: "Best Tutor 1",
+        "12/5/2023": {
+          time: "10:00",
+          coursename: "Software Engineering",
+          student: "Student Alpha",
+          tutor: "Tutor A"
         },
-        "10/8/2023": {
-          time: "11:00",
-          coursename: "Discrete Math",
-          student: "Top Student 23",
-          tutor: "Top Tutor 2",
+        "12/6/2023": {
+          time: "11:30",
+          coursename: "Discrete Math 1",
+          student: "Student Beta",
+          tutor: "Tutor B"
         },
+        "12/7/2023": {
+          time: "09:15",
+          coursename: "Automata Theory",
+          student: "Student Gamma",
+          tutor: "Tutor C"
+        },
+        "12/8/2023": {
+          time: "14:00",
+          coursename: "Software Architecture",
+          student: "Student Delta",
+          tutor: "Tutor D"
+        },
+        "12/9/2023": {
+          time: "16:45",
+          coursename: "Computer Graphics",
+          student: "Student Epsilon",
+          tutor: "Tutor E"
+        }
       },
     };
   }
@@ -73,14 +91,12 @@ class CalendarPage extends Component {
   render() {
     return (
       <Layout>
-        <div className="upcomingSession">
           <div className="switchView">
             <nav>
               <a href="/ListUpcoming">List View | </a>
               <a href="/CalendarPage">Calendar View</a>
             </nav>
           </div>
-        </div>
 
         <div className="calendar">
           <div className="calendar-header">

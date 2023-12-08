@@ -40,29 +40,46 @@ const ListUpcoming = (props) => {
 
   const sampleAppts = [
     {
-      "datetime": "2015-09-26T13:00:00",
-      "length": 60,
-      "location": "www.zoom.com",
-      "online": true,
-      "studentId": "lryanlesgf",
-      "tutorId": "bib123"
+      datetime: "2023-12-05T10:00:00",
+      length: 60,
+      location: "www.zoom.com",
+      online: true,
+      studentId: "student001",
+      tutorId: "tutorA"
     },
     {
-      "datetime": "2015-09-26T13:00:00",
-      "length": 60,
-      "location": "www.zoom.com",
-      "online": true,
-      "studentId": "lryanlesgf",
-      "tutorId": "bib123"
-    }, {
-      "datetime": "2015-09-26T13:00:00",
-      "length": 60,
-      "location": "www.zoom.com",
-      "online": true,
-      "studentId": "lryanlesgf",
-      "tutorId": "bib123"
+      datetime: "2023-12-06T11:30:00",
+      length: 60,
+      location: "www.skype.com",
+      online: true,
+      studentId: "student002",
+      tutorId: "tutorB"
+    },
+    {
+      datetime: "2023-12-07T09:15:00",
+      length: 60,
+      location: "www.googlemeet.com",
+      online: true,
+      studentId: "student003",
+      tutorId: "tutorC"
+    },
+    {
+      datetime: "2023-12-08T14:00:00",
+      length: 60,
+      location: "www.zoom.com",
+      online: true,
+      studentId: "student004",
+      tutorId: "tutorD"
+    },
+    {
+      datetime: "2023-12-09T16:45:00",
+      length: 60,
+      location: "www.teams.com",
+      online: true,
+      studentId: "student005",
+      tutorId: "tutorE"
     }
-  ]
+  ];
 
   return (
     <Layout>
@@ -76,17 +93,15 @@ const ListUpcoming = (props) => {
         </div>
         <div className="upcomingSessionList">
             {
-              sampleAppts.map((session, index) => (
-                <div className="listSessions"
-                  datetime={session.session_time}
-                  length={session.session_length}  
-                  location={session.session_location}  
-                  online={session.session_online}  
-                  studentId={session.student_name}
-                  tutorId={session.session_rating}
-                >
-                </div>
-              ))
+              sampleAppts.length > 0 ? sampleAppts.map((session, index) => (
+                <SessionTile
+                  datetime={session.datetime}
+                  length={session.length}
+                  location={session.location}
+                  online={session.online}
+                  studentId={session.studentId}
+                  tutorId={session.tutorId}
+                ></SessionTile>)) : <h6>No upcoming sessions yet!</h6>
             }
         </div>
       </div>
