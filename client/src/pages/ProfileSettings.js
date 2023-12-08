@@ -3,6 +3,7 @@ import { UserContext } from '../UserContext'
 import Sidebar from '../components/sidebar'
 import LogoutButton from '../components/LogoutButton'
 import { fetchFromAPI, sendAPIPatchRequest } from '../services/api'
+import Layout from '../components/Layout'
 
 function ProfileSettings(props){
   const [isEditing, setIsEditing] = useState(false);
@@ -98,14 +99,8 @@ function ProfileSettings(props){
   const excludedFields = ["password", "userId", "firstName", "middleName", "lastName", "key"];
 
   return (
-      <div>
-        <div>
-          <LogoutButton></LogoutButton>
-        </div>
-        <div className="profile_page">
-          <div className="sidebar">
-            <Sidebar renderType={user.accountType}></Sidebar>
-          </div>
+      <Layout>
+          <div className="profile_page">
           <div className="profile_settings">
               <div className="profile_info">
                   <div className="profile_photo">
@@ -169,7 +164,7 @@ function ProfileSettings(props){
             </div>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 

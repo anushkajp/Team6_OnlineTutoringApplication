@@ -5,6 +5,7 @@ import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
 import { database, auth } from '../firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import Header from "../components/Header";
 
 const SignUpStudent = () => {
   const initialStudent = new Student();
@@ -105,6 +106,7 @@ const SignUpStudent = () => {
 
   return (
     <div className="page-container">
+      <Header></Header>
       <div className="signup-container">
         <h2>Start Your Journey Today!</h2>
         <div className="form-fields">

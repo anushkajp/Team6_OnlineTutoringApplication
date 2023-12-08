@@ -3,6 +3,7 @@ import Sidebar from "../components/sidebar";
 import SessionTile from "../components/SessionTile";
 import CalendarDays from "./Calendar-Days";
 import CalendarEvent from "./CalendarEvent";
+import Layout from "../components/Layout";
 
 // CREDIT: https://derrickotte.medium.com/how-to-create-a-calendar-from-scratch-in-react-1f2db197454d
 
@@ -26,8 +27,8 @@ class CalendarPage extends Component {
       "December",
     ];
 
-    
-    
+
+
     this.state = {
       currentDay: new Date(),
       sessions: {
@@ -71,10 +72,7 @@ class CalendarPage extends Component {
 
   render() {
     return (
-      <div>
-        <div className="sidebar">
-          <Sidebar renderType={this.props.renderType} />
-        </div>
+      <Layout>
         <div className="upcomingSession">
           <div className="switchView">
             <nav>
@@ -119,7 +117,7 @@ class CalendarPage extends Component {
         <br></br>
         <br></br>
         <br></br>
-      </div>
+      </Layout>
     );
   }
 }

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../components/sidebar";
 import pfp1 from "../assets/Profile_Pic_1.png";
-import pfp2 from "../assets/Profile_Pic_2.png";
-//import "font-awesome/css/font-awesome.min.css";
 import { TutorTileCard } from "./TutorTile";
 import TutorModal from "./TutorModal";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { fetchFromAPI } from "../services/api";
+import Layout from "../components/Layout";
 
 // source used for like button
 // https://chayanit-chaisri.medium.com/how-to-add-a-like-button-react-usestate-3f79aac27d90
@@ -141,9 +138,8 @@ function SearchTutor(props) {
   };
 
   return (
-    <div>
+    <Layout>
       <div className="main-container">
-        <Sidebar className="dbPageSidebar" renderType="student"></Sidebar>
 
         <div className="main-columns">
           <div className="column">
@@ -201,9 +197,8 @@ function SearchTutor(props) {
                   pfp={pfp1}
                   stars={
                     filteredTutor.rating
-                      ? `⭐ ${filteredTutor.rating} ${
-                          filteredTutor.rating == 1 ? "star" : "stars"
-                        }`
+                      ? `⭐ ${filteredTutor.rating} ${filteredTutor.rating == 1 ? "star" : "stars"
+                      }`
                       : "⭐ no reviews"
                   }
                   name={`${filteredTutor.firstName} ${filteredTutor.lastName}`}
@@ -230,7 +225,7 @@ function SearchTutor(props) {
           />
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

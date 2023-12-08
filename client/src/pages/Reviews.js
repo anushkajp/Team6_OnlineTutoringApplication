@@ -3,7 +3,7 @@ import AddReview from '../components/AddReview';
 import { fetchFromAPI } from '../services/api';
 import UpdateReviews from '../components/UpdateReviews';
 import { UserContext } from '../UserContext'
-import Layout from '../components/Layout'
+import Layout from '../components/Layout';
 
 const Reviews = (props) => {
   const [uniqueUsernames, setUniqueUsernames] = useState(new Set());
@@ -119,21 +119,20 @@ const Reviews = (props) => {
   ));
 
   return (
-    <Layout>
-      <div>
-        <div className='review'>
-          <h3>Add a review</h3>
-          <div className='add_review_contents'>
-            {addReviewTile}
-          </div>
-          <h3 className='review_title'>Past Reviews</h3>
-          <div className='update_review_contents'>
-            {prevReviewTiles}
-          </div>  
+      <Layout>
+          <div className='review'>
+        <h3>Add a review</h3>
+        <div className='add_review_contents'>
+          {/* Map over each tutor and create an AddReview tile */}
+          {addReviewTile}
         </div>
+        <h3 className='review_title'>Past Reviews</h3>
+        <div className='update_review_contents'>
+          {prevReviewTiles}
+          {/* You can map over past reviews or display any other relevant content */}
+        </div>  
       </div>
-    </Layout>
-    
+      </Layout>
   );
 };
 

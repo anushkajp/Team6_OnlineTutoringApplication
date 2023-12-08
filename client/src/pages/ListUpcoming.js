@@ -3,6 +3,8 @@ import Sidebar from '../components/sidebar'
 import SessionTile from '../components/SessionTile'
 import { UserContext } from '../UserContext'
 import { fetchFromAPI } from '../services/api'
+import Layout from '../components/Layout'
+
 const ListUpcoming = (props) => {
   const { user } = useContext(UserContext);
   const [ data, setData] = useState([])
@@ -63,10 +65,8 @@ const ListUpcoming = (props) => {
   ]
 
   return (
-    <div className="upcomingPage">
-      <div className="sidebar">
-        <Sidebar renderType={props.renderType}></Sidebar>
-      </div>
+    <Layout>
+        <div className="upcomingPage">
       <div className="upcomingSession">
         <div className="switchView">
           <nav>
@@ -91,6 +91,7 @@ const ListUpcoming = (props) => {
         </div>
       </div>
     </div>
+    </Layout>
   )
 }
 export default ListUpcoming

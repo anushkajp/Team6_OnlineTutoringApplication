@@ -16,7 +16,7 @@
     "path": "^0.12.7",
     "react": "^18.2.0",
     "react-calendar": "^4.6.1",
-    "react-datepicker": "^4.21.0",
+    "react-datepicker": "^4.24.0",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1",
     "react-modal": "^3.16.1",

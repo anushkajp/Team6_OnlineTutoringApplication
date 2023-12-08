@@ -93,10 +93,11 @@ function AddTutorSession() {
   }
   return (
     <Layout>
-      <div className="right-column">
-        <h3>Add New Session</h3>
+      <div className="main-columns">
+        <div className="right-column">
 
-          <label className="subtitle-text justify-left">Which days would you like to tutor?</label>
+          <label className="subtitle-text justify-left">Which days would you like to tutor?
+          </label>
 
           {DayButtons()}
 
@@ -113,8 +114,8 @@ function AddTutorSession() {
           {ModalityButtons()}
 
         </div>
+      </div>
     </Layout>
-    
   )
 }
 
