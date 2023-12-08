@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchFromAPI, uploadToAPI } from '../services/api'
-import  Student  from '../model/student'
+import  Student  from '../comp_models/student'
 import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
 import { database, auth } from '../firebase'
