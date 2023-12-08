@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchFromAPI } from '../services/api'
-import { Major } from '../comp_models/major'
-import { Course } from '../comp_models/course'
+import  Major  from '../comp_models/major'
+import Course from '../comp_models/course'
 
 // NOTE: Change student to general object
 // NOTE: there are new changes here to be applied to sign up student
@@ -34,23 +34,28 @@ const CreateFields = (object, setObject, labelData) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if ("maxLength" in labelData){
     if (labelData[name].maxLength>=value.length){
         setObject({
           ...object,
           [name]: value
         })
-        console.log(labelData[name].regex.test(value))
       
     }else{
       alert(`The input size of ${labelData[name].label.toLowerCase()} of ${value.length} is larger than the maximum size of ${labelData[name].maxLength}`)
     
     }
+  } else {
+    setObject({
+      ...object,
+      [name]: value
+    })
+  }
     
     
 
 
     // alert(object)
-    console.log(object)
   }
 
   useEffect(() => {

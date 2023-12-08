@@ -6,6 +6,7 @@ import FavoriteTile from '../components/FavoriteTile'
 import { UserContext } from '../UserContext'
 import { fetchFromAPI } from '../services/api'
 
+const favoriteTutorInfo = []
 const StudentDash = () => {
 
   const { user } = useContext(UserContext);
@@ -42,7 +43,6 @@ const StudentDash = () => {
   }, []);
 
   useEffect(() => {
-
     Promise.all(
       user.favoriteTutors ? user.favoriteTutors.map((tutorUsername) =>
         fetchFromAPI(`tutor/${tutorUsername}`)

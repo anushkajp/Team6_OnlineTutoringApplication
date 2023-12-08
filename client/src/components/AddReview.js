@@ -48,10 +48,9 @@ const AddReview = (props) => {
       </div>
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
         <div className='modal_container'>
-          <h4>{props.tutorUsername}</h4>
-          {/* Dropdown for selecting the rating */}
-          <div className='right_column'>
-            <label><span>Rating</span>
+          <div className='left_column'>
+            <h4>{props.tutorUsername}</h4>
+            <label className='dropdown'><span>Rating</span>
               <select value={rating} onChange={(e) => setRating(parseInt(e.target.value))}>
                 {numberRange.map((number) => (
                   <option key={number} value={number}>
@@ -61,11 +60,12 @@ const AddReview = (props) => {
               </select>
             </label>
           </div>
-          <div className='left_column'>
+          <div className='right_column'>
             <label>
-              <span>Review</span>
+              <h5>Description</h5>
               <textarea value={reviewText} onChange={(e) => setReviewText(e.target.value)}></textarea>
             </label>
+            <button className = 'button_right' onClick={handleReviewSubmit}>Submit</button>
           </div>
         </div>
       </CustomModal>

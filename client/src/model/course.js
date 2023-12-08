@@ -1,4 +1,4 @@
-export class Course {
+class Course {
     /**
      * Adds a new Course to the database 
      * @param {string} majorId Database major ID
@@ -13,5 +13,4 @@ export class Course {
         this.creditHours = creditHours
     }
 }
-
-export default Course;
+module.exports = Course

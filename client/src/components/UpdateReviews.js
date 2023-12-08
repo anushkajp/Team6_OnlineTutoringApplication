@@ -57,9 +57,8 @@ const UpdateReviews = (props) => {
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
         <div className='modal_container'>
           <div className='left_column'>
-            {/* Rating dropdown for updating */}
             <h4>{props.tutorUsername}</h4>
-            <label>
+            <label className='dropdown'>
               <span>Rating: </span>
               <select
                 value={updatedRating}
@@ -84,7 +83,7 @@ const UpdateReviews = (props) => {
               ></textarea>
             </label>
             {/* Button to submit the update */}
-            <button className = 'button_right' onClick={handleUpdate}>Submit Update</button>
+            <button className = 'button_right' onClick={handleUpdate}>Submit</button>
           </div>
           
         </div>

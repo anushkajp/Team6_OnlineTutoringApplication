@@ -1,6 +1,5 @@
-import {User} from './user'
-
-export class Student extends User {
+const User = require("./user");
+class Student extends User {
   /**
    * Adds a new User to the database
    * @param {string} firstName First name
@@ -45,7 +44,7 @@ export class Student extends User {
     );
     this.favoriteTutors = favoriteTutors
   }
-  toObj() {
+  static toObj() {
     return {
       firstName: "",
       lastName: "",
@@ -57,9 +56,9 @@ export class Student extends User {
       longBio: "",
       shortBio: "",
       pfp: "",
-      favoriteTutors: ""
+      favoriteTutors: "",
+      userId: ""
     };
   }
 }
-
-export default Student;
+module.exports = Student;

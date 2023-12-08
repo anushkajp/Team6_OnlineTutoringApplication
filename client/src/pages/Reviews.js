@@ -44,7 +44,8 @@ const Reviews = (props) => {
   const [renderSessions, setPrevTutors] = useState([]);
   useEffect(() => {
     // Fetch tutor usernames
-    fetchFromAPI(`appointments/student/ajpimple`)
+    fetchFromAPI(`appointments/student/${user.username}`)
+    // fetchFromAPI(`appointments/student/ajpimple`)
       .then((data) => {
         // CREATE SET OF UNIQUE USERNAMES
         const uniqueUsernames = new Set();

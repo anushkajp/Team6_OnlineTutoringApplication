@@ -76,3 +76,11 @@ ul{
     color: #5B5B5B
 }
 
+.availSide{
+    margin-right: 2rem;
+    overflow-y: scroll;
+}
+
+.availSide::-webkit-scrollbar{
+    display: none;
+}

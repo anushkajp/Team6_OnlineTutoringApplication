@@ -54,7 +54,8 @@ const AddExceptionForm = ({ data, setAvailibility }) => {
             <label className="datepicker">
                 <input type="date" value={selectedDate} onChange={handleDateChange} />
             </label>
-            <button className="bm_button" onClick={addDate}>Add Date to Exceptions</button>
+            <button className="bm_button" onClick={addDate}>
+            <h3>Add Date to Exceptions</h3></button>
         </div>
     );
 };

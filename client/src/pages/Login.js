@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import glass from "../assets/glassmorhpism.png";
 import logo from "../assets/logo.png";
-
+import bcrypt from "bcryptjs-react"
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword,setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { auth, fetchUserType, findStudentByKey } from '../firebase';
@@ -16,10 +16,29 @@ const Login = () => {
   const [error, setError] = useState("");
   const { updateUser } = useContext(UserContext);
   let navigate = useNavigate();
+  // additions from addTutorSession
+  const hashPassword = async (password) => {
+    const gennedHash = await new Promise((resolve, reject) => {
+      bcrypt.hash(password, 10, function (error, hash) {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(hash)
+        }
 
+      })
+    })
+    // console.log("Hash generated: "+gennedHash)
+
+    return gennedHash
+    // return hash
+  }
+  // additions from addTutorSession
+  // handle submit 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // additions from add tutor session
       await setPersistence(auth, browserLocalPersistence);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -33,8 +52,9 @@ const Login = () => {
         key: accountInfo.userKey, 
         ...data 
       });
-  
+  // additions from add tutor session
       navigateToTwoFactor();
+    
     } catch (error) {
       console.error(error);
       setError(error.message); // Set error in state to display error message to user
