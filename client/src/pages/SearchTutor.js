@@ -141,7 +141,7 @@ function SearchTutor(props) {
     <Layout>
       <div className="main-container">
 
-        <div className="main-columns">
+        <div className="main-columns" style={{ marginLeft: '310px' }}>
           <div className="column">
             <p className="find-text">Find your tutor</p>
 
