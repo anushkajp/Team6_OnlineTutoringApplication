@@ -18,8 +18,8 @@
 .bio_photo img {
   width: 50%;
   border-radius: 50%;
-  width: 328px;
-  height: 321px;
+  width: 300px;
+  height: 290px;
   margin-left: -100px;
 }
 
@@ -43,9 +43,10 @@
   justify-content: left;
   align-items: left;
   text-align: left;
+  display: flex;
 }
 
-.header_text-ps {
+.header-text-ps {
   color: #2a6bb7;
   font-family: Montserrat;
   font-size: 20px;
@@ -55,4 +56,95 @@
   justify-content: left;
   align-items: left;
   text-align: left;
+}
+
+.bio_h4 {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: -20%;
+  justify-content: left;
+  align-items: left;
+  text-align: left;
+  padding: 10px;
+}
+
+.editFields {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: 60px;
+  justify-content: left;
+  align-items: left;
+  text-align: left;
+}
+
+.label-ps {
+  width: 198px;
+  height: 27px;
+  flex-shrink: 0;
+  color: #000;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding-bottom: 10px;
+}
+
+.input-ps {
+  width: 473px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  border: 1px solid #b9ccf3;
+  background: #fff;
+  margin-top: 5px;
+  padding-left: 10px;
+  color: #2a6bb7;
+}
+
+.input-ps ::placeholder {
+  color: #2a6bb7;
+  font-family: Montserrat;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.editFields > .button-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.settingsButton {
+  border-radius: 30px;
+  background: #d9d9d9;
+  width: 207px;
+  height: 54px;
+  flex-shrink: 0;
+  color: #000;
+  font-family: Montserrat;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-left: 800px;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+}
+
+.edit-ps {
+  margin-left: 15px;
+  width: 31px;
+  height: 58px;
+  flex-shrink: 0;
+  margin-top: -10px;
 }
