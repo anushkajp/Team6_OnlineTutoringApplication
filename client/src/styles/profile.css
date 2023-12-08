@@ -1,29 +1,58 @@
-.left_div{
-    float: left;
+.left_div {
+  float: left;
 }
 
-.right_div{
-    float: right;
+.right_div {
+  float: right;
 }
 
-.bio{
-    display: flex;
+.bio {
+  display: flex;
 }
 
-.bio_photo{
-    width: 50%;
-    float: left;
+.bio_photo {
+  width: 50%;
+  float: left;
 }
 
-.bio_photo img{
-    width: 50%;
+.bio_photo img {
+  width: 50%;
+  border-radius: 50%;
+  width: 328px;
+  height: 321px;
+  margin-left: -100px;
 }
 
-.bio_info{
-    width: 50%;
-    float: right;
+.bio_info {
+  width: 50%;
+  float: right;
 }
 
-.page{
-    display: flex;
+.page {
+  display: flex;
+}
+
+.header-name-ps {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-left: -10%;
+  justify-content: left;
+  align-items: left;
+  text-align: left;
+}
+
+.header_text-ps {
+  color: #2a6bb7;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  justify-content: left;
+  align-items: left;
+  text-align: left;
 }

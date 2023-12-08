@@ -103,19 +103,31 @@ function ProfileSettings(props){
           <div className="profile_page">
           <div className="profile_settings">
               <div className="profile_info">
-                  <div className="profile_photo">
+                  <div className="bio_photo">
                     <img src="https://picsum.photos/400/400" alt="Profile" />
                   </div>
                   <div className="profile_details"> 
-                    <h3>{renderData.firstName + " "  + renderData.lastName}</h3>
+                    <p className="header-name-ps">{renderData.firstName + " "  + renderData.lastName}</p>
                       {Object.entries(renderData).map(([field, value]) => (
                         !excludedFields.includes(field) && value != null && (
                           <div key={field}>
-                            <h4 className="bio_h4"><span className="header_text">{field}: </span>{Array.isArray(value) ? value.join(', ') : value}</h4>
+                            <h4 className="bio_h4"><span className="header_text-ps">{field}: </span>{Array.isArray(value) ? value.join(', ') : value}</h4>
                           </div>
                         )))}
                   </div>
               </div>
+
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+
               <div className="editFields">
               <form className="settingsForm">
               <label htmlFor="email">Email:</label>
