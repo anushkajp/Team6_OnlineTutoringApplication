@@ -7,12 +7,6 @@ import Layout from "../components/Layout";
 
 function ProfileSettings(props) {
 	const [isEditing, setIsEditing] = useState(false);
-	const [email, setEmail] = useState("sampleemail@gmail.com");
-	const [editedEmail, setEditedEmail] = useState("");
-	const [phone, setPhone] = useState(4445559999);
-	const [bio, setBio] = useState("");
-	const [editedBio, setEditedBio] = useState("");
-	const [editedPhone, setEditedPhone] = useState("");
 	const [renderData, setData] = useState([]);
 	const { user } = useContext(UserContext);
 
@@ -34,15 +28,12 @@ function ProfileSettings(props) {
 					hours: value.hours,
 					longBio: value.longBio,
 				}));
-				setEditedEmail(render_data.email);
-				setEditedPhone(render_data.phone);
-				setEditedBio(renderData.longBio);
 				setData(render_data[0]);
 			})
 			.catch((error) => {
 				setData({
 					firstName: "Loading...",
-					lastName: "Loading...",
+					lastName: "",
 					middleName: null,
 					password: "Loading...",
 					userId: "Loading...",
@@ -58,21 +49,13 @@ function ProfileSettings(props) {
 			});
 	}, []);
 
-	const handleEditClick = (e) => {
-		e.preventDefault();
-		setIsEditing(true);
-	};
-
-	const handleSaveClick = () => {
+	const handleSaveClick = (e) => {
 		setIsEditing(false);
-		setEmail(editedEmail);
-		setPhone(editedPhone);
-		setBio(editedBio);
 
 		sendAPIPatchRequest(`${user.accountType}/${user.username}`, {
-			email: editedEmail,
-			phone: editedPhone,
-			longBio: editedBio,
+			email: e.target.form_email.value,
+			phone: e.target.form_phone.value,
+			longBio: e.target.form_bio.value,
 		})
 			.then((data) => {
 				console.log(data);
@@ -82,40 +65,58 @@ function ProfileSettings(props) {
 			});
 	};
 
-	const handleInputChange = (field, event) => {
-		switch (field) {
-			case "editedEmail":
-				setEditedEmail(event.target.value);
-				break;
-			case "editedPhone":
-				setEditedPhone(event.target.value);
-				break;
-			case "editedBio":
-				setEditedBio(event.target.value);
-				break;
-			default:
-				break;
-		}
-	};
-
-	const excludedFields = ["password", "userId", "firstName", "middleName", "lastName", "key"];
-
 	return (
 		<Layout>
+      <div className="settings-container">
+      <h2 className="settings-title">Profile Settings</h2>
 			<div className="profile-container">
 				<div className="profile-image-container">
-					<img src="https://picsum.photos/400/400" height={128} />
-          <div className="profile-name">{renderData.firstName + renderData.lastName}</div>
+					<img src="https://picsum.photos/400/400" height={160} width={160} />
+          <div className="profile-name">{`${renderData.firstName} ${renderData.lastName}`}</div>
 				</div>
 				<div className="profile-settings-container">
-          <form className="settingsForm">
-            <label htmlFor="email">Email:</label>
+          <form className="settingsForm" onSubmit={handleSaveClick}>
+            <span>
+              <label htmlFor="email" className={!isEditing?"disabled":""}>Email</label>
               <input
                 type="email"
+                name="form_email"
                 id="emailInput"
-                value={editedEmail}
-                onChange={(e) => handleInputChange("editedEmail", e)}
+                defaultValue={renderData.email}
+                disabled={!isEditing}
               />
+            </span>
+
+            <span>
+              <label htmlFor="tel" className={!isEditing?"disabled":""}>Phone Number</label>
+              <input
+                type="tel"
+                name="form_phone"
+                id="telInput"
+                defaultValue={renderData.phone}
+                disabled={!isEditing}
+              />
+            </span>
+
+            <span>
+              <label htmlFor="text" className={!isEditing?"disabled":""}>Biography</label>
+              <input
+                type="text"
+                name="form_bio"
+                id="bioInput"
+                defaultValue={renderData.longBio}
+                disabled={!isEditing}
+              />
+            </span>
+
+            <div className="settings-button-container">
+								<button className={`settings-primary-button ${!isEditing?"disabled":""}`} type="submit" disabled={!isEditing}>
+									Save Changes
+								</button>
+								<button className="settings-secondary-button" onClick={(e) => {if (!isEditing) e.preventDefault(); setIsEditing(!isEditing);}}>
+									{isEditing ? "Cancel" : "Edit"}
+								</button>
+						</div>
           </form>
 					{/* <div className="profile_details">
 						<h3>{renderData.firstName + " " + renderData.lastName}</h3>
@@ -213,6 +214,7 @@ function ProfileSettings(props) {
 					</div>
 				</div>
 			</div> */}
+      </div>
 		</Layout>
 	);
 }

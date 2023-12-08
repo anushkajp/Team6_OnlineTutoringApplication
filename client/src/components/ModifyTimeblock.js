@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext} from 'react';
 import { sendAPIPatchRequest } from '../services/api';
 import "../styles/button_modal.css"
 import { Delete } from "lucide-react";
+import { UserContext } from "../UserContext";
 
 const ModifyTimeblockForm = ({ data, setData }) => {
+    const {user} = useContext(UserContext);
+    
     const handleRemoveItem = (weekIndex, day, detailIndex) => {
         const updatedArray = data.map((week, index) => {
             if (index === weekIndex) {
@@ -32,7 +35,7 @@ const ModifyTimeblockForm = ({ data, setData }) => {
             }
             return acc;
         }, {});
-        sendAPIPatchRequest(`tutor/diananle`, { "availability": { ...transformArrayforJSON } })
+        sendAPIPatchRequest(`tutor/${user.username}`, { "availability": { ...transformArrayforJSON } })
             .then(data => {
                 console.log(data)
             })
@@ -77,8 +80,8 @@ const ModifyTimeblockForm = ({ data, setData }) => {
                                                             </h6>
                                                         ) : (
                                                             <h6>
-                                                                {new Date(detail.start).toLocaleString()} to{' '}
-                                                                {new Date(detail.end).toLocaleString()} <br />
+                                                                {new Date(detail.start_time).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })} to{' '}
+                                                                {new Date(detail.end_time).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })} <br />
                                                                 Online: {detail.online ? 'Yes' : 'No'}
                                                                 {detail && (
                                                                     <button className="delete_timeblock" onClick={() => handleRemoveItem(weekIndex, day, detailIndex)}>

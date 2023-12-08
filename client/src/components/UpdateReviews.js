@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import CustomModal from './Modal';
 import { sendAPIPatchRequest } from '../services/api';
+import { UserContext } from "../UserContext"
 
 const UpdateReviews = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatedRating, setUpdatedRating] = useState(props.rating);
   const [updatedDescription, setUpdatedDescription] = useState(props.description);
+  const { user } = useContext(UserContext);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -17,7 +19,7 @@ const UpdateReviews = (props) => {
 
   const handleUpdate = (data) => {
     // Make a POST request to the specified path
-    sendAPIPatchRequest(`/review/${props.studentUsername}/${data.tutorUsername})`, {
+    sendAPIPatchRequest(`/review/${user.username}/${data.tutorUsername})`, {
         rating: data.rating,
         description: data.reviewText,
     })

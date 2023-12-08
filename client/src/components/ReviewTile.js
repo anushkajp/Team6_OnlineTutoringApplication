@@ -13,7 +13,6 @@ const ReviewTile = (props) => {
         <h5 className="classNameReview"><span className="header_text">Student Username: </span>{props.studentId}</h5>
         <h5 className="classNameReview"><span className="header_text">Tutor Username: </span>{props.tutorId}</h5>
         <h5 className="classNameReview"><span className="header_text">Rating: </span>{props.rating}/5</h5>
-        <h5 className="classNameReview"><span className="header_text">Comments: </span>{props.description}</h5>
       </div>
       <button onClick={openModal} className="viewComments">View Comments</button>
 

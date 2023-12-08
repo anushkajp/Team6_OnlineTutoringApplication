@@ -22,14 +22,13 @@ const TutorReports = (props) => {
         }
         ));
         console.log(render_data)
-        setReviews(render_data);
+        setReviews(render_data)
       })
       .catch(error => {
         console.error('Error fetching reviews:', error);
       });
   }, []);
-
-
+  
   const tiles = reviews.map((review, index) => (
     <ReviewTile
       key={index}

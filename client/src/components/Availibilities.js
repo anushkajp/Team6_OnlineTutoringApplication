@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+  import React, { useState, useEffect, useContext } from 'react'
 import { fetchFromAPI, sendAPIPatchRequest } from '../services/api'
 import ButtonModal from './ButtonModal';
 import AddExceptionForm from './AddExceptionForm';
@@ -12,7 +12,7 @@ function Availibilities(props) {
 
   useEffect(() => {
     // useEffect for GET
-    fetchFromAPI(`availability/diananle`)
+    fetchFromAPI(`availability/${user.username}`)
       .then(data => {
         const mappedArray = Object.entries(data).map(([key, value]) => {
           // Check if the value is an array or false
@@ -41,50 +41,50 @@ function Availibilities(props) {
         setAvailibility([{
           "monday": [
             {
-              "start": "Loading",
-              "end": "Loading",
+              "start_time": "Loading",
+              "end_time": "Loading",
               "online": true
             }
           ],
           "tuesday": [
             {
-              "start": "Loading",
-              "end": "Loading",
+              "start_time": "Loading",
+              "end_time": "Loading",
               "online": true
             }
           ],
           "wednesday": [
             {
-              "start": "Loading",
-              "end": "Loading",
+              "start_time": "Loading",
+              "end_time": "Loading",
               "online": true
             }
           ],
           "thursday": [
             {
-              "start": "Loading",
-              "end": "Loading",
+              "start_time": "Loading",
+              "end_time": "Loading",
               "online": true
             }
           ],
           "friday": [
             {
-              "start": "Loading",
-              "end": "Loading",
+              "start_time": "Loading",
+              "end_time": "Loading",
               "online": true
             }
           ],
           "saturday": [
             {
-              "start": "Loading",
-              "end": "Loading",
+              "start_time": "Loading",
+              "end_time": "Loading",
               "online": true
             }
           ],
           "sunday": [
             {
-              "start": "Loading",
-              "end": "Loading",
+              "start_time": "Loading",
+              "end_time": "Loading",
               "online": true
             }
           ],

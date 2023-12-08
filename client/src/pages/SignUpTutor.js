@@ -243,7 +243,6 @@ const SignUpTutor = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", tutor);
     // Regex matching
     var alertString = ""
     for (const [field, value] of Object.entries(tutor)) {
@@ -265,6 +264,7 @@ const SignUpTutor = () => {
           const userCredential = await createUserWithEmailAndPassword(auth, tutor.email, tutor.password);
           tutor.userId = userCredential.user.uid;
           tutor.password = pwdHash
+          console.log(tutor)
           const data = await uploadToAPI("tutor/", tutor).then(() => console.log("Tutor data saved successfully!")).catch((error) => console.log(error))
         } catch (error) {
           console.log(e)
@@ -319,7 +319,7 @@ const SignUpTutor = () => {
       label: "Major"
     },
     bgCheck: {
-      label: "Background Check"
+      label: "Do you have a criminal history?"
     },
     courses:{
       label:"Courses"

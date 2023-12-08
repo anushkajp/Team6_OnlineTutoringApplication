@@ -129,7 +129,9 @@ function AddTutorSession() {
       online: modality === 'online',
       username: user.username,
     }
-    uploadToAPI(`/availability/${data.dayOfTheWeek}/${data.username})`, {
+
+    data.dayOfTheWeek.forEach((day) => {
+      uploadToAPI(`availability/${data.username}/${day.toLowerCase()}`, {
         end_time: data.endTime,
         start_time: data.startTime,
         online: data.online,
@@ -140,6 +142,7 @@ function AddTutorSession() {
       .catch((error) => {
         console.error('Error submitting review:', error);
       });
+    });
   };
   return (
     <Layout>
