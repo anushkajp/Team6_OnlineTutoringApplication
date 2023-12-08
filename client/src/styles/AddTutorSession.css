@@ -7,7 +7,7 @@
   line-height: normal;
 }
 
-.subtitle-text {
+/* .subtitle-text {
   color: #000;
   font-family: Montserrat;
   font-size: 20px;
@@ -18,7 +18,7 @@
   padding-bottom:12px;
   padding-right: 10px;
   padding-left: 10px;
-}
+} */
 
 .selection {
   border-radius: 10px;
@@ -147,4 +147,7 @@
 .justify-center {
   justify-content: center;
   text-align: center;
+}
+h4{
+  text-align: left;
 }

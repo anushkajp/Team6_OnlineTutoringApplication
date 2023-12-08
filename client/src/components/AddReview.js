@@ -62,7 +62,7 @@ const AddReview = (props) => {
           </div>
           <div className='right_column'>
             <label>
-            <h5>Description</h5>
+              <h5>Description</h5>
               <textarea value={reviewText} onChange={(e) => setReviewText(e.target.value)}></textarea>
             </label>
           </div>

@@ -129,7 +129,6 @@ function AddTutorSession() {
       online: modality === 'online',
       username: user.username,
     }
-    // Make a POST request to the specified path
     uploadToAPI(`/availability/${data.dayOfTheWeek}/${data.username})`, {
         end_time: data.endTime,
         start_time: data.startTime,
@@ -147,24 +146,23 @@ function AddTutorSession() {
       <div className="right-column">
         <h3>Add New Session</h3>
 
-          <label className="subtitle-text justify-left">Which days would you like to tutor?</label>
+        <label className="subtitle-text justify-left"><h4>Which days would you like to tutor?</h4></label>
 
-          {DayButtons()}
+        {DayButtons()}
 
-          <div className="justify-left">
-            <input className="date-input justify-center" id="timeLower" type="time" defaultValue={boundedTime[0]} onChange={(e)=>handleTime(e)} />
-            <label className="subtitle-text">to</label>
-            <input className="date-input justify-center" id="timeUpper" type ="time" defaultValue={boundedTime[1]} />
-            <label className="subtitle-text">for</label>
-            {TimeBlockOptions()}
+        <div className="justify-left">
+          <input className="date-input justify-center" id="timeLower" type="time" defaultValue={boundedTime[0]} onChange={(e)=>handleTime(e)} />
+          <label className="subtitle-text">to</label>
+          <input className="date-input justify-center" id="timeUpper" type ="time" defaultValue={boundedTime[1]} />
+          <label className="subtitle-text">for</label>
+          {TimeBlockOptions()}
 
-          </div>
-
-          <label className="subtitle-text justify-left">What modality do you prefer for your tutoring session?</label>
-          {ModalityButtons()}
-          
         </div>
-        <button className = 'button_right' onClick={handleSubmit}>Add Session</button>
+
+        <label className="subtitle-text justify-left"><h4>What modality do you prefer for your tutoring session?</h4></label>
+        {ModalityButtons()}
+      </div>
+      <button className = 'button_right' onClick={handleSubmit}>Add Session</button>
     </Layout>
     
   )
