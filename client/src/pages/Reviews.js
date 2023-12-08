@@ -13,7 +13,7 @@ const Reviews = (props) => {
   // GET ALL PAST REVIEWS FROM STUDENT
   useEffect(() => {
     // fetchFromAPI(`review/${props.renderType}/${props.userName}`)
-    fetchFromAPI(`review/ajpimple`)
+    fetchFromAPI(`review/${user.username}`)
       .then((data) => {
         const render_data = Object.entries(data).map(([key, value]) => ({
           key,

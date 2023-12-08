@@ -33,7 +33,17 @@
     }
 
     .reviewListContainer {
-        height: 400px; 
+        height: 60vh; 
         overflow-y: auto; 
         /*border: 1px solid #ccc;*/ 
     }
+
+    .reviewList {
+        height: 60vh
+    }
+
+    .reviewListContainer::-webkit-scrollbar {
+        display: none;
+        /*border: 1px solid #ccc;*/ 
+    }
+

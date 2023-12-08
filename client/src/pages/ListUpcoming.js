@@ -38,49 +38,6 @@ const ListUpcoming = (props) => {
       });
   }, []);
 
-  const sampleAppts = [
-    {
-      datetime: "2023-12-05T10:00:00",
-      length: 60,
-      location: "www.zoom.com",
-      online: true,
-      studentId: "student001",
-      tutorId: "tutorA"
-    },
-    {
-      datetime: "2023-12-06T11:30:00",
-      length: 60,
-      location: "www.skype.com",
-      online: true,
-      studentId: "student002",
-      tutorId: "tutorB"
-    },
-    {
-      datetime: "2023-12-07T09:15:00",
-      length: 60,
-      location: "www.googlemeet.com",
-      online: true,
-      studentId: "student003",
-      tutorId: "tutorC"
-    },
-    {
-      datetime: "2023-12-08T14:00:00",
-      length: 60,
-      location: "www.zoom.com",
-      online: true,
-      studentId: "student004",
-      tutorId: "tutorD"
-    },
-    {
-      datetime: "2023-12-09T16:45:00",
-      length: 60,
-      location: "www.teams.com",
-      online: true,
-      studentId: "student005",
-      tutorId: "tutorE"
-    }
-  ];
-
   return (
     <Layout>
         <div className="upcomingPage">
@@ -93,7 +50,7 @@ const ListUpcoming = (props) => {
         </div>
         <div className="upcomingSessionList">
             {
-              sampleAppts.length > 0 ? sampleAppts.map((session, index) => (
+              data.length > 0 ? data.map((session, index) => (
                 <SessionTile
                   datetime={session.datetime}
                   length={session.length}

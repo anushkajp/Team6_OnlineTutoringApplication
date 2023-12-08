@@ -32,6 +32,12 @@ class CalendarPage extends Component {
     this.state = {
       currentDay: new Date(),
       sessions: {
+        "12/4/2023": {
+          time: "10:00",
+          coursename: "CS 2336",
+          student: "Student Alpha",
+          tutor: "Biba Luka"
+        },
         "12/5/2023": {
           time: "10:00",
           coursename: "Software Engineering",
@@ -41,25 +47,25 @@ class CalendarPage extends Component {
         "12/6/2023": {
           time: "11:30",
           coursename: "Discrete Math 1",
-          student: "Student Beta",
+          student: "Student Alpha",
           tutor: "Tutor B"
         },
         "12/7/2023": {
           time: "09:15",
           coursename: "Automata Theory",
-          student: "Student Gamma",
+          student: "Student Alpha",
           tutor: "Tutor C"
         },
         "12/8/2023": {
           time: "14:00",
           coursename: "Software Architecture",
-          student: "Student Delta",
+          student: "Student Alpha",
           tutor: "Tutor D"
         },
         "12/9/2023": {
           time: "16:45",
           coursename: "Computer Graphics",
-          student: "Student Epsilon",
+          student: "Student Alpha",
           tutor: "Tutor E"
         }
       },
