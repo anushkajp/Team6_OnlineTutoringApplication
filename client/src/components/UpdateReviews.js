@@ -57,9 +57,8 @@ const UpdateReviews = (props) => {
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
         <div className='modal_container'>
           <div className='left_column'>
-            {/* Rating dropdown for updating */}
             <h4>{props.tutorUsername}</h4>
-            <label>
+            <label className='dropdown'>
               <span>Rating: </span>
               <select
                 value={updatedRating}

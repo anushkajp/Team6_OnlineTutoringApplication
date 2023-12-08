@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Availability } from "../comp_models/availability"
 import { UserContext } from "../UserContext"
 import Layout from '../components/Layout'
+import { fetchFromAPI, uploadToAPI } from '../services/api';
 
 function AddTutorSession() {
   const weekDays = [
@@ -14,9 +15,6 @@ function AddTutorSession() {
     { label: 'Sa', expanded_label: 'Saturday' }
   ]
   const types = ['online', 'in-person']
-
-  const { user } = useContext(UserContext);
-  const initialAvailability = new Availability()
   const timeBlocks = [
     { label: "30 Min blocks", data: 30 },
     { label: "45 Min blocks", data: 45 },
@@ -24,25 +22,29 @@ function AddTutorSession() {
     { label: "1 Hour 15 Min blocks", data: 90 }
   ]
 
+  const { user } = useContext(UserContext);
   const [dowSelection, setDowSelection] = useState([])
   const [timeBlockSize, setTimeBlockSize] = useState(timeBlocks[0])
   const [modality, setModality] = useState(types[0])
   const [boundedTime, setBoundedTime] = useState({timeLower:"10:00",timeUpper:"12:00"})
-
+  const [renderAvailability, setAvailability] = useState([]);
+  const initialAvailability = new Availability()
+  
 
   function TimeBlockOptions() {
-    const [active, setActive] = useState(timeBlocks[0])
+    // const [active, setActive] = useState(timeBlocks[0])
 
-    function choiceHandler(value) {
-      setTimeBlockSize(value)
-      console.log(value)
-    }
+    // function choiceHandler(value) {
+    //   setTimeBlockSize(value)
+    //   console.log(value)
+    // }
 
     return (
       // <div>
       <select
         value={timeBlockSize}
-        onChange={e => choiceHandler(e.target.value)}
+        // onChange={e => choiceHandler(e.target.value)}
+        onChange={(e) => setTimeBlockSize(parseInt(e.target.value))}
         className="selection justify-center"
       >
         {timeBlocks.map((option, index) => (
@@ -118,6 +120,28 @@ function AddTutorSession() {
       }
     }
   }
+
+  const handleSubmit = () => {
+    const data = {
+      dayOfTheWeek: dowSelection.map(index => weekDays[index].expanded_label),
+      startTime: boundedTime.timeLower,
+      endTime: boundedTime.timeUpper,
+      online: modality === 'online',
+      username: user.username,
+    }
+    // Make a POST request to the specified path
+    uploadToAPI(`/availability/${data.dayOfTheWeek}/${data.username})`, {
+        end_time: data.endTime,
+        start_time: data.startTime,
+        online: data.online,
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('Error submitting review:', error);
+      });
+  };
   return (
     <Layout>
       <div className="right-column">
@@ -138,8 +162,9 @@ function AddTutorSession() {
 
           <label className="subtitle-text justify-left">What modality do you prefer for your tutoring session?</label>
           {ModalityButtons()}
-
+          
         </div>
+        <button className = 'button_right' onClick={handleSubmit}>Add Session</button>
     </Layout>
     
   )
