@@ -4,3 +4,5 @@ export class Major {
         this.majorId = majorId
     }
 }
+
+export default Major;

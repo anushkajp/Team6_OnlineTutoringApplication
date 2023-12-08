@@ -13,3 +13,5 @@ export class Course {
         this.creditHours = creditHours
     }
 }
+
+export default Course;

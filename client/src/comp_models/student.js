@@ -61,3 +61,5 @@ export class Student extends User {
     };
   }
 }
+
+export default Student;
