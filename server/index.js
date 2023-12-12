@@ -19,11 +19,11 @@ const Major = require("./src/models/major")
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
 const app = express();
-const PORT = process.env.port || 3000;
+const PORT = process.env.PORT || 3000;
 const cors = require('cors');
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 const corsOptions = {
-    origin: '*',
+    origin: ['http://localhost:3000', 'https://team6-online-tutoring-application.vercel.app'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Include OPTIONS method
     optionsSuccessStatus: 204,
 };
@@ -264,7 +264,7 @@ app.get("/testDelete", (req, res) => {
 app.get('/', (req, res) => {
     res.send("Server working");
 });
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
     console.log("Server is running on port " + PORT)
 });
 
