@@ -34,7 +34,7 @@ const CreateFields = (object, setObject, labelData) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if ("maxLength" in labelData){
+    if ("maxLength" in labelData[name]){
     if (labelData[name].maxLength>=value.length){
         setObject({
           ...object,
