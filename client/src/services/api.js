@@ -1,5 +1,5 @@
 export function fetchFromAPI(route) {
-  return fetch(`http://localhost:8000/${route}`)
+  return fetch(`https://viaduct.proxy.rlwy.net:39124/${route}`)
     .then(response => {
       if (response.status === 200) {
         return response.json();
@@ -11,7 +11,7 @@ export function fetchFromAPI(route) {
 
 export const sendAPIPatchRequest = async (route, dataToUpdate) => {
   try {
-    const response = await fetch(`http://localhost:8000/${route}`, {
+    const response = await fetch(`https://viaduct.proxy.rlwy.net:39124/${route}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export const sendAPIPatchRequest = async (route, dataToUpdate) => {
 export function uploadToAPI(route, data){
   console.log(data)
   data =JSON.stringify(data)
-  return fetch(`http://localhost:8000/${route}`, {method:"POST",headers:{"content-type":"application/json"},body:data})
+  return fetch(`https://viaduct.proxy.rlwy.net:39124/${route}`, {method:"POST",headers:{"content-type":"application/json"},body:data})
   .then(async response=>{
     if (response.status === 201){
       return response.json();
