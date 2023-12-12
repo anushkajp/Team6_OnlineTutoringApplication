@@ -219,11 +219,13 @@ import bcrypt from "bcryptjs-react"
 import Layout from "../components/Layout";
 import { database, auth } from '../firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from "react-router-dom";
 
 const SignUpTutor = () => {
 
   const initialTutor = new Tutor();
   const [tutor, setTutor] = useState(initialTutor);
+  let navigate = useNavigate();
 
   const hashPassword = async (password) => {
     const gennedHash = await new Promise((resolve, reject) => {
@@ -266,6 +268,7 @@ const SignUpTutor = () => {
           tutor.password = pwdHash
           console.log(tutor)
           const data = await uploadToAPI("tutor/", tutor).then(() => console.log("Tutor data saved successfully!")).catch((error) => console.log(error))
+          navigate("/Login");
         } catch (error) {
           console.log(e)
         }

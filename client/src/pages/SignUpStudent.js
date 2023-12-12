@@ -4,11 +4,13 @@ import  Student  from '../comp_models/student'
 import CreateFields from '../components/CreateFields'
 import bcrypt from "bcryptjs-react"
 import { database, auth } from '../firebase'
+import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import Layout from "../components/Layout";
 
 const SignUpStudent = () => {
   const initialStudent = new Student();
+  let navigate = useNavigate();
   const [student, setStudent] = useState(initialStudent);
 
   const hashPassword = async (password) => {
@@ -58,6 +60,7 @@ const SignUpStudent = () => {
         student.password = pwdHash;
         console.log(student)
         const data = await uploadToAPI("student/", student).then(() => console.log("Student data saved successfully!")).catch((error) => console.log(error))
+        navigate("/Login");
       } catch (error) {
         console.error("Error in user registration: ", error);
       }
