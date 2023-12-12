@@ -19,7 +19,7 @@ const Major = require("./src/models/major")
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
 const app = express();
-const PORT = 8000;
+const PORT = process.env.port || 3000;
 const cors = require('cors');
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 const corsOptions = {
@@ -264,7 +264,7 @@ app.get("/testDelete", (req, res) => {
 app.get('/', (req, res) => {
     res.send("Server working");
 });
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log("Server is running on port " + PORT)
 });
 
