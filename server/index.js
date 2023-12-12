@@ -23,7 +23,7 @@ const PORT = 8000;
 const cors = require('cors');
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'https://team6-online-tutoring-application.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Include OPTIONS method
     optionsSuccessStatus: 204,
 };
