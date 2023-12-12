@@ -23,29 +23,33 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 export async function fetchUserType(uid) {
-  const baseRef = ref(db, '/test/Student/'); 
-  const userQuery = query(baseRef, orderByChild('userId'), equalTo(uid));
+  const baseRefUser = ref(db, '/test/User/'); 
+  const userQueryU = query(baseRefUser, orderByChild('email'), equalTo(uid));
+  const snapshot = await get(userQueryU);
+  const uKey = Object.keys(snapshot.val())[0]
 
+  const studentRef = ref(db, `/test/Student/${uKey}`);
+  
+  
   try {
-    const snapshot = await get(userQuery);
+    const snapshotS = await get(studentRef);
     let data = "";
     let key = "";
 
-    if (snapshot.exists()) {
-      data = snapshot.val();
+    if (snapshotS.exists()) {
+      data = snapshotS.val();
       
       key = Object.keys(data)[0]; 
-      return { accountType: "student", userKey: key}; 
+      return { accountType: "student", userKey: uKey}; 
     } else {
-      const tutorRef = ref(db, '/test/Tutor/'); 
-      const tutorQuery = query(tutorRef, orderByChild('userId'), equalTo(uid));
-      const tutorSnapshot = await get(tutorQuery); 
+      const tutorRef = ref(db, `/test/Tutor/${uKey}`); 
+      const tutorSnapshot = await get(tutorRef); 
       data = tutorSnapshot.val();
       console.log(data)
       key = Object.keys(data)[0];
     
       if (tutorSnapshot.exists()) {
-        return { accountType: "tutor", userKey: key};
+        return { accountType: "tutor", userKey: uKey};
       } else {
         console.log("Cannot find this user.");
         return null; 

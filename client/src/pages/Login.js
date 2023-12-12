@@ -42,7 +42,7 @@ const Login = () => {
       await setPersistence(auth, browserLocalPersistence);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      const accountInfo = await fetchUserType(user.uid);
+      const accountInfo = await fetchUserType(user.email);
       const data = await findStudentByKey(accountInfo.userKey);
   
       updateUser({ 

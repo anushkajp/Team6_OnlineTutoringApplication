@@ -19,7 +19,7 @@ const Major = require("./src/models/major")
 // const {db, addItem,readPath,swaggerDocument,swaggerUi,fbApp} = require('./db');
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 const cors = require('cors');
 //app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 const corsOptions = {
